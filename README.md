@@ -22,10 +22,56 @@ After a minute or so, the installation should be complete, and a folder named `%
 
 ## Usage
 
-Either manually create passage files in the `passages/` directory, or use `accelerator-tool passage %YOUR_PASSAGE_NAME%`. If you create them manually, the format of the file should be as so:
+Either manually create passage files in the `passages/` directory, or use `accelerator-tool passage %YOUR_PASSAGE_NAME%`. A complete passage file will look something like this:
 
 ```javascript
 import * from  from '../../src/passages/bundle';
+
+class Component extends React.PureComponent<any> {
+  constructor(props: any, context?: any) {
+    super(props, context);
+
+    /* Bind the function so we can properly access this.props. */
+    this.clickIncrementor = this.clickIncrementor.bind(this);
+  }
+
+  public render() {
+    const {
+      storyState,
+    } = this.props;
+
+    return (
+      <div id="myCoolPassage">
+        <h2>
+          This is a test!
+        </h2>
+
+        {/* Move to new passages with the Link component. */}
+        <Link passageName="testPassage2">
+          This is a link.
+        </Link>
+
+        {/* This will update reactively, without the need for any rendering logic on your part. */}
+        <div>{storyState.counter || 0}</div>
+
+        <button
+          onClick={this.clickIncrementor}
+        >
+          Clicking me increments the counter!
+        </button>
+      </div>
+    );
+  }
+
+  private clickIncrementor() {
+    const {
+      setStoryState,
+      storyState,
+    } = this.props;
+
+    setStoryState('counter', (storyState.counter || 0) + 1);
+  }
+}
 
 const passage = {
   /* string: the story-unique name of the passage. */
@@ -47,32 +93,7 @@ const passage = {
    * in the case of noRender passages, a component that can be imported.
    * Should be formatted in JSX style. */
   contents: (
-    <div id="myCoolPassage">
-      <h2>
-        This is a test!
-      <h2>
-
-      {/* Move to new passages with the Link component. */}
-      <Link passageName="testPassage2">
-        This is a link.
-      </Link>
-
-      {/* This will update reactively, without the need for any rendering logic on your part. */}
-      <div>{this.props.storyState.counter}</div>
-
-      <button
-        onClick={() => {
-          const {
-            setStoryState,
-            storyState,
-          } = this.props;
-
-          setStoryState('counter', storyState.counter + 1);
-        }}
-      >
-        Clicking me increments the counter!
-      </button>
-    </div>
+    <Component />
   ),
 };
 
