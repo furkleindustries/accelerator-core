@@ -2,7 +2,7 @@
 
 ## Summary
 
-A lightweight, reactive hypertext fiction framework with the conveniences of modern web dev and few of the pain points. This repository is the framework's runtime, which is more or less what is generated for you when you use the (accelerator-tool)[https://github.com/furkleindustries/accelerator-tool] library to create a new accelerator project. You probably don't want to clone this repository as it'll come with all the git data, whereas you'll want to be creating your own repository for tracking your own story.
+A lightweight, reactive hypertext fiction framework with the conveniences of modern web dev and few of the pain points. This repository is the framework's runtime, which is more or less what is generated for you when you use the [accelerator-tool](https://github.com/furkleindustries/accelerator-tool) library to create a new accelerator project. You probably don't want to clone this repository as it'll come with all the git data, whereas you'll want to be creating your own repository for tracking your own story.
 
 ## Installation
 
