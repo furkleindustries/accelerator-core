@@ -25,9 +25,14 @@ After a minute or so, the installation should be complete, and a folder named `%
 Either manually create passage files in the `passages/` directory, or use `accelerator-tool passage %YOUR_PASSAGE_NAME%`. A complete passage file will look something like this:
 
 ```javascript
-import * from  from '../../src/passages/bundle';
+import {
+  IPassage,
+  Link,
+  React,
+  IPassageProps,
+} from '../src/passages/bundle';
 
-class Component extends React.PureComponent<any> {
+class Component extends React.PureComponent<IPassageProps> {
   constructor(props: any, context?: any) {
     super(props, context);
 
@@ -73,30 +78,33 @@ class Component extends React.PureComponent<any> {
   }
 }
 
-const passage = {
+const passage: IPassage = {/* string: the story-unique name of the passage. */
   /* string: the story-unique name of the passage. */
   name: 'myPassage',
+  
   /* string: an optional expanded title for the passage to be printed
    * each time a passage is displayed. */
   title: 'My cool passage',
+  
   /* array: an optional collection of either plain strings or
    * { key: string, value: string, } objects. */
   tags: [
-  	'start',
+    /* Mark the passage as the first that should be rendered when the story is started. */
+    'start',
+  
     {
       key: 'anotherTag',
       value: 'anotherTagValue',
     },
   ],
-  
-  /* ReactElement: the content that should be displayed, or,
+
+  /* ComponentClass | ReactElement: the content that should be displayed, or,
    * in the case of noRender passages, a component that can be imported.
    * Should be formatted in JSX style. */
-  contents: (
-    <Component />
-  ),
+  contents: Component,
 };
 
+/* Always make the passage object a default export. */
 export default passage;
 ```
 

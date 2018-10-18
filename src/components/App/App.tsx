@@ -6,7 +6,7 @@ import {
 } from '../../reducers/IState';
 import {
   PassageContainerConnected,
-} from '../Passage/PassageContainer';
+} from '../PassageContainer/PassageContainer';
 import {
   connect,
   MapStateToProps,

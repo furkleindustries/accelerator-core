@@ -5,10 +5,12 @@ import {
   Tag,
 } from '../tags/Tag';
 
+import * as React from 'react';
+
 export interface IPassage {
   name: string;
   title?: string;
-  contents: ReactElement<any>;
+  contents: React.ComponentClass | ReactElement<any>;
   tags?: Tag[];
 }
 

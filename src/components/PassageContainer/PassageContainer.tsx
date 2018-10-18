@@ -34,16 +34,21 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
       setStoryState,
     } = this.props;
 
+    const ownProps = {
+      passage,
+      dispatch,
+      storyState,
+      setStoryState,
+    };
+
     return (
       <div className="Passage">
         {title ? <h1>{title}</h1> : null}
 
-        {React.cloneElement(contents, {
-          passage,
-          dispatch,
-          storyState,
-          setStoryState,
-        })}
+        {React.isValidElement(contents) ?
+          React.cloneElement(contents, ownProps) :
+          React.createElement(contents as any, ownProps)
+        }
       </div>
     )
   }

@@ -1,9 +1,6 @@
-import * as React from 'react';
-
 export const strings = {
   CONTENTS_INVALID:
-    'The passage object\'s contents property did not meet the ' +
-    'React.isValidElement type guard.',
+    'The passage object\'s contents property were not an object or function.',
 
   CONTENTS_MISSING:
     'The passage object had no contents element.',
@@ -35,7 +32,8 @@ export const checkPassageObject = (passage: any) => {
 
   if (!passage.contents) {
     throw new Error(strings.CONTENTS_MISSING);
-  } else if (!React.isValidElement(passage.contents)) {
+  } else if (typeof passage.contents !== 'object' &&
+             typeof passage.contents !== 'function') {
     throw new Error(strings.CONTENTS_INVALID);
   }
 
