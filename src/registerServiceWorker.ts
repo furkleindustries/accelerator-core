@@ -10,6 +10,8 @@
 // This link also includes instructions on opting out of this behavior.
 
 const isLocalhost = Boolean(
+  window &&
+  window.location &&
   window.location.hostname === 'localhost' ||
     // [::1] is the IPv6 localhost address.
     window.location.hostname === '[::1]' ||
@@ -20,7 +22,10 @@ const isLocalhost = Boolean(
 );
 
 export function registerServiceWorker() {
-  if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+  if (process.env.NODE_ENV === 'production' &&
+      'serviceWorker' in navigator &&
+      window)
+  {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(
       process.env.PUBLIC_URL!,
@@ -30,6 +35,9 @@ export function registerServiceWorker() {
       // Our service worker won't work if PUBLIC_URL is on a different origin
       // from what our page is served on. This might happen if a CDN is used to
       // serve assets; see https://github.com/facebookincubator/create-react-app/issues/2374
+
+      // accelerator-core uses no routing. We may need to see if the constant
+      // publicUrl value affects this but I suspect it will never fail.
       return;
     }
 
@@ -115,7 +123,7 @@ function checkValidServiceWorker(swUrl: string) {
 }
 
 export function unregister() {
-  if ('serviceWorker' in navigator) {
+  if (navigator && 'serviceWorker' in navigator) {
     navigator.serviceWorker.ready.then(registration => {
       registration.unregister();
     });

@@ -62,7 +62,7 @@ export class LinkUnconnected extends React.PureComponent<ILinkOwnProps & ILinkSt
 
     return (
       <button
-        className={`${styles.Link} Link`}
+        className={`${styles.link} link`}
         passage-name={passageName}
         data-tags={this.formatTags()}
         onClick={this.navigate}

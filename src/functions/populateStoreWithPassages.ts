@@ -42,7 +42,7 @@ export const strings = {
     '%REASON%.',
 };
 
-export const populateStoreWithPassages = async (store: Store, passagesManifest: string[]) => {
+export const populateStoreWithPassages = (store: Store, passagesManifest: string[]) => {
   if (!Array.isArray(passagesManifest)) {
     throw new Error(strings.PASSAGES_MANIFEST_INVALID);
   } else if (!passagesManifest.length) {
@@ -51,10 +51,18 @@ export const populateStoreWithPassages = async (store: Store, passagesManifest: 
 
   let passageObjects: IPassage[];
   try {
-    passageObjects = (await Promise.all(passagesManifest.map((path) => (
-      /* Give webpack hints about where we're importing. */
-      import(`../../passages/${path}`)
-    )))).map((aa) => aa.default);
+    passageObjects = passagesManifest.map((path) => (
+      /* Give webpack hints about where we're importing. If you don't do this,
+       * webpack will bundle a lot of stuff you don't care about and show you a
+       * confusing error about "Critical dependencies.""
+       * 
+       * I had a much nicer async/import() setup here but rendering after a
+       * promise resolves was not working at all, and it's doubtful anyone is
+       * going to try to kitbash this into an SSR setup, so the client-side
+       * difference is effectively nil. */
+      // @ts-ignore
+      require(`../../passages/${path}`)
+    )).map((aa) => aa.default);
   } catch (err) {
     throw err;
   }

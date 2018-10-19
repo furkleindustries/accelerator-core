@@ -15,25 +15,24 @@ import {
 } from './registerServiceWorker';
 
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 
-import './index.css';
+// @ts-ignore
+import { render, } from 'react-snapshot';
+
+import './index.scss';
 
 // @ts-ignore
 import passagesManifest from '../passages/passages-manifest.json';
 
 const store = createStore();
 
-populateStoreWithPassages(store, passagesManifest).then((data) => {
-  ReactDOM.render(
-    <Provider store={store}>
-      <AppConnected />
-    </Provider>,
-    document.getElementById('root') as HTMLElement,
-  );
-  
-  registerServiceWorker();
-}, (err) => {
-  throw err;
-});
+populateStoreWithPassages(store, passagesManifest);
 
+render(
+  <Provider store={store}>
+    <AppConnected />
+  </Provider>,
+  document.getElementById('root') as HTMLElement,
+);
+
+registerServiceWorker();

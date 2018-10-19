@@ -35,7 +35,7 @@ export class App extends React.Component<IAppProps> {
     } = this.props;
 
     return (
-      <div className={`${styles.App} App`}>
+      <div className={`${styles.app} app`}>
         <PassageContainerConnected
           passage={currentPassage}
           storyState={storyState}

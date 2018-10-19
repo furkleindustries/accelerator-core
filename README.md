@@ -32,6 +32,8 @@ import {
   IPassageProps,
 } from '../src/passages/bundle';
 
+import logo from '../public/logo.svg';
+
 class Component extends React.PureComponent<IPassageProps> {
   constructor(props: any, context?: any) {
     super(props, context);
@@ -48,8 +50,18 @@ class Component extends React.PureComponent<IPassageProps> {
     return (
       <div id="myCoolPassage">
         <h2>
-          This is a test!
+          This is the sample accelerator passage.
         </h2>
+
+        <img
+          src={logo}
+          style={{
+            display: 'block',
+            width: '300px',
+            margin: '0 auto',
+            maxWidth: '60%',
+          }}
+        />
 
         {/* Move to new passages with the Link component. */}
         <Link passageName="testPassage2">
@@ -110,6 +122,6 @@ export default passage;
 
 The exported object must be the passage object, and it must be the default export. Doing otherwise will break. You can use any valid JSX, including functional and class-based components.
 
-If you are using Typescript (which you should be for the full value of accelerator's built-in functionalities), you should indicate the type of the passage object by replacing `const passage =` with `const passage: IPassage =`, importing the `IPassage` interface from `../src/passages/IPassage`. This will allow full type-checking of your story passages.
+If you are using Typescript (which you should be for the full value of accelerator's built-in functionalities), you should indicate the type of the passage object by replacing `const passage =` with `const passage: IPassage =`, and setting the props type of the React component to `IPassageProps`, importing these interfaces from `../src/passages/bundle`. This will allow full type-checking of your story passages.
 
 In order to start the development server, run `npm run start`. Note that you may need to shut down and restart the dev server if you add or remove a passage file. To build the code bundle for release, run `npm run build`.
