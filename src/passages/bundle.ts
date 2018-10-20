@@ -11,13 +11,13 @@ import {
 import * as React from 'react';
 
 // @ts-ignore
-import style from './style.scss';
-const defaultStyles = style || {};
+import _styles from './style.scss';
+const styles = _styles || {};
 
 export {
-  defaultStyles,
   IPassage,
   IPassageProps,
   Link,
   React,
+  styles,
 }

@@ -3,6 +3,7 @@ import {
 } from '../../tags/Tag';
 
 export interface ILinkOwnProps {
+  className?: string;
   passageName: string;
   tags?: Tag[];
 }

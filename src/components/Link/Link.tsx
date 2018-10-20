@@ -33,10 +33,6 @@ import {
 
 import * as React from 'react';
 
-// @ts-ignore
-import _styles from './Link.scss';
-const styles = _styles || {};
-
 export const strings = {
   NO_LINKING_TO_NORENDER_PASSAGES:
     'You cannot link to a passage tagged noRender.',
@@ -57,12 +53,13 @@ export class LinkUnconnected extends React.PureComponent<ILinkOwnProps & ILinkSt
   public render() {
     const {
       children,
+      className,
       passageName,
     } = this.props;
 
     return (
       <button
-        className={`${styles.link} link`}
+        className={`link${className ? ` ${className}` : ''}`}
         passage-name={passageName}
         data-tags={this.formatTags()}
         onClick={this.navigate}

@@ -1,5 +1,5 @@
-import {
-  defaultStyles as styles,
+import { 
+  styles,
   Link,
   React,
 } from '../src/passages/bundle';

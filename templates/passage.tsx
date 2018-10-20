@@ -1,5 +1,5 @@
 import {
-  defaultStyles as styles,
+  styles,
   IPassage,
   Link,
   React,
