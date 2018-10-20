@@ -108,7 +108,18 @@ module.exports = {
       'react-native': 'react-native-web',
     },
     plugins: [
-      new TsconfigPathsPlugin({ configFile: paths.appTsProdConfig }),
+      new TsconfigPathsPlugin({
+        configFile: paths.appTsProdConfig,
+        ignoreDiagnostics: [
+          /* No unused locals. Will screw up the template design. */
+          6133,
+        ],
+
+        ignoreLints: [
+          /* JSX self-close. Ditto. */
+          'jsx-self-close',
+        ],
+      }),
     ],
   },
   module: {

@@ -27,9 +27,10 @@ To write a new passage, either use `accelerator-tool new passage %YOUR_PASSAGE_N
 ```javascript
 import {
   IPassage,
+  IPassageProps,
   Link,
   React,
-  IPassageProps,
+  styles,
 } from '../src/passages/bundle';
 
 import logo from '../public/logo.svg';
@@ -64,7 +65,9 @@ class Component extends React.PureComponent<IPassageProps> {
         />
 
         {/* Move to new passages with the Link component. */}
-        <Link passageName="testPassage2">
+        <Link
+          className={styles.link}
+          passageName="testPassage2">
           This is a link.
         </Link>
 

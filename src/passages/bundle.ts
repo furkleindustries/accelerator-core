@@ -11,7 +11,7 @@ import {
 import * as React from 'react';
 
 // @ts-ignore
-import _styles from './style.scss';
+import _styles from './styles.scss';
 const styles = _styles || {};
 
 export {
