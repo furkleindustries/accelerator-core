@@ -5,18 +5,34 @@ const {
   promisify,
 } = require('util');
 
+const fs = require('fs');
+
 const rimraf = promisify(require('rimraf'));
 const ncp = promisify(require('ncp'));
-const writeFile = promisify(require('fs').writeFile);
+const writeFile = promisify(fs.writeFile);
 
-const appDir = join(__dirname, '..', 'build-web');
-const distDir = join(__dirname, '..', 'build-desktop');
+const projectDir = join(__dirname, '..');
+const appDir = join(projectDir, 'build-web');
+const distDir = join(projectDir, 'build-desktop');
 
 const windowsDir = join(distDir, 'windows', 'resources', 'app');
 const macOSDir = join(distDir, 'macOS', 'Electron.app', 'Contents', 'Resources', 'app');
 const linuxDir = join(distDir, 'linux', 'resources', 'app');
 
-const mainStr = // In the main process.
+/* Ingest the .env file, if it exists. */
+const dotEnvFile = join(projectDir, '.env');
+if (fs.existsSync(dotEnvFile)) {
+  require('dotenv-expand')(
+    require('dotenv').config({
+      path: dotEnvFile,
+    })
+  );
+}
+
+/* Written to main.js. Provides extremely simple defaults for the main thread
+ * for Electron. */
+const mainStr =
+  `// In the main process.\n` +
   `const {\n` +
     `\tapp,\n` +
     `\tBrowserWindow,\n`+
@@ -64,7 +80,7 @@ if (skipMacOS) {
               'promoteContentToExecutables script or the ' +
               'promote-content-to-executables npm task, but it will likely ' +
               'fail, and even if it does not, you should test to be ' +
-              'absolutely sure it works.\n.\n');
+              'absolutely sure it works.\n');
 }
 
 Promise.all([
