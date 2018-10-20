@@ -1,8 +1,6 @@
 # accelerator-core
 
-## Summary
-
-A lightweight, reactive hypertext fiction framework with the conveniences of modern web dev and few of the pain points. This repository is the framework's runtime, which is more or less what is generated for you when you use the [Accelerator devtool](https://github.com/furkleindustries/accelerator-tool) to create a new Accelerator project. You probably don't want to clone this repository as it'll come with all the git data, whereas you'll want to be creating your own repository for tracking your own story.
+A lightweight, reactive hypertext fiction framework with the conveniences of modern web dev and few of the pain points. This repository is the framework's runtime, which is more or less what is generated for you when you use the [Accelerator devtool](https://github.com/furkleindustries/accelerator-tool) to create a new Accelerator project. You probably don't want to clone this repository as it'll come with all the git data, whereas you will want to create your own repository for tracking your story.
 
 ## Installation
 
