@@ -10,7 +10,12 @@ import {
 
 import * as React from 'react';
 
+// @ts-ignore
+import style from './style.scss';
+const defaultStyles = style || {};
+
 export {
+  defaultStyles,
   IPassage,
   IPassageProps,
   Link,
