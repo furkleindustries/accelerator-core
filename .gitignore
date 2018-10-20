@@ -3,6 +3,7 @@
 # passages
 /passages/*
 !/passages/.gitkeep
+# endpassages
 
 # dependencies
 /node_modules/
@@ -11,7 +12,8 @@
 /coverage/
 
 # production
-/build*
+/build*/
+/.zips/
 
 # misc
 .DS_Store

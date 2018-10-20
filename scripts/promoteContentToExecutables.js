@@ -1,5 +1,4 @@
 const {
-  basename,
   join,
 } = require('path');
 const {
@@ -54,31 +53,48 @@ const packageStr = JSON.stringify({
   main: 'main.js',
 });
 
+const skipMacOS =
+  process.argv.indexOf('--force-mac-build-on-windows') === -1 &&
+  process.platform === 'win32';
+if (skipMacOS) {
+  console.log('Due to issues in the way Windows handles symlinks in zip ' +
+              'archives, it is not possible to make macOS electron ' +
+              'packages. You may override this by passing the ' +
+              '--force-mac-build-on-windows to the ' +
+              'promoteContentToExecutables script or the ' +
+              'promote-content-to-executables npm task, but it will likely ' +
+              'fail, and even if it does not, you should test to be ' +
+              'absolutely sure it works.\n.\n');
+}
+
 Promise.all([
   rimraf(windowsDir),
-  rimraf(macOSDir),
+  skipMacOS ? null : rimraf(macOSDir),
   rimraf(linuxDir),
 ]).then(() => {
   Promise.all([
     ncp(appDir, windowsDir),
-    ncp(appDir, macOSDir),
+    skipMacOS ? null : ncp(appDir, macOSDir),
     ncp(appDir, linuxDir),
   ]).then(() => {
     Promise.all([
       writeFile(join(linuxDir, 'package.json'), packageStr),
-      writeFile(join(macOSDir, 'package.json'), packageStr),
+      skipMacOS ? null : writeFile(join(macOSDir, 'package.json'), packageStr),
       writeFile(join(windowsDir, 'package.json'), packageStr),
       writeFile(join(linuxDir, 'main.js'), mainStr),
-      writeFile(join(macOSDir, 'main.js'), mainStr),
+      skipMacOS ? null : writeFile(join(macOSDir, 'main.js'), mainStr),
       writeFile(join(windowsDir, 'main.js'), mainStr),
     ]).then(() => {
       console.log('Electron bundles are ready.');
     }, (err) => {
+      console.error(err.toString());
       throw err;
     });
   }, (err) => {
+    console.error(err.toString());
     throw err;
   });
 }, (err) => {
+  console.error(err.toString());
   throw err;
 });
