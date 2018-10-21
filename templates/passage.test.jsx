@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 
 import passage from './%NAME%';
 
-import * as bundle from '../src/passages/bundle';
+import * as bundle from '../../src/passages/bundle';
 
 const {
   contents: Component,

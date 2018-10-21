@@ -17,6 +17,11 @@ import {
   Store,
 } from 'redux';
 
+// tslint:disable
+// @ts-ignore
+const slash = require('slash');
+// tslint:enable
+
 export const strings = {
   MULTIPLE_DEFAULT_PASSAGES:
   'At least two passages had the tag "start". Only one tag is allowed. ' +
@@ -59,9 +64,13 @@ export const populateStoreWithPassages = (store: Store, passagesManifest: string
        * I had a much nicer async/import() setup here but rendering after a
        * promise resolves was not working at all, and it's doubtful anyone is
        * going to try to kitbash this into an SSR setup, so the client-side
-       * difference is effectively nil. */
+       * difference is effectively nil.
+       * 
+       * Note also that requires frequently fail in the browser when using
+       * Windows filepaths (modules are standardized with forward slashes)
+       * so the call to slash should ameliorate this issue. */
       // @ts-ignore
-      require(`../../passages/${path}`)
+      require(`../../passages/${slash(path)}`)
     )).map((aa) => aa.default);
   } catch (err) {
     throw err;

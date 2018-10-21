@@ -112,9 +112,9 @@ const passage: bundle.passages.IPassage = {
     },
   ],
 
-  /* ComponentClass | ReactElement: the content that should be displayed, or,
-   * in the case of noRender passages, a component that can be imported.
-   * Should be formatted in JSX style. */
+  /* ComponentClass | (...args: any[]) => ReactElement: the content that
+   * should be displayed, or, in the case of noRender passages, a component 
+   * that can be imported. Should be formatted in JSX style. */
   contents: Component,
 };
 
@@ -180,4 +180,4 @@ Like any software project, Accelerator is influenced by and indebted to the soft
 * Twine, which formed the basic notion of the story graph implemented here, with nodes connected by user-clickable links.
 * Angular (and to a lesser extent Django), for the concept of an adjacent tool that allows quick creation and prototyping of new project assets.
 
-The first three of these are extensively used in Accelerator, but they  contributed in aesthetic ways as well.
+The first three of these are also extensively used within Accelerator.

@@ -1,7 +1,7 @@
 /* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
 import * as React from 'react';
 
-import * as bundle from '../src/passages/bundle';
+import * as bundle from '../../src/passages/bundle';
 
 class Component extends React.PureComponent {
   render() {
@@ -33,7 +33,7 @@ const passage = {
    * { key: string, value: string, } objects. */
   tags: [],
 
-  /* ComponentClass | ReactElement: the content that should be displayed, or,
+  /* ComponentClass | (...args: any[]) => ReactElement: the content that should be displayed, or,
    * in the case of noRender passages, a component that can be imported.
    * Should be formatted in JSX style. */
   contents: Component,

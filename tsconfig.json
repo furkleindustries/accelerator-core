@@ -21,9 +21,10 @@
   },
   "exclude": [
     "build*",
-    "config",
-    "scripts",
-    "node_modules*",
+    "config/",
+    "scripts/",
+    "node_modules/",
+    "templates/",
     "acceptance-tests",
     "webpack",
     "jest",

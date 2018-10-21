@@ -1,6 +1,6 @@
 import passage from './%NAME%';
 
-import * as bundle from '../src/passages/bundle';
+import * as bundle from '../../src/passages/bundle';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
