@@ -28,7 +28,9 @@ To write a new passage, either use `accelerator-tool new passage %YOUR_PASSAGE_N
 /* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
 import * as React from 'react';
 
-/* Accelerator components, interfaces, styles, functions, etc. */
+/* Accelerator components, interfaces, styles, functions, etc. Feel free to
+ * destructure this as you see fit but watch out that you don't get mixed up
+ * between bundle props and component props with the same name (e.g. tags). */
 import * as bundle from '../src/passages/bundle';
 
 import logo from '../public/logo.svg';
@@ -48,13 +50,18 @@ class Component extends React.PureComponent<bundle.passages.IPassageProps> {
     } = this.props;
 
     return (
+      /* The title will appear above here as an <h1> if you've set it. */
       <div id={passageObject.name}>
         <h2>
           This is the sample accelerator passage.
         </h2>
 
         <img
+          /* Images are imported as filepaths and will automatically be
+           * copied into the build directory by the build system. */
           src={logo}
+          /* This should ordinarily be done in .scss/.css files, but this is a
+           * compact example. */
           style={{
             display: 'block',
             width: '300px',
@@ -70,12 +77,22 @@ class Component extends React.PureComponent<bundle.passages.IPassageProps> {
           This is a link.
         </bundle.components.Link>
 
-        {/* This will update reactively, without the need for any rendering logic on your part. */}
+        {/* This will update reactively, without the need for any rendering
+          * logic on your part. */}
         <div>{storyState.counter || 0}</div>
 
         <button onClick={this.clickIncrementor}>
           Clicking me increments the counter!
         </button>
+
+        <bundle.components.CyclingLink
+          choices={[ 'one', 'two', 'three', ]}
+          variableToSet="cycleVar"
+        />
+
+        {/* This value updates automatically to match the cycling link
+          * choice. */}
+        <div>{storyState.cycleVar}</div>
       </div>
     );
   }
@@ -87,7 +104,7 @@ class Component extends React.PureComponent<bundle.passages.IPassageProps> {
     } = this.props;
 
     setStoryState({
-      counter: (storyState.counter || 0) + 1),
+      counter: (storyState.counter || 0) + 1,
     });
   }
 }
@@ -101,9 +118,10 @@ const passage: bundle.passages.IPassage = {
   title: 'My cool passage',
   
   /* array: an optional collection of either plain strings or
-   * { key: string, value: string, } objects. */
+   * { key: string, value: string, } Tag objects. */
   tags: [
-    /* Mark the passage as the first that should be rendered when the story is started. */
+    /* Mark the passage as the first that should be rendered when the story is
+     * started. */
     bundle.tags.BuiltInTags.Start,
   
     {
@@ -112,9 +130,9 @@ const passage: bundle.passages.IPassage = {
     },
   ],
 
-  /* ComponentClass | (...args: any[]) => ReactElement: the content that
-   * should be displayed, or, in the case of noRender passages, a component 
-   * that can be imported. Should be formatted in JSX style. */
+  /* ComponentClass | ReactElement: the content that should be displayed, or,
+   * in the case of noRender passages, a component that can be imported.
+   * Should be formatted in JSX style. */
   contents: Component,
 };
 
@@ -148,6 +166,11 @@ All Accelerator passages have simple access to the bundle import, located in `sr
 
 * `components`, an object containing:
   * The `Link` component, which allows the user to navigate between passages.
+  * The `CyclingLink` component, which allows the user to select between several string options, and optionally stores the choice in a variable.
+  * The `Delay` component, which delays rendering of content (or it being opaque) for an arbitrary period.
+  * The `FadeIn` component, which increases the opacity of content from invisibility to full opacity over an arbitrary period.
+  * The `OneOf` component, which randomly selects a single item from the collection passed as children.
+  * The `Permutation` component, which randomly shuffles the collection passed as children.
 * `passages`, an object containing:
   * `IPassage`, an interface detailing the properties of the passage object, which is the default export of all passage files.
   * `IPassageProps`, an interface detailing the properties passed to the `contents` property of the passage object, assuming `contents` is a React component.

@@ -13,7 +13,7 @@ import {
 
 export const storyStateReducer: Reducer = (previousState: IStoryState = {}, action: IStoryStateAction) => {
   if (action.type === ActionTypes.StoryState && 'value' in action) {
-    return action.value;
+    return Object.assign({}, previousState, action.value);
   }
 
   return previousState;

@@ -42,7 +42,7 @@ export const strings = {
     'in the passages map.',
 }
 
-export class LinkUnconnected extends React.PureComponent<ILinkOwnProps & ILinkStateProps & ILinkDispatchProps> {
+export class Link extends React.PureComponent<ILinkOwnProps & ILinkStateProps & ILinkDispatchProps> {
   constructor(props: any, context?: any) {
     super(props, context);
 
@@ -118,6 +118,6 @@ export const mapDispatchToProps: MapDispatchToProps<ILinkDispatchProps, ILinkOwn
   },
 }); 
 
-export const Link = connect(mapStateToProps, mapDispatchToProps)(LinkUnconnected);
+export const LinkConnected = connect(mapStateToProps, mapDispatchToProps)(Link);
 
-export default Link;
+export default LinkConnected;

@@ -80,18 +80,13 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
   }
 }
 
-export const mapDispatchToProps: MapDispatchToProps<IPassageContainerDispatchProps, IPassageContainerOwnProps> = (reduxDispatch: Dispatch<IAction>, ownProps) => ({
+export const mapDispatchToProps: MapDispatchToProps<IPassageContainerDispatchProps, IPassageContainerOwnProps> = (reduxDispatch: Dispatch<IAction>) => ({
   dispatch(action) {
     return reduxDispatch(action);
   },
 
   setStoryState(newState) {
-    const {
-      storyState,
-    } = ownProps;
-
-    const action = createStoryStateAction(Object.assign({}, storyState, newState));
-    return reduxDispatch(action);
+    return reduxDispatch(createStoryStateAction(newState));
   },
 })
 
