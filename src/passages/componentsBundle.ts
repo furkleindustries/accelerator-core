@@ -14,6 +14,9 @@ import {
   LinkConnected,
 } from '../components/Link/Link';
 import {
+  NOf,
+} from '../components/NOf/NOf';
+import {
   OneOf,
 } from '../components/OneOf/OneOf';
 import {
@@ -27,5 +30,6 @@ export {
   FadeIn,
   LinkConnected as Link,
   OneOf,
+  NOf,
   Permutation,
 }

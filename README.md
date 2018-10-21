@@ -167,10 +167,11 @@ All Accelerator passages have simple access to the bundle import, located in `sr
 * `components`, an object containing:
   * The `Link` component, which allows the user to navigate between passages.
   * The `CyclingLink` component, which allows the user to select between several string options, and optionally stores the choice in a variable.
-  * The `Cycler` component, which is a lower-level equivalent of the external behavior of `CyclingLink`, except it allows cycling between any markup.
+  * The `Cycler` component, which is a lower-level component used by `CyclingLink`, allowing cycling between any `ReactElements`, and aditionally a callback when cycles are performed.
   * The `Delay` component, which delays rendering of content (or it being opaque) for an arbitrary period.
   * The `FadeIn` component, which increases the opacity of content from invisibility to full opacity over an arbitrary period.
   * The `OneOf` component, which randomly selects a single item from the collection passed as children.
+  * The `NOf` component, which is a lower-level component used by `OneOf`, and allows any random number (but not random order) of its children to be displayed.
   * The `Permutation` component, which randomly shuffles the collection passed as children.
 * `passages`, an object containing:
   * `IPassage`, an interface detailing the properties of the passage object, which is the default export of all passage files.
