@@ -10,7 +10,7 @@ import * as React from 'react';
 export interface IPassage {
   name: string;
   title?: string;
-  contents: React.ComponentClass | ReactElement<any>;
+  contents?: React.ComponentClass | ReactElement<any>;
   tags?: Tag[];
 }
 

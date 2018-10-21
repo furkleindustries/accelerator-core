@@ -6,7 +6,7 @@ import {
 } from '../../actions/creators/createLastLinkTagsAction';
 import {
   getTag,
-} from '../../functions/getTag';
+} from '../../tags/getTag';
 import {
   ILinkDispatchProps,
 } from './ILinkDispatchProps';

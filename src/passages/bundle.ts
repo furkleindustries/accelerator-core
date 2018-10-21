@@ -1,23 +1,14 @@
-import {
-  IPassage,
-} from './IPassage';
-import {
-  IPassageProps,
-} from './IPassageProps';
-import {
-  Link,
-} from '../components/Link/Link';
-
-import * as React from 'react';
+import * as components from './componentsBundle';
+import * as passages from './passagesBundle';
+import * as tags from './tagsBundle';
 
 // @ts-ignore
 import _styles from './styles.scss';
 const styles = _styles || {};
 
 export {
-  IPassage,
-  IPassageProps,
-  Link,
-  React,
+  components,
+  passages,
   styles,
+  tags,
 }

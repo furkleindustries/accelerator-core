@@ -20,22 +20,20 @@ After a minute or so, the installation should be complete, and a folder named `%
 
 ## Creating Passages
 
-An Accelerator story is notionally similar to a Twine story: it is a series of passages, joined by links. Each of these passages are Typescript or Javascript files containing a small amount of metadata and either a React component or a React element, located in the `passages` directory.
+An Accelerator story is notionally similar to a Twine story: it is a series of passages, joined by links. Each of these passages are TypeScript or JavaScript files. They contain a small amount of metadata and either a React component constructor (class or function) or a React element. Each placed in the `passages` directory.
 
 To write a new passage, either use `accelerator-tool new passage %YOUR_PASSAGE_NAME%`, or manually create a code file within the passages directory. A complete passage file will look something like this:
 
 ```javascript
-import {
-  IPassage,
-  IPassageProps,
-  Link,
-  React,
-  styles,
-} from '../src/passages/bundle';
+/* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
+import * as React from 'react';
+
+/* Accelerator components, interfaces, styles, functions, etc. */
+import * as bundle from '../src/passages/bundle';
 
 import logo from '../public/logo.svg';
 
-class Component extends React.PureComponent<IPassageProps> {
+class Component extends React.PureComponent<bundle.passages.IPassageProps> {
   constructor(props: any, context?: any) {
     super(props, context);
 
@@ -45,13 +43,14 @@ class Component extends React.PureComponent<IPassageProps> {
 
   public render() {
     const {
+      passageObject,
       storyState,
     } = this.props;
 
     return (
-      <div id="myCoolPassage">
+      <div id={passageObject.name}>
         <h2>
-          This is the sample Accelerator passage.
+          This is the sample accelerator passage.
         </h2>
 
         <img
@@ -65,18 +64,16 @@ class Component extends React.PureComponent<IPassageProps> {
         />
 
         {/* Move to new passages with the Link component. */}
-        <Link
-          className={styles.link}
+        <bundle.components.Link
+          className={bundle.styles.link}
           passageName="testPassage2">
           This is a link.
-        </Link>
+        </bundle.components.Link>
 
         {/* This will update reactively, without the need for any rendering logic on your part. */}
         <div>{storyState.counter || 0}</div>
 
-        <button
-          onClick={this.clickIncrementor}
-        >
+        <button onClick={this.clickIncrementor}>
           Clicking me increments the counter!
         </button>
       </div>
@@ -89,11 +86,13 @@ class Component extends React.PureComponent<IPassageProps> {
       storyState,
     } = this.props;
 
-    setStoryState('counter', (storyState.counter || 0) + 1);
+    setStoryState({
+      counter: (storyState.counter || 0) + 1),
+    });
   }
 }
 
-const passage: IPassage = {
+const passage: bundle.passages.IPassage = {
   /* string: the story-unique name of the passage. */
   name: 'myPassage',
   
@@ -105,9 +104,8 @@ const passage: IPassage = {
    * { key: string, value: string, } objects. */
   tags: [
     /* Mark the passage as the first that should be rendered when the story is started. */
-    'start',
+    bundle.tags.BuiltInTags.Start,
   
-    /* An arbitrary key-value tag to be consumed as you see fit. */
     {
       key: 'anotherTag',
       value: 'anotherTagValue',
@@ -143,3 +141,39 @@ Basic configuration can be performed through the `.env` file. There are currentl
 * `PUBLIC_URL`, which determines the URL of static resources like JS and CSS bundles, and you'll likely never have to change;
 * `ACCELERATOR_STORY_TITLE`, which allows you to set the title of your story in the browser and Electron. This will appear in search engines.
 * `ACCELERATOR_STORY_DESCRIPTION`, which allows you to set the description of your story in the browser. This will appear in search engines as well.
+
+## The bundle import
+
+All Accelerator passages have simple access to the bundle import, located in `src/passages/bundle.ts`. (Note that `passages` and `src/passages` are different folders with wholly different purposes.) The bundle import, typically imported as `import * as bundle from '../../src/passages/bundle'`, has the following props:
+
+* `components`, an object containing:
+  * The `Link` component, which allows the user to navigate between passages.
+* `passages`, an object containing:
+  * `IPassage`, an interface detailing the properties of the passage object, which is the default export of all passage files.
+  * `IPassageProps`, an interface detailing the properties passed to the `contents` property of the passage object, assuming `contents` is a React component.
+* `styles`, an CSS modules object containing the classes and IDs defined in the passage's base stylesheet (located at `src/passages/passage.scss`). This could be automatically used/injected, but I intend on making it as easy as possible to do without default styling. 
+* `tags`, an object containing:
+  * `BuiltInTags`, an enum which expresses the tags already configured for use by the Accelerator runtime.
+  * `getTag`, a function which accepts a tag array and desired key, and produces either `true` if the key was in the array as a plain string, or the value string if the key was the key property of a key-value tag.
+  * `Tag`, the type alias for tags.
+
+## The contents component class/function
+
+If you choose to create a React component constructor, either with an ES6 class and render method, or a function returning a React element, the product of that constructor will be passed props automatically by the higher-order `PassageContainer` component. These props, outlined in `IPassageProps`, are as follows:
+
+* `passageObject`, the object from your authored passage file. This is of type `IPassage`.
+* `setStoryState`, a function accepting an object of new state keys and values object as its single argument. This will automatically update the state and any rendered instances of it.
+* `storyState`, a copy of the story state. Due to the way Redux and its bindings update components, this object will always be up-to-date, relative to the actual, hidden state store, and changes to it are pointless. If you want to change the story state, use `setStoryState`.
+* `dispatch`, a no-complexity wrapper of the Redux state store's `dispatch` function, allowing lower-level dispatching of Redux actions. This will likely not be useful unless you're doing some sort of notional reflection with the Accelerator internals, or you're authoring your own actions and have modified the default state store accordingly.
+
+## Influences
+
+Like any software project, Accelerator is influenced by and indebted to the software I have used and enjoyed over the past couple years. The most prominent of those are:
+
+* React, for its simple componenting and graceful, reactive updates.
+* Redux, for providing elegant inversion of control and pure componenting in React.
+* create-react-app, a similarly-focused one-command prototype solution. 
+* Twine, which formed the basic notion of the story graph implemented here, with nodes connected by user-clickable links.
+* Angular (and to a lesser extent Django), for the concept of an adjacent tool that allows quick creation and prototyping of new project assets.
+
+The first three of these are extensively used in Accelerator, but they  contributed in aesthetic ways as well.

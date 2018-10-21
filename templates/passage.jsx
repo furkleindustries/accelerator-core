@@ -1,17 +1,21 @@
-import { 
-  styles,
-  Link,
-  React,
-} from '../src/passages/bundle';
+/* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
+import * as React from 'react';
+
+import * as bundle from '../src/passages/bundle';
 
 class Component extends React.PureComponent {
   render() {
     const {
+      passageObject,
+      setStoryState,
       storyState,
     } = this.props;
 
     return (
-      <div className={`${styles.passage} passage`} id="%NAME%">
+      <div
+        className={`${bundle.styles.passage} passage`}
+        id={passageObject.name}
+      >
       </div>
     );
   }

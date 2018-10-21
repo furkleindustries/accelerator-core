@@ -1,25 +1,27 @@
-import {
-  styles,
-  IPassage,
-  Link,
-  React,
-  IPassageProps,
-} from '../src/passages/bundle';
+/* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
+import * as React from 'react';
 
-class Component extends React.PureComponent<IPassageProps> {
+import * as bundle from '../src/passages/bundle';
+
+class Component extends React.PureComponent<bundle.passages.IPassageProps> {
   public render() {
     const {
+      passageObject,
+      setStoryState,
       storyState,
     } = this.props;
 
     return (
-      <div className={`${styles.passage} passage`} id="%NAME%">
+      <div
+        className={`${bundle.styles.passage} passage`}
+        id={passageObject.name}
+      >
       </div>
     );
   }
 }
 
-const passage: IPassage = {
+const passage: bundle.passages.IPassage = {
   /* string: the story-unique name of the passage. */
   name: '%NAME%',
   

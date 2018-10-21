@@ -1,3 +1,10 @@
+import {
+  BuiltInTags,
+} from '../tags/BuiltInTags';
+import {
+  getTag,
+} from '../tags/getTag';
+
 export const strings = {
   CONTENTS_INVALID:
     'The passage object\'s contents property were not an object or function.',
@@ -30,11 +37,14 @@ export const checkPassageObject = (passage: any) => {
     return strings.TAGS_INVALID;
   }
 
-  if (!passage.contents) {
-    throw new Error(strings.CONTENTS_MISSING);
-  } else if (typeof passage.contents !== 'object' &&
-             typeof passage.contents !== 'function') {
-    throw new Error(strings.CONTENTS_INVALID);
+  /* Don't test for contents if it's a noRender passage. */
+  if (!passage.tags || !getTag(passage.tags, BuiltInTags.NoRender)) {
+    if (!passage.contents) {
+      throw new Error(strings.CONTENTS_MISSING);
+    } else if (typeof passage.contents !== 'object' &&
+               typeof passage.contents !== 'function') {
+      throw new Error(strings.CONTENTS_INVALID);
+    }
   }
 
   return null;

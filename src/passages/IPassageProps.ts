@@ -2,6 +2,9 @@ import {
   IAction,
 } from '../actions/IAction';
 import {
+  IPassage,
+} from './IPassage';
+import {
   IStoryState,
 } from '../state/IStoryState';
 import {
@@ -9,9 +12,10 @@ import {
 } from '../actions/IStoryStateAction';
 
 export interface IPassageProps {
+  passageObject: IPassage;
   storyState: IStoryState;
   dispatch(action: IAction): IAction;
-  setStoryState(key: string, value: any): IStoryStateAction;
+  setStoryState(newState: { [key: string]: any, }): IStoryStateAction;
 }
 
 export default IPassageProps;

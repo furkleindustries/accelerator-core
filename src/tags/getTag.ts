@@ -1,7 +1,6 @@
 import {
   Tag,
-} from '../tags/Tag';
-
+} from './Tag';
 
 export const strings = {
   TAGS_INVALID:
@@ -14,7 +13,9 @@ export const getTag = (tags: Tag[], key: string) => {
   }
 
   for (const tag of tags) {
-    if (tag && (tag === key || (tag as any).key === key)) {
+    if (tag && typeof tag === 'string' && tag === key) {
+      return true;
+    } else if ((tag as any).key === key) {
       return tag;
     }
   }
