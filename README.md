@@ -167,6 +167,7 @@ All Accelerator passages have simple access to the bundle import, located in `sr
 * `components`, an object containing:
   * The `Link` component, which allows the user to navigate between passages.
   * The `CyclingLink` component, which allows the user to select between several string options, and optionally stores the choice in a variable.
+  * The `Cycler` component, which is a lower-level equivalent of the external behavior of `CyclingLink`, except it allows cycling between any markup.
   * The `Delay` component, which delays rendering of content (or it being opaque) for an arbitrary period.
   * The `FadeIn` component, which increases the opacity of content from invisibility to full opacity over an arbitrary period.
   * The `OneOf` component, which randomly selects a single item from the collection passed as children.

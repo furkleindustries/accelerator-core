@@ -1,4 +1,7 @@
 import {
+  Cycler,
+} from '../Cycler/Cycler';
+import {
   createStoryStateAction,
 } from '../../actions/creators/createStoryStateAction';
 import {
@@ -11,9 +14,6 @@ import {
   ICyclingLinkOwnProps,
 } from './ICyclingLinkOwnProps';
 import {
-  ICyclingLinkState,
-} from './ICyclingLinkState';
-import {
   connect,
   MapDispatchToProps,
 } from 'react-redux';
@@ -21,81 +21,34 @@ import {
   Dispatch,
 } from 'redux';
 
-// @ts-ignore
-import _styles from './CyclingLink.scss';
-const styles = _styles || {};
-
 import * as React from 'react';
 
-export class CyclingLink extends React.Component<ICyclingLinkOwnProps & ICyclingLinkDispatchProps, ICyclingLinkState> {
-  public state = {
-    index: 0,
-  }
-
-  constructor(props: any, context?: any) {
-    super(props, context);
-
-    this.advance = this.advance.bind(this);
-  }
-
-  public componentDidMount() {
-    const {
-      choices,
-      variableToSet,
-      setStoryState,
-    } = this.props;
-
-    const {
-      index,
-    } = this.state;
-
-    /* Don't forget to set it the first time, before interaction. */
-    if (variableToSet) {
-      setStoryState({
-        [variableToSet]: choices[index],
-      });
-    }
-  }
-  
+export class CyclingLink extends React.Component<ICyclingLinkOwnProps & ICyclingLinkDispatchProps> {
   public render() {
     const {
       choices,
       className,
     } = this.props;
 
-    const {
-      index,
-    } = this.state;
-
     return (
-      <button 
-        className={`${styles.cyclingLink} cyclingLink${className ? ` ${className}` : ''}`}
-        onClick={this.advance}
-      >
-        {choices[index]}
-      </button>
+    <Cycler
+      className={className}
+      notifyOfChange={this.receiveNotification}
+    >
+      {choices}
+    </Cycler>
     );
   }
 
-  private advance() {
+  private receiveNotification(current: string) {
     const {
-      choices,
       setStoryState,
       variableToSet,
     } = this.props;
 
-    const {
-      index,
-    } = this.state;
-    
-    const newIndex = index + 1 >= choices.length ? 0 : index + 1
-    this.setState({
-      index: newIndex,
-    });
-
     if (variableToSet && typeof variableToSet === 'string') {
       setStoryState({
-        [variableToSet]: choices[newIndex],
+        [variableToSet]: current,
       });
     }
   }

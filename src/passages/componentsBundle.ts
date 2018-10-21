@@ -1,4 +1,7 @@
 import {
+  Cycler,
+} from '../components/Cycler/Cycler';
+import {
   CyclingLinkConnected,
 } from '../components/CyclingLink/CyclingLink';
 import {
@@ -18,6 +21,7 @@ import {
 } from '../components/Permutation/Permutation';
 
 export {
+  Cycler,
   CyclingLinkConnected as CyclingLink,
   Delay,
   FadeIn,
