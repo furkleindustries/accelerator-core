@@ -166,6 +166,10 @@ If you choose to create a React component constructor, either with an ES6 class 
 * `storyState`, a copy of the story state. Due to the way Redux and its bindings update components, this object will always be up-to-date, relative to the actual, hidden state store, and changes to it are pointless. If you want to change the story state, use `setStoryState`.
 * `dispatch`, a no-complexity wrapper of the Redux state store's `dispatch` function, allowing lower-level dispatching of Redux actions. This will likely not be useful unless you're doing some sort of notional reflection with the Accelerator internals, or you're authoring your own actions and have modified the default state store accordingly.
 
+## Templates
+
+The Accelerator devtool (`accelerator-tool`) uses templates to construct new passages. These templates are stored locally in `src/templates`. Feel free to modify them as you see fit. There is minor rewriting of these when they are being copied by `accelerator-tool`, but as of now that is restricted solely to the replacement in all generated files of `%NAME%` with the name of the new passage. 
+
 ## Influences
 
 Like any software project, Accelerator is influenced by and indebted to the software I have used and enjoyed over the past couple years. The most prominent of those are:
