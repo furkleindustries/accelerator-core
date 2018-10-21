@@ -1,7 +1,4 @@
 import {
-  IPermutationProps,
-} from './IPermutationProps';
-import {
   IPermutationState,
 } from './IPermutationState';
 
@@ -9,13 +6,9 @@ import {
 const arrayShuffle: (arr: any[]) => any[] = require('array-shuffle');
 // tslint:enable
 
-// @ts-ignore
-import _styles from './Permutation.scss';
-const styles = _styles || {};
-
 import * as React from 'react';
 
-export class Permutation extends React.PureComponent<IPermutationProps, IPermutationState> {
+export class Permutation extends React.PureComponent<{}, IPermutationState> {
   public state = {
     shuffled: [],
   };
@@ -32,18 +25,10 @@ export class Permutation extends React.PureComponent<IPermutationProps, IPermuta
 
   public render() {
     const {
-      className,
-    } = this.props;
-
-    const {
       shuffled,
     } = this.state;
 
-    return (
-      <div className={`${styles.permutation} permutation${className ? ` ${className}` : ''}`}>
-        {shuffled}
-      </div>
-    );
+    return shuffled;
   }
 }
 
