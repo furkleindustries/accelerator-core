@@ -2,8 +2,8 @@ import {
   currentPassageNameReducer,
 } from './currentPassageNameReducer';
 import {
-  lastLinkTagsReducer,
-} from './lastLinkTagsReducer';
+  passageHistoryReducer,
+} from './passageHistoryReducer';
 import {
   passagesReducer,
 } from './passagesReducer';
@@ -14,15 +14,15 @@ import {
   startPassageNameReducer,
 } from './startPassageNameReducer';
 import {
-  storyStateReducer,
-} from './storyStateReducer';
+  storyStateHistoryReducer,
+} from './storyStateHistoryReducer';
 
 export const rootReducer = combineReducers({
   passages: passagesReducer,
   currentPassageName: currentPassageNameReducer,
   startPassageName: startPassageNameReducer,
-  lastLinkTags: lastLinkTagsReducer,
-  storyState: storyStateReducer,
+  passageHistory: passageHistoryReducer,
+  storyStateHistory: storyStateHistoryReducer,
 });
 
 export default rootReducer;

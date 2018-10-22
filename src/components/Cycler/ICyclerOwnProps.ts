@@ -4,7 +4,7 @@ import {
 
 export interface ICyclerOwnProps {
   className?: string;
-  notifyOfChange?: (current: ReactChild) => void;
+  notifyOfChange?: (current: ReactChild, index: number) => void;
 }
 
 export default ICyclerOwnProps;

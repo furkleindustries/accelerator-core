@@ -1,4 +1,7 @@
 import {
+  ActionTypes,
+} from '../../actions/ActionTypes';
+import {
   Cycler,
 } from '../Cycler/Cycler';
 import {
@@ -24,6 +27,26 @@ import {
 import * as React from 'react';
 
 export class CyclingLink extends React.Component<ICyclingLinkOwnProps & ICyclingLinkDispatchProps> {
+  constructor(props: any) {
+    super(props);
+
+    this.receiveNotification = this.receiveNotification.bind(this);
+  }
+
+  public componentDidMount() {
+    const {
+      choices,
+      setStoryState,
+      variableToSet,
+    } = this.props;
+
+    if (variableToSet && typeof variableToSet === 'string') {
+      setStoryState({
+        [variableToSet]: choices[0],
+      });
+    }
+  }
+
   public render() {
     const {
       choices,
@@ -31,12 +54,12 @@ export class CyclingLink extends React.Component<ICyclingLinkOwnProps & ICycling
     } = this.props;
 
     return (
-    <Cycler
-      className={className}
-      notifyOfChange={this.receiveNotification}
-    >
-      {choices}
-    </Cycler>
+      <Cycler
+        className={className}
+        notifyOfChange={this.receiveNotification}
+      >
+        {choices}
+      </Cycler>
     );
   }
 
@@ -54,9 +77,10 @@ export class CyclingLink extends React.Component<ICyclingLinkOwnProps & ICycling
   }
 }
 
-export const mapDispatchToProps: MapDispatchToProps<ICyclingLinkDispatchProps, ICyclingLinkOwnProps> = (dispatch: Dispatch<IAction>) => ({
+export const mapDispatchToProps: MapDispatchToProps<ICyclingLinkDispatchProps, ICyclingLinkOwnProps> = (dispatch: Dispatch<IAction>, ownProps) => ({
   setStoryState(newState) {
-    return dispatch(createStoryStateAction(newState));
+    const action = createStoryStateAction(ActionTypes.StoryStateUpdate, newState);
+    return dispatch(action);
   }
 });
 

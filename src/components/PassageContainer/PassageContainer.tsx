@@ -17,47 +17,57 @@ import {
   IPassageContainerOwnProps,
 } from './IPassageContainerOwnProps';
 import {
+  IPassageContainerStateProps,
+} from './IPassageContainerStateProps';
+import {
+  IState,
+} from '../../reducers/IState';
+import {
   connect,
   MapDispatchToProps,
+  MapStateToProps,
 } from 'react-redux';
 import {
   Dispatch,
 } from 'redux';
 
 import * as React from 'react';
+import { ActionTypes } from '../../actions/ActionTypes';
 
 export const strings = {
-  CANT_RENDER_NORENDER_PASSAGE:
+  PASSAGE_NOT_FOUND:
+    'No passage could be found in the passages map with the name %NAME%.',
+  
+    CANT_RENDER_NORENDER_PASSAGE:
     'A passage with the tag "noRender" was passed to PassageContainer. ' +
     'These passages cannot be rendered and should be used solely for ' +
     'exporting reusable content.',
 };
 
-export class PassageContainer extends React.PureComponent<IPassageContainerOwnProps & IPassageContainerDispatchProps> {
+export class PassageContainer extends React.PureComponent<IPassageContainerOwnProps & IPassageContainerStateProps & IPassageContainerDispatchProps> {
   public render() {
     const {
-      passage: {
+      currentPassage,
+      currentPassage: {
         title,
         contents,
         tags,
       },
 
-      passage,
-      storyState,
       dispatch,
       setStoryState,
+      currentStoryState,
     } = this.props;
 
     if (Array.isArray(tags) && getTag(tags, BuiltInTags.NoRender)) {
       throw new Error(strings.CANT_RENDER_NORENDER_PASSAGE);
     }
 
-    const ownProps = {
-      passage,
-      passageObject: passage,
+    const propsPassedDown = {
       dispatch,
-      storyState,
       setStoryState,
+      passageObject: currentPassage,
+      storyState: currentStoryState,
     };
 
     const child = (() => {
@@ -66,7 +76,7 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
         return contents;
       } else {
         /* Do pass props to components. */
-        return React.createElement(contents as any, ownProps);
+        return React.createElement(contents as any, propsPassedDown);
       }
     })();
 
@@ -80,16 +90,40 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
   }
 }
 
-export const mapDispatchToProps: MapDispatchToProps<IPassageContainerDispatchProps, IPassageContainerOwnProps> = (reduxDispatch: Dispatch<IAction>) => ({
+
+export const mapStateToProps: MapStateToProps<IPassageContainerStateProps, IPassageContainerOwnProps, IState> = ({
+  currentPassageName,
+  passages,
+  storyStateHistory,
+}) => {
+  if (!(currentPassageName in passages)) {
+    const errStr = strings.PASSAGE_NOT_FOUND
+      .replace('%NAME%', currentPassageName);
+
+    throw new Error(errStr);
+  }
+
+  return {
+    currentPassage: passages[currentPassageName],
+    currentStoryState: storyStateHistory[0],
+  };
+};
+
+export const mapDispatchToProps: MapDispatchToProps<IPassageContainerDispatchProps, IPassageContainerOwnProps & IPassageContainerStateProps> = (reduxDispatch: Dispatch<IAction>, props) => ({
   dispatch(action) {
     return reduxDispatch(action);
   },
 
-  setStoryState(newState) {
-    return reduxDispatch(createStoryStateAction(newState));
+  setStoryState(updatedState) {
+    const action = createStoryStateAction(
+      ActionTypes.StoryStateUpdate,
+      updatedState
+    );
+
+    return reduxDispatch(action);
   },
 })
 
-export const PassageContainerConnected = connect(null, mapDispatchToProps)(PassageContainer);
+export const PassageContainerConnected = connect(mapStateToProps, mapDispatchToProps)(PassageContainer);
 
 export default PassageContainerConnected;

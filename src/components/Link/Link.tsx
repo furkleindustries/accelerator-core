@@ -1,9 +1,15 @@
 import {
+  ActionTypes,
+} from '../../actions/ActionTypes';
+import {
   createCurrentPassageNameAction,
 } from '../../actions/creators/createCurrentPassageNameAction';
 import {
-  createLastLinkTagsAction,
-} from '../../actions/creators/createLastLinkTagsAction';
+  createPassageHistoryAction,
+} from '../../actions/creators/createPassageHistoryAction';
+import {
+  createStoryStateAction,
+} from '../../actions/creators/createStoryStateAction';
 import {
   getTag,
 } from '../../tags/getTag';
@@ -43,8 +49,8 @@ export const strings = {
 }
 
 export class Link extends React.PureComponent<ILinkOwnProps & ILinkStateProps & ILinkDispatchProps> {
-  constructor(props: any, context?: any) {
-    super(props, context);
+  constructor(props: any) {
+    super(props);
 
     this.formatTags = this.formatTags.bind(this);
     this.navigate = this.navigate.bind(this);
@@ -75,8 +81,8 @@ export class Link extends React.PureComponent<ILinkOwnProps & ILinkStateProps & 
     } = this.props;
 
     return ((passage || {}).tags || []).map((aa: Tag) => (
-      typeof aa === 'object' ? JSON.stringify(aa) : aa)
-    ).join('');
+      typeof aa === 'object' ? JSON.stringify(aa) : aa
+    )).join('');
   }
 
   private navigate() {
@@ -84,18 +90,15 @@ export class Link extends React.PureComponent<ILinkOwnProps & ILinkStateProps & 
       passage,
       passageName,
       changePassage,
-      setLastLinkTags,
     } = this.props;
 
     if (!passage) {
       const errStr = strings.PASSAGE_INVALID.replace('%NAME%', passageName);
-      
       throw new Error(errStr);
     } else if (passage.tags && getTag(passage.tags, 'noRender')) {
       throw new Error(strings.NO_LINKING_TO_NORENDER_PASSAGES);
     }
 
-    setLastLinkTags();
     changePassage();
   }
 }
@@ -108,13 +111,24 @@ export const mapStateToProps: MapStateToProps<ILinkStateProps, ILinkOwnProps, IS
   passage: passages[passageName],
 });
 
-export const mapDispatchToProps: MapDispatchToProps<ILinkDispatchProps, ILinkOwnProps> = (dispatch: Dispatch, ownProps: ILinkOwnProps) => ({
+export const mapDispatchToProps: MapDispatchToProps<ILinkDispatchProps, ILinkOwnProps & ILinkStateProps> = (dispatch: Dispatch, props) => ({
   changePassage() {
-    return dispatch(createCurrentPassageNameAction(ownProps.passageName));
-  },
+    const {
+      passageName,
+    } = props;
 
-  setLastLinkTags() {
-    return dispatch(createLastLinkTagsAction(ownProps.tags || []));
+    /* Update the current passage name. */
+    dispatch(createCurrentPassageNameAction(passageName));
+
+    /* Add a new instance to the passage history. */
+    dispatch(createPassageHistoryAction(ActionTypes.PassageHistoryNew, {
+      name: passageName,
+      linkTags: props.tags || [],
+    }));
+
+    /* Add a new instance to the story state. This new passage will have all
+     * the same state as the prior passage did when leaving it. */ 
+    dispatch(createStoryStateAction(ActionTypes.StoryStateNew));
   },
 }); 
 

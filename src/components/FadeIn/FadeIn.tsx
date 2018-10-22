@@ -43,7 +43,7 @@ export class FadeIn extends React.Component<IFadeInProps, IFadeInState> {
     }
 
     return (
-      <div
+      <span
         className={`${styles.fadeIn} fadeIn${className ? ` ${className}` : ''}`}
         style={{
           opacity: fadeIn ? 1 : 0,
@@ -51,7 +51,7 @@ export class FadeIn extends React.Component<IFadeInProps, IFadeInState> {
         }}
       >
         {children}
-      </div>
+      </span>
     );   
   }
 }

@@ -1,9 +1,18 @@
 import {
+  ActionTypes,
+} from '../actions/ActionTypes';
+import {
+  BuiltInTags,
+} from '../tags/BuiltInTags';
+import {
   checkPassageObject,
 } from './checkPassageObject';
 import {
   createCurrentPassageNameAction,
 } from '../actions/creators/createCurrentPassageNameAction';
+import {
+  createPassageHistoryAction,
+} from '../actions/creators/createPassageHistoryAction';
 import {
   createPassagesAction,
 } from '../actions/creators/createPassagesAction';
@@ -16,6 +25,7 @@ import {
 import {
   Store,
 } from 'redux';
+import { createStoryStateAction } from '../actions/creators/createStoryStateAction';
 
 // tslint:disable
 // @ts-ignore
@@ -47,7 +57,7 @@ export const strings = {
     '%REASON%.',
 };
 
-export const populateStoreWithPassages = (store: Store, passagesManifest: string[]) => {
+export const initializeStore = (store: Store, passagesManifest: string[]) => {
   if (!Array.isArray(passagesManifest)) {
     throw new Error(strings.PASSAGES_MANIFEST_INVALID);
   } else if (!passagesManifest.length) {
@@ -114,9 +124,20 @@ export const populateStoreWithPassages = (store: Store, passagesManifest: string
     throw new Error(strings.NO_START_PASSAGE);
   }
 
+  const name = startPassage!.name;
   store.dispatch(createPassagesAction(passageMap));
-  store.dispatch(createStartPassageNameAction(startPassage!.name));
-  store.dispatch(createCurrentPassageNameAction(startPassage!.name));
+  store.dispatch(createStartPassageNameAction(name));
+  store.dispatch(createCurrentPassageNameAction(name));
+  store.dispatch(createStoryStateAction(ActionTypes.StoryStateNew));
+  store.dispatch(createPassageHistoryAction(
+    ActionTypes.PassageHistoryNew,
+    {
+      name,
+      linkTags: [
+        BuiltInTags.Start,
+      ],
+    },
+  ));
 };
 
-export default populateStoreWithPassages;
+export default initializeStore;

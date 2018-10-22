@@ -16,8 +16,8 @@ export class Cycler extends React.Component<ICyclerOwnProps, ICyclerState> {
     index: 0,
   }
 
-  constructor(props: any, context?: any) {
-    super(props, context);
+  constructor(props: any) {
+    super(props);
 
     this.advance = this.advance.bind(this);
   }
@@ -45,16 +45,22 @@ export class Cycler extends React.Component<ICyclerOwnProps, ICyclerState> {
   private advance() {
     const {
       children,
+      notifyOfChange,
     } = this.props;
 
     const {
       index,
     } = this.state;
-    
-    const newIndex = index + 1 >= React.Children.toArray(children).length ? 0 : index + 1
+
+    const childArray = React.Children.toArray(children);
+    const newIndex = index + 1 >= childArray.length ? 0 : index + 1
     this.setState({
       index: newIndex,
     });
+
+    if (typeof notifyOfChange === 'function') {
+      notifyOfChange(childArray[newIndex], newIndex);
+    }
   }
 }
 

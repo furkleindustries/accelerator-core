@@ -6,7 +6,7 @@ import {
 } from '../../actions/IStoryStateAction';
 
 export interface IPassageContainerDispatchProps {
-  setStoryState(newState: { [key: string]: any, }): IStoryStateAction;
+  setStoryState(updatedState: { [key: string]: any, }): IStoryStateAction;
   dispatch(action: IAction): IAction;
 }
 

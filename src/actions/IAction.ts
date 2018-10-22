@@ -4,7 +4,7 @@ import {
 
 export interface IAction extends Action {
   type: string;
-  value: any;
+  value?: any;
 }
 
 export default IAction;

@@ -1,4 +1,13 @@
 import {
+  ClickAppend,
+} from '../components/ClickAppend/ClickAppend';
+import {
+  ClickPrepend,
+} from '../components/ClickPrepend/ClickPrepend';
+import {
+  ClickReplace,
+} from '../components/ClickReplace/ClickReplace';
+import {
   Cycler,
 } from '../components/Cycler/Cycler';
 import {
@@ -9,7 +18,7 @@ import {
 } from '../components/Delay/Delay';
 import {
   FadeIn,
-} from '../components/FadeIn/FadeIn'
+} from '../components/FadeIn/FadeIn'; 
 import {
   LinkConnected,
 } from '../components/Link/Link';
@@ -24,6 +33,9 @@ import {
 } from '../components/Permutation/Permutation';
 
 export {
+  ClickAppend,
+  ClickPrepend,
+  ClickReplace,
   Cycler,
   CyclingLinkConnected as CyclingLink,
   Delay,

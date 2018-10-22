@@ -15,17 +15,7 @@ it('renders without crashing', () => {
   const div = document.createElement('div');
   ReactDOM.render(
     <Provider store={createStore(() => {})}>
-      <App
-        currentPassage={{
-          name: 'testing',
-          title: 'a test passage',
-          contents: <div>test</div>,
-          tags: [],
-        }}
-        storyState={{
-          foo: 'bar',
-        }}
-      />
+      <App />
     </Provider>,
     div,
   );

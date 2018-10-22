@@ -2,13 +2,18 @@ import {
   IPassagesMap,
 } from '../passages/IPassagesMap';
 import {
-  IStoryState,
-} from '../state/IStoryState';
+  TPassageHistory,
+} from '../state/TPassageHistory';
+import {
+  TStoryStateHistory,
+} from '../state/TStoryStateHistory';
 
 export interface IState {
   currentPassageName: string;
   passages: IPassagesMap;
-  storyState: IStoryState;
+  passageHistory: TPassageHistory;
+  startPassageName: string;
+  storyStateHistory: TStoryStateHistory;
 }
 
 export default IState;

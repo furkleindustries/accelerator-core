@@ -2,12 +2,15 @@ import {
   ActionTypes,
 } from './ActionTypes';
 import {
-  IStoryState,
-} from '../state/IStoryState';
+  IStoryStateInstance,
+} from '../state/IStoryStateInstance';
 
 export interface IStoryStateAction {
-  type: ActionTypes.StoryState;
-  value: IStoryState;
+  type: ActionTypes.StoryStateNew |
+        ActionTypes.StoryStateUpdate |
+        ActionTypes.StoryRewind;
+  index?: number;
+  value?: IStoryStateInstance;
 }
 
 export default IStoryStateAction;

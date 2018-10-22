@@ -36,8 +36,8 @@ import * as bundle from '../src/passages/bundle';
 import logo from '../public/logo.svg';
 
 class Component extends React.PureComponent<bundle.passages.IPassageProps> {
-  constructor(props: any, context?: any) {
-    super(props, context);
+  constructor(props: any) {
+    super(props);
 
     /* Bind the function so we can properly access this.props. */
     this.clickIncrementor = this.clickIncrementor.bind(this);
@@ -70,6 +70,9 @@ class Component extends React.PureComponent<bundle.passages.IPassageProps> {
           }}
         />
 
+        {/* This will update reactively, without the need for any rendering
+          * logic on your part. */}
+        <div>{storyState.counter || 0}</div>
         {/* Move to new passages with the Link component. */}
         <bundle.components.Link
           className={bundle.styles.link}
@@ -77,9 +80,6 @@ class Component extends React.PureComponent<bundle.passages.IPassageProps> {
           This is a link.
         </bundle.components.Link>
 
-        {/* This will update reactively, without the need for any rendering
-          * logic on your part. */}
-        <div>{storyState.counter || 0}</div>
 
         <button onClick={this.clickIncrementor}>
           Clicking me increments the counter!
@@ -144,21 +144,7 @@ The exported object must be the passage object, and it must be the default expor
 
 If you are using Typescript (which you should be for the full value of Accelerator's built-in functionalities), you should indicate the type of the passage object by replacing `const passage =` with `const passage: IPassage =`, and setting the props type of the React component to `IPassageProps`, importing these interfaces from `../src/passages/bundle`. This will allow full type-checking of your story passages.
 
-## Developing stories
 
-Accelerator includes many facilities to ease and speed development. Its development server comes bundled with hot-reloading, error reporting, and linting. In order to start the development server, run `npm run start`. Note that you may need to shut down and restart the dev server if you add or remove a passage file.
-
-## Building your story for release
-
-To build the code bundle and HTML file for release on the web, run `npm run build`. After this completes, the relevant files will be in `build-web`. If you would also like to automatically create Electron desktop executables from your story, run `npm run build-with-desktop`. Note that for technical reasons regarding Windows' treatment of symlinks when unzipping archives, it is not possible (as of 10/18) to build macOS executables on Windows machines. If you need a macOS executable, you can use this library on macOS or any Linux. The executables will be in distribution-specific folders in `build-desktop`.
-
-## Configuration
-
-Basic configuration can be performed through the `.env` file. There are currently three values scraped from this file:
-
-* `PUBLIC_URL`, which determines the URL of static resources like JS and CSS bundles, and you'll likely never have to change;
-* `ACCELERATOR_STORY_TITLE`, which allows you to set the title of your story in the browser and Electron. This will appear in search engines.
-* `ACCELERATOR_STORY_DESCRIPTION`, which allows you to set the description of your story in the browser. This will appear in search engines as well.
 
 ## The bundle import
 
@@ -166,8 +152,11 @@ All Accelerator passages have simple access to the bundle import, located in `sr
 
 * `components`, an object containing:
   * The `Link` component, which allows the user to navigate between passages.
+  * The `ClickAppend` component, which places one piece of content after another once the first component is clicked.
+  * The `ClickPrepend` component, which places one piece of content before another after the first component is clicked.
+  * The `ClickReplace` component, which replaces one piece of content with another after the first component is clicked.
   * The `CyclingLink` component, which allows the user to select between several string options, and optionally stores the choice in a variable.
-  * The `Cycler` component, which is a lower-level component used by `CyclingLink`, allowing cycling between any `ReactElements`, and aditionally a callback when cycles are performed.
+  * The `Cycler` component, which is a lower-level component used by `CyclingLink`, allowing cycling between any pieces of content (not just strings as with `CyclingLink`), and aditionally accepts a callback which is fired when cycles are performed.
   * The `Delay` component, which delays rendering of content (or it being opaque) for an arbitrary period.
   * The `FadeIn` component, which increases the opacity of content from invisibility to full opacity over an arbitrary period.
   * The `OneOf` component, which randomly selects a single item from the collection passed as children.
@@ -191,6 +180,22 @@ If you choose to create a React component constructor, either with an ES6 class 
 * `storyState`, a copy of the story state. Due to the way Redux and its bindings update components, this object will always be up-to-date, relative to the actual, hidden state store, and changes to it are pointless. If you want to change the story state, use `setStoryState`.
 * `dispatch`, a no-complexity wrapper of the Redux state store's `dispatch` function, allowing lower-level dispatching of Redux actions. This will likely not be useful unless you're doing some sort of notional reflection with the Accelerator internals, or you're authoring your own actions and have modified the default state store accordingly.
 
+## Developing stories
+
+Accelerator includes many facilities to ease and speed development. Its development server comes bundled with hot-reloading, error reporting, and linting. In order to start the development server, run `npm run start`. Note that you may need to shut down and restart the dev server if you add or remove a passage file.
+
+## Building your story for release
+
+To build the code bundle and HTML file for release on the web, run `npm run build`. After this completes, the relevant files will be in `build-web`. If you would also like to automatically create Electron desktop executables from your story, run `npm run build-with-desktop`. Note that for technical reasons regarding Windows' treatment of symlinks when unzipping archives, it is not possible (as of 10/18) to build macOS executables on Windows machines. If you need a macOS executable, you can use this library on macOS or any Linux. The executables will be in distribution-specific folders in `build-desktop`.
+
+## Configuration
+
+Basic configuration can be performed through the `.env` file. There are currently three values scraped from this file:
+
+* `PUBLIC_URL`, which determines the URL of static resources like JS and CSS bundles, and you'll likely never have to change;
+* `ACCELERATOR_STORY_TITLE`, which allows you to set the title of your story in the browser and Electron. This will appear in search engines.
+* `ACCELERATOR_STORY_DESCRIPTION`, which allows you to set the description of your story in the browser. This will appear in search engines as well.
+
 ## Templates
 
 The Accelerator devtool (`accelerator-tool`) uses templates to construct new passages. These templates are stored locally in `src/templates`. Feel free to modify them as you see fit. There is minor rewriting of these when they are being copied by `accelerator-tool`, but as of now that is restricted solely to the replacement in all generated files of `%NAME%` with the name of the new passage. 
@@ -202,7 +207,7 @@ Like any software project, Accelerator is influenced by and indebted to the soft
 * React, for its simple componenting and graceful, reactive updates.
 * Redux, for providing elegant inversion of control and pure componenting in React.
 * create-react-app, a similarly-focused one-command prototype solution. 
-* Twine, which formed the basic notion of the story graph implemented here, with nodes connected by user-clickable links.
+* Twine, which formed the basic notion of the story graph implemented here, with nodes connected by user-clickable links, and additionally most of the ideas for built-in components found here.
 * Angular (and to a lesser extent Django), for the concept of an adjacent tool that allows quick creation and prototyping of new project assets.
 
 The first three of these are also extensively used within Accelerator.

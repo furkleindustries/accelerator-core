@@ -2,18 +2,30 @@ import {
   ActionTypes,
 } from '../ActionTypes';
 import {
-  IStoryState,
-} from '../../state/IStoryState';
-import {
   IStoryStateAction,
 } from '../IStoryStateAction';
+import {
+  IStoryStateInstance,
+} from '../../state/IStoryStateInstance';
 
-/* The Partial type doesn't actually change anything, as IStoryState is a very
- * simple type, but it indicates the purpose: the value argument is an object
- * to be merged into the storyState object, not a replacement. */
-export const createStoryStateAction = (value: Partial<IStoryState>): IStoryStateAction => ({
-  type: ActionTypes.StoryState,
-  value,
-});
+type StoryStateTypes = ActionTypes.StoryStateNew |
+                       ActionTypes.StoryStateUpdate |
+                       ActionTypes.StoryRewind;
+
+/* The Partial type on the state doesn't actually change anything, as
+ * IStoryState is a very simple type, but it indicates the purpose: the value
+ * argument is an object to be merged into the storyState object, not a
+ * replacement. */
+export const createStoryStateAction = (type: StoryStateTypes, value?: Partial<IStoryStateInstance>): IStoryStateAction => {
+  const obj: Partial<IStoryStateAction> = {
+    type,
+  };
+
+  if (typeof value !== 'undefined') {
+    obj.value = value;
+  }
+
+  return obj as IStoryStateAction;
+};
 
 export default createStoryStateAction;
