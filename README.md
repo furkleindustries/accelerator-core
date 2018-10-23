@@ -2,6 +2,26 @@
 
 A lightweight, reactive hypertext fiction framework with the conveniences of modern web dev and few of the pain points. This repository is the framework's runtime, which is more or less what is generated for you when you use the [Accelerator devtool](https://github.com/furkleindustries/accelerator-tool) to create a new Accelerator project. You probably don't want to clone this repository as it'll come with all the git data, whereas you will want to create your own repository for tracking your story.
 
+## Why Accelerator?
+
+Accelerator was motivated by my desire to make [Twine](http://twinery.org/)-style hypertext stories with the convenience and power of bleeding-edge web technologies and a fully-featured IDE. As such, it is probably a poor fit for someone who is not already a web programmer or doesn't wish to learn things like a command-line shell, [React](https://reactjs.org/), or the modern JavaScript module system.
+
+It is, however, a good choice if you want any of the following:
+
+* A fast, simple, reactive runtime
+* Scripting in JavaScript/TypeScript rather than a special-purpose hypertext fiction language
+* SASS/CSS modules
+* Prerendering of state and start passage
+* Simple component and function reuse
+* Minification of authored content and bundles ~50% as large as a Twine project of equivalent size
+* Automatic Electron packaging
+* Type-checking
+* A hot-reloading dev environment
+* Built-in linting
+* Quick prototyping of new passages
+
+and other such modern conveniences.
+
 ## Installation
 
 In a command-line shell of your choice (assuming it has a modern version of `npm`/`npx`), do either:
