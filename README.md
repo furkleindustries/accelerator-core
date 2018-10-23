@@ -16,6 +16,7 @@ It is, however, a good choice if you want any of the following:
 * Minification of authored content and bundles ~50% as large as a Twine project of equivalent size
 * Automatic Electron packaging
 * Type-checking
+* Access to pre-existing, proven test frameworks
 * A hot-reloading dev environment
 * Built-in linting
 * Quick prototyping of new passages
