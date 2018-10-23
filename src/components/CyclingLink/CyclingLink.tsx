@@ -55,7 +55,7 @@ export class CyclingLink extends React.Component<ICyclingLinkOwnProps & ICycling
 
     return (
       <Cycler
-        className={className}
+        className={`cyclingLink${className ? ` ${className}` : ''}`}
         notifyOfChange={this.receiveNotification}
       >
         {choices}

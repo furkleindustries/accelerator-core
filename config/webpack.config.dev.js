@@ -309,15 +309,6 @@ module.exports = {
       watch: paths.appSrc,
       tsconfig: paths.appTsConfig,
       tslint: paths.appTsLint,
-      ignoreDiagnostics: [
-        /* No unused locals. Will screw up the template design. */
-        6133,
-      ],
-
-      ignoreLints: [
-        /* JSX self-close. Ditto. */
-        'jsx-self-close',
-      ],
     }),
   ],
   // Some libraries import Node modules but don't use them in the browser.
