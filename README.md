@@ -41,7 +41,7 @@ After a minute or so, the installation should be complete, and a folder named `%
 
 ## Creating Passages
 
-An Accelerator story is notionally similar to a Twine story: it is a series of passages, joined by links. Each of these passages are TypeScript or JavaScript files. They contain a small amount of metadata and either a React component constructor (class or function) or a React element. Each placed in the `passages` directory.
+An Accelerator story is notionally similar to a Twine story: it is a series of passages, joined by links. Each of these passages are TypeScript or JavaScript files. They contain a small amount of metadata and React component constructor (either a class implementing React.Component or React.PureComponent, or a stateless functional component) or a React element. Each is placed in the `passages` directory.
 
 To write a new passage, either use `accelerator-tool new passage %YOUR_PASSAGE_NAME%`, or manually create a code file within the passages directory. A complete passage file will look something like this:
 
