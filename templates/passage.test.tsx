@@ -1,9 +1,12 @@
+import {
+  shallow,
+} from 'enzyme';
+
 import passage from './%NAME%';
 
 import * as bundle from '../../src/passages/bundle';
 
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 
 const {
   name,
@@ -41,16 +44,10 @@ describe('Tests for the %NAME% passage.', () => {
     }).length === tags.length).toBe(true);
   });
 
-  it('renders without crashing', () => {
+  it('Renders shallowly without crashing.', () => {
     /* Don't test if it's a noRender passage. */
     if (Array.isArray(tags) && !bundle.tags.getTag(tags, 'noRender')) {
-      const div = document.createElement('div');
-      ReactDOM.render(
-        <Component />,
-        div,
-      );
-
-      ReactDOM.unmountComponentAtNode(div);
+      shallow(<Component />);
     }
   });
 });

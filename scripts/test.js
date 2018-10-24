@@ -18,13 +18,21 @@ require('../config/env');
 const jest = require('jest');
 let argv = process.argv.slice(2);
 
-// Watch unless on CI, in coverage mode, or explicitly running all tests
+/* Watch unless on CI, in coverage mode, explicitly running all tests, or if
+ * the --dontWatch option is provided. */
+const dontWatchIndex = argv.indexOf('--dontWatch');
 if (
   !process.env.CI &&
   argv.indexOf('--coverage') === -1 &&
-  argv.indexOf('--watchAll') === -1
+  argv.indexOf('--watchAll') === -1 &&
+  dontWatchIndex === -1
 ) {
   argv.push('--watch');
+}
+
+/* Strip the --dontWatch argument out as Jest doesn't like it. */
+if (dontWatchIndex !== -1) {
+  argv = argv.slice(0, dontWatchIndex).concat(argv.slice(dontWatchIndex + 1));
 }
 
 
