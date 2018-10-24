@@ -10,7 +10,7 @@ It is, however, a good choice if you want any of the following:
 
 * A fast, simple, reactive runtime
 * Scripting in JavaScript/TypeScript rather than a special-purpose hypertext fiction language
-* SASS/CSS modules
+* Sass/CSS modules
 * Prerendering of state and start passage
 * Simple component and function reuse
 * Minification of authored content and bundles ~50% as large as a Twine project of equivalent size
