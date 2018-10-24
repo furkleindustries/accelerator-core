@@ -1,40 +1,30 @@
 import {
-  IClickPrependProps,
-} from './IClickPrependProps';
+  Clicker,
+} from '../Clicker/Clicker';
 import {
-  IClickPrependState,
-} from './IClickPrependState';
+  IClickPrependOwnProps,
+} from './IClickPrependOwnProps';
 
 import * as React from 'react';
 
-export class ClickPrepend extends React.Component<IClickPrependProps, IClickPrependState> {
-  public state = {
-    prepended: false,
-  }
-
-  constructor(props: any) {
-    super(props);
-
-    this.prepend = this.prepend.bind(this);
-  }
-
+export class ClickPrepend extends React.Component<IClickPrependOwnProps> {
   public render() {
     const {
       children,
+      className,
       toPrepend,
     } = this.props;
 
-    const {
-      prepended,
-    } = this.state;
+    const maybeClassName = className ? { className, } : {};
 
-    return prepended ? [ toPrepend, children, ] : children;
-  }
-
-  private prepend() {
-    this.setState({
-      prepended: true,
-    });
+    return (
+      <Clicker
+        {...maybeClassName}
+        contentAfterClick={[ toPrepend, children, ]}
+      >
+        {children}
+      </Clicker>
+    );
   }
 }
 

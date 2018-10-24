@@ -1,40 +1,30 @@
 import {
-  IClickAppendProps,
-} from './IClickAppendProps';
+  Clicker,
+} from '../Clicker/Clicker';
 import {
-  IClickAppendState,
-} from './IClickAppendState';
+  IClickAppendOwnProps,
+} from './IClickAppendOwnProps';
 
 import * as React from 'react';
 
-export class ClickAppend extends React.Component<IClickAppendProps, IClickAppendState> {
-  public state = {
-    appended: false,
-  }
-
-  constructor(props: any) {
-    super(props);
-
-    this.append = this.append.bind(this);
-  }
-
+export class ClickAppend extends React.PureComponent<IClickAppendOwnProps> {
   public render() {
     const {
+      className,
       children,
       toAppend,
     } = this.props;
 
-    const {
-      appended,
-    } = this.state;
-    
-    return appended ? [ children, toAppend, ] : children;
-  }
+    const maybeClassName = className ? { className, } : {};
 
-  private append() {
-    this.setState({
-      appended: true,
-    });
+    return (
+      <Clicker
+        {...maybeClassName}
+        contentAfterClick={[ children, toAppend, ]}
+      >
+        {children}
+      </Clicker>
+    );
   }
 }
 

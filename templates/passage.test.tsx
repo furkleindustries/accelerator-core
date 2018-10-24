@@ -6,10 +6,10 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 const {
-  contents: Component,
   name,
   tags,
   title,
+  contents: Component,
 } = passage;
 
 describe('Tests for the %NAME% passage.', () => {

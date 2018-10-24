@@ -1,14 +1,14 @@
 import {
-  IFadeInOwnProps,
-} from './IFadeInOwnProps';
+  IFadeOutOwnProps,
+} from './IFadeOutOwnProps';
 import {
-  IFadeInState,
-} from './IFadeInState';
+  IFadeOutState,
+} from './IFadeOutState';
 
 import * as React from 'react';
 
 // @ts-ignore
-import _styles from './FadeIn.scss';
+import _styles from './FadeOut.scss';
 const styles = _styles || {};
 
 export const strings = {
@@ -17,14 +17,14 @@ export const strings = {
     'greater than zero.',
 };
 
-export class FadeIn extends React.Component<IFadeInOwnProps, IFadeInState> {
+export class FadeOut extends React.Component<IFadeOutOwnProps, IFadeOutState> {
   public state = {
-    fadeIn: false,
+    fadeOut: false,
   }
 
   public componentDidMount() {
     /* Trigger the transition immediately after mounting. */
-    setTimeout(() => this.setState({ fadeIn: true, }));
+    setTimeout(() => this.setState({ fadeOut: true, }));
   }
 
   public render() {
@@ -35,7 +35,7 @@ export class FadeIn extends React.Component<IFadeInOwnProps, IFadeInState> {
     } = this.props;
 
     const {
-      fadeIn,
+      fadeOut,
     } = this.state;
 
     if (!(duration > 0)) {
@@ -44,16 +44,16 @@ export class FadeIn extends React.Component<IFadeInOwnProps, IFadeInState> {
 
     return (
       <span
-        className={`${styles.fadeIn} fadeIn${className ? ` ${className}` : ''}`}
+        className={`${styles.fadeOut} fadeOut${className ? ` ${className}` : ''}`}
         style={{
-          opacity: fadeIn ? 1 : 0,
+          opacity: fadeOut ? 0 : 1,
           transition: `opacity ${duration}ms`
         }}
       >
         {children}
       </span>
-    );   
+    );
   }
 }
 
-export default FadeIn;
+export default FadeOut;

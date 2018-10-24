@@ -1,40 +1,30 @@
 import {
-  IClickReplaceProps,
-} from './IClickReplaceProps';
+  Clicker,
+} from '../Clicker/Clicker';
 import {
-  IClickReplaceState,
-} from './IClickReplaceState';
+  IClickReplaceOwnProps,
+} from './IClickReplaceProps';
 
 import * as React from 'react';
 
-export class ClickReplace extends React.Component<IClickReplaceProps, IClickReplaceState> {
-  public state = {
-    replaced: false,
-  }
-
-  constructor(props: any) {
-    super(props);
-
-    this.replace = this.replace.bind(this);
-  }
-
+export class ClickReplace extends React.Component<IClickReplaceOwnProps> {
   public render() {
     const {
       children,
+      className,
       replaceWith,
     } = this.props;
-
-    const {
-      replaced,
-    } = this.state;
     
-    return replaced ? replaceWith : children;
-  }
-
-  private replace() {
-    this.setState({
-      replaced: true,
-    });
+    const maybeClassName = className ? { className, } : {};
+    
+    return (
+      <Clicker
+        {...maybeClassName}
+        contentAfterClick={replaceWith}
+      >
+        {children}
+      </Clicker>
+    );
   }
 }
 

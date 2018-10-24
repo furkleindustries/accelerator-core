@@ -1,10 +1,10 @@
 import {
-  ReactChild,
+  ReactNode,
 } from 'react';
 
 export interface ICyclerOwnProps {
   className?: string;
-  notifyOfChange?: (current: ReactChild, index: number) => void;
+  notifyOfChange?: (current: ReactNode, index: number) => void;
 }
 
 export default ICyclerOwnProps;

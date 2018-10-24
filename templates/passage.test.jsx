@@ -6,10 +6,10 @@ import passage from './%NAME%';
 import * as bundle from '../../src/passages/bundle';
 
 const {
-  contents: Component,
   name,
   tags,
   title,
+  contents: Component,
 } = passage;
 
 describe('Tests for the %NAME% passage.', () => {
@@ -41,7 +41,7 @@ describe('Tests for the %NAME% passage.', () => {
     }).length === tags.length).toBe(true);
   });
 
-  it('renders without crashing', () => {
+  it('Renders without crashing.', () => {
     /* Don't test if it's a noRender passage. */
     if (Array.isArray(tags) && !bundle.tags.getTag(tags, 'noRender')) {
       const div = document.createElement('div');

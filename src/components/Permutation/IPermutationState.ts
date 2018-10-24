@@ -1,9 +1,9 @@
 import {
-  ReactChild,
+  ReactNode,
 } from 'react';
 
 export interface IPermutationState {
-  shuffled: ReactChild[];
+  shuffled: ReactNode[];
 }
 
 export default IPermutationState;

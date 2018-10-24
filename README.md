@@ -165,8 +165,6 @@ The exported object must be the passage object, and it must be the default expor
 
 If you are using Typescript (which you should be for the full value of Accelerator's built-in functionalities), you should indicate the type of the passage object by replacing `const passage =` with `const passage: IPassage =`, and setting the props type of the React component to `IPassageProps`, importing these interfaces from `../src/passages/bundle`. This will allow full type-checking of your story passages.
 
-
-
 ## The bundle import
 
 All Accelerator passages have simple access to the bundle import, located in `src/passages/bundle.ts`. (Note that `passages` and `src/passages` are different folders with wholly different purposes.) The bundle import, typically imported as `import * as bundle from '../../src/passages/bundle'`, has the following props:
@@ -174,8 +172,10 @@ All Accelerator passages have simple access to the bundle import, located in `sr
 * `components`, an object containing:
   * The `Link` component, which allows the user to navigate between passages.
   * The `ClickAppend` component, which places one piece of content after another once the first component is clicked.
+  * The `ClickDisappear` component, which causes a piece of content to disappear (or fade out over a specified duration) after it is clicked.
   * The `ClickPrepend` component, which places one piece of content before another after the first component is clicked.
   * The `ClickReplace` component, which replaces one piece of content with another after the first component is clicked.
+  * The `Clicker` component, which is a lower-level component allowing one to show one portion of content before it is clicked, and another after. This is used to implement all the other `Click*` components. 
   * The `CyclingLink` component, which allows the user to select between several string options, and optionally stores the choice in a variable.
   * The `Cycler` component, which is a lower-level component used by `CyclingLink`, allowing cycling between any pieces of content (not just strings as with `CyclingLink`), and aditionally accepts a callback which is fired when cycles are performed.
   * The `Delay` component, which delays rendering of content (or it being opaque) for an arbitrary period.

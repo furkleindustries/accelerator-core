@@ -1,9 +1,10 @@
 import {
-  ReactChild,
+  ReactNode,
 } from 'react';
 
-export interface IClickReplaceProps {
-  replaceWith: ReactChild;
+export interface IClickReplaceOwnProps {
+  className?: string;
+  replaceWith: ReactNode;
 }
 
-export default IClickReplaceProps;
+export default IClickReplaceOwnProps;

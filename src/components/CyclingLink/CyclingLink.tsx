@@ -26,7 +26,7 @@ import {
 
 import * as React from 'react';
 
-export class CyclingLink extends React.Component<ICyclingLinkOwnProps & ICyclingLinkDispatchProps> {
+export class CyclingLink extends React.PureComponent<ICyclingLinkOwnProps & ICyclingLinkDispatchProps> {
   constructor(props: any) {
     super(props);
 
@@ -81,7 +81,7 @@ export const mapDispatchToProps: MapDispatchToProps<ICyclingLinkDispatchProps, I
   setStoryState(newState) {
     const action = createStoryStateAction(ActionTypes.StoryStateUpdate, newState);
     return dispatch(action);
-  }
+  },
 });
 
 export const CyclingLinkConnected = connect(null, mapDispatchToProps)(CyclingLink);
