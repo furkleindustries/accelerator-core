@@ -12,7 +12,7 @@ import _styles from './Clicker.scss';
 const styles = _styles || {};
 
 export class Clicker extends React.Component<IClickerOwnProps, IClickerState> {
-  state = {
+  public state = {
     clicked: false,
   }
 
@@ -22,7 +22,7 @@ export class Clicker extends React.Component<IClickerOwnProps, IClickerState> {
     this.click = this.click.bind(this); 
   }
   
-  render() {
+  public render() {
     const {
       children,
       className,
@@ -33,10 +33,12 @@ export class Clicker extends React.Component<IClickerOwnProps, IClickerState> {
       clicked,
     } = this.state;
 
+    const maybeOnClick = clicked ? {} : { onClick: this.click, };
+
     return (
       <div
         className={`${styles.clicker} clicker${className ? ` ${className}` : ''}`}
-        onClick={clicked ? () => {} : this.click}
+        {...maybeOnClick}  
       >
         {clicked ?
           contentAfterClick :
@@ -46,7 +48,7 @@ export class Clicker extends React.Component<IClickerOwnProps, IClickerState> {
     );
   }
 
-  click() {
+  private click() {
     this.setState({
       clicked: true,
     });

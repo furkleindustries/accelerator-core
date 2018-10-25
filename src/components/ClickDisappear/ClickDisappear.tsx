@@ -11,7 +11,7 @@ import {
 import * as React from 'react';
 
 export class ClickDisappear extends React.PureComponent<IClickDisappearOwnProps> {
-  render() {
+  public render() {
     const {
       children,
       className,
