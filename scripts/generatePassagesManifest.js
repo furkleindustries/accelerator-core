@@ -9,7 +9,8 @@ const {
 const glob = require('glob');
 
 const passagesDir = join(__dirname, '..', 'passages');
-glob(join(passagesDir, '**/!(*.test).[jt]s?(x)'), (err, files) => {
+/* Collect all files within the passage directory ending in .jsx or .tsx. */
+glob(join(passagesDir, '**/!(*.test).[jt]sx'), (err, files) => {
   if (err) {
     throw err;
   }

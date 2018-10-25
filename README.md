@@ -43,7 +43,7 @@ After a minute or so, the installation should be complete, and a folder named `%
 
 An Accelerator story is notionally similar to a Twine story: it is a series of passages, joined by links. Each of these passages are TypeScript or JavaScript files. They contain a small amount of metadata and React component constructor (either a class implementing React.Component or React.PureComponent, or a stateless functional component) or a React element. Each is placed in the `passages` directory.
 
-To write a new passage, either use `accelerator-tool new passage %YOUR_PASSAGE_NAME%`, or manually create a code file within the passages directory. A complete passage file will look something like this:
+To write a new passage, either use `accelerator-tool new passage %YOUR_PASSAGE_NAME%`, or manually create a code file (ending in `.jsx` or `.tsx`) within the passages directory. A complete passage file will look something like this:
 
 ```javascript
 /* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
@@ -163,7 +163,9 @@ export default passage;
 
 The exported object must be the passage object, and it must be the default export. You can use any valid JSX, including functional and class-based components. You can also feel free to organize your files however you please, as Accelerator will search any numbers of folders deep within the `passages` folder.
 
-If you are using Typescript (which you should be for the full value of Accelerator's built-in functionalities), you should indicate the type of the passage object by replacing `const passage =` with `const passage: IPassage =`, and setting the props type of the React component to `IPassageProps`, importing these interfaces from `../src/passages/bundle`. This will allow full type-checking of your story passages.
+Note that, as alluded to above, passage files *must* end in `.jsx` or `.tsx`. This is convenient because it fits VS Code's syntax highlighting for files containing JSX elements, and also because it reserves all `.js` or `.ts` files for you to use and import as you see fit.
+
+If you are using Typescript (which you should be for the full value of Accelerator's built-in functionalities), you should indicate the type of the passage object by replacing `const passage =` with `const passage: bundle.passages.IPassage =`, and setting the props type of the React component to `bundle.passages.IPassageProps`, importing these interfaces from `../src/passages/bundle`. This will allow full type-checking of your story passages. (You can also just destructure the bundle, or the passages property, so that you can refer directly to `IPassage` and `IPassageProps`.)
 
 ## The bundle import
 
