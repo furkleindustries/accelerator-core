@@ -1,6 +1,6 @@
 {
   "name": "accelerator-core",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "devDependencies": {
     "@types/jest": "^23.3.5",
     "@types/node": "^10.12.0",
@@ -81,8 +81,24 @@
     "promote-content-to-executables": "node scripts/promoteContentToExecutables.js",
     "test": "node scripts/test.js --env=jsdom",
     "debug": "cross-env NODE_ENV=development webpack --config config/webpack.config.dev.js --verbose",
-    "prepublishOnly": "npm run test -- --dontWatch && npm run build"
+    "prepublishOnly": "npm run test -- --dontWatch"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/furkleindustries/accelerator-core.git"
+  },
+  "keywords": [
+    "accelerator",
+    "if",
+    "hypertext",
+    "fiction"
+  ],
+  "author": "furkle",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/furkleindustries/accelerator-core/issues"
+  },
+  "homepage": "https://github.com/furkleindustries/accelerator-core#readme",
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
@@ -93,7 +109,6 @@
     ],
     "setupTestFrameworkScriptFile": "<rootDir>/src/setupTests.ts",
     "testMatch": [
-      "<rootDir>/%PASSAGES_REDIST_REWRITE%/**/?(*.)(spec|test).(j|t)s?(x)",
       "<rootDir>/src/**/__tests__/**/*.(j|t)s?(x)",
       "<rootDir>/src/**/?(*.)(spec|test).(j|t)s?(x)"
     ],
