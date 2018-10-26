@@ -1,7 +1,7 @@
 const {
   readFileSync,
   writeFile,
-} = require('fs');
+} = require('fs-extra');
 const {
   join,
   relative,

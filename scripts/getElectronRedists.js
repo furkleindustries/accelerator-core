@@ -1,15 +1,10 @@
 const {
   join,
 } = require('path');
-const {
-  promisify,
-} = require('util');
 
-const fs = require('fs');
+const fs = require('fs-extra');
 const decompress = require('decompress');
 const download = require('electron-download');
-
-const exists = promisify(fs.exists);
 
 const appDir = join(__dirname, '..');
 const electronDir = join(appDir, 'build-desktop');
@@ -31,13 +26,13 @@ if (skipMacOS) {
               'absolutely sure it works.\n');
 }
 
-exists(electronDir).then((dirExists) => {  
+fs.exists(electronDir).then((dirExists) => {  
   Promise.all([
-    exists(linuxDir),
+    fs.exists(linuxDir),
     /* Pretend the directory already exists if skipMacOS is true. */
-    skipMacOS ? true : exists(macOSDir),
-    exists(windowsDir),
-    dirExists ? null : promisify(fs.mkdir)(electronDir),
+    skipMacOS ? true : fs.exists(macOSDir),
+    fs.exists(windowsDir),
+    dirExists ? null : fs.mkdir(electronDir),
   ]).then((data) => {
     const {
       promise: downloadPromise,
@@ -91,7 +86,7 @@ function doDownload(foundLinux, foundMac, foundWin) {
         } else {
           fs.mkdir(linuxDir, (err) => {
             if (err && err.code !== 'EEXIST') {
-              reject(err);
+              return reject(err);
             } else {
               resolve(zipPath);
             }
@@ -118,7 +113,7 @@ function doDownload(foundLinux, foundMac, foundWin) {
         } else {
           fs.mkdir(macOSDir, (err) => {
             if (err && err.code !== 'EEXIST') {
-              reject(err);
+              return reject(err);
             } else {
               resolve(zipPath);
             }
@@ -141,7 +136,7 @@ function doDownload(foundLinux, foundMac, foundWin) {
         cache: join(appDir, '.zips'),
       }, (err, zipPath) => {
         if (err) {
-          reject(err);
+          return reject(err);
         } else {
           fs.mkdir(windowsDir, (err) => {
             if (err && err.code !== 'EEXIST') {
@@ -156,8 +151,8 @@ function doDownload(foundLinux, foundMac, foundWin) {
   }
 
   return {
-    promise: descriptors.length ? Promise.all(promises) : Promise.resolve(),
     descriptors,
+    promise: descriptors.length ? Promise.all(promises) : Promise.resolve(),
   };
 }
 
