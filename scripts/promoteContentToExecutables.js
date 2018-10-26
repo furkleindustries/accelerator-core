@@ -5,11 +5,7 @@ const {
   promisify,
 } = require('util');
 
-const fs = require('fs');
-
-const rimraf = promisify(require('rimraf'));
-const ncp = promisify(require('ncp'));
-const writeFile = promisify(fs.writeFile);
+const fs = require('fs-extra');
 
 const projectDir = join(__dirname, '..');
 const appDir = join(projectDir, 'build-web');
@@ -84,22 +80,22 @@ if (skipMacOS) {
 }
 
 Promise.all([
-  rimraf(windowsDir),
-  skipMacOS ? null : rimraf(macOSDir),
-  rimraf(linuxDir),
+  fs.remove(windowsDir),
+  skipMacOS ? null : fs.remove(macOSDir),
+  fs.remove(linuxDir),
 ]).then(() => {
   Promise.all([
-    ncp(appDir, windowsDir),
-    skipMacOS ? null : ncp(appDir, macOSDir),
-    ncp(appDir, linuxDir),
+    fs.copy(appDir, windowsDir),
+    skipMacOS ? null : fs.copy(appDir, macOSDir),
+    fs.copy(appDir, linuxDir),
   ]).then(() => {
     Promise.all([
-      writeFile(join(linuxDir, 'package.json'), packageStr),
-      skipMacOS ? null : writeFile(join(macOSDir, 'package.json'), packageStr),
-      writeFile(join(windowsDir, 'package.json'), packageStr),
-      writeFile(join(linuxDir, 'main.js'), mainStr),
-      skipMacOS ? null : writeFile(join(macOSDir, 'main.js'), mainStr),
-      writeFile(join(windowsDir, 'main.js'), mainStr),
+      fs.outputFile(join(linuxDir, 'package.json'), packageStr),
+      skipMacOS ? null : fs.outputFile(join(macOSDir, 'package.json'), packageStr),
+      fs.outputFile(join(windowsDir, 'package.json'), packageStr),
+      fs.outputFile(join(linuxDir, 'main.js'), mainStr),
+      skipMacOS ? null : fs.outputFile(join(macOSDir, 'main.js'), mainStr),
+      fs.outputFile(join(windowsDir, 'main.js'), mainStr),
     ]).then(() => {
       console.log('Electron bundles are ready.');
     }, (err) => {
