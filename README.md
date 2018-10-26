@@ -1,4 +1,4 @@
-![Accelerator speedometer logo](https://s3.amazonaws.com/furkleindustries-accelerator/logo.png "Accelerator speedometer logo")
+![Accelerator speedometer logo](https://s3.amazonaws.com/furkleindustries-accelerator/logo_320px.png "Accelerator speedometer logo")
 
 # accelerator-core
 
