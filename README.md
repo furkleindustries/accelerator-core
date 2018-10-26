@@ -1,5 +1,7 @@
 ![Accelerator speedometer logo](https://s3.amazonaws.com/furkleindustries-accelerator/logo_320px.png "Accelerator speedometer logo")
 
+[![Build Status](https://travis-ci.org/furkleindustries/accelerator-core.svg?branch=master)](https://travis-ci.org/furkleindustries/accelerator-core)
+
 # accelerator-core
 
 A lightweight, reactive hypertext fiction framework with the conveniences of modern web dev and few of the pain points. This repository is the framework's runtime, which is more or less what is generated for you when you use the Accelerator devtool ([git repository](https://github.com/furkleindustries/accelerator-tool), [npm package](https://npmjs.com/package/accelerator-tool)) to create a new Accelerator project.
