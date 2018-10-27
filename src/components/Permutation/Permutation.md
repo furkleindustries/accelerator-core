@@ -1,6 +1,6 @@
-# OneOf
+# Permutation
 
-A component which takes a single element from the `children` array at random.
+A component which presents a permutation (a shuffled copy) of the pieces of input content.
 
 ## Example
 
@@ -18,4 +18,4 @@ A component which takes a single element from the `children` array at random.
 
 ## Property arguments
 
-none
+`children (ReactNodeArray)`: A list of content to be presented in shuffled order.
