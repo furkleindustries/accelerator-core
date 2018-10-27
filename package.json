@@ -1,6 +1,6 @@
 {
   "name": "accelerator-core",
-  "version": "0.3.13",
+  "version": "0.3.14",
   "devDependencies": {
     "@types/enzyme": "^3.1.14",
     "@types/enzyme-adapter-react-16": "^1.0.3",
