@@ -1,6 +1,6 @@
 import {
-  IDelayProps,
-} from './IDelayProps';
+  IDelayOwnProps,
+} from './IDelayOwnProps';
 import {
   IDelayState,
 } from './IDelayState';
@@ -17,7 +17,7 @@ export const strings = {
     'greater than zero.',
 };
 
-export class Delay extends React.Component<IDelayProps, IDelayState> {
+export class Delay extends React.Component<IDelayOwnProps, IDelayState> {
   public state = {
     shown: false,
   }
