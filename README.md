@@ -6,6 +6,20 @@
 
 A lightweight, reactive hypertext fiction framework with the conveniences of modern web dev and few of the pain points. This repository is the framework's runtime, which is more or less what is generated for you when you use the Accelerator devtool ([git repository](https://github.com/furkleindustries/accelerator-tool), [npm package](https://npmjs.com/package/accelerator-tool)) to create a new Accelerator project.
 
+## Table of contents
+
+1. [Why Accelerator?](#why-accelerator)
+2. [Installation](#installation)
+3. [Creating passages](#creating-passages)
+4. [The bundle import](#bundle-import)
+5. [The contents component class/function](#contents-component-creator)
+6. [Development server](#development-server)
+7. [Building your story for release](#building-for-release)
+8. [Configuration](#configuration)
+9. [Templates](#templates)
+10. [Acknowledgements](#acknowledgements)
+
+<a name="why-accelerator"></a>
 ## Why Accelerator?
 
 Accelerator was motivated by my desire to make [Twine](http://twinery.org/)-style hypertext stories with the convenience and power of bleeding-edge web technologies and a fully-featured IDE. As such, it is probably a poor fit for someone who is not already a web programmer or doesn't wish to learn things like a command-line shell, [React](https://reactjs.org/), or the modern JavaScript module system.
@@ -27,6 +41,7 @@ It is, however, a good choice if you want any of the following:
 
 and other such modern conveniences.
 
+<a name="installation"></a>
 ## Installation
 
 In a command-line shell of your choice (assuming it has a modern version of `npm`/`npx`), do either:
@@ -43,7 +58,8 @@ where `%YOUR_STORY_NAME%` should be replaced by the obvious, or:
 
 After a minute or so, the installation should be complete, and a folder named `%YOUR_STORY_NAME%` will be in the specified directory.
 
-## Creating Passages
+<a name="bundle-import"></a>
+## Creating passages
 
 An Accelerator story is notionally similar to a Twine story: it is a series of passages, joined by links. Each of these passages are TypeScript or JavaScript files. They contain a small amount of metadata and React component constructor (either a class implementing React.Component or React.PureComponent, or a stateless functional component) or a React element. Each is placed in the `passages` directory.
 
@@ -165,12 +181,13 @@ const passage: bundle.passages.IPassage = {
 export default passage;
 ```
 
-The exported object must be the passage object, and it must be the default export. You can use any valid JSX, including functional and class-based components. You can also feel free to organize your files however you please, as Accelerator will search any numbers of folders deep within the `passages` folder.
+The exported object must be the passage object, and it must be the default export. You can use any valid JSX, including functional and class-based components. You may use any named export for whatever you please. You can also feel free to organize your files however you please, as Accelerator will search any numbers of folders deep within the `passages` folder.
 
 Note that, as alluded to above, passage files *must* end in `.jsx` or `.tsx`. This is convenient because it fits VS Code's syntax highlighting for files containing JSX elements, and also because it reserves all `.js` or `.ts` files for you to use and import as you see fit.
 
 If you are using Typescript (which you should be for the full value of Accelerator's built-in functionalities), you should indicate the type of the passage object by replacing `const passage =` with `const passage: bundle.passages.IPassage =`, and setting the props type of the React component to `bundle.passages.IPassageProps`, importing these interfaces from `../src/passages/bundle`. This will allow full type-checking of your story passages. (You can also just destructure the bundle, or the passages property, so that you can refer directly to `IPassage` and `IPassageProps`.)
 
+<a name="creating-passages"></a>
 ## The bundle import
 
 All Accelerator passages have simple access to the bundle import, located in `src/passages/bundle.ts`. (Note that `passages` and `src/passages` are different folders with wholly different purposes.) The bundle import, typically imported as `import * as bundle from '../../src/passages/bundle'`, has the following props:
@@ -198,6 +215,7 @@ All Accelerator passages have simple access to the bundle import, located in `sr
   * `getTag`, a function which accepts a tag array and desired key, and produces either `true` if the key was in the array as a plain string, or the value string if the key was the key property of a key-value tag.
   * `Tag`, the type alias for tags.
 
+<a name="contents-component-creator"></a>
 ## The contents component class/function
 
 If you choose to create a React component constructor, either with an ES6 class and render method, or a function returning a React element, the product of that constructor will be passed props automatically by the higher-order `PassageContainer` component. These props, outlined in `IPassageProps`, are as follows:
@@ -207,14 +225,17 @@ If you choose to create a React component constructor, either with an ES6 class 
 * `storyState`, a copy of the story state. Due to the way Redux and its bindings update components, this object will always be up-to-date, relative to the actual, hidden state store, and changes to it are pointless. If you want to change the story state, use `setStoryState`.
 * `dispatch`, a no-complexity wrapper of the Redux state store's `dispatch` function, allowing lower-level dispatching of Redux actions. This will likely not be useful unless you're doing some sort of notional reflection with the Accelerator internals, or you're authoring your own actions and have modified the default state store accordingly.
 
-## Developing stories
+<a name="development-server"></a>
+## Development server
 
 Accelerator includes many facilities to ease and speed development. Its development server comes bundled with hot-reloading, error reporting, and linting. In order to start the development server, run `npm run start`. Note that you may need to shut down and restart the dev server if you add or remove a passage file.
 
+<a name="building-for-release"></a>
 ## Building your story for release
 
 To build the code bundle and HTML file for release on the web, run `npm run build`. After this completes, the relevant files will be in `build-web`. If you would also like to automatically create Electron desktop executables from your story, run `npm run build-with-desktop`. Note that for technical reasons regarding Windows' treatment of symlinks when unzipping archives, it is not possible (as of 10/18) to build macOS executables on Windows machines. If you need a macOS executable, you can use this library on macOS or any Linux. The executables will be in distribution-specific folders in `build-desktop`.
 
+<a name="configuration"></a>
 ## Configuration
 
 Basic configuration can be performed through the `.env` file. There are currently three values scraped from this file:
@@ -223,11 +244,13 @@ Basic configuration can be performed through the `.env` file. There are currentl
 * `ACCELERATOR_STORY_TITLE`, which allows you to set the title of your story in the browser and Electron. This will appear in search engines.
 * `ACCELERATOR_STORY_DESCRIPTION`, which allows you to set the description of your story in the browser. This will appear in search engines as well.
 
+<a name="templates"></a>
 ## Templates
 
 The Accelerator devtool (`accelerator-tool`) uses templates to construct new passages. These templates are stored locally in `src/templates`. Feel free to modify them as you see fit. There is minor rewriting of these when they are being copied by `accelerator-tool`, but as of now that is restricted solely to the replacement in all generated files of `%NAME%` with the name of the new passage. 
 
-## Influences
+<a name="acknowledgements"></a>
+## Acknowledgements
 
 Like any software project, Accelerator is influenced by and indebted to the software I have used and enjoyed over the past couple years. The most prominent of those are:
 
