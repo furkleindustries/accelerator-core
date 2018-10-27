@@ -176,19 +176,19 @@ If you are using Typescript (which you should be for the full value of Accelerat
 All Accelerator passages have simple access to the bundle import, located in `src/passages/bundle.ts`. (Note that `passages` and `src/passages` are different folders with wholly different purposes.) The bundle import, typically imported as `import * as bundle from '../../src/passages/bundle'`, has the following props:
 
 * `components`, an object containing:
-  * The `Link` component, which allows the user to navigate between passages.
-  * The `ClickAppend` component, which places one piece of content after another once the first component is clicked.
-  * The `ClickDisappear` component, which causes a piece of content to disappear (or fade out over a specified duration) after it is clicked.
-  * The `ClickPrepend` component, which places one piece of content before another after the first component is clicked.
-  * The `ClickReplace` component, which replaces one piece of content with another after the first component is clicked.
-  * The `Clicker` component, which is a lower-level component allowing one to show one portion of content before it is clicked, and another after. This is used to implement all the other `Click*` components. 
-  * The `CyclingLink` component, which allows the user to select between several string options, and optionally stores the choice in a variable.
-  * The `Cycler` component, which is a lower-level component used by `CyclingLink`, allowing cycling between any pieces of content (not just strings as with `CyclingLink`), and aditionally accepts a callback which is fired when cycles are performed.
-  * The `Delay` component, which delays rendering of content (or it being opaque) for an arbitrary period.
-  * The `FadeIn` component, which increases the opacity of content from invisibility to full opacity over an arbitrary period.
-  * The `OneOf` component, which randomly selects a single item from the collection passed as children.
-  * The `NOf` component, which is a lower-level component used by `OneOf`, and allows any random number (but not random order) of its children to be displayed.
-  * The `Permutation` component, which randomly shuffles the collection passed as children.
+  * The [Link](src/components/Link/Link.md) component, which allows the user to navigate between passages.
+  * The [ClickAppend](src/components/ClickAppend/ClickAppend.md) component, which places one piece of content after another once the first component is clicked.
+  * The [ClickDisappear](src/components/ClickDisappear/ClickDisappear.md) component, which causes a piece of content to disappear (or fade out over a specified duration) after it is clicked.
+  * The [ClickPrepend](src/components/ClickPrepend/ClickPrepend.md) component, which places one piece of content before another after the first component is clicked.
+  * The [ClickReplace](src/components/ClickReplace/ClickReplace.md) component, which replaces one piece of content with another after the first component is clicked.
+  * The [Clicker](src/components/Clicker/Clicker.md) component, which is a lower-level component allowing one to show one portion of content before it is clicked, and another after. This is used to implement all the other `Click*` components. 
+  * The [CyclingLink](src/components/CyclingLink/CyclingLink.md) component, which allows the user to select between several string options, and optionally stores the choice in a variable.
+  * The [Cycler](src/components/Cycler/Cycler.md) component, which is a lower-level component used by `CyclingLink`, allowing cycling between any pieces of content (not just strings as with `CyclingLink`), and aditionally accepts a callback which is fired when cycles are performed.
+  * The [Delay](src/components/Delay/Delay.md) component, which delays rendering of content (or it being opaque) for an arbitrary period.
+  * The [FadeIn](src/components/FadeIn/FadeIn.md) component, which increases the opacity of content from invisibility to full opacity over an arbitrary period.
+  * The [OneOf](src/components/OneOf/OneOf.md) component, which randomly selects a single item from the collection passed as children.
+  * The [NOf](src/components/NOf/NOf.md) component, which is a lower-level component used by `OneOf`, and allows any random number (but not random order) of its children to be displayed.
+  * The [Permutation](src/components/Permutation/Permutation.md) component, which randomly shuffles the collection passed as children.
 * `passages`, an object containing:
   * `IPassage`, an interface detailing the properties of the passage object, which is the default export of all passage files.
   * `IPassageProps`, an interface detailing the properties passed to the `contents` property of the passage object, assuming `contents` is a React component.

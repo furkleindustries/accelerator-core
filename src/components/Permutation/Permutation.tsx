@@ -1,4 +1,7 @@
 import {
+  IPermutationOwnProps,
+} from './IPermutationOwnProps';
+import {
   IPermutationState,
 } from './IPermutationState';
 
@@ -8,7 +11,7 @@ const arrayShuffle: (arr: any[]) => any[] = require('array-shuffle');
 
 import * as React from 'react';
 
-export class Permutation extends React.PureComponent<{}, IPermutationState> {
+export class Permutation extends React.Component<IPermutationOwnProps, IPermutationState> {
   public state = {
     shuffled: [],
   };

@@ -1,6 +1,6 @@
 import {
-  INOfProps,
-} from './INOfProps';
+  INOfOwnProps,
+} from './INOfOwnProps';
 import {
   INOfState,
 } from './INOfState';
@@ -12,7 +12,7 @@ export const strings = {
     'The `n` prop, passed to the NOf component, was not a positive integer.',
 };
 
-export class NOf extends React.PureComponent<INOfProps, INOfState> {
+export class NOf extends React.PureComponent<INOfOwnProps, INOfState> {
   public state = {
     index: 0,
   }
