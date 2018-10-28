@@ -1,9 +1,9 @@
 import {
-  ReactNodeArray,
+  ReactNode,
 } from 'react';
 
 export interface IOneOfOwnProps {
-  children: ReactNodeArray;
+  children: ReactNode;
 }
 
 export default IOneOfOwnProps;

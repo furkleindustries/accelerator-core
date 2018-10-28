@@ -12,7 +12,7 @@ export class OneOf extends React.PureComponent {
     
     return (
       <NOf n={1}>
-        {children}
+        {[ children, ]}
       </NOf>
     );
   }

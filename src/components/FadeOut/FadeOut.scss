@@ -1,3 +1,13 @@
 .fadeOut {
-  display: inline;
+  animation-name: fadeOutAnim;
+}
+
+@keyframes fadeOutAnim {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }

@@ -1,9 +1,6 @@
 import {
   IFadeOutOwnProps,
 } from './IFadeOutOwnProps';
-import {
-  IFadeOutState,
-} from './IFadeOutState';
 
 import * as React from 'react';
 
@@ -17,16 +14,7 @@ export const strings = {
     'greater than zero.',
 };
 
-export class FadeOut extends React.Component<IFadeOutOwnProps, IFadeOutState> {
-  public state = {
-    fadeOut: false,
-  }
-
-  public componentDidMount() {
-    /* Trigger the transition immediately after mounting. */
-    setTimeout(() => this.setState({ fadeOut: true, }));
-  }
-
+export class FadeOut extends React.PureComponent<IFadeOutOwnProps> {
   public render() {
     const {
       children,
@@ -34,24 +22,19 @@ export class FadeOut extends React.Component<IFadeOutOwnProps, IFadeOutState> {
       duration,
     } = this.props;
 
-    const {
-      fadeOut,
-    } = this.state;
-
     if (!(duration > 0)) {
       throw new Error(strings.DURATION_NOT_GREATER_THAN_ZERO_NUMBER);
     }
 
     return (
-      <span
+      <div
         className={`${styles.fadeOut} fadeOut${className ? ` ${className}` : ''}`}
         style={{
-          opacity: fadeOut ? 0 : 1,
-          transition: `opacity ${duration}ms`
+          animationDuration: `${duration}ms`
         }}
       >
         {children}
-      </span>
+      </div>
     );
   }
 }

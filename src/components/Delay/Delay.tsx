@@ -53,18 +53,18 @@ export class Delay extends React.Component<IDelayOwnProps, IDelayState> {
 
     if (shown) {
       return (
-        <span className={classNameStr}>
+        <div className={classNameStr}>
           {children}
-        </span>
+        </div>
       );
     } else if (renderWithZeroOpacity) {
       return (
-        <span
+        <div
           className={classNameStr}
           style={{ opacity: 0, }}
         >
           {children}
-        </span>
+        </div>
       )
     } else {
       return null;
