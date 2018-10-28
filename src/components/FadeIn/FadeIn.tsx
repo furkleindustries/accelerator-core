@@ -1,9 +1,6 @@
 import {
   IFadeInOwnProps,
 } from './IFadeInOwnProps';
-import {
-  IFadeInState,
-} from './IFadeInState';
 
 import * as React from 'react';
 
@@ -17,16 +14,7 @@ export const strings = {
     'greater than zero.',
 };
 
-export class FadeIn extends React.Component<IFadeInOwnProps, IFadeInState> {
-  public state = {
-    fadeIn: false,
-  }
-
-  public componentDidMount() {
-    /* Trigger the transition immediately after mounting. */
-    setTimeout(() => this.setState({ fadeIn: true, }));
-  }
-
+export class FadeIn extends React.PureComponent<IFadeInOwnProps> {
   public render() {
     const {
       children,
@@ -34,24 +22,19 @@ export class FadeIn extends React.Component<IFadeInOwnProps, IFadeInState> {
       duration,
     } = this.props;
 
-    const {
-      fadeIn,
-    } = this.state;
-
     if (!(duration > 0)) {
       throw new Error(strings.DURATION_NOT_GREATER_THAN_ZERO_NUMBER);
     }
 
     return (
-      <span
+      <div
         className={`${styles.fadeIn} fadeIn${className ? ` ${className}` : ''}`}
         style={{
-          opacity: fadeIn ? 1 : 0,
-          transition: `opacity ${duration}ms`
+          animationDuration: `${duration}ms`,
         }}
       >
         {children}
-      </span>
+      </div>
     );   
   }
 }

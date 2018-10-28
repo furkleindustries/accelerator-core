@@ -1,3 +1,13 @@
 .fadeIn {
-  display: inline;
+  animation-name: fadeInAnim;
+}
+
+@keyframes fadeInAnim {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
