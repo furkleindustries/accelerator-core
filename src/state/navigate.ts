@@ -1,30 +1,30 @@
 import {
   ActionTypes,
-} from 'src/actions/ActionTypes';
+} from '../actions/ActionTypes';
 import {
   createCurrentPassageNameAction,
-} from 'src/actions/creators/createCurrentPassageNameAction';
+} from '../actions/creators/createCurrentPassageNameAction';
 import {
   createPassageHistoryAction,
-} from 'src/actions/creators/createPassageHistoryAction';
+} from '../actions/creators/createPassageHistoryAction';
 import {
   createStoryStateAction,
-} from 'src/actions/creators/createStoryStateAction';
+} from '../actions/creators/createStoryStateAction';
 import {
   getTag,
-} from 'src/tags/getTag';
+} from '../tags/getTag';
 import {
   IAction,
-} from 'src/actions/IAction';
+} from '../actions/IAction';
 import {
   IPassage,
-} from 'src/passages/IPassage';
+} from '../passages/IPassage';
 import {
   Dispatch,
 } from 'redux';
 import {
   Tag,
-} from 'src/tags/Tag';
+} from '../tags/Tag';
 
 export const strings = {
   NO_LINKING_TO_NORENDER_PASSAGES:

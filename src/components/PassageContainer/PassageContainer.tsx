@@ -23,11 +23,14 @@ import {
   IPassageContainerStateProps,
 } from './IPassageContainerStateProps';
 import {
+  IPassageProps,
+} from '../../passages/IPassageProps';
+import {
   IState,
 } from '../../reducers/IState';
 import {
   navigate,
-} from 'src/state/navigate';
+} from '../../state/navigate';
 import {
   connect,
   MapDispatchToProps,
@@ -38,8 +41,6 @@ import {
 } from 'redux';
 
 import * as React from 'react';
-import IPassageProps from 'src/passages/IPassageProps';
-import { ComponentClass } from 'enzyme';
 
 export const strings = {
   PASSAGE_NOT_FOUND:
@@ -79,10 +80,7 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
       storyState: currentStoryState,
     };
 
-    const child = React.createElement(
-      contents as ComponentClass<IPassageProps>,
-      propsPassedDown,
-    );
+    const child = React.createElement(contents!, propsPassedDown);
 
     return (
       <div className="passageContainer">
