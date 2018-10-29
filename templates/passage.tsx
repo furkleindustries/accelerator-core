@@ -6,6 +6,7 @@ import * as bundle from '../../src/passages/bundle';
 class Component extends React.PureComponent<bundle.passages.IPassageProps> {
   public render() {
     const {
+      lastLinkTags,
       passageObject,
       setStoryState,
       storyState,
@@ -33,9 +34,10 @@ const passage: bundle.passages.IPassage = {
    * { key: string, value: string, } objects. */
   tags: [],
 
-  /* ComponentClass | (...args: any[]) => ReactElement: the content that should be displayed, or,
-   * in the case of noRender passages, a component that can be imported.
-   * Should be formatted in JSX style. */
+  /* ComponentClass<IPassageProps, any> | SFCFactory<IPassageProps>:
+   * the content that should be displayed, or, in the case of noRender
+   * passages, a component that can be imported. Should be formatted in JSX
+   * style. */
   contents: Component,
 };
 

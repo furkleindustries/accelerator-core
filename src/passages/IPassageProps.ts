@@ -10,8 +10,12 @@ import {
 import {
   IStoryStateInstance,
 } from '../state/IStoryStateInstance';
+import {
+  Tag,
+} from 'src/tags/Tag';
 
 export interface IPassageProps {
+  lastLinkTags: Tag[];
   passageObject: IPassage;
   storyState: IStoryStateInstance;
   dispatch(action: IAction): IAction;
