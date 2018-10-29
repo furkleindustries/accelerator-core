@@ -1,13 +1,18 @@
 import {
+  IPassageProps,
+} from './IPassageProps';
+import {
   Tag,
 } from '../tags/Tag';
-
-import * as React from 'react';
+import {
+  ComponentClass,
+  SFCFactory,
+} from 'react';
 
 export interface IPassage {
   name: string;
   title?: string;
-  contents?: React.ComponentClass | ((...args: any[]) => React.ReactElement<any>);
+  contents?: ComponentClass<IPassageProps, any> | SFCFactory<IPassageProps>;
   tags?: Tag[];
 }
 

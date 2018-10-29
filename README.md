@@ -87,6 +87,7 @@ class Component extends React.PureComponent<bundle.passages.IPassageProps> {
 
   public render() {
     const {
+      lastLinkTags,
       passageObject,
       storyState,
     } = this.props;
@@ -112,20 +113,20 @@ class Component extends React.PureComponent<bundle.passages.IPassageProps> {
           }}
         />
 
+        <button onClick={this.clickIncrementor}>
+          Clicking me increments the counter!
+        </button>
+
         {/* This will update reactively, without the need for any rendering
           * logic on your part. */}
         <div>{storyState.counter || 0}</div>
+
         {/* Move to new passages with the Link component. */}
         <bundle.components.Link
           className={bundle.styles.link}
           passageName="testPassage2">
           This is a link.
         </bundle.components.Link>
-
-
-        <button onClick={this.clickIncrementor}>
-          Clicking me increments the counter!
-        </button>
 
         <bundle.components.CyclingLink
           choices={[ 'one', 'two', 'three', ]}
@@ -142,11 +143,13 @@ class Component extends React.PureComponent<bundle.passages.IPassageProps> {
   private clickIncrementor() {
     const {
       setStoryState,
-      storyState,
+      storyState: {
+        counter,
+      },
     } = this.props;
 
     setStoryState({
-      counter: (storyState.counter || 0) + 1,
+      counter: (counter || 0) + 1,
     });
   }
 }
@@ -172,9 +175,10 @@ const passage: bundle.passages.IPassage = {
     },
   ],
 
-  /* ComponentClass | ReactElement: the content that should be displayed, or,
-   * in the case of noRender passages, a component that can be imported.
-   * Should be formatted in JSX style. */
+  /* ComponentClass<IPassageProps, any> | SFCFactory<IPassageProps>:
+   * the content that should be displayed, or, in the case of noRender
+   * passages, a component that can be imported. Should be formatted in JSX
+   * style. */
   contents: Component,
 };
 
