@@ -16,27 +16,33 @@ module.exports = function (wallaby) {
       `!${testPathExp}`
     ],
 
-    tests: [testPathExp],
+    tests: [
+      testPathExp,
+    ],
 
     env: {
       runner: 'node',
       type: 'node'
     },
+
     compilers: {
       '**/*.js?(x)': wallaby.compilers.babel({
         babel: require('babel-core'),
-        presets: ['react-app']
+        presets: [ 'react-app', ],
       }),
+
       '**/*.ts?(x)': wallaby.compilers.typeScript(compilerOptions)
     },
+
     preprocessors: {
-      '**/*.js?(x)': file =>
+      '**/*.js?(x)': (file) => (
         require('babel-core').transform(file.content, {
           compact: false,
           filename: file.path,
-          presets: ['react-app'],
-          sourceMap: true
+          presets: [ 'react-app', ],
+          sourceMap: true,
         })
+      ),
     },
 
     setup: () => {
