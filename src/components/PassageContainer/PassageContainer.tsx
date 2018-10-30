@@ -30,7 +30,7 @@ import {
 } from '../../reducers/IState';
 import {
   navigate,
-} from 'src/state/navigate';
+} from '../../state/navigate';
 import {
   connect,
   MapDispatchToProps,
