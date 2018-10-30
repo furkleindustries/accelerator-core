@@ -3,6 +3,10 @@ import * as React from 'react';
 
 import * as bundle from '../../src/passages/bundle';
 
+// @ts-ignore
+import _styles from './%NAME%.scss';
+const styles = _styles || {};
+
 class Component extends React.PureComponent {
   render() {
     const {
@@ -14,8 +18,7 @@ class Component extends React.PureComponent {
 
     return (
       <div
-        className={`${bundle.styles.passage} passage`}
-        id={passageObject.name}
+        className={`${styles[passageObject.name]} ${bundle.styles.passage} passage`}
       >
       </div>
     );

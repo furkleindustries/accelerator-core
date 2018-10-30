@@ -1,41 +1,49 @@
-module.exports = (wallaby) => ({
-  bootstrap(wallaby) {},
+// tslint:disable
+module.exports = function(wallaby) {
+  const testPathExp = 'src/**/*.test.ts?(x)';
 
-  debug: true,
+  return {
+    files: [
+      'tsconfig.json',
+      'tsconfig.test.json',
+      'src/setupTests.ts',
+      'passages/**/*.+(js|jsx|ts|tsx)',
+      'src/**/*.+(js|jsx|ts|tsx|json|snap|css|less|sass|scss|jpg|jpeg|gif|png|svg)',
+      {pattern: 'config/**/*.js', instrument: false},
+      `!${testPathExp}`
+    ],
 
-  env: {
-    type: 'node',
+    tests: [testPathExp],
 
-    params: {
-      env: 'NODE_ENV="test"',
+    env: {
+      runner: 'node',
+      type: 'node'
     },
-  },
-
-  hints: {
-    ignoreCoverage: /istanbul ignore next/,
-  },
-
-  files: [
-    'tsconfig.json',
-    'src/**/*.ts?(x)',
-    'src/**/*.js?(x)',
-  ],
-
-  preprocessors: {
-    '**/*.js?(x)': (file) => {
-      const babelCore = require('babel-core');
-      return babelCore.transform(file.content, {
-        filename:  file.path,
-        presets:   [ 'babel-preset-jest', ],
-        sourceMap: true,
-      });
+    compilers: {
+      '**/*.js?(x)': wallaby.compilers.babel({
+        babel: require('babel-core'),
+        presets: ['react-app']
+      })
     },
-  },
+    preprocessors: {
+      '**/*.js?(x)': file =>
+        require('babel-core').transform(file.content, {
+          compact: false,
+          filename: file.path,
+          presets: ['react-app'],
+          sourceMap: true
+        })
+    },
 
-  testFramework: 'jest',
+    setup: () => {
+      const jestConfig = require('./package.json').jest;
+      Object.keys(jestConfig.transform || {}).forEach(
+        k => ~k.indexOf('^.+\\.(js|jsx') && void delete jestConfig.transform[k]
+      );
+      delete jestConfig.testEnvironment;
+      wallaby.testFramework.configure(jestConfig);
+    },
 
-  tests: [
-    'tests/**/*.test.ts',
-    'tests/**/*.test.ts?(x)',
-  ],
-});
+    testFramework: 'jest'
+  };
+};

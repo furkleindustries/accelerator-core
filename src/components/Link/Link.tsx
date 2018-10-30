@@ -32,16 +32,14 @@ export class Link extends React.PureComponent<ILinkOwnProps & ILinkStateProps & 
     super(props);
 
     this.formatTags = this.formatTags.bind(this);
+    this.navigate = this.navigate.bind(this);
   }
 
   public render() {
     const {
       children,
       className,
-      dispatch,
-      passage,
       passageName,
-      tags,
     } = this.props;
 
     return (
@@ -49,15 +47,25 @@ export class Link extends React.PureComponent<ILinkOwnProps & ILinkStateProps & 
         className={`link${className ? ` ${className}` : ''}`}
         passage-name={passageName}
         data-tags={this.formatTags()}
-        onClick={() => navigate({
-          dispatch,
-          passage,
-          tags,
-        })}
+        onClick={this.navigate}
       >
         {children}
       </button>
     );
+  }
+
+  private navigate() {
+    const {
+      dispatch,
+      passage,
+      tags,
+    } = this.props;
+
+    navigate({
+      dispatch,
+      passage,
+      tags,
+    });
   }
   
   private formatTags() {
