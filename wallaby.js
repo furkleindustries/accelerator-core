@@ -1,6 +1,9 @@
 // tslint:disable
-module.exports = function(wallaby) {
+module.exports = function (wallaby) {
   const testPathExp = 'src/**/*.test.ts?(x)';
+  const compilerOptions = Object.assign(
+    require('./tsconfig.json').compilerOptions,
+    require('./tsconfig.test.json').compilerOptions);
 
   return {
     files: [
@@ -23,7 +26,8 @@ module.exports = function(wallaby) {
       '**/*.js?(x)': wallaby.compilers.babel({
         babel: require('babel-core'),
         presets: ['react-app']
-      })
+      }),
+      '**/*.ts?(x)': wallaby.compilers.typeScript(compilerOptions)
     },
     preprocessors: {
       '**/*.js?(x)': file =>
@@ -41,6 +45,7 @@ module.exports = function(wallaby) {
         k => ~k.indexOf('^.+\\.(js|jsx') && void delete jestConfig.transform[k]
       );
       delete jestConfig.testEnvironment;
+      jestConfig.setupTestFrameworkScriptFile = jestConfig.setupTestFrameworkScriptFile.replace('.ts', '.js');
       wallaby.testFramework.configure(jestConfig);
     },
 
