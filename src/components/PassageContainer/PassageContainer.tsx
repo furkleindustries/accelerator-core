@@ -62,6 +62,7 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
 
       dispatch,
       lastLinkTags,
+      navigateTo,
       setStoryState,
       currentStoryState,
     } = this.props;
@@ -75,6 +76,7 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
     const propsPassedDown: IPassageProps = {
       dispatch,
       lastLinkTags,
+      navigateTo,
       setStoryState,
       passageObject: currentPassage,
       storyState: currentStoryState,

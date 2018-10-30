@@ -12,6 +12,7 @@ class Component extends React.PureComponent<bundle.passages.IPassageProps> {
     const {
       lastLinkTags,
       passageObject,
+      navigateTo,
       setStoryState,
       storyState,
     } = this.props;

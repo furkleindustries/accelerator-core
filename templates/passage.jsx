@@ -12,6 +12,7 @@ class Component extends React.PureComponent {
     const {
       lastLinkTags,
       passageObject,
+      navigateTo,
       setStoryState,
       storyState,
     } = this.props;

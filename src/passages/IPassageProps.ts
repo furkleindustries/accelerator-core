@@ -12,13 +12,14 @@ import {
 } from '../state/IStoryStateInstance';
 import {
   Tag,
-} from 'src/tags/Tag';
+} from '../tags/Tag';
 
 export interface IPassageProps {
   lastLinkTags: Tag[];
   passageObject: IPassage;
   storyState: IStoryStateInstance;
   dispatch(action: IAction): IAction;
+  navigateTo(passageName: string, tags?: Tag[]): void;
   setStoryState(newState: { [key: string]: any, }): IStoryStateAction;
 }
 
