@@ -42,6 +42,10 @@ import {
 
 import * as React from 'react';
 
+// @ts-ignore
+import _styles from './PassageContainer.scss';
+const styles = _styles || {};
+
 export const strings = {
   PASSAGE_NOT_FOUND:
     'No passage could be found in the passages map with the name %NAME%.',
@@ -88,7 +92,7 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
     );
 
     return (
-      <div className="passageContainer">
+      <div className={`${styles.passageContainer} passageContainer`}>
         {child}
       </div>
     );
