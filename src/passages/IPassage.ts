@@ -1,7 +1,4 @@
 import {
-  IPassageProps,
-} from './IPassageProps';
-import {
   Tag,
 } from '../tags/Tag';
 import {
@@ -12,7 +9,7 @@ import {
 export interface IPassage {
   name: string;
   title?: string;
-  contents?: ComponentClass<IPassageProps, any> | SFCFactory<IPassageProps>;
+  contents?: ComponentClass | SFCFactory<any>;
   tags?: Tag[];
 }
 
