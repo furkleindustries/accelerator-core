@@ -30,7 +30,7 @@ import {
 } from '../../reducers/IState';
 import {
   navigate,
-} from '../../state/navigate';
+} from 'src/state/navigate';
 import {
   connect,
   MapDispatchToProps,
@@ -80,7 +80,10 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
       storyState: currentStoryState,
     };
 
-    const child = React.createElement(contents!, propsPassedDown);
+    const child = React.createElement(
+      contents as React.ComponentClass<IPassageProps> | React.SFCFactory<IPassageProps>,
+      propsPassedDown,
+    );
 
     return (
       <div className="passageContainer">
