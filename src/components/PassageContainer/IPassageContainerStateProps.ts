@@ -3,19 +3,20 @@ import {
 } from '../../passages/IPassage';
 import {
   IPassagesMap,
-} from 'src/passages/IPassagesMap';
+} from '../../passages/IPassagesMap';
 import {
   IStoryStateInstance,
 } from '../../state/IStoryStateInstance';
 import {
   Tag,
-} from 'src/tags/Tag';
+} from '../../tags/Tag';
 
 export interface IPassageContainerStateProps {
   currentPassage: IPassage;
   currentStoryState: IStoryStateInstance;
   lastLinkTags: Tag[];
   passages: IPassagesMap;
+  startPassageName: string;
 }
 
 export default IPassageContainerStateProps;

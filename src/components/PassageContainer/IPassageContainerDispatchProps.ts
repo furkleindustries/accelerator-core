@@ -2,16 +2,20 @@ import {
   IAction,
 } from '../../actions/IAction';
 import {
-  IStoryStateAction,
-} from '../../actions/IStoryStateAction';
+  IStoryStateInstance,
+} from '../../state/IStoryStateInstance';
+import {
+  IStoryStateUpdateAction,
+} from '../../actions/IStoryStateUpdateAction';
 import {
   Tag,
-} from 'src/tags/Tag';
+} from '../../tags/Tag';
 
 export interface IPassageContainerDispatchProps {
   dispatch(action: IAction): IAction;
-  setStoryState(updatedState: { [key: string]: any, }): IStoryStateAction;
   navigateTo(passageName: string, tags?: Tag[]): void;
+  setStoryState(updatedStateProps: Partial<IStoryStateInstance>): IStoryStateUpdateAction;
+  restart(): void;
 }
 
 export default IPassageContainerDispatchProps;

@@ -1,7 +1,4 @@
 import {
-  ActionTypes,
-} from '../actions/ActionTypes';
-import {
   BuiltInTags,
 } from '../tags/BuiltInTags';
 import {
@@ -11,8 +8,8 @@ import {
   createCurrentPassageNameAction,
 } from '../actions/creators/createCurrentPassageNameAction';
 import {
-  createPassageHistoryAction,
-} from '../actions/creators/createPassageHistoryAction';
+  createPassageHistoryNewAction,
+} from '../actions/creators/createPassageHistoryNewAction';
 import {
   createPassagesAction,
 } from '../actions/creators/createPassagesAction';
@@ -20,12 +17,14 @@ import {
   createStartPassageNameAction,
 } from '../actions/creators/createStartPassageNameAction';
 import {
+  createStoryStateNewAction,
+} from '../actions/creators/createStoryStateNewAction';
+import {
   IPassage,
 } from '../passages/IPassage';
 import {
   Store,
 } from 'redux';
-import { createStoryStateAction } from '../actions/creators/createStoryStateAction';
 
 // tslint:disable
 // @ts-ignore
@@ -128,9 +127,8 @@ export const initializeStore = (store: Store, passagesManifest: string[]) => {
   store.dispatch(createPassagesAction(passageMap));
   store.dispatch(createStartPassageNameAction(name));
   store.dispatch(createCurrentPassageNameAction(name));
-  store.dispatch(createStoryStateAction(ActionTypes.StoryStateNew));
-  store.dispatch(createPassageHistoryAction(
-    ActionTypes.PassageHistoryNew,
+  store.dispatch(createStoryStateNewAction());
+  store.dispatch(createPassageHistoryNewAction(
     {
       name,
       linkTags: [

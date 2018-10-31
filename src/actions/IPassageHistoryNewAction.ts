@@ -5,9 +5,9 @@ import {
   IPassageHistoryInstance,
 } from '../state/IPassageHistoryInstance';
 
-export interface IPassageHistoryAction {
-  type: ActionTypes.PassageHistoryNew | ActionTypes.StoryRewind;
+export interface IPassageHistoryNewAction {
+  type: ActionTypes.PassageHistoryNew;
   value: IPassageHistoryInstance | number;
 }
 
-export default IPassageHistoryAction;
+export default IPassageHistoryNewAction;

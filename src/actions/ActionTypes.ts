@@ -6,6 +6,7 @@ export enum ActionTypes {
   PassageHistoryNew = 'PassageHistoryNew',
   LastLinkTags = 'LastLinkTags',
   StoryRewind = 'StoryRewind',
+  StoryReset = 'StoryReset',
   StoryStateNew = 'StoryStateNew',
   StoryStateUpdate = 'StoryStateUpdate',
 }

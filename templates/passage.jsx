@@ -13,6 +13,7 @@ class Component extends React.PureComponent {
       lastLinkTags,
       passageObject,
       navigateTo,
+      restart,
       setStoryState,
       storyState,
     } = this.props;

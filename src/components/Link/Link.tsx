@@ -27,6 +27,12 @@ import {
 
 import * as React from 'react';
 
+export const strings = {
+  PASSAGE_DOES_NOT_EXIST:
+    'The passageName argument, %NAME%, does not match any passages within ' +
+    'the passages map.',
+}
+
 export class Link extends React.PureComponent<ILinkOwnProps & ILinkStateProps & ILinkDispatchProps> {
   constructor(props: any) {
     super(props);
@@ -58,8 +64,18 @@ export class Link extends React.PureComponent<ILinkOwnProps & ILinkStateProps & 
     const {
       dispatch,
       passage,
+      passageName,
       tags,
     } = this.props;
+
+    if (!passage) {
+      const errStr = strings.PASSAGE_DOES_NOT_EXIST.replace(
+        '%NAME%',
+        passageName
+      );
+
+      throw new Error(errStr);
+    }
 
     navigate({
       dispatch,
