@@ -2,14 +2,23 @@ import {
   ActionTypes,
 } from '../actions/ActionTypes';
 import {
-  IStoryStateAction,
-} from '../actions/IStoryStateAction';
+  IStoryResetAction,
+} from '../actions/IStoryResetAction';
 import {
-  TStoryStateHistory,
-} from '../state/TStoryStateHistory';
+  IStoryRewindAction,
+} from 'src/actions/IStoryRewindAction';
 import {
   IStoryStateInstance,
 } from '../state/IStoryStateInstance';
+import {
+  IStoryStateNewAction,
+} from '../actions/IStoryStateNewAction';
+import {
+  IStoryStateUpdateAction,
+} from 'src/actions/IStoryStateUpdateAction';
+import {
+  TStoryStateHistory,
+} from '../state/TStoryStateHistory';
 
 export const strings = {
   INDEX_INVALID:
@@ -23,8 +32,18 @@ const combineState = (oldState: IStoryStateInstance, newState: IStoryStateInstan
   Object.assign({}, oldState, newState)
 );
 
-export const storyStateHistoryReducer = (previousStateHistory: TStoryStateHistory = [], action: IStoryStateAction) => {
-  if (action.type === ActionTypes.StoryStateUpdate && 'value' in action) {
+type Actions = IStoryStateNewAction |
+               IStoryStateUpdateAction |
+               IStoryRewindAction |
+               IStoryResetAction;
+
+export const storyStateHistoryReducer = (previousStateHistory: TStoryStateHistory = [], action: Actions) => {
+  if (action.type === ActionTypes.StoryStateNew) {
+    return [
+      /* Clone the previous history. */
+      combineState(previousStateHistory[0], {}),
+    ].concat(previousStateHistory);
+  } else if (action.type === ActionTypes.StoryStateUpdate && 'value' in action) {
     const value = action.value as IStoryStateInstance;
     const newStateInstance = combineState(
       previousStateHistory[0],
@@ -32,17 +51,12 @@ export const storyStateHistoryReducer = (previousStateHistory: TStoryStateHistor
     );
 
     return [ newStateInstance, ].concat(previousStateHistory.slice(1));
-  } else if (action.type === ActionTypes.StoryStateNew) {
-    return [
-      /* Clone the previous history. */
-      Object.assign({}, previousStateHistory[0]),
-    ].concat(previousStateHistory);
   } else if (action.type === ActionTypes.StoryRewind) {
-    if (action.index! < 0 && action.index! % 1 !== 0) {
+    if (action.value < 0 && action.value % 1 !== 0) {
       throw new Error(strings.INDEX_INVALID);
     }
 
-    const index = action.index as number;
+    const index = action.value;
 
     /* Get the state at the end of the prior passage. This is so the user
      * doesn't rewind to a passage they've already significantly mutated from
@@ -51,6 +65,10 @@ export const storyStateHistoryReducer = (previousStateHistory: TStoryStateHistor
     return [
       stateGoingIn,
     ].concat(previousStateHistory.slice(0, index));
+  } else if (action.type === ActionTypes.StoryReset) {
+    /* Return an empty state array with a single empty object for the start
+     * passage. */
+    return [ {}, ];
   }
 
   return previousStateHistory;

@@ -1,12 +1,9 @@
 import {
-  ActionTypes,
-} from '../../actions/ActionTypes';
-import {
   BuiltInTags,
 } from '../../tags/BuiltInTags';
 import {
-  createStoryStateAction,
-} from '../../actions/creators/createStoryStateAction';
+  createStoryStateUpdateAction,
+} from '../../actions/creators/createStoryStateUpdateAction';
 import {
   getTag,
 } from '../../tags/getTag';
@@ -39,6 +36,9 @@ import {
 import {
   Dispatch,
 } from 'redux';
+import {
+  reset,
+} from '../../state/reset';
 
 import * as React from 'react';
 
@@ -67,6 +67,7 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
       dispatch,
       lastLinkTags,
       navigateTo,
+      restart,
       setStoryState,
       currentStoryState,
     } = this.props;
@@ -81,6 +82,7 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
       dispatch,
       lastLinkTags,
       navigateTo,
+      restart,
       setStoryState,
       passageObject: currentPassage,
       storyState: currentStoryState,
@@ -104,6 +106,7 @@ export const mapStateToProps: MapStateToProps<IPassageContainerStateProps, IPass
   currentPassageName,
   passageHistory,
   passages,
+  startPassageName,
   storyStateHistory,
 }) => {
   if (!(currentPassageName in passages)) {
@@ -118,6 +121,7 @@ export const mapStateToProps: MapStateToProps<IPassageContainerStateProps, IPass
     currentStoryState: storyStateHistory[0],
     lastLinkTags: passageHistory[0].linkTags,
     passages,
+    startPassageName,
   };
 };
 
@@ -134,12 +138,12 @@ export const mapDispatchToProps: MapDispatchToProps<IPassageContainerDispatchPro
     });
   },
 
-  setStoryState(updatedState) {
-    const action = createStoryStateAction(
-      ActionTypes.StoryStateUpdate,
-      updatedState
-    );
+  restart() {
+    reset(reduxDispatch, props.startPassageName);
+  },
 
+  setStoryState(updatedStateProps) {
+    const action = createStoryStateUpdateAction(updatedStateProps);
     return reduxDispatch(action);
   },
 })

@@ -2,11 +2,17 @@ import {
   ActionTypes,
 } from '../actions/ActionTypes';
 import {
-  IPassageHistoryAction,
-} from '../actions/IPassageHistoryAction';
+  IPassageHistoryNewAction,
+} from '../actions/IPassageHistoryNewAction';
 import {
   IPassageHistoryInstance,
 } from '../state/IPassageHistoryInstance';
+import {
+  IStoryResetAction,
+} from 'src/actions/IStoryResetAction';
+import {
+  IStoryRewindAction,
+} from 'src/actions/IStoryRewindAction';
 import {
   TPassageHistory,
 } from '../state/TPassageHistory';
@@ -16,7 +22,11 @@ export const strings = {
     'The provided index did not exist in the passage history.',
 };
 
-export const passageHistoryReducer = (previousState: TPassageHistory = [], action: IPassageHistoryAction) => {
+type Actions = IPassageHistoryNewAction |
+               IStoryRewindAction |
+               IStoryResetAction;
+
+export const passageHistoryReducer = (previousState: TPassageHistory = [], action: Actions) => {
   if (action.type === ActionTypes.PassageHistoryNew && action.value)  {
     return [ action.value as IPassageHistoryInstance, ].concat(previousState);
   } else if (action.type === ActionTypes.StoryRewind &&
@@ -28,6 +38,8 @@ export const passageHistoryReducer = (previousState: TPassageHistory = [], actio
     }
 
     return previousState.slice(index);
+  } else if (action.type === ActionTypes.StoryReset) {
+    return [ previousState[0], ];
   }
 
   return previousState;

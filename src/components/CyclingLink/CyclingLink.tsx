@@ -1,12 +1,9 @@
 import {
-  ActionTypes,
-} from '../../actions/ActionTypes';
-import {
   Cycler,
 } from '../Cycler/Cycler';
 import {
-  createStoryStateAction,
-} from '../../actions/creators/createStoryStateAction';
+  createStoryStateUpdateAction,
+} from '../../actions/creators/createStoryStateUpdateAction';
 import {
   IAction,
 } from '../../actions/IAction';
@@ -79,7 +76,7 @@ export class CyclingLink extends React.PureComponent<ICyclingLinkOwnProps & ICyc
 
 export const mapDispatchToProps: MapDispatchToProps<ICyclingLinkDispatchProps, ICyclingLinkOwnProps> = (dispatch: Dispatch<IAction>, ownProps) => ({
   setStoryState(newState) {
-    const action = createStoryStateAction(ActionTypes.StoryStateUpdate, newState);
+    const action = createStoryStateUpdateAction(newState);
     return dispatch(action);
   },
 });

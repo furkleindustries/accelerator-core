@@ -16,6 +16,7 @@ export interface IPassageContainerStateProps {
   currentStoryState: IStoryStateInstance;
   lastLinkTags: Tag[];
   passages: IPassagesMap;
+  startPassageName: string;
 }
 
 export default IPassageContainerStateProps;

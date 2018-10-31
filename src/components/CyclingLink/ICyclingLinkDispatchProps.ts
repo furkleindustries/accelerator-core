@@ -1,9 +1,9 @@
 import {
-  IStoryStateAction,
-} from '../../actions/IStoryStateAction';
+  IStoryStateUpdateAction,
+} from '../../actions/IStoryStateUpdateAction';
 
 export interface ICyclingLinkDispatchProps {
-  setStoryState(newState: { [key: string]: any }): IStoryStateAction;
+  setStoryState(newState: { [key: string]: any }): IStoryStateUpdateAction;
 }
 
 export default ICyclingLinkDispatchProps;

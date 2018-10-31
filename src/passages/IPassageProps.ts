@@ -5,8 +5,8 @@ import {
   IPassage,
 } from './IPassage';
 import {
-  IStoryStateAction,
-} from '../actions/IStoryStateAction';
+  IStoryStateUpdateAction,
+} from '../actions/IStoryStateUpdateAction';
 import {
   IStoryStateInstance,
 } from '../state/IStoryStateInstance';
@@ -20,7 +20,8 @@ export interface IPassageProps {
   storyState: IStoryStateInstance;
   dispatch(action: IAction): IAction;
   navigateTo(passageName: string, tags?: Tag[]): void;
-  setStoryState(newState: { [key: string]: any, }): IStoryStateAction;
+  restart(): void;
+  setStoryState(newState: Partial<IStoryStateInstance>): IStoryStateUpdateAction;
 }
 
 export default IPassageProps;

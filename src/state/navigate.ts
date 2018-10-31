@@ -1,15 +1,12 @@
 import {
-  ActionTypes,
-} from '../actions/ActionTypes';
-import {
   createCurrentPassageNameAction,
 } from '../actions/creators/createCurrentPassageNameAction';
 import {
-  createPassageHistoryAction,
-} from '../actions/creators/createPassageHistoryAction';
+  createPassageHistoryNewAction,
+} from '../actions/creators/createPassageHistoryNewAction';
 import {
-  createStoryStateAction,
-} from '../actions/creators/createStoryStateAction';
+  createStoryStateNewAction,
+} from 'src/actions/creators/createStoryStateNewAction';
 import {
   getTag,
 } from '../tags/getTag';
@@ -53,14 +50,14 @@ export const navigate = ({
   dispatch(createCurrentPassageNameAction(passage.name));
 
   /* Add a new instance to the passage history. */
-  dispatch(createPassageHistoryAction(ActionTypes.PassageHistoryNew, {
+  dispatch(createPassageHistoryNewAction({
     name: passage.name,
     linkTags: tags || [],
   }));
 
   /* Add a new instance to the story state. This new passage will have all
    * the same state as the prior passage did when leaving it. */ 
-  dispatch(createStoryStateAction(ActionTypes.StoryStateNew));
+  dispatch(createStoryStateNewAction());
 };
 
 export default navigate;
