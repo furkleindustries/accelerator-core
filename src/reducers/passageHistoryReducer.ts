@@ -9,10 +9,10 @@ import {
 } from '../state/IPassageHistoryInstance';
 import {
   IStoryResetAction,
-} from 'src/actions/IStoryResetAction';
+} from '../actions/IStoryResetAction';
 import {
   IStoryRewindAction,
-} from 'src/actions/IStoryRewindAction';
+} from '../actions/IStoryRewindAction';
 import {
   TPassageHistory,
 } from '../state/TPassageHistory';

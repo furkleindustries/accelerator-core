@@ -1,6 +1,6 @@
 import {
   IAction,
-} from 'src/actions/IAction';
+} from '../../actions/IAction';
 import {
   Dispatch,
 } from 'redux';

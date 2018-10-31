@@ -6,7 +6,7 @@ import {
 } from '../actions/creators/createPassageHistoryNewAction';
 import {
   createStoryStateNewAction,
-} from 'src/actions/creators/createStoryStateNewAction';
+} from '../actions/creators/createStoryStateNewAction';
 import {
   getTag,
 } from '../tags/getTag';

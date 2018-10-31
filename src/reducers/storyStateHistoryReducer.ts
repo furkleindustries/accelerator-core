@@ -6,7 +6,7 @@ import {
 } from '../actions/IStoryResetAction';
 import {
   IStoryRewindAction,
-} from 'src/actions/IStoryRewindAction';
+} from '../actions/IStoryRewindAction';
 import {
   IStoryStateInstance,
 } from '../state/IStoryStateInstance';
@@ -15,7 +15,7 @@ import {
 } from '../actions/IStoryStateNewAction';
 import {
   IStoryStateUpdateAction,
-} from 'src/actions/IStoryStateUpdateAction';
+} from '../actions/IStoryStateUpdateAction';
 import {
   TStoryStateHistory,
 } from '../state/TStoryStateHistory';

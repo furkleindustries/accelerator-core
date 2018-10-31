@@ -9,7 +9,7 @@ import {
 } from '../../actions/IStoryStateUpdateAction';
 import {
   Tag,
-} from 'src/tags/Tag';
+} from '../../tags/Tag';
 
 export interface IPassageContainerDispatchProps {
   dispatch(action: IAction): IAction;
