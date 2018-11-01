@@ -21,9 +21,6 @@ import { render, } from 'react-snapshot';
 
 import './index.scss';
 
-// @ts-ignore
-import passagesManifest from '../passages/passages-manifest.json';
-
 /* Allow state to be saved on prerender and reused when the window is opened.
  * This will prevent a lot of unneeded function calls and logic. */
 // @ts-ignore
@@ -34,7 +31,7 @@ const store = (() => {
   }
 
   const createdStore = createStore();
-  initializeStore(createdStore, passagesManifest);
+  initializeStore(createdStore);
   if (window) {
     // @ts-ignore
     window.REDUX_STATE = JSON.stringify(createdStore.getState());

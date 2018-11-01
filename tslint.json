@@ -10,6 +10,7 @@
     ]
   },
   "rules": {
+    "jsx-self-close": false,
     "no-console": false,
     "no-debugger": false,
     "object-literal-sort-keys": false,

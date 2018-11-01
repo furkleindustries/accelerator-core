@@ -5,9 +5,6 @@ import {
   passageHistoryReducer,
 } from './passageHistoryReducer';
 import {
-  passagesReducer,
-} from './passagesReducer';
-import {
   combineReducers,
 } from 'redux';
 import {
@@ -18,7 +15,6 @@ import {
 } from './storyStateHistoryReducer';
 
 export const rootReducer = combineReducers({
-  passages: passagesReducer,
   currentPassageName: currentPassageNameReducer,
   startPassageName: startPassageNameReducer,
   passageHistory: passageHistoryReducer,

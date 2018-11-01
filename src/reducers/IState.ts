@@ -1,7 +1,4 @@
 import {
-  IPassagesMap,
-} from '../passages/IPassagesMap';
-import {
   TPassageHistory,
 } from '../state/TPassageHistory';
 import {
@@ -10,7 +7,6 @@ import {
 
 export interface IState {
   currentPassageName: string;
-  passages: IPassagesMap;
   passageHistory: TPassageHistory;
   startPassageName: string;
   storyStateHistory: TStoryStateHistory;

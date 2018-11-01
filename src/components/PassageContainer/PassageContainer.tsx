@@ -5,6 +5,9 @@ import {
   createStoryStateUpdateAction,
 } from '../../actions/creators/createStoryStateUpdateAction';
 import {
+  getPassagesMap,
+} from '../../functions/getPassagesMap';
+import {
   getTag,
 } from '../../tags/getTag';
 import {
@@ -105,11 +108,14 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
 export const mapStateToProps: MapStateToProps<IPassageContainerStateProps, IPassageContainerOwnProps, IState> = ({
   currentPassageName,
   passageHistory,
-  passages,
   startPassageName,
   storyStateHistory,
 }) => {
-  if (!(currentPassageName in passages)) {
+  const {
+    passagesMap,
+  } = getPassagesMap();
+  
+  if (!(currentPassageName in passagesMap)) {
     const errStr = strings.PASSAGE_NOT_FOUND
       .replace('%NAME%', currentPassageName);
 
@@ -117,10 +123,10 @@ export const mapStateToProps: MapStateToProps<IPassageContainerStateProps, IPass
   }
 
   return {
-    currentPassage: passages[currentPassageName],
+    currentPassage: passagesMap[currentPassageName],
     currentStoryState: storyStateHistory[0],
     lastLinkTags: passageHistory[0].linkTags,
-    passages,
+    passages: passagesMap,
     startPassageName,
   };
 };
@@ -131,15 +137,23 @@ export const mapDispatchToProps: MapDispatchToProps<IPassageContainerDispatchPro
   },
 
   navigateTo(passageName, tags?) {
+    const {
+      passagesMap,
+    } = getPassagesMap();
+
     navigate({
       dispatch: reduxDispatch,
-      passage: props.passages[passageName],
+      passage: passagesMap[passageName],
       tags: tags || [],
     });
   },
 
   restart() {
-    reset(reduxDispatch, props.startPassageName);
+    const {
+      startPassage,
+    } = getPassagesMap();
+    
+    reset(reduxDispatch, startPassage.name);
   },
 
   setStoryState(updatedStateProps) {

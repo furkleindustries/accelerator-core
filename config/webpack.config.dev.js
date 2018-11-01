@@ -119,6 +119,8 @@ module.exports = {
         include: [
           paths.appSrc,
           paths.passagesSrc,
+          paths.headersSrc,
+          paths.footersSrc,
         ],
       },
       {
@@ -142,6 +144,8 @@ module.exports = {
             include: [
               paths.appSrc,
               paths.passagesSrc,
+              paths.headersSrc,
+              paths.footersSrc,
             ],
             loader: require.resolve('babel-loader'),
             options: {
@@ -155,6 +159,8 @@ module.exports = {
             include: [
               paths.appSrc,
               paths.passagesSrc,
+              paths.headersSrc,
+              paths.footersSrc,
             ],
             use: [
               {
