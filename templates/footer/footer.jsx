@@ -7,9 +7,9 @@ import * as bundle from '../../../src/passages/bundle';
 import _styles from './%NAME%.scss';
 const styles = _styles || {};
 
-/* The header gets all the same props as a normal passage. */
-class Component extends React.PureComponent<bundle.passages.IPassageProps> {
-  public render() {
+/* The footer gets all the same props as a normal passage. */
+class Component extends React.PureComponent {
+  render() {
     const {
       lastLinkTags,
       passageObject,
@@ -21,17 +21,17 @@ class Component extends React.PureComponent<bundle.passages.IPassageProps> {
 
     return (
       <div
-        className={`${styles[passageObject.name]} ${bundle.styles.header} header`}
+        className={`${styles[passageObject.name]} ${bundle.styles.footer} footer`}
       >
       </div>
     );
   }
 }
 
-const passage: bundle.passages.IHeader = {
-  /* string: the story-unique name of the header. */
+const passage = {
+  /* string: the name of the footer. */
   name: '%NAME%',
-
+  
   /* ComponentClass<IPassageProps, any> | SFCFactory<IPassageProps>:
    * the content that should be displayed. Should be formatted in JSX style. */
   contents: Component,

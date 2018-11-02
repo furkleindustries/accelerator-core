@@ -29,7 +29,7 @@ class Component extends React.PureComponent<bundle.passages.IPassageProps> {
 }
 
 const passage: bundle.passages.IFooter = {
-  /* string: the story-unique name of the passage. */
+  /* string: the name of the footer. */
   name: '%NAME%',
   
   /* ComponentClass<IPassageProps, any> | SFCFactory<IPassageProps>:
