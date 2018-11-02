@@ -15,11 +15,11 @@ import {
 } from '../tags/Tag';
 
 export interface IPassageProps {
-  lastLinkTags: Tag[];
+  lastLinkTags: Readonly<Tag[]>;
   passageObject: IPassage;
   storyState: IStoryStateInstance;
   dispatch(action: IAction): IAction;
-  navigateTo(passageName: string, tags?: Tag[]): void;
+  navigateTo(passageName: string, tags?: Readonly<Tag[]>): void;
   restart(): void;
   setStoryState(newState: Partial<IStoryStateInstance>): IStoryStateUpdateAction;
 }

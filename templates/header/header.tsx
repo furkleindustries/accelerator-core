@@ -1,7 +1,7 @@
 /* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
 import * as React from 'react';
 
-import * as bundle from '../../../src/passages/bundle';
+import * as bundle from '../../src/passages/bundle';
 
 // @ts-ignore
 import _styles from './%NAME%.scss';
@@ -29,7 +29,7 @@ class Component extends React.PureComponent<bundle.passages.IPassageProps> {
 }
 
 const passage: bundle.passages.IHeader = {
-  /* string: the story-unique name of the header. */
+  /* string: the name of the header. */
   name: '%NAME%',
 
   /* ComponentClass<IPassageProps, any> | SFCFactory<IPassageProps>:

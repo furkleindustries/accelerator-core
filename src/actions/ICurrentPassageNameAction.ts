@@ -6,8 +6,8 @@ import {
 } from './IAction';
 
 export interface ICurrentPassageNameAction extends IAction {
-  type: ActionTypes.CurrentPassageName;
-  value: string;
+  readonly type: ActionTypes.CurrentPassageName;
+  readonly value: string;
 }
 
 export default ICurrentPassageNameAction;
