@@ -87,7 +87,6 @@ class Component extends React.PureComponent<bundle.passages.IPassageProps> {
 
   public render() {
     const {
-      lastLinkTags,
       passageObject,
       storyState,
     } = this.props;

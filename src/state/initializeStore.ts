@@ -15,7 +15,7 @@ import {
 } from '../actions/creators/createStoryStateNewAction';
 import {
   getPassagesMap,
-} from './getPassagesMap';
+} from '../passages/getPassagesMap';
 import {
   Store,
 } from 'redux';

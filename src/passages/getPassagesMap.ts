@@ -3,10 +3,10 @@ import {
 } from './checkPassageObject';
 import {
   IPassage,
-} from '../passages/IPassage';
+} from './IPassage';
 import {
   IPassagesMap,
-} from '../passages/IPassagesMap';
+} from './IPassagesMap';
 
 // @ts-ignore
 import passagesManifest from '../../passages/passages-manifest.json';

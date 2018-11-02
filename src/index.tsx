@@ -3,10 +3,10 @@ import {
 } from './components/App/App';
 import {
   createStore,
-} from './functions/createStore';
+} from './state/createStore';
 import {
   initializeStore,
-} from './functions/initializeStore';
+} from './state/initializeStore';
 import {
   Provider,
 } from 'react-redux';
@@ -22,7 +22,7 @@ import { render, } from 'react-snapshot';
 import './index.scss';
 
 /* Allow state to be saved on prerender and reused when the window is opened.
- * This will prevent a lot of unneeded function calls and logic. */
+ * This will avoid a lot of superfluous logic. */
 // @ts-ignore
 const prerenderedState = window && window.REDUX_STATE;
 const store = (() => {

@@ -6,7 +6,7 @@ import * as React from 'react';
 
 import passage from './%NAME%';
 
-import * as bundle from '../../src/passages/bundle';
+import * as bundle from '../../../src/passages/bundle';
 
 const {
   name,

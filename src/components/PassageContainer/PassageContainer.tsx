@@ -6,7 +6,7 @@ import {
 } from '../../actions/creators/createStoryStateUpdateAction';
 import {
   getPassagesMap,
-} from '../../functions/getPassagesMap';
+} from '../../passages/getPassagesMap';
 import {
   getTag,
 } from '../../tags/getTag';

@@ -22,8 +22,8 @@ export const strings = {
     'The passage object\'s tags property was not an array.',
 };
 
-/* This function returns an error string if the passage fails, and nothing
- * if it is a normal passage object. */
+/* This function returns an error string if the passage fails, and null if it is
+ * a normal passage object. */
 export const checkPassageObject = (passage: any) => {
   if (!passage || typeof passage !== 'object') {
     throw strings.PASSAGE_INVALID;
@@ -49,3 +49,5 @@ export const checkPassageObject = (passage: any) => {
 
   return null;
 }
+
+export default checkPassageObject;

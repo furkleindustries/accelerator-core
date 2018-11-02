@@ -1,14 +1,14 @@
 /* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
 import * as React from 'react';
 
-import * as bundle from '../../src/passages/bundle';
+import * as bundle from '../../../src/passages/bundle';
 
 // @ts-ignore
 import _styles from './%NAME%.scss';
 const styles = _styles || {};
 
-class Component extends React.PureComponent<bundle.passages.IPassageProps> {
-  public render() {
+class Component extends React.PureComponent {
+  render() {
     const {
       lastLinkTags,
       passageObject,
@@ -27,7 +27,7 @@ class Component extends React.PureComponent<bundle.passages.IPassageProps> {
   }
 }
 
-const passage: bundle.passages.IPassage = {
+const passage = {
   /* string: the story-unique name of the passage. */
   name: '%NAME%',
   
@@ -35,7 +35,7 @@ const passage: bundle.passages.IPassage = {
    * each time a passage is displayed. */
   title: '',
   
-  /* Tag[]: an optional collection of either plain strings or
+  /* array: an optional collection of either plain strings or
    * { key: string, value: string, } objects. */
   tags: [],
 

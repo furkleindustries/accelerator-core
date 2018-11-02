@@ -1,6 +1,6 @@
 import {
   getPassagesMap,
-} from '../../functions/getPassagesMap';
+} from '../../passages/getPassagesMap';
 import {
   ILinkDispatchProps,
 } from './ILinkDispatchProps';
