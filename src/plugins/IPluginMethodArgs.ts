@@ -11,18 +11,28 @@ import {
   IStoryStateUpdateAction,
 } from '../actions/IStoryStateUpdateAction';
 import {
-  Store,
-} from 'redux';
-import {
   Tag,
 } from '../tags/Tag';
+import {
+  ReactNode,
+} from 'react';
+import {
+  Store,
+} from 'redux';
 
 export interface IPluginMethodArgs {
   currentPassageObject: IPassage;
   currentStoryState: IStoryStateInstance;
   lastLinkTags: Readonly<Tag[]>;
-  setStoryState(newState: Partial<IStoryStateInstance>): IStoryStateUpdateAction;
+}
+
+export interface IPluginArgsWithChildren {
+  children: ReactNode;
+}
+
+export interface IPluginArgsWithState {
   store: Store<IState>;
+  setStoryState(newState: Partial<IStoryStateInstance>): IStoryStateUpdateAction;
 }
 
 export default IPluginMethodArgs;

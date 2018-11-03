@@ -10,6 +10,7 @@
     ]
   },
   "rules": {
+    "interface-name": false,
     "jsx-self-close": false,
     "no-console": false,
     "no-debugger": false,

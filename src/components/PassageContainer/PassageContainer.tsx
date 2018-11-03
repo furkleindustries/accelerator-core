@@ -14,6 +14,12 @@ import {
   IAction,
 } from '../../actions/IAction';
 import {
+  IFooter,
+} from '../../passages/IFooter';
+import {
+  IHeader,
+} from '../../passages/IHeader';
+import {
   IPassageContainerDispatchProps,
 } from './IPassageContainerDispatchProps';
 import {
@@ -29,12 +35,16 @@ import {
   IState,
 } from '../../reducers/IState';
 import {
+  IStoryStateInstance,
+} from '../../state/IStoryStateInstance';
+import {
   navigate,
 } from '../../state/navigate';
 import {
   connect,
   MapDispatchToProps,
   MapStateToProps,
+  MergeProps,
 } from 'react-redux';
 import {
   Dispatch,
@@ -42,21 +52,29 @@ import {
 import {
   reset,
 } from '../../state/reset';
+import {
+  TStoryStateHistory,
+} from '../../state/TStoryStateHistory';
 
 import * as React from 'react';
 
 // @ts-ignore
 import _styles from './PassageContainer.scss';
+import IPluginExport from 'src/plugins/IPluginExport';
 const styles = _styles || {};
 
 export const strings = {
-  PASSAGE_NOT_FOUND:
-    'No passage could be found in the passages map with the name %NAME%.',
-  
-    CANT_RENDER_NORENDER_PASSAGE:
+  COMPONENT_CONSTRUCTOR_NOT_FOUND:
+    'The contents property of the passage object passed to PassageContainer ' +
+    'was not found.',
+
+  CANT_RENDER_NORENDER_PASSAGE:
     'A passage with the tag "noRender" was passed to PassageContainer. ' +
     'These passages cannot be rendered and should be used solely for ' +
     'exporting reusable content.',
+  
+  PASSAGE_NOT_FOUND:
+    'No passage could be found in the passages map with the name %NAME%.',
 };
 
 export class PassageContainer extends React.PureComponent<IPassageContainerOwnProps & IPassageContainerStateProps & IPassageContainerDispatchProps> {
@@ -72,10 +90,11 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
       navigateTo,
       restart,
       setStoryState,
-      currentStoryState,
     } = this.props;
 
-    if (Array.isArray(currentPassage.tags) &&
+    if (!contents) {
+      throw new Error(strings.COMPONENT_CONSTRUCTOR_NOT_FOUND);
+    } else if (Array.isArray(currentPassage.tags) &&
         getTag(currentPassage.tags, BuiltInTags.NoRender))
     {
       throw new Error(strings.CANT_RENDER_NORENDER_PASSAGE);
@@ -87,29 +106,70 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
       navigateTo,
       restart,
       setStoryState,
+      storyState: {},
       passageObject: currentPassage,
-      storyState: currentStoryState,
     };
 
-    const child = React.createElement(
-      contents as React.ComponentClass<IPassageProps> | React.SFCFactory<IPassageProps>,
-      propsPassedDown,
-    );
+    /* If we were to pass the story state prop directly to the passage
+     * component, PassageContainer would rerender every time story state was
+     * updated. This would be expensive, and also PassageContainer is intended
+     * to render only once per passage load. Instead, we pass down the props
+     * which are never expected to change (all but the story state), and create
+     * a connected component which will pass the story state directly to the
+     * passage. */
+    interface StateProps { storyState: IStoryStateInstance, };
+    const passageMapStateToProps: MapStateToProps<StateProps, {}, IState> = ({
+      storyStateHistory,
+    }: {
+      storyStateHistory: TStoryStateHistory
+    }) => ({
+      storyState: storyStateHistory[0],
+    });
+
+    const plugins: IPluginExport[] = [];
+    interface OwnProps { children: React.ReactNode };
+    const passageMergeProps: MergeProps<StateProps, null, OwnProps, IPassageProps> = (stateProps, _, ownProps) => {
+      /* Apply the beforeRender lifecycle method of each plugin. */
+      let childrenAfterPlugins = ownProps.children;
+      plugins.forEach((pluginExport) => {
+        if (typeof pluginExport.contents.beforeRender === 'function') {
+          childrenAfterPlugins = pluginExport.contents.beforeRender({
+            lastLinkTags,
+            children: childrenAfterPlugins,
+            currentPassageObject: currentPassage,
+            currentStoryState: stateProps.storyState,
+          });
+        }
+      });
+
+      return Object.assign({}, ownProps, propsPassedDown, stateProps, {
+        childrenAfterPlugins,
+      });
+    }
+    
+    const ConnectedPassage = connect(
+      passageMapStateToProps,
+      null,
+      passageMergeProps
+    )(contents);
+
+    const headers: IHeader[] = [];
+    const footers: IFooter[] = [];
 
     return (
       <div className={`${styles.passageContainer} passageContainer`}>
-        {child}
+        {headers}
+        <ConnectedPassage />
+        {footers}
       </div>
     );
   }
 }
 
-
 export const mapStateToProps: MapStateToProps<IPassageContainerStateProps, IPassageContainerOwnProps, IState> = ({
   currentPassageName,
   passageHistory,
   startPassageName,
-  storyStateHistory,
 }) => {
   const {
     passagesMap,
@@ -124,7 +184,6 @@ export const mapStateToProps: MapStateToProps<IPassageContainerStateProps, IPass
 
   return {
     currentPassage: passagesMap[currentPassageName],
-    currentStoryState: storyStateHistory[0],
     lastLinkTags: passageHistory[0].linkTags,
     passages: passagesMap,
     startPassageName,

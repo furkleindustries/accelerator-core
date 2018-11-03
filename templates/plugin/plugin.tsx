@@ -2,9 +2,10 @@
 import * as React from 'react';
 
 import * as bundle from '../../src/passages/bundle';
+import { IPluginMethodStateMutationArgs, IPluginMethodChildArgs } from '../../src/passages/pluginsBundle';
 
 class Plugin implements bundle.plugins.IPlugin {
-  public beforeComponentDidMount(args: bundle.plugins.IPluginMethodArgs) {
+  public atStoryInit(args: bundle.plugins.IPluginMethodBaseArgs & bundle.plugins.IPluginMethodStateMutationArgs) {
     const {
       currentPassageObject,
       currentStoryState,
@@ -14,7 +15,7 @@ class Plugin implements bundle.plugins.IPlugin {
     } = args;
   }
 
-  public afterComponentDidMount(args: bundle.plugins.IPluginMethodArgs) {
+  public beforePassageChange(args: bundle.plugins.IPluginMethodBaseArgs & IPluginMethodStateMutationArgs) {
     const {
       currentPassageObject,
       currentStoryState,
@@ -27,20 +28,18 @@ class Plugin implements bundle.plugins.IPlugin {
   /* The beforeRender method gets one extra argument compared to the other methods:
    * child, the rendered passage, and returns this same element after any
    * modification. */
-  public beforeRender(args: bundle.plugins.IPluginMethodArgs & { child: React.ReactElement<bundle.passages.IPassageProps>}) {
+  public beforeRender(args: bundle.plugins.IPluginMethodBaseArgs & IPluginMethodChildArgs) {
     const {
       currentPassageObject,
       currentStoryState,
-      child,
+      children,
       lastLinkTags,
-      setStoryState,
-      store,
     } = args;
     
-    return child;
+    return children;
   }
 
-  public beforeComponentDidUpdate(args: bundle.plugins.IPluginMethodArgs) {
+  public afterPassageChange(args: bundle.plugins.IPluginMethodBaseArgs & IPluginMethodStateMutationArgs) {
     const {
       currentPassageObject,
       currentStoryState,
@@ -50,13 +49,11 @@ class Plugin implements bundle.plugins.IPlugin {
     } = args;
   }
 
-  public afterComponentDidUpdate(args: bundle.plugins.IPluginMethodArgs) {
+  public beforeRestart(args: bundle.plugins.IPluginMethodBaseArgs) {
     const {
       currentPassageObject,
       currentStoryState,
       lastLinkTags,
-      setStoryState,
-      store,
     } = args;
   }
 }

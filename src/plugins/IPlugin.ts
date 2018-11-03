@@ -2,18 +2,20 @@ import {
   IPassageProps,
 } from '../passages/IPassageProps';
 import {
-  IPluginMethodArgs,
+  IPluginMethodChildArgs,
+  IPluginMethodStateMutationArgs,
+  IPluginMethodBaseArgs,
 } from './IPluginMethodArgs';
 import {
-  ReactElement,
+  ReactNode,
 } from 'react';
 
 export interface IPlugin {
-  beforeComponentDidMount?(args: IPluginMethodArgs): void;
-  afterComponentDidMount?(args: IPluginMethodArgs): void;
-  beforeRender?(args: IPluginMethodArgs & { child: ReactElement<IPassageProps>, }): ReactElement<IPassageProps>;
-  beforeComponentDidUpdate?(args: IPluginMethodArgs): void;
-  afterComponentDidUpdate?(args: IPluginMethodArgs): void;
+  atStoryInit?(args: IPluginMethodBaseArgs & IPluginMethodStateMutationArgs): void;
+  beforePassageChange?(args: IPluginMethodBaseArgs & IPluginMethodStateMutationArgs): void;
+  beforeRender?(args: IPluginMethodBaseArgs & IPluginMethodChildArgs): ReactNode;
+  afterPassageChange?(args: IPluginMethodBaseArgs & IPluginMethodStateMutationArgs): void;
+  beforeRestart?(args: IPluginMethodBaseArgs & IPluginMethodStateMutationArgs): void;
 }
 
 export default IPlugin;
