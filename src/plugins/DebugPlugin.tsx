@@ -2,28 +2,24 @@ import {
   IPlugin,
 } from './IPlugin';
 import {
-  IPluginMethodBaseArgs, IPluginMethodChildArgs,
+  IPluginMethodBaseArgs,
+  IPluginMethodChildArgs,
+  IPluginMethodStateMutationArgs,
 } from '../passages/pluginsBundle';
-import {
-  IStoryStateInstance,
-} from '../state/IStoryStateInstance';
 
 import * as React from 'react';
+import { IPluginMethodStateChangingArgs } from './IPluginMethodArgs';
 
 export class DebugPlugin implements IPlugin {
-  private lastBeforeComponentDidMountState: IStoryStateInstance;
-
-  public beforeComponentDidMount(args: IPluginMethodBaseArgs) {
+  public afterStoryInit(args: IPluginMethodBaseArgs & IPluginMethodStateMutationArgs) {
     const {
       currentPassageObject,
       currentStoryState,
       lastLinkTags,
     } = args;
 
-    this.lastBeforeComponentDidMountState = currentStoryState;
-
-    console.log('---- beforeComponentDidMount ----');
-    console.log('PassageContainer is mounting.');
+    console.log('---- atStoryInit ----');
+    console.log('The story is initializing.');
     console.log(`Current passage is: ${currentPassageObject.name}`);
     console.log('The story state at mount is:\n' +
                 `${JSON.stringify(currentStoryState, null, 2)}`);
@@ -31,20 +27,15 @@ export class DebugPlugin implements IPlugin {
                 JSON.stringify(lastLinkTags, null, 2));
   }
 
-  public afterComponentDidMount(args: IPluginMethodBaseArgs) {
+  public beforePassageChange(args: IPluginMethodBaseArgs) {
     const {
-      currentStoryState,
+      currentPassageObject: {
+        name,
+      },
     } = args;
 
-    console.log('---- afterComponentDidMount ----');
-    console.log('PassageContainer has mounted.');
-    console.log('The story state after mount is:');
-    const stringified = JSON.stringify(currentStoryState, null, 2);
-    if (stringified === JSON.stringify(this.lastBeforeComponentDidMountState, null, 2)) {
-      console.log('Identical to before mounting.');
-    } else {
-      console.log(stringified);
-    }
+    console.log('---- beforePassageChange ----');
+    console.log(`PassageContainer will render the passage named ${name}.`);
   }
 
   public beforeRender(args: IPluginMethodBaseArgs & IPluginMethodChildArgs) {
@@ -59,18 +50,60 @@ export class DebugPlugin implements IPlugin {
     } = args;
 
     console.log('---- beforeRender ----');
-    console.log('PassageContainer is rendering a new passage.');
-    console.log(`The passage being rendered is: ${name}`);
-    console.log(`The passage's tags are:\n${JSON.stringify(tags, null, 2)}`);
+    console.log(`PassageContainer is rendering the passage named ${name}.`);
+    console.log('The passage\'s tags are:');
+    console.log(JSON.stringify(tags, null, 2));
     console.log('The story state before render is:');
     console.log(JSON.stringify(currentStoryState, null, 2));
-    console.log(`The story state at render`);
 
-    const childs: React.ReactChild[] = [
-      <div key={1}>foo</div>
+    const debugChildren: React.ReactChild[] = [
+      <p key={0} className="debugStateTitle">Current state:</p>,
+      <div className="debugStateReadout" key={1}>{
+        JSON.stringify(currentStoryState, null, 2)
+      }</div>
     ];
 
-    return childs.concat(React.Children.toArray(children));
+    return React.Children.toArray(children).concat(debugChildren);
+  }
+
+  public afterPassageChange(args: IPluginMethodBaseArgs) {
+    console.log('---- afterRender ----');
+    console.log(`PassageContainer has rendered the passage named ${name}.`);
+  }
+
+  public afterStoryStateChange(args: IPluginMethodBaseArgs & IPluginMethodStateChangingArgs) {
+    console.log('---- afterStoryStateChange ----');
+    console.log('The following modifications to the story state are being made:');
+    console.log(JSON.stringify(args.updatedStateProps));
+
+    if (window &&
+        window.document &&
+        typeof window.document.querySelector === 'function')
+    {
+      const {
+        currentStoryState,
+      } = args;
+
+      const readout = window.document.querySelector('.debugStateReadout');
+      if (readout) {
+        readout.textContent = JSON.stringify(currentStoryState, null, 2);
+      }
+    }
+  }
+
+  public beforeRestart(args: IPluginMethodBaseArgs) {
+    const {
+      currentPassageObject: {
+        name,
+      },
+      currentStoryState,
+    } = args;
+
+    console.log('---- beforeRestart ----');
+    console.log('The story is restarting.');
+    console.log(`The passage on which the user restarted was named ${name}.`);
+    console.log('The story state at restart was:');
+    console.log(JSON.stringify(currentStoryState, null, 2));
   }
 }
 

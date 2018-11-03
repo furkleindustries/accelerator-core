@@ -5,8 +5,14 @@ import {
   createStore,
 } from './state/createStore';
 import {
+  getPluginsList,
+} from './plugins/getPluginsList';
+import {
   initializeStore,
 } from './state/initializeStore';
+import {
+  IState,
+} from './reducers/IState';
 import {
   Provider,
 } from 'react-redux';
@@ -20,6 +26,8 @@ import * as React from 'react';
 import { render, } from 'react-snapshot';
 
 import './index.scss';
+import getPassagesMap from './passages/getPassagesMap';
+import createStoryStateUpdateAction from './actions/creators/createStoryStateUpdateAction';
 
 /* Allow state to be saved on prerender and reused when the window is opened.
  * This will avoid a lot of superfluous logic. */
@@ -32,13 +40,31 @@ const store = (() => {
 
   const createdStore = createStore();
   initializeStore(createdStore);
-  if (window) {
-    // @ts-ignore
-    window.REDUX_STATE = JSON.stringify(createdStore.getState());
-  }
-
   return createdStore;
 })();
+
+let state: IState = prerenderedState;
+if (!state) {
+  state = store.getState();
+  // @ts-ignore
+  window.REDUX_STATE = JSON.stringify(state);
+}
+
+const passages = getPassagesMap();
+const plugins = getPluginsList();
+plugins.forEach((plugin) => {
+  if (typeof plugin.afterStoryInit === 'function') {
+    plugin.afterStoryInit({
+      currentPassageObject: passages[state.currentPassageName],
+      currentStoryState: state.storyStateHistory[0],
+      lastLinkTags: state.passageHistory[0].linkTags,
+      store,
+      setStoryState(updatedStateProps) {
+        return store.dispatch(createStoryStateUpdateAction(updatedStateProps));
+      },
+    });
+  }
+});
 
 render(
   <Provider store={store}>

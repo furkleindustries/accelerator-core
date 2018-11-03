@@ -32,7 +32,11 @@ export interface IPluginMethodChildArgs {
 
 export interface IPluginMethodStateMutationArgs {
   store: Store<IState>;
-  setStoryState(newState: Partial<IStoryStateInstance>): IStoryStateUpdateAction;
+  setStoryState(updatedStateProps: Partial<IStoryStateInstance>): IStoryStateUpdateAction;
+}
+
+export interface IPluginMethodStateChangingArgs {
+  updatedStateProps: Partial<IStoryStateInstance>;
 }
 
 export default IPluginMethodBaseArgs;

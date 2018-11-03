@@ -11,6 +11,9 @@ import {
   IStoryStateInstance,
 } from '../state/IStoryStateInstance';
 import {
+  Dispatch,
+} from 'redux';
+import {
   Tag,
 } from '../tags/Tag';
 
@@ -18,7 +21,7 @@ export interface IPassageProps {
   lastLinkTags: Readonly<Tag[]>;
   passageObject: IPassage;
   storyState: IStoryStateInstance;
-  dispatch(action: IAction): IAction;
+  dispatch: Dispatch<IAction>;
   navigateTo(passageName: string, tags?: Readonly<Tag[]>): void;
   restart(): void;
   setStoryState(newState: Partial<IStoryStateInstance>): IStoryStateUpdateAction;

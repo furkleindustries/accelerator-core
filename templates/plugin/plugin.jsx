@@ -2,13 +2,10 @@
 import * as React from 'react';
 
 import * as bundle from '../../src/passages/bundle';
-
-// @ts-ignore
-import _styles from './%NAME%.scss';
-const styles = _styles || {};
+import { IPluginMethodStateMutationArgs, IPluginMethodChildArgs } from '../../src/passages/pluginsBundle';
 
 class Plugin {
-  beforeComponentDidMount(args) {
+  atStoryInit(args) {
     const {
       currentPassageObject,
       currentStoryState,
@@ -18,7 +15,7 @@ class Plugin {
     } = args;
   }
 
-  afterComponentDidMount(args) {
+  beforePassageChange(args) {
     const {
       currentPassageObject,
       currentStoryState,
@@ -35,16 +32,14 @@ class Plugin {
     const {
       currentPassageObject,
       currentStoryState,
-      child,
+      children,
       lastLinkTags,
-      setStoryState,
-      store,
     } = args;
-
-    return child;
+    
+    return children;
   }
 
-  beforeComponentDidUpdate(args) {
+  afterPassageChange(args) {
     const {
       currentPassageObject,
       currentStoryState,
@@ -54,13 +49,11 @@ class Plugin {
     } = args;
   }
 
-  afterComponentDidUpdate(args) {
+  beforeRestart(args) {
     const {
       currentPassageObject,
       currentStoryState,
       lastLinkTags,
-      setStoryState,
-      store,
     } = args;
   }
 }

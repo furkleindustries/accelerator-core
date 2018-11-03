@@ -14,9 +14,6 @@ import {
   getPassagesMap,
 } from '../../passages/getPassagesMap';
 import {
-  getPluginsList,
-} from '../../plugins/getPluginsList';
-import {
   getTag,
 } from '../../tags/getTag';
 import {
@@ -41,9 +38,6 @@ import {
   IPassageProps,
 } from '../../passages/IPassageProps';
 import {
-  IPlugin,
-} from '../../plugins/IPlugin';
-import {
   IState,
 } from '../../reducers/IState';
 import {
@@ -52,6 +46,9 @@ import {
 import {
   navigate,
 } from '../../state/navigate';
+import {
+  ConnectedPassagePluginsWrapper,
+} from '../PassagePluginsWrapper/PassagePluginsWrapper';
 import {
   connect,
   MapDispatchToProps,
@@ -72,7 +69,8 @@ import * as React from 'react';
 
 // @ts-ignore
 import _styles from './PassageContainer.scss';
-import DebugPlugin from 'src/plugins/DebugPlugin';
+import getPluginsList from 'src/plugins/getPluginsList';
+import IStoryStateUpdateAction from 'src/actions/IStoryStateUpdateAction';
 const styles = _styles || {};
 
 export const strings = {
@@ -100,8 +98,6 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
       dispatch,
       lastLinkTags,
       navigateTo,
-      restart,
-      setStoryState,
     } = this.props;
 
     if (!contents) {
@@ -116,10 +112,16 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
       dispatch,
       lastLinkTags,
       navigateTo,
-      restart,
-      setStoryState,
       storyState: {},
       passageObject: currentPassage,
+
+      restart() {
+        throw new Error('This should never make it to the passage.');
+      },
+
+      setStoryState() {
+        throw new Error('This should never make it to the passage.');
+      },
     };
 
     /* If we were to pass the story state prop directly to the passage
@@ -138,59 +140,70 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
       storyState: storyStateHistory[0],
     });
 
-    const passageMergeProps: MergeProps<StateProps, any, any, IPassageProps> = (stateProps, dispatchProps, ownProps) => {
-      return Object.assign({}, ownProps, dispatchProps, propsPassedDown, stateProps);
+    interface DispatchProps {
+      setStoryState(updatedStateProps: Partial<IStoryStateInstance>): IStoryStateUpdateAction;
     }
-    
+
+    const passageMapDispatchToProps: MapDispatchToProps<DispatchProps, { currentPassage: string }> = (dispatch, props) => ({
+      setStoryState(updatedStateProps) {
+        const action = createStoryStateUpdateAction(updatedStateProps);
+        const ret = dispatch(action);
+        const plugins = getPluginsList();
+        plugins.forEach((plugin) => {
+          if (typeof plugin.afterStoryStateChange === 'function') {
+            plugin.afterStoryStateChange({
+              updatedStateProps,
+              currentPassageObject: props.currentPassage,
+              currentStoryState: {},
+              lastLinkTags: props.lastLinkTags,
+            });
+          }
+        });
+
+        return ret;
+      },
+    });
+
+    const passageMergeProps: MergeProps<StateProps, any, any, IPassageProps> = (stateProps, dispatchProps, ownProps) => {
+      return Object.assign({}, ownProps, dispatchProps, propsPassedDown, stateProps, {
+          restart() {
+            const {
+              startPassage,
+            } = getPassagesMap();
+
+            reset({
+              currentPassageObject: propsPassedDown.passageObject,
+              currentStoryState: stateProps.storyState,
+              dispatch: propsPassedDown.dispatch,
+              lastLinkTags: propsPassedDown.lastLinkTags,
+              startPassageName: startPassage.name,
+            });
+          },
+      });
+    }
+
     const ConnectedPassage = connect(
       passageMapStateToProps,
-      null,
+      passageMapDispatchToProps,
       passageMergeProps
     )(contents);
-
-    /* Allows plugin markup to be injected alongside passage content as well
-     * as ensuring plugins are only run once per render. */
-    const plugins: IPlugin[] = (() => {
-      if (process && process.env && process.env.NODE_ENV === 'development') {
-        return ([ new DebugPlugin() ] as IPlugin[]).concat(getPluginsList());
-      }
-
-      return getPluginsList();
-    })();
-
-    const PassageWrapper = (props: any) => {
-      let children = props.children;
-      /* Apply the beforeRender lifecycle method of each plugin. */
-      plugins.forEach((plugin) => {
-        if (typeof plugin.beforeRender === 'function') {
-          children = plugin.beforeRender({
-            children,
-            lastLinkTags,
-            currentPassageObject: currentPassage,
-            currentStoryState: props.storyState,
-          });
-        }
-      });        
-      
-      return children;
-    };
 
     const headers: IHeader[] = getHeadersList();
     const footers: IFooter[] = getFootersList();
 
     return (
       <div className={`${styles.passageContainer} passageContainer`}>
-        <div className={`${styles.headersContainer} headersContainer`}>
-          {headers}
-        </div>
+        <ConnectedPassagePluginsWrapper>
+          <div className={`${styles.headersContainer} headersContainer`}>
+            {headers}
+          </div>
 
-        <PassageWrapper>
           <ConnectedPassage />
-        </PassageWrapper>
 
-        <div className={`${styles.footersContainer} footersContainer`}>
-          {footers}
-        </div>
+          <div className={`${styles.footersContainer} footersContainer`}>
+            {footers}
+          </div>
+        </ConnectedPassagePluginsWrapper>
       </div>
     );
   }
@@ -221,9 +234,7 @@ export const mapStateToProps: MapStateToProps<IPassageContainerStateProps, IPass
 };
 
 export const mapDispatchToProps: MapDispatchToProps<IPassageContainerDispatchProps, IPassageContainerOwnProps & IPassageContainerStateProps> = (reduxDispatch: Dispatch<IAction>, props) => ({
-  dispatch(action) {
-    return reduxDispatch(action);
-  },
+  dispatch: reduxDispatch,
 
   navigateTo(passageName, tags?) {
     const {
@@ -236,20 +247,7 @@ export const mapDispatchToProps: MapDispatchToProps<IPassageContainerDispatchPro
       tags: tags || [],
     });
   },
-
-  restart() {
-    const {
-      startPassage,
-    } = getPassagesMap();
-    
-    reset(reduxDispatch, startPassage.name);
-  },
-
-  setStoryState(updatedStateProps) {
-    const action = createStoryStateUpdateAction(updatedStateProps);
-    return reduxDispatch(action);
-  },
-})
+});
 
 export const PassageContainerConnected = connect(mapStateToProps, mapDispatchToProps)(PassageContainer);
 
