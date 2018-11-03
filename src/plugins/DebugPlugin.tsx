@@ -1,11 +1,8 @@
 import {
-  IPassageProps,
-} from '../passages/IPassageProps';
-import {
   IPlugin,
 } from './IPlugin';
 import {
-  IPluginMethodBaseArgs,
+  IPluginMethodBaseArgs, IPluginMethodChildArgs,
 } from '../passages/pluginsBundle';
 import {
   IStoryStateInstance,
@@ -50,9 +47,9 @@ export class DebugPlugin implements IPlugin {
     }
   }
 
-  public beforeRender(args: IPluginMethodBaseArgs & { child: React.ReactElement<IPassageProps>, }) {
+  public beforeRender(args: IPluginMethodBaseArgs & IPluginMethodChildArgs) {
     const {
-      child,
+      children,
       currentPassageObject: {
         name,
         tags,
@@ -69,7 +66,11 @@ export class DebugPlugin implements IPlugin {
     console.log(JSON.stringify(currentStoryState, null, 2));
     console.log(`The story state at render`);
 
-    return child;
+    const childs: React.ReactChild[] = [
+      <div key={1}>foo</div>
+    ];
+
+    return childs.concat(React.Children.toArray(children));
   }
 }
 

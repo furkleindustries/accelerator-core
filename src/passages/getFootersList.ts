@@ -6,7 +6,7 @@ import {
 } from './IFooter';
 
 // @ts-ignore
-import footersManifest from '../../passages/footers-manifest.json';
+import footersManifest from '../../footers/footers-manifest.json';
 
 // tslint:disable
 // @ts-ignore

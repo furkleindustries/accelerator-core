@@ -72,6 +72,7 @@ import * as React from 'react';
 
 // @ts-ignore
 import _styles from './PassageContainer.scss';
+import DebugPlugin from 'src/plugins/DebugPlugin';
 const styles = _styles || {};
 
 export const strings = {
@@ -106,7 +107,7 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
     if (!contents) {
       throw new Error(strings.COMPONENT_CONSTRUCTOR_NOT_FOUND);
     } else if (Array.isArray(currentPassage.tags) &&
-        getTag(currentPassage.tags, BuiltInTags.NoRender))
+               getTag(currentPassage.tags, BuiltInTags.NoRender))
     {
       throw new Error(strings.CANT_RENDER_NORENDER_PASSAGE);
     }
@@ -137,25 +138,8 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
       storyState: storyStateHistory[0],
     });
 
-    const plugins: IPlugin[] = getPluginsList();
-    interface OwnProps { children: React.ReactNode };
-    const passageMergeProps: MergeProps<StateProps, null, OwnProps, IPassageProps> = (stateProps, _, ownProps) => {
-      /* Apply the beforeRender lifecycle method of each plugin. */
-      let childrenAfterPlugins = ownProps.children;
-      plugins.forEach((plugin) => {
-        if (typeof plugin.beforeRender === 'function') {
-          childrenAfterPlugins = plugin.beforeRender({
-            lastLinkTags,
-            children: childrenAfterPlugins,
-            currentPassageObject: currentPassage,
-            currentStoryState: stateProps.storyState,
-          });
-        }
-      });
-
-      return Object.assign({}, ownProps, propsPassedDown, stateProps, {
-        childrenAfterPlugins,
-      });
+    const passageMergeProps: MergeProps<StateProps, any, any, IPassageProps> = (stateProps, dispatchProps, ownProps) => {
+      return Object.assign({}, ownProps, dispatchProps, propsPassedDown, stateProps);
     }
     
     const ConnectedPassage = connect(
@@ -163,6 +147,33 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
       null,
       passageMergeProps
     )(contents);
+
+    /* Allows plugin markup to be injected alongside passage content as well
+     * as ensuring plugins are only run once per render. */
+    const plugins: IPlugin[] = (() => {
+      if (process && process.env && process.env.NODE_ENV === 'development') {
+        return ([ new DebugPlugin() ] as IPlugin[]).concat(getPluginsList());
+      }
+
+      return getPluginsList();
+    })();
+
+    const PassageWrapper = (props: any) => {
+      let children = props.children;
+      /* Apply the beforeRender lifecycle method of each plugin. */
+      plugins.forEach((plugin) => {
+        if (typeof plugin.beforeRender === 'function') {
+          children = plugin.beforeRender({
+            children,
+            lastLinkTags,
+            currentPassageObject: currentPassage,
+            currentStoryState: props.storyState,
+          });
+        }
+      });        
+      
+      return children;
+    };
 
     const headers: IHeader[] = getHeadersList();
     const footers: IFooter[] = getFootersList();
@@ -173,7 +184,9 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
           {headers}
         </div>
 
-        <ConnectedPassage />
+        <PassageWrapper>
+          <ConnectedPassage />
+        </PassageWrapper>
 
         <div className={`${styles.footersContainer} footersContainer`}>
           {footers}

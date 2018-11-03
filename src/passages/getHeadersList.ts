@@ -6,7 +6,7 @@ import {
 } from './IHeader';
 
 // @ts-ignore
-import headersManifest from '../../passages/headers-manifest.json';
+import headersManifest from '../../headers/headers-manifest.json';
 
 // tslint:disable
 // @ts-ignore

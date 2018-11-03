@@ -4,10 +4,12 @@ import {
 import {
   IPlugin,
 } from './IPlugin';
+import {
+  IPluginExport,
+} from './IPluginExport';
 
 // @ts-ignore
-import pluginsManifest from '../../passages/plugins-manifest.json';
-import IPluginExport from './IPluginExport';
+import pluginsManifest from '../../plugins/plugins-manifest.json';
 
 // tslint:disable
 // @ts-ignore
