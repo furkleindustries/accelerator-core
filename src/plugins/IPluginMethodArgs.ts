@@ -20,19 +20,19 @@ import {
   Store,
 } from 'redux';
 
-export interface IPluginMethodArgs {
+export interface IPluginMethodBaseArgs {
   currentPassageObject: IPassage;
   currentStoryState: IStoryStateInstance;
   lastLinkTags: Readonly<Tag[]>;
 }
 
-export interface IPluginArgsWithChildren {
+export interface IPluginMethodChildArgs {
   children: ReactNode;
 }
 
-export interface IPluginArgsWithState {
+export interface IPluginMethodStateMutationArgs {
   store: Store<IState>;
   setStoryState(newState: Partial<IStoryStateInstance>): IStoryStateUpdateAction;
 }
 
-export default IPluginMethodArgs;
+export default IPluginMethodBaseArgs;

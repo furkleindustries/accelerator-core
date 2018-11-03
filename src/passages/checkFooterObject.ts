@@ -14,13 +14,13 @@ export const strings = {
 
 /* This function returns an error string if the footer fails, and null if it is
  * a normal footer object. */
-export const checkFooterObject = (footer: any) => {
+export const checkFooterObject = (footer: any): null => {
   if (!footer || typeof footer !== 'object') {
-    throw strings.FOOTER_INVALID;
+    throw new Error(strings.FOOTER_INVALID);
   }
 
   if (!footer.name || typeof footer.name !== 'string') {
-    return strings.NAME_MISSING;
+    throw new Error(strings.NAME_MISSING);
   }
 
   if (!footer.contents) {

@@ -8,16 +8,16 @@ import {
   IPluginExport,
 } from '../plugins/IPluginExport';
 import {
-  IPluginArgsWithChildren,
-  IPluginArgsWithState,
-  IPluginMethodArgs,
+  IPluginMethodChildArgs,
+  IPluginMethodStateMutationArgs,
+  IPluginMethodBaseArgs,
 } from '../plugins/IPluginMethodArgs';
 
 export {
   DebugPlugin,
   IPlugin,
   IPluginExport,
-  IPluginArgsWithChildren,
-  IPluginArgsWithState,
-  IPluginMethodArgs,
+  IPluginMethodChildArgs,
+  IPluginMethodStateMutationArgs,
+  IPluginMethodBaseArgs,
 }

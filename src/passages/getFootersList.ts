@@ -54,7 +54,7 @@ export const getFootersList = (): IFooter[] => {
        * Windows filepaths (modules are standardized with forward slashes)
        * so the call to slash should ameliorate this issue. */
       // @ts-ignore
-      require(`../../passages/${slash(path)}`)
+      require(`../../footers/${slash(path)}`)
     )).map((aa) => aa.default);
   } catch (err) {
     throw err;

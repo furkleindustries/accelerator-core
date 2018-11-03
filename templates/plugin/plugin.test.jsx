@@ -9,7 +9,7 @@ const {
   contents: plugin,
 } = pluginExport;
 
-describe('Tests for the %NAME% header.', () => {
+describe('Tests for the %NAME% plugin.', () => {
   it('Has a non-empty name string.', () => {
     expect(name && typeof name === 'string').toBe(true);
   });
@@ -21,11 +21,11 @@ describe('Tests for the %NAME% header.', () => {
   it('Has one of the lifecycle methods.', () => {
     let count = 0;
     const methods = [
-      'beforeComponentDidMount',
-      'afterComponentDidMount',
+      'atStoryInit',
+      'beforePassageChange',
       'beforeRender',
-      'beforeComponentDidUpdate',
-      'afterComponentDidUpdate',
+      'afterPassageChange',
+      'beforeRestart',
     ];
 
     methods.forEach((method) => {

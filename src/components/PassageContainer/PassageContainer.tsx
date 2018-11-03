@@ -5,8 +5,17 @@ import {
   createStoryStateUpdateAction,
 } from '../../actions/creators/createStoryStateUpdateAction';
 import {
+  getFootersList,
+} from '../../passages/getFootersList';
+import {
+  getHeadersList,
+} from '../../passages/getHeadersList';
+import {
   getPassagesMap,
 } from '../../passages/getPassagesMap';
+import {
+  getPluginsList,
+} from '../../plugins/getPluginsList';
 import {
   getTag,
 } from '../../tags/getTag';
@@ -31,6 +40,9 @@ import {
 import {
   IPassageProps,
 } from '../../passages/IPassageProps';
+import {
+  IPlugin,
+} from '../../plugins/IPlugin';
 import {
   IState,
 } from '../../reducers/IState';
@@ -60,7 +72,6 @@ import * as React from 'react';
 
 // @ts-ignore
 import _styles from './PassageContainer.scss';
-import IPluginExport from 'src/plugins/IPluginExport';
 const styles = _styles || {};
 
 export const strings = {
@@ -126,14 +137,14 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
       storyState: storyStateHistory[0],
     });
 
-    const plugins: IPluginExport[] = [];
+    const plugins: IPlugin[] = getPluginsList();
     interface OwnProps { children: React.ReactNode };
     const passageMergeProps: MergeProps<StateProps, null, OwnProps, IPassageProps> = (stateProps, _, ownProps) => {
       /* Apply the beforeRender lifecycle method of each plugin. */
       let childrenAfterPlugins = ownProps.children;
-      plugins.forEach((pluginExport) => {
-        if (typeof pluginExport.contents.beforeRender === 'function') {
-          childrenAfterPlugins = pluginExport.contents.beforeRender({
+      plugins.forEach((plugin) => {
+        if (typeof plugin.beforeRender === 'function') {
+          childrenAfterPlugins = plugin.beforeRender({
             lastLinkTags,
             children: childrenAfterPlugins,
             currentPassageObject: currentPassage,
@@ -153,14 +164,20 @@ export class PassageContainer extends React.PureComponent<IPassageContainerOwnPr
       passageMergeProps
     )(contents);
 
-    const headers: IHeader[] = [];
-    const footers: IFooter[] = [];
+    const headers: IHeader[] = getHeadersList();
+    const footers: IFooter[] = getFootersList();
 
     return (
       <div className={`${styles.passageContainer} passageContainer`}>
-        {headers}
+        <div className={`${styles.headersContainer} headersContainer`}>
+          {headers}
+        </div>
+
         <ConnectedPassage />
-        {footers}
+
+        <div className={`${styles.footersContainer} footersContainer`}>
+          {footers}
+        </div>
       </div>
     );
   }

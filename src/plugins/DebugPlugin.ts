@@ -5,7 +5,7 @@ import {
   IPlugin,
 } from './IPlugin';
 import {
-  IPluginMethodArgs,
+  IPluginMethodBaseArgs,
 } from '../passages/pluginsBundle';
 import {
   IStoryStateInstance,
@@ -16,7 +16,7 @@ import * as React from 'react';
 export class DebugPlugin implements IPlugin {
   private lastBeforeComponentDidMountState: IStoryStateInstance;
 
-  public beforeComponentDidMount(args: IPluginMethodArgs) {
+  public beforeComponentDidMount(args: IPluginMethodBaseArgs) {
     const {
       currentPassageObject,
       currentStoryState,
@@ -34,7 +34,7 @@ export class DebugPlugin implements IPlugin {
                 JSON.stringify(lastLinkTags, null, 2));
   }
 
-  public afterComponentDidMount(args: IPluginMethodArgs) {
+  public afterComponentDidMount(args: IPluginMethodBaseArgs) {
     const {
       currentStoryState,
     } = args;
@@ -50,7 +50,7 @@ export class DebugPlugin implements IPlugin {
     }
   }
 
-  public beforeRender(args: IPluginMethodArgs & { child: React.ReactElement<IPassageProps>, }) {
+  public beforeRender(args: IPluginMethodBaseArgs & { child: React.ReactElement<IPassageProps>, }) {
     const {
       child,
       currentPassageObject: {

@@ -43,7 +43,7 @@ export const getHeadersList = (): IHeader[] => {
     headerObjects = headersManifest.map((path) => (
       /* Give webpack hints about where we're importing. If you don't do this,
        * webpack will bundle a lot of stuff you don't care about and show you a
-       * confusing error about "Critical dependencies.""
+       * confusing error about "Critical dependencies."
        * 
        * I had a much nicer async/import() setup here but rendering after a
        * promise resolves was not working at all, and it's doubtful anyone is
@@ -54,7 +54,7 @@ export const getHeadersList = (): IHeader[] => {
        * Windows filepaths (modules are standardized with forward slashes)
        * so the call to slash should ameliorate this issue. */
       // @ts-ignore
-      require(`../../passages/${slash(path)}`)
+      require(`../../headers/${slash(path)}`)
     )).map((aa) => aa.default);
   } catch (err) {
     throw err;

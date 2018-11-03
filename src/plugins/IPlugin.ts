@@ -1,7 +1,4 @@
 import {
-  IPassageProps,
-} from '../passages/IPassageProps';
-import {
   IPluginMethodChildArgs,
   IPluginMethodStateMutationArgs,
   IPluginMethodBaseArgs,

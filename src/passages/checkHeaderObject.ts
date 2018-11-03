@@ -14,13 +14,13 @@ export const strings = {
 
 /* This function returns an error string if the header fails, and null if it is
  * a normal header object. */
-export const checkHeaderObject = (header: any) => {
+export const checkHeaderObject = (header: any): null => {
   if (!header || typeof header !== 'object') {
-    throw strings.HEADER_INVALID;
+    throw new Error(strings.HEADER_INVALID);
   }
 
   if (!header.name || typeof header.name !== 'string') {
-    return strings.NAME_MISSING;
+    throw new Error(strings.NAME_MISSING);
   }
 
   if (!header.contents) {
