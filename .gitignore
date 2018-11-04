@@ -3,6 +3,8 @@
 # passages
 /passages/*
 !/passages/.gitkeep
+!/passages/_globalStyles/
+!/passages/_globalStyles/index.scss
 
 # footers
 /footers/*
