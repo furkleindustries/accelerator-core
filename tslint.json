@@ -2,7 +2,7 @@
   "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
   "linterOptions": {
     "exclude": [
-      "build/",
+      "build*/",
       "config/**/*.js",
       "node_modules/",
       "coverage/lcov-report/*.js",

@@ -50,6 +50,7 @@ module.exports = {
   passagesSrc: resolveApp('passages/'),
   headersSrc: resolveApp('headers/'),
   footersSrc: resolveApp('footers/'),
+  pluginsSrc: resolveApp('plugins/'),
   yarnLockFile: resolveApp('yarn.lock'),
   testsSetup: resolveApp('src/setupTests.ts'),
   appNodeModules: resolveApp('node_modules'),

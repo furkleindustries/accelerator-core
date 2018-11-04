@@ -2,6 +2,9 @@ import {
   checkPluginObject,
 } from './checkPluginObject';
 import {
+  DebugPlugin,
+} from '../passages/pluginsBundle';
+import {
   IPlugin,
 } from './IPlugin';
 import {
@@ -118,6 +121,17 @@ export const getPluginsList = (): IPlugin[] => {
   )).reduce<IPlugin[]>((prev, cur) => {
     return prev.concat(cur.map((aa) => aa.contents));
   }, []);
+
+  pluginsList = (() => {
+    if (process && process.env &&
+        process.env.NODE_ENV === 'development' &&
+        process.env.ACCELERATOR_DEBUG === 'true')
+    {
+      return ([ new DebugPlugin() ] as IPlugin[]).concat(pluginsList);
+    }
+
+    return pluginsList;
+  })();
 
   return pluginsList;
 };

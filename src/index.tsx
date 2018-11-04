@@ -50,16 +50,21 @@ if (!state) {
   window.REDUX_STATE = JSON.stringify(state);
 }
 
-const passages = getPassagesMap();
+const {
+  passagesMap,
+} = getPassagesMap();
+
 const plugins = getPluginsList();
 plugins.forEach((plugin) => {
   if (typeof plugin.afterStoryInit === 'function') {
     plugin.afterStoryInit({
-      currentPassageObject: passages[state.currentPassageName],
+      store,
+      currentPassageObject: passagesMap[state.currentPassageName],
       currentStoryState: state.storyStateHistory[0],
       lastLinkTags: state.passageHistory[0].linkTags,
-      store,
       setStoryState(updatedStateProps) {
+        /* Do NOT call mutateCurrentStoryStateInstance here, as it may cause an
+         * infinite loop of plugin actions. */
         return store.dispatch(createStoryStateUpdateAction(updatedStateProps));
       },
     });

@@ -1,12 +1,9 @@
 import {
-  DebugPlugin,
-} from '../../plugins/DebugPlugin';
+  getPassagesMap,
+} from '../../passages/getPassagesMap';
 import {
   getPluginsList,
 } from '../../plugins/getPluginsList';
-import {
-  getPassagesMap,
-} from '../../passages/getPassagesMap';
 import {
   IPassagePluginsWrapperStateProps,
 } from './IPassagePluginsWrapperStateProps';
@@ -56,16 +53,7 @@ export class PassagePluginsWrapper extends React.PureComponent<{ children: React
       store: Readonly<Store<IState>>,
     } = this.context;
 
-    const plugins: IPlugin[] = (() => {
-      if (process && process.env &&
-          process.env.NODE_ENV === 'development' &&
-          process.env.ACCELERATOR_DEBUG === 'true')
-      {
-        return ([ new DebugPlugin() ] as IPlugin[]).concat(getPluginsList());
-      }
-
-      return getPluginsList();
-    })();
+    const plugins: IPlugin[] = getPluginsList();
 
     let finalChildren = children;
     /* Apply the beforeRender lifecycle method of each plugin. */
@@ -129,6 +117,6 @@ export const mapStateToProps: MapStateToProps<IPassagePluginsWrapperStateProps, 
   };
 };
 
-export const ConnectedPassagePluginsWrapper = connect(mapStateToProps)(PassagePluginsWrapper)
+export const PassagePluginsWrapperConnected = connect(mapStateToProps)(PassagePluginsWrapper)
 
 export default PassagePluginsWrapper;

@@ -5,24 +5,21 @@ import {
   IPluginMethodBaseArgs,
   IPluginMethodChildArgs,
   IPluginMethodStateMutationArgs,
-} from '../passages/pluginsBundle';
+  IPluginMethodStateChangingArgs
+} from './IPluginMethodArgs';
 
 import * as React from 'react';
-import { IPluginMethodStateChangingArgs } from './IPluginMethodArgs';
 
 export class DebugPlugin implements IPlugin {
   public afterStoryInit(args: IPluginMethodBaseArgs & IPluginMethodStateMutationArgs) {
     const {
       currentPassageObject,
-      currentStoryState,
       lastLinkTags,
     } = args;
 
     console.log('---- atStoryInit ----');
     console.log('The story is initializing.');
     console.log(`Current passage is: ${currentPassageObject.name}`);
-    console.log('The story state at mount is:\n' +
-                `${JSON.stringify(currentStoryState, null, 2)}`);
     console.log('The previous link tags at mount were:\n' +
                 JSON.stringify(lastLinkTags, null, 2));
   }
