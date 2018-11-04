@@ -11,25 +11,13 @@ import {
   IPluginExport,
 } from './IPluginExport';
 
-// @ts-ignore
-const pluginsManifest: string[] = (() => {
-  try {
-    return require('../../plugins/plugins-manifest.json');
-  } catch (e) {
-    return [];
-  }
-})();
-
-// tslint:disable
-// @ts-ignore
-const slash = require('slash');
-// tslint:enable
+import manifest from '../../plugins/plugins-manifest';
 
 export const strings = {
-  pluginS_MANIFEST_INVALID:
+  PLUGINS_MANIFEST_INVALID:
     'The plugins-manifest.json file was not parseable into an array.',
 
-  plugin_OBJECT_INVALID:
+  PLUGIN_OBJECT_INVALID:
     'One of the plugin objects, found at %FILEPATH%, was invalid. ' +
     '%REASON%.',
 };
@@ -42,41 +30,20 @@ export const getPluginsList = (): IPlugin[] => {
     return pluginsList;
   }
 
-  if (!Array.isArray(pluginsManifest)) {
-    throw new Error(strings.pluginS_MANIFEST_INVALID);
+  if (!Array.isArray(manifest)) {
+    throw new Error(strings.PLUGINS_MANIFEST_INVALID);
   }
 
   const pluginsPrecedenceMap: { [key: string]: IPluginExport[], } & { none: IPluginExport[], } = {
     none: [],
   };
 
-  let pluginObjects: IPluginExport[];
-  try {
-    pluginObjects = pluginsManifest.map((path) => (
-      /* Give webpack hints about where we're importing. If you don't do this,
-       * webpack will bundle a lot of stuff you don't care about and show you a
-       * confusing error about "Critical dependencies."
-       *
-       * I had a much nicer async/import() setup here but rendering after a
-       * promise resolves was not working at all, and it's doubtful anyone is
-       * going to try to kitbash this into an SSR setup, so the client-side
-       * difference is effectively nil.
-       *
-       * Note also that requires frequently fail in the browser when using
-       * Windows filepaths (modules are standardized with forward slashes)
-       * so the call to slash should ameliorate this issue. */
-      // @ts-ignore
-      require(`../../plugins/${slash(path)}`)
-    )).map((aa) => aa.default);
-  } catch (err) {
-    throw err;
-  }
-
-  pluginObjects.forEach((pluginObj, index) => {
+  manifest.forEach((pluginFileObj) => {
+    const pluginObj = pluginFileObj.pluginExport;
     const checkFailMsg = checkPluginObject(pluginObj);
     if (checkFailMsg) {
-      const errStr = strings.plugin_OBJECT_INVALID
-        .replace('%FILEPATH%', pluginsManifest[index])
+      const errStr = strings.PLUGIN_OBJECT_INVALID
+        .replace('%FILEPATH%', pluginFileObj.filepath)
         .replace('%REASON%', checkFailMsg);
 
       throw new Error(errStr);
@@ -129,7 +96,10 @@ export const getPluginsList = (): IPlugin[] => {
   }, []);
 
   pluginsList = (() => {
-    if (process && process.env &&
+    /* If the story is being developed, and ACCELERATOR_DEBUG is true, inject
+     * the DebugPlugin at the top of the stack. */
+    if (process &&
+        process.env &&
         process.env.NODE_ENV === 'development' &&
         process.env.ACCELERATOR_DEBUG === 'true')
     {

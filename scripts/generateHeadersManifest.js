@@ -1,5 +1,4 @@
 const {
-  readFileSync,
   writeFile,
 } = require('fs-extra');
 const {
@@ -7,16 +6,28 @@ const {
   relative,
 } = require('path');
 const glob = require('glob');
+const slash = require('slash');
 
-const headersDir = join(__dirname, '..', 'headers');
+const authoredHeadersDir = join(__dirname, '..', 'headers');
 /* Collect all files within the passage directory ending in .jsx or .tsx. */
-glob(join(headersDir, '**/!(*.test).[jt]sx'), (err, files) => {
+glob(join(authoredHeadersDir, '**/!(*.test).[jt]sx'), (err, files) => {
   if (err) {
     throw err;
   }
 
-  const jsonStr = JSON.stringify(files.map((path) => relative(headersDir, path)));
-  writeFile(join(headersDir, 'headers-manifest.json'), jsonStr, (err) => {
+  const manifestStr =
+    'import { IHeader, } from \'../src/passages/IHeader\';\n\n' +
+    files.map((path, index) => {
+      const importPath = relative(__dirname, path).replace(/.[jt]sx$/, '');
+      return `import import_${index} from '${slash(importPath)}';\n`;
+    }) +
+    '\nconst manifest: Array<{ filepath: string, headerObject: IHeader, }> = [\n' +
+    files.map((path, index) => {
+      return `  {\n    filepath: \`${path}\`,\n    headerObject: import_${index},\n  },`;
+    }) +
+    '\n];\n\nexport default manifest;\n';
+
+  writeFile(join(authoredHeadersDir, 'headers-manifest.ts'), manifestStr, (err) => {
     if (err) {
       throw err;
     }

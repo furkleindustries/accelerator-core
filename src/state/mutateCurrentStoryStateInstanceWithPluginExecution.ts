@@ -23,7 +23,7 @@ export const mutateCurrentStoryStateInstanceWithPluginExecution = (updatedStateP
   const action = createStoryStateUpdateAction(updatedStateProps);
   store.dispatch(action);
 
-  const currentStoryState = store.getState();
+  const state = store.getState();
   const {
     currentPassageName,
     passageHistory: [
@@ -31,7 +31,11 @@ export const mutateCurrentStoryStateInstanceWithPluginExecution = (updatedStateP
         linkTags: lastLinkTags, 
       },
     ],
-  } = currentStoryState;
+
+    storyStateHistory: [
+      currentStoryState,
+    ],
+  } = state;
 
   const {
     passagesMap,

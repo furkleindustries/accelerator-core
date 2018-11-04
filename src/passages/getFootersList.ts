@@ -5,19 +5,7 @@ import {
   IFooter,
 } from './IFooter';
 
-// @ts-ignore
-const footersManifest: string[] = (() => {
-  try {
-    return require('../../footers/footers-manifest.json');
-  } catch (e) {
-    return [];
-  }
-})();
-
-// tslint:disable
-// @ts-ignore
-const slash = require('slash');
-// tslint:enable
+import manifest from '../../footers/footers-manifest';
 
 export const strings = {
   FOOTERS_MANIFEST_INVALID:
@@ -36,7 +24,7 @@ export const getFootersList = (): IFooter[] => {
     return footersList;
   }
 
-  if (!Array.isArray(footersManifest)) {
+  if (!Array.isArray(manifest)) {
     throw new Error(strings.FOOTERS_MANIFEST_INVALID);
   }
 
@@ -44,42 +32,19 @@ export const getFootersList = (): IFooter[] => {
     none: [],
   };
 
-  let footerObjects: IFooter[];
-  try {
-    footerObjects = footersManifest.map((path) => (
-      /* Give webpack hints about where we're importing. If you don't do this,
-       * webpack will bundle a lot of stuff you don't care about and show you a
-       * confusing error about "Critical dependencies.""
-       * 
-       * I had a much nicer async/import() setup here but rendering after a
-       * promise resolves was not working at all, and it's doubtful anyone is
-       * going to try to kitbash this into an SSR setup, so the client-side
-       * difference is effectively nil.
-       * 
-       * Note also that requires frequently fail in the browser when using
-       * Windows filepaths (modules are standardized with forward slashes)
-       * so the call to slash should ameliorate this issue. */
-      // @ts-ignore
-      require(`../../footers/${slash(path)}`)
-    )).map((aa) => aa.default);
-  } catch (err) {
-    throw err;
-  }
-
-  footerObjects.forEach((footerObj, index) => {
+  manifest.forEach((footerFileObj) => {
+    const footerObj = footerFileObj.footerObject;
     const checkFailMsg = checkFooterObject(footerObj);
     if (checkFailMsg) {
       const errStr = strings.FOOTER_OBJECT_INVALID
-        .replace('%FILEPATH%', footersManifest[index])
+        .replace('%FILEPATH%', footerFileObj.filepath)
         .replace('%REASON%', checkFailMsg);
 
       throw new Error(errStr);
     }
 
-    if (typeof footerObj.precedence === 'number' &&
-        !Number.isNaN(footerObj.precedence))
-    {
-      const precedence = footerObj.precedence.toString();
+    if (footerObj.precedence! > 0) {
+      const precedence = footerObj.precedence!.toString();
       if (!footersPrecedenceMap[precedence]) {
         footersPrecedenceMap[precedence] = [];
       }

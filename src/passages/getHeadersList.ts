@@ -5,18 +5,7 @@ import {
   IHeader,
 } from './IHeader';
 
-const headersManifest: string[] = (() => {
-  try {
-    return require('../../headers/headers-manifest.json');
-  } catch (e) {
-    return [];
-  }
-})();
-
-// tslint:disable
-// @ts-ignore
-const slash = require('slash');
-// tslint:enable
+import manifest from '../../headers/headers-manifest';
 
 export const strings = {
   HEADERS_MANIFEST_INVALID:
@@ -35,7 +24,7 @@ export const getHeadersList = (): IHeader[] => {
     return headersList;
   }
 
-  if (!Array.isArray(headersManifest)) {
+  if (!Array.isArray(manifest)) {
     throw new Error(strings.HEADERS_MANIFEST_INVALID);
   }
 
@@ -43,49 +32,27 @@ export const getHeadersList = (): IHeader[] => {
     none: [],
   };
 
-  let headerObjects: IHeader[];
-  try {
-    headerObjects = headersManifest.map((path) => (
-      /* Give webpack hints about where we're importing. If you don't do this,
-       * webpack will bundle a lot of stuff you don't care about and show you a
-       * confusing error about "Critical dependencies."
-       * 
-       * I had a much nicer async/import() setup here but rendering after a
-       * promise resolves was not working at all, and it's doubtful anyone is
-       * going to try to kitbash this into an SSR setup, so the client-side
-       * difference is effectively nil.
-       * 
-       * Note also that requires frequently fail in the browser when using
-       * Windows filepaths (modules are standardized with forward slashes)
-       * so the call to slash should ameliorate this issue. */
-      // @ts-ignore
-      require(`../../headers/${slash(path)}`)
-    )).map((aa) => aa.default);
-  } catch (err) {
-    throw err;
-  }
+  manifest.forEach((headerFileObj) => {
+    const headerObj = headerFileObj.headerObject;
 
-  headerObjects.forEach((HeaderObj, index) => {
-    const checkFailMsg = checkHeaderObject(HeaderObj);
+    const checkFailMsg = checkHeaderObject(headerFileObj.headerObject);
     if (checkFailMsg) {
       const errStr = strings.HEADER_OBJECT_INVALID
-        .replace('%FILEPATH%', headersManifest[index])
+        .replace('%FILEPATH%', headerFileObj.filepath)
         .replace('%REASON%', checkFailMsg);
 
       throw new Error(errStr);
     }
 
-    if (typeof HeaderObj.precedence === 'number' &&
-        !Number.isNaN(HeaderObj.precedence))
-    {
-      const precedence = HeaderObj.precedence.toString();
+    if (headerObj.precedence! >= 0) {
+      const precedence = headerObj.precedence!.toString();
       if (!headersPrecedenceMap[precedence]) {
         headersPrecedenceMap[precedence] = [];
       }
 
-      headersPrecedenceMap[precedence].push(HeaderObj);
+      headersPrecedenceMap[precedence].push(headerObj);
     } else {
-      headersPrecedenceMap.none.push(HeaderObj);
+      headersPrecedenceMap.none.push(headerObj);
     }
   });
 

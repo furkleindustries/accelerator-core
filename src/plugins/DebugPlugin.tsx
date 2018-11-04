@@ -54,7 +54,7 @@ export class DebugPlugin implements IPlugin {
     console.log(JSON.stringify(currentStoryState, null, 2));
 
     const debugChildren: React.ReactChild[] = [
-      <p key={0} className="debugStateTitle">Current state:</p>,
+      <p key={0} className="debugStateTitle">Current story state:</p>,
       <div className="debugStateReadout" key={1}>{
         JSON.stringify(currentStoryState, null, 2)
       }</div>
