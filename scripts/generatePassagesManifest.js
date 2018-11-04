@@ -20,11 +20,11 @@ glob(join(authoredPassagesDir, '**/!(*.test).[jt]sx'), (err, files) => {
     files.map((path, index) => {
       const importPath = relative(__dirname, path).replace(/.[jt]sx$/, '');
       return `import import_${index} from '${slash(importPath)}';\n`;
-    }) +
+    }).join('') +
     '\nconst manifest: Array<{ filepath: string, passageObject: IPassage, }> = [\n' +
     files.map((path, index) => {
       return `  {\n    filepath: \`${path}\`,\n    passageObject: import_${index},\n  },`;
-    }) +
+    }).join('') +
     '\n];\n\nexport default manifest;\n';
   
   writeFile(join(authoredPassagesDir, 'passages-manifest.ts'), manifestStr, (err) => {

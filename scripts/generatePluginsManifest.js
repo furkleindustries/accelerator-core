@@ -20,11 +20,11 @@ glob(join(authoredPluginsDir, '**/!(*.test).[jt]sx'), (err, files) => {
     files.map((path, index) => {
       const importPath = relative(__dirname, path).replace(/.[jt]sx$/, '');
       return `import import_${index} from '${slash(importPath)}';\n`;
-    }) +
+    }).join('') +
     '\nconst manifest: Array<{ filepath: string, pluginExport: IPluginExport, }> = [\n' +
     files.map((path, index) => {
       return `  {\n    filepath: \`${path}\`,\n    pluginExport: import_${index},\n  },`;
-    }) +
+    }).join('') +
     '\n];\n\n' +
     'export default manifest;\n';
   
