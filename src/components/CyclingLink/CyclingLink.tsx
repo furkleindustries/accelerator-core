@@ -14,8 +14,8 @@ import {
   IState,
 } from '../../reducers/IState';
 import {
-  mutateCurrentStoryStateInstance,
-} from '../../state/mutateCurrentStoryStateInstance';
+  mutateCurrentStoryStateInstanceWithPluginExecution,
+} from '../../state/mutateCurrentStoryStateInstanceWithPluginExecution';
 import {
   object as ObjectProp,
 } from 'prop-types';
@@ -99,7 +99,7 @@ export class CyclingLink extends React.PureComponent<ICyclingLinkOwnProps & ICyc
 
 export const mapDispatchToProps: MapDispatchToProps<ICyclingLinkDispatchProps, ICyclingLinkOwnProps> = (dispatch: Dispatch<IAction>, props) => ({
   setStoryState(updatedStateProps, store) {
-    mutateCurrentStoryStateInstance(updatedStateProps, store);
+    mutateCurrentStoryStateInstanceWithPluginExecution(updatedStateProps, store);
   },
 });
 

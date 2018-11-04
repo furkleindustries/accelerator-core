@@ -2,7 +2,6 @@
 import * as React from 'react';
 
 import * as bundle from '../../src/passages/bundle';
-import { IPluginMethodStateMutationArgs, IPluginMethodChildArgs } from '../../src/passages/pluginsBundle';
 
 class Plugin implements bundle.plugins.IPlugin {
   public atStoryInit(args: bundle.plugins.IPluginMethodBaseArgs & bundle.plugins.IPluginMethodStateMutationArgs) {
@@ -15,7 +14,7 @@ class Plugin implements bundle.plugins.IPlugin {
     } = args;
   }
 
-  public beforePassageChange(args: bundle.plugins.IPluginMethodBaseArgs & IPluginMethodStateMutationArgs) {
+  public beforePassageChange(args: bundle.plugins.IPluginMethodBaseArgs & bundle.plugins.IPluginMethodStateMutationArgs) {
     const {
       currentPassageObject,
       currentStoryState,
@@ -25,10 +24,10 @@ class Plugin implements bundle.plugins.IPlugin {
     } = args;
   }
 
-  /* The beforeRender method gets one extra argument compared to the other methods:
-   * child, the rendered passage, and returns this same element after any
-   * modification. */
-  public beforeRender(args: bundle.plugins.IPluginMethodBaseArgs & IPluginMethodChildArgs) {
+  /* The beforeRender method gets one unique argument compared to the other
+   * methods: children, the rendered passage, headers, and footers, and
+   * returns this same element after any modification. */
+  public beforeRender(args: bundle.plugins.IPluginMethodBaseArgs & bundle.plugins.IPluginMethodChildArgs) {
     const {
       currentPassageObject,
       currentStoryState,
@@ -39,13 +38,22 @@ class Plugin implements bundle.plugins.IPlugin {
     return children;
   }
 
-  public afterPassageChange(args: bundle.plugins.IPluginMethodBaseArgs & IPluginMethodStateMutationArgs) {
+  public afterPassageChange(args: bundle.plugins.IPluginMethodBaseArgs & bundle.plugins.IPluginMethodStateMutationArgs) {
     const {
       currentPassageObject,
       currentStoryState,
       lastLinkTags,
       setStoryState,
       store,
+    } = args;
+  }
+
+  public afterStoryStateChange(args: bundle.plugins.IPluginMethodBaseArgs & bundle.plugins.IPluginMethodStateChangingArgs) {
+    const {
+      currentPassageObject,
+      currentStoryState,
+      lastLinkTags,
+      updatedStateProps,
     } = args;
   }
 
@@ -59,7 +67,7 @@ class Plugin implements bundle.plugins.IPlugin {
 }
 
 const plugin: bundle.plugins.IPluginExport = {
-  /* string: the story-unique name of the header. */
+  /* string: the name of the plugin. */
   name: '%NAME%',
 
   /* IPlugin: the instantiated plugin object. */

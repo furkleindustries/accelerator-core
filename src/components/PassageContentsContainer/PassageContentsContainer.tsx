@@ -26,8 +26,8 @@ import {
   IState,
 } from '../../reducers/IState';
 import {
-  mutateCurrentStoryStateInstance,
-} from '../../state/mutateCurrentStoryStateInstance';
+  mutateCurrentStoryStateInstanceWithPluginExecution,
+} from '../../state/mutateCurrentStoryStateInstanceWithPluginExecution';
 import {
   navigate,
 } from '../../state/navigate';
@@ -109,7 +109,7 @@ export class PassageContentsContainer extends React.PureComponent<IPassageConten
       passageObject: currentPassageObject,
 
       setStoryState(updatedStateProps) {
-        mutateCurrentStoryStateInstance(updatedStateProps, store);
+        mutateCurrentStoryStateInstanceWithPluginExecution(updatedStateProps, store);
       },
     };
 

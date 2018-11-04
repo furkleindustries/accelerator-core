@@ -19,7 +19,7 @@ import {
 
 /* Do NOT call this from within a plugin -- there is a very high chance you'll
  * cause an infinite loop, then a stack overflow. */
-export const mutateCurrentStoryStateInstance = (updatedStateProps: Partial<IStoryStateInstance>, store: Store<IState>) => {
+export const mutateCurrentStoryStateInstanceWithPluginExecution = (updatedStateProps: Partial<IStoryStateInstance>, store: Store<IState>) => {
   const action = createStoryStateUpdateAction(updatedStateProps);
   store.dispatch(action);
 
@@ -50,4 +50,4 @@ export const mutateCurrentStoryStateInstance = (updatedStateProps: Partial<IStor
   });
 };
 
-export default mutateCurrentStoryStateInstance;
+export default mutateCurrentStoryStateInstanceWithPluginExecution;

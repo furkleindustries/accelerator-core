@@ -2,7 +2,6 @@
 import * as React from 'react';
 
 import * as bundle from '../../src/passages/bundle';
-import { IPluginMethodStateMutationArgs, IPluginMethodChildArgs } from '../../src/passages/pluginsBundle';
 
 class Plugin {
   atStoryInit(args) {
@@ -25,9 +24,9 @@ class Plugin {
     } = args;
   }
 
-  /* The beforeRender method gets one extra argument compared to the other methods:
-   * child, the rendered passage, and returns this same element after any
-   * modification. */
+  /* The beforeRender method gets one unique argument compared to the other
+   * methods: children, the rendered passage, headers, and footers, and
+   * returns this same element after any modification. */
   beforeRender(args) {
     const {
       currentPassageObject,
@@ -49,6 +48,15 @@ class Plugin {
     } = args;
   }
 
+  afterStoryStateChange(args) {
+    const {
+      currentPassageObject,
+      currentStoryState,
+      lastLinkTags,
+      updatedStateProps,
+    } = args;
+  }
+
   beforeRestart(args) {
     const {
       currentPassageObject,
@@ -59,7 +67,7 @@ class Plugin {
 }
 
 const plugin = {
-  /* string: the story-unique name of the header. */
+  /* string: the name of the plugin. */
   name: '%NAME%',
 
   /* IPlugin: the instantiated plugin object. */
