@@ -56,12 +56,12 @@ export const getPluginsList = (): IPlugin[] => {
       /* Give webpack hints about where we're importing. If you don't do this,
        * webpack will bundle a lot of stuff you don't care about and show you a
        * confusing error about "Critical dependencies."
-       * 
+       *
        * I had a much nicer async/import() setup here but rendering after a
        * promise resolves was not working at all, and it's doubtful anyone is
        * going to try to kitbash this into an SSR setup, so the client-side
        * difference is effectively nil.
-       * 
+       *
        * Note also that requires frequently fail in the browser when using
        * Windows filepaths (modules are standardized with forward slashes)
        * so the call to slash should ameliorate this issue. */

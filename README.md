@@ -13,12 +13,14 @@ A lightweight, reactive hypertext fiction framework with the conveniences of mod
 3. [Creating passages](#creating-passages)
 4. [The bundle import](#bundle-import)
 5. [The contents component class/function](#contents-component-creator)
-6. [Development server](#development-server)
-7. [Testing your story](#testing)
-8. [Building your story for release](#building-for-release)
-9. [Configuration](#configuration)
-10. [Templates](#templates)
-11. [Acknowledgements](#acknowledgements)
+6. [Headers and footers](#headers-and-footers)
+7. [Development server](#development-server)
+8. [Testing your story](#testing)
+9. [Building your story for release](#building-for-release)
+10. [Configuration](#configuration)
+11. [Templates](#templates)
+12. [Plugins](#plugins)
+13. [Acknowledgements](#acknowledgements)
 
 <a name="why-accelerator"></a>
 ## Why Accelerator?
@@ -229,6 +231,21 @@ If you choose to create a React component constructor, either with an ES6 class 
 * `storyState`, a copy of the story state. Due to the way Redux and its bindings update components, this object will always be up-to-date, relative to the actual, hidden state store, and changes to it are pointless. If you want to change the story state, use `setStoryState`.
 * `dispatch`, a no-complexity wrapper of the Redux state store's `dispatch` function, allowing lower-level dispatching of Redux actions. This will likely not be useful unless you're doing some sort of notional reflection with the Accelerator internals, or you're authoring your own actions and have modified the default state store accordingly.
 
+<a name="headers-and-footers"></a>
+## Headers and footers
+
+You can instruct Accelerator to render specific pieces of content below or above each passage using headers and footers, respectively. Use the following `accelerator-tool` command to create a new header:
+
+`accelerator-tool new header my-cool-header`
+
+and a new footer:
+
+`accelerator-tool new footer my-cool-header`.
+
+Headers and footers are stored in the `headers/` and `footers/` directories, analogously to how passages are stored in `passages/`. You may also generate 
+
+Construction of headers and footers is largely identical to the construction of passages, though headers and footers do not have tags of any kind. They have an extra argument in the default export object, `precedence`, which allows you to control the order in which headers and footers are rendered to the page. For example, a header with precedence of 4 will be rendered above an header with precedence 3. Headers and footers with no precedence property are rendered last. All headers and footers of the same precedence level are further sorted in lexicographic order, so  a footer with precedence 3 and the name `aardvark` will be rendered above a footer with precedence 3 and the name `badger`.
+
 <a name="development-server"></a>
 ## Development server
 
@@ -258,7 +275,23 @@ Basic configuration can be performed through the `.env` file. There are currentl
 <a name="templates"></a>
 ## Templates
 
-The Accelerator devtool (`accelerator-tool`) uses templates to construct new passages. These templates are stored locally in `src/templates`. Feel free to modify them as you see fit. There is minor rewriting of these when they are being copied by `accelerator-tool`, but as of now that is restricted solely to the replacement in all generated files of `%NAME%` with the name of the new passage. 
+The Accelerator devtool (`accelerator-tool`) uses templates to construct new passages. These templates are stored locally in `src/templates`. Feel free to modify them as you see fit. There is minor rewriting of these when they are being copied by `accelerator-tool`, but as of now that is restricted solely to the replacement in all generated files of `%NAME%` with the name of the new passage.
+
+<a name="plugins"></a>
+## Plugins
+
+Accelerator also allows the use of plugins, which hook into lifecycle events in the Accelerator rendering and state cycles. The available lifecycle methods are as follows:
+
+* atStoryInit
+* beforePassageChange
+* beforeRender
+* afterPassageChange
+* afterStoryStateChange
+* beforeRestart
+
+Accelerator comes bundled with a single plugin, [DebugPlugin](./src/plugins/DebugPlugin.tsx), which is included automatically in the plugin stack if you are running the development server and the `ACCELERATOR_DEBUG` environment variable has been set to `true` in the `.env` file. You may also consult the [template](./templates/plugins/plugin.tsx) for further details on which methods receive which arguments.
+
+Plugins follow the same precedence rules as headers and footers, and are stored in the `plugins/` directory.
 
 <a name="acknowledgements"></a>
 ## Acknowledgements
