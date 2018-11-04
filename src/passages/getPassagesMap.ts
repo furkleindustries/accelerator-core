@@ -8,8 +8,13 @@ import {
   IPassagesMap,
 } from './IPassagesMap';
 
-// @ts-ignore
-import passagesManifest from '../../passages/passages-manifest.json';
+const passagesManifest: string[] = (() => {
+  try {
+    return require('../../passages/passages-manifest.json');
+  } catch (e) {
+    return [];
+  }
+})();
 
 // tslint:disable
 // @ts-ignore

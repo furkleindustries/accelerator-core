@@ -5,8 +5,13 @@ import {
   IHeader,
 } from './IHeader';
 
-// @ts-ignore
-import headersManifest from '../../headers/headers-manifest.json';
+const headersManifest: string[] = (() => {
+  try {
+    return require('../../headers/headers-manifest.json');
+  } catch (e) {
+    return [];
+  }
+})();
 
 // tslint:disable
 // @ts-ignore

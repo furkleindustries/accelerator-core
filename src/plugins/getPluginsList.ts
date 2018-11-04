@@ -12,7 +12,13 @@ import {
 } from './IPluginExport';
 
 // @ts-ignore
-import pluginsManifest from '../../plugins/plugins-manifest.json';
+const pluginsManifest: string[] = (() => {
+  try {
+    return require('../../plugins/plugins-manifest.json');
+  } catch (e) {
+    return [];
+  }
+})();
 
 // tslint:disable
 // @ts-ignore

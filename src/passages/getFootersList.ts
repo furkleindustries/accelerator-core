@@ -6,7 +6,13 @@ import {
 } from './IFooter';
 
 // @ts-ignore
-import footersManifest from '../../footers/footers-manifest.json';
+const footersManifest: string[] = (() => {
+  try {
+    return require('../../footers/footers-manifest.json');
+  } catch (e) {
+    return [];
+  }
+})();
 
 // tslint:disable
 // @ts-ignore
