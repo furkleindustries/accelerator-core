@@ -111,5 +111,3 @@ export const getPluginsList = (): IPlugin[] => {
 
   return pluginsList;
 };
-
-export default getPluginsList;

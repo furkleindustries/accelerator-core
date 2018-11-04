@@ -21,5 +21,3 @@ export class PassageHeaders extends React.PureComponent {
     );
   }
 }
-
-export default PassageHeaders;

@@ -5,6 +5,12 @@ import {
   createStore,
 } from './state/createStore';
 import {
+  createStoryStateUpdateAction,
+} from './actions/creators/createStoryStateUpdateAction';
+import {
+  getPassagesMap,
+} from './passages/getPassagesMap';
+import {
   getPluginsList,
 } from './plugins/getPluginsList';
 import {
@@ -26,8 +32,6 @@ import * as React from 'react';
 import { render, } from 'react-snapshot';
 
 import './index.scss';
-import getPassagesMap from './passages/getPassagesMap';
-import createStoryStateUpdateAction from './actions/creators/createStoryStateUpdateAction';
 
 /* Allow state to be saved on prerender and reused when the window is opened.
  * This will avoid a lot of superfluous logic. */
@@ -63,8 +67,8 @@ plugins.forEach((plugin) => {
       currentStoryState: state.storyStateHistory[0],
       lastLinkTags: state.passageHistory[0].linkTags,
       setStoryState(updatedStateProps) {
-        /* Do NOT call mutateCurrentStoryStateInstance here, as it may cause an
-         * infinite loop of plugin actions. */
+        /* Do NOT call mutateCurrentStoryStateInstanceWithPluginExecution here,
+         * as it may cause an infinite loop of plugin actions. */
         return store.dispatch(createStoryStateUpdateAction(updatedStateProps));
       },
     });
@@ -77,5 +81,17 @@ render(
   </Provider>,
   document.getElementById('root') as HTMLElement,
 );
+
+if ((module as any).hot) {
+  (module as any).hot.accept('./components/App/App', () => {
+      const UpdatedApp = require('./components/App/App').App;
+      render(
+        <Provider store={store}>
+          <UpdatedApp />
+        </Provider>,
+        document.getElementById('root') as HTMLElement,
+      );
+  });
+}
 
 registerServiceWorker();

@@ -38,5 +38,3 @@ export interface IPluginMethodStateMutationArgs {
 export interface IPluginMethodStateChangingArgs {
   updatedStateProps: Partial<IStoryStateInstance>;
 }
-
-export default IPluginMethodBaseArgs;

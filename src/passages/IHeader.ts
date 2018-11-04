@@ -8,5 +8,3 @@ export interface IHeader {
   name: string;
   precedence?: number;
 }
-
-export default IHeader;

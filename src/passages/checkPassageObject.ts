@@ -49,5 +49,3 @@ export const checkPassageObject = (passage: any): null => {
 
   return null;
 }
-
-export default checkPassageObject;

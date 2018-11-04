@@ -110,5 +110,3 @@ export const getPassagesMap = (): IReturn => {
     startPassage,
   };
 };
-
-export default getPassagesMap;

@@ -8,5 +8,3 @@ import {
 export interface ILinkDispatchProps {
   dispatch: Dispatch<IAction>;
 }
-
-export default ILinkDispatchProps;

@@ -17,5 +17,3 @@ export const getTag = (tags: Tag[] | undefined, key: string) => {
 
   return null;
 };
-
-export default getTag;

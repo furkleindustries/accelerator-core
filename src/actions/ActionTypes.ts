@@ -9,5 +9,3 @@ export enum ActionTypes {
   StoryStateNew = 'StoryStateNew',
   StoryStateUpdate = 'StoryStateUpdate',
 }
-
-export default ActionTypes;

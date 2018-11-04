@@ -20,5 +20,3 @@ export const rootReducer = combineReducers({
   passageHistory: passageHistoryReducer,
   storyStateHistory: storyStateHistoryReducer,
 });
-
-export default rootReducer;

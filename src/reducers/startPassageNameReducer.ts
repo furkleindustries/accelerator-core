@@ -12,5 +12,3 @@ export const startPassageNameReducer = (previousState: string = '', action: ISta
 
   return previousState;
 };
-
-export default startPassageNameReducer;

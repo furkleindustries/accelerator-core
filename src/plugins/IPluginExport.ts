@@ -7,5 +7,3 @@ export interface IPluginExport {
   contents: IPlugin;
   precedence?: number;
 }
-
-export default IPluginExport;

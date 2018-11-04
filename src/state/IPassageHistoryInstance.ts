@@ -6,5 +6,3 @@ export interface IPassageHistoryInstance {
   name: string;
   linkTags: Tag[];
 }
-
-export default IPassageHistoryInstance;

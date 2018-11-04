@@ -20,5 +20,3 @@ export interface ICurrentStoryStateMutationArgs {
   lastLinkTags: Tag[];
   updatedStateProps: Partial<IStoryStateInstance>;
 }
-
-export default ICurrentStoryStateMutationArgs;

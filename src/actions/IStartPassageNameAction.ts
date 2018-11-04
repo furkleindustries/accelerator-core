@@ -9,5 +9,3 @@ export interface IStartPassageNameAction extends IAction {
   readonly type: ActionTypes.StartPassageName;
   readonly value: string;
 }
-
-export default IStartPassageNameAction;

@@ -14,5 +14,3 @@ export const createStoryStateNewAction = (): IStoryStateNewAction => (
     type: ActionTypes.StoryStateNew,
   }) as IStoryStateNewAction
 );
-
-export default createStoryStateNewAction;

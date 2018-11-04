@@ -38,5 +38,3 @@ export class FadeOut extends React.PureComponent<IFadeOutOwnProps> {
     );
   }
 }
-
-export default FadeOut;

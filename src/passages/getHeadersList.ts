@@ -92,5 +92,3 @@ export const getHeadersList = (): IHeader[] => {
   
   return headersList;
 };
-
-export default getHeadersList;

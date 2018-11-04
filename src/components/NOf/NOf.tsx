@@ -48,5 +48,3 @@ export class NOf extends React.PureComponent<INOfOwnProps, INOfState> {
     return React.Children.toArray(children).slice(index, index + n);
   }
 }
-
-export default NOf;

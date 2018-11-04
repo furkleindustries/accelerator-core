@@ -13,5 +13,3 @@ export interface IPassageContentsContainerStateProps {
   currentStoryState: IStoryStateInstance;
   lastLinkTags: Tag[];
 }
-
-export default IPassageContentsContainerStateProps;

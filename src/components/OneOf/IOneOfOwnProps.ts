@@ -5,5 +5,3 @@ import {
 export interface IOneOfOwnProps {
   children: ReactNode;
 }
-
-export default IOneOfOwnProps;

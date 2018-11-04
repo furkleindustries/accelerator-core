@@ -1,15 +1,5 @@
-import {
-  BuiltInTags,
-} from '../tags/BuiltInTags';
-import {
+export * from '../tags/BuiltInTags';
+export {
   getTag,
 } from '../tags/getTag';
-import {
-  Tag,
-} from '../tags/Tag';
-
-export {
-  BuiltInTags,
-  getTag,
-  Tag,
-}
+export * from '../tags/Tag';

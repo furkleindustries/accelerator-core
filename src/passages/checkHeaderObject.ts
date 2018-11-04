@@ -32,5 +32,3 @@ export const checkHeaderObject = (header: any): null => {
 
   return null;
 }
-
-export default checkHeaderObject;

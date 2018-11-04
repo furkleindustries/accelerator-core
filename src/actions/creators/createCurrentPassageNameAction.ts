@@ -9,5 +9,3 @@ export const createCurrentPassageNameAction = (name: string): ICurrentPassageNam
   type: ActionTypes.CurrentPassageName,
   value: name,
 });
-
-export default createCurrentPassageNameAction;

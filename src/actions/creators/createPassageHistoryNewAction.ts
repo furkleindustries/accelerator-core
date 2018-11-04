@@ -14,5 +14,3 @@ export const createPassageHistoryNewAction = (value: IPassageHistoryInstance): I
     type: ActionTypes.PassageHistoryNew,
   }) as IPassageHistoryNewAction
 );
-
-export default createPassageHistoryNewAction;

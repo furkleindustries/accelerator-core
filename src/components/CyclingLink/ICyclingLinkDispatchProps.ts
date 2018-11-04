@@ -11,5 +11,3 @@ import {
 export interface ICyclingLinkDispatchProps {
   setStoryState(updatedStateProps: Partial<IStoryStateInstance>, store: Store<IState>): void;
 }
-
-export default ICyclingLinkDispatchProps;

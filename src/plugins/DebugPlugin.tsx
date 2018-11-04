@@ -103,5 +103,3 @@ export class DebugPlugin implements IPlugin {
     console.log(JSON.stringify(currentStoryState, null, 2));
   }
 }
-
-export default DebugPlugin;

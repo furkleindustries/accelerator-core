@@ -35,5 +35,3 @@ export class ClickDisappear extends React.PureComponent<IClickDisappearOwnProps>
     );
   }
 }
-
-export default ClickDisappear;

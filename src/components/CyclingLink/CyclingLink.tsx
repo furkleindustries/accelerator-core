@@ -104,5 +104,3 @@ export const mapDispatchToProps: MapDispatchToProps<ICyclingLinkDispatchProps, I
 });
 
 export const CyclingLinkConnected = connect(null, mapDispatchToProps)(CyclingLink);
-
-export default CyclingLinkConnected;

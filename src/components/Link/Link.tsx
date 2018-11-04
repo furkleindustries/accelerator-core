@@ -105,5 +105,3 @@ export const mapDispatchToProps: MapDispatchToProps<ILinkDispatchProps, ILinkOwn
 }); 
 
 export const LinkConnected = connect(null, mapDispatchToProps)(Link);
-
-export default LinkConnected;

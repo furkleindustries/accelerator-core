@@ -89,5 +89,3 @@ export const getFootersList = (): IFooter[] => {
   
   return footersList;
 };
-
-export default getFootersList;

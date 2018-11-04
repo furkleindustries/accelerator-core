@@ -32,5 +32,3 @@ export class PassageContainer extends React.PureComponent {
     );
   }
 }
-
-export default PassageContainer;

@@ -56,5 +56,3 @@ export const checkPluginObject = (plugin: any) => {
 
   return null;
 }
-
-export default checkPluginObject;

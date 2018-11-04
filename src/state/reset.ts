@@ -40,5 +40,3 @@ export const reset = (args: IPluginMethodBaseArgs & { dispatch: Dispatch<IAction
   dispatch(createStoryResetAction());
   dispatch(createCurrentPassageNameAction(startPassageName));
 };
-
-export default reset;

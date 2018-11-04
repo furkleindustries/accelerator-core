@@ -1,19 +1,4 @@
-import {
-  IFooter,
-} from './IFooter';
-import {
-  IHeader,
-} from './IHeader';
-import {
-  IPassage,
-} from './IPassage';
-import {
-  IPassageProps,
-} from './IPassageProps';
-
-export {
-  IFooter,
-  IHeader,
-  IPassage,
-  IPassageProps,
-}
+export * from './IFooter';
+export * from './IHeader';
+export * from './IPassage';
+export * from './IPassageProps';

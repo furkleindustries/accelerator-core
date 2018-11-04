@@ -53,5 +53,3 @@ export const mutateCurrentStoryStateInstanceWithPluginExecution = (updatedStateP
     }
   });
 };
-
-export default mutateCurrentStoryStateInstanceWithPluginExecution;

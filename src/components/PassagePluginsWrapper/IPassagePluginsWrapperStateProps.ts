@@ -9,5 +9,3 @@ export interface IPassagePluginsWrapperStateProps {
   currentPassageObject: IPassage;
   lastLinkTags: Tag[];
 }
-
-export default IPassagePluginsWrapperStateProps;

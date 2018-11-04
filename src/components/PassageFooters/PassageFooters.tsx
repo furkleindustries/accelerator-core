@@ -21,5 +21,3 @@ export class PassageFooters extends React.PureComponent {
     );
   }
 }
-
-export default PassageFooters;

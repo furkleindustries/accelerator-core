@@ -13,5 +13,3 @@ export interface IPassageContentsContainerDispatchProps {
   navigateTo(passageName: string, tags?: Readonly<Tag[]>): void;
   restart(): void;
 }
-
-export default IPassageContentsContainerDispatchProps;

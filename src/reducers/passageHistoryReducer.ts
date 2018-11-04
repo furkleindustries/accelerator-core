@@ -44,5 +44,3 @@ export const passageHistoryReducer = (previousState: TPassageHistory = [], actio
 
   return previousState;
 };
-
-export default passageHistoryReducer;

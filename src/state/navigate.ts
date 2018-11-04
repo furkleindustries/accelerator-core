@@ -59,5 +59,3 @@ export const navigate = ({
    * the same state as the prior passage did when leaving it. */ 
   dispatch(createStoryStateNewAction());
 };
-
-export default navigate;

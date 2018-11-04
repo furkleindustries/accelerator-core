@@ -11,5 +11,3 @@ export const createStoryRewindAction = (value: number): IStoryRewindAction => (
     type: ActionTypes.StoryRewind,
   }) as IStoryRewindAction
 );
-
-export default createStoryRewindAction;

@@ -182,5 +182,3 @@ export const PassageContentsContainerConnected = connect(
   mapStateToProps,
   mapDispatchToProps,
 )(PassageContentsContainer);
-
-export default PassageContentsContainer;

@@ -118,5 +118,3 @@ export const mapStateToProps: MapStateToProps<IPassagePluginsWrapperStateProps, 
 };
 
 export const PassagePluginsWrapperConnected = connect(mapStateToProps)(PassagePluginsWrapper)
-
-export default PassagePluginsWrapper;

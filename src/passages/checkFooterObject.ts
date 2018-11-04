@@ -32,5 +32,3 @@ export const checkFooterObject = (footer: any): null => {
 
   return null;
 }
-
-export default checkFooterObject;

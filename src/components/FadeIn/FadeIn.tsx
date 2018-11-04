@@ -38,5 +38,3 @@ export class FadeIn extends React.PureComponent<IFadeInOwnProps> {
     );   
   }
 }
-
-export default FadeIn;

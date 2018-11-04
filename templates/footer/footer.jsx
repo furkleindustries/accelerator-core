@@ -28,7 +28,7 @@ class Component extends React.PureComponent {
   }
 }
 
-const passage = {
+const footer = {
   /* string: the name of the footer. */
   name: '%NAME%',
   
@@ -38,4 +38,4 @@ const passage = {
 };
 
 /* Always make the passage object a default export. */
-export default passage;
+export default footer;

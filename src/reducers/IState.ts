@@ -11,5 +11,3 @@ export interface IState {
   startPassageName: string;
   storyStateHistory: TStoryStateHistory;
 }
-
-export default IState;

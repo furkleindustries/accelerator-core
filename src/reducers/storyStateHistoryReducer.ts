@@ -73,5 +73,3 @@ export const storyStateHistoryReducer = (previousStateHistory: TStoryStateHistor
 
   return previousStateHistory;
 };
-
-export default storyStateHistoryReducer;

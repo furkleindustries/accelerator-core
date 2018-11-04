@@ -11,5 +11,3 @@ export interface ILinkOwnProps {
   passageName: string;
   tags?: Tag[];
 }
-
-export default ILinkOwnProps;
