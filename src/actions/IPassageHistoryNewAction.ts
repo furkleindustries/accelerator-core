@@ -6,8 +6,8 @@ import {
 } from '../state/IPassageHistoryInstance';
 
 export interface IPassageHistoryNewAction {
-  type: ActionTypes.PassageHistoryNew;
-  value: IPassageHistoryInstance | number;
+  readonly type: ActionTypes.PassageHistoryNew;
+  readonly value: IPassageHistoryInstance | number;
 }
 
 export default IPassageHistoryNewAction;

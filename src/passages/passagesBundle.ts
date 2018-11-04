@@ -1,4 +1,10 @@
 import {
+  IFooter,
+} from './IFooter';
+import {
+  IHeader,
+} from './IHeader';
+import {
   IPassage,
 } from './IPassage';
 import {
@@ -6,6 +12,8 @@ import {
 } from './IPassageProps';
 
 export {
+  IFooter,
+  IHeader,
   IPassage,
   IPassageProps,
 }

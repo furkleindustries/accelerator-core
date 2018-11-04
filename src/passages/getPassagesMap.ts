@@ -1,30 +1,20 @@
 import {
-  BuiltInTags,
-} from '../tags/BuiltInTags';
-import {
   checkPassageObject,
 } from './checkPassageObject';
 import {
-  createCurrentPassageNameAction,
-} from '../actions/creators/createCurrentPassageNameAction';
-import {
-  createPassageHistoryNewAction,
-} from '../actions/creators/createPassageHistoryNewAction';
-import {
-  createPassagesAction,
-} from '../actions/creators/createPassagesAction';
-import {
-  createStartPassageNameAction,
-} from '../actions/creators/createStartPassageNameAction';
-import {
-  createStoryStateNewAction,
-} from '../actions/creators/createStoryStateNewAction';
-import {
   IPassage,
-} from '../passages/IPassage';
+} from './IPassage';
 import {
-  Store,
-} from 'redux';
+  IPassagesMap,
+} from './IPassagesMap';
+
+const passagesManifest: string[] = (() => {
+  try {
+    return require('../../passages/passages-manifest.json');
+  } catch (e) {
+    return [];
+  }
+})();
 
 // tslint:disable
 // @ts-ignore
@@ -33,12 +23,12 @@ const slash = require('slash');
 
 export const strings = {
   MULTIPLE_DEFAULT_PASSAGES:
-  'At least two passages had the tag "start". Only one tag is allowed. ' +
-  'The passages found with this error were named %1% and %2%.',
-  
+    'At least two passages had the tag "start". Only one tag is allowed. ' +
+    'The passages found with this error were named %1% and %2%.',
+
   MULTIPLE_PASSAGES_WITH_SAME_NAME:
-  'At least two passages had the name %NAME%. The name property of every ' +
-  'passage must be unique.',
+    'At least two passages had the name %NAME%. The name property of every ' +
+    'passage must be unique.',
 
   NO_START_PASSAGE:
     'There was no passage in the passages/ folder with the "start" tag. One ' +
@@ -56,13 +46,30 @@ export const strings = {
     '%REASON%.',
 };
 
-export const initializeStore = (store: Store, passagesManifest: string[]) => {
+/* Memoize results and return them without computation on repeat calls. */
+let passagesMap: IPassagesMap | null = null;
+let startPassage: IPassage | null = null;
+
+interface IReturn {
+  passagesMap: IPassagesMap;
+  startPassage: IPassage;
+};
+
+export const getPassagesMap = (): IReturn => {
+  if (passagesMap && startPassage) {
+    return {
+      passagesMap,
+      startPassage,
+    };
+  }
+
   if (!Array.isArray(passagesManifest)) {
     throw new Error(strings.PASSAGES_MANIFEST_INVALID);
   } else if (!passagesManifest.length) {
     throw new Error(strings.PASSAGES_MANIFEST_EMPTY);
   }
 
+  passagesMap = {};
   let passageObjects: IPassage[];
   try {
     passageObjects = passagesManifest.map((path) => (
@@ -85,8 +92,6 @@ export const initializeStore = (store: Store, passagesManifest: string[]) => {
     throw err;
   }
 
-  const passageMap = {};
-  let startPassage: IPassage | null = null;
   passageObjects.forEach((passageObj, index) => {
     const checkFailMsg = checkPassageObject(passageObj);
     if (checkFailMsg) {
@@ -97,7 +102,7 @@ export const initializeStore = (store: Store, passagesManifest: string[]) => {
       throw new Error(errStr);
     }
 
-    if (passageObj.name in passageMap) {
+    if (passageObj.name in passagesMap!) {
       const errStr = strings.PASSAGE_OBJECT_INVALID
         .replace('%NAME%', passageObj.name);
 
@@ -116,26 +121,17 @@ export const initializeStore = (store: Store, passagesManifest: string[]) => {
       startPassage = passageObj;
     }
 
-    passageMap[passageObj.name] = passageObj;
+    passagesMap![passageObj.name] = passageObj;
   });
 
   if (!startPassage) {
     throw new Error(strings.NO_START_PASSAGE);
   }
 
-  const name = startPassage!.name;
-  store.dispatch(createPassagesAction(passageMap));
-  store.dispatch(createStartPassageNameAction(name));
-  store.dispatch(createCurrentPassageNameAction(name));
-  store.dispatch(createStoryStateNewAction());
-  store.dispatch(createPassageHistoryNewAction(
-    {
-      name,
-      linkTags: [
-        BuiltInTags.Start,
-      ],
-    },
-  ));
+  return {
+    passagesMap,
+    startPassage,
+  };
 };
 
-export default initializeStore;
+export default getPassagesMap;

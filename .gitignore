@@ -3,7 +3,18 @@
 # passages
 /passages/*
 !/passages/.gitkeep
-# endpassages
+
+# footers
+/footers/*
+!/footers/.gitkeep
+
+# headers
+/headers/*
+!/headers/.gitkeep
+
+# plugins
+/plugins/*
+!/plugins/.gitkeep
 
 # dependencies
 /node_modules/

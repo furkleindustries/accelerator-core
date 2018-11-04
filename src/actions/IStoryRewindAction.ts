@@ -3,8 +3,8 @@ import {
 } from './ActionTypes';
 
 export interface IStoryRewindAction {
-  type: ActionTypes.StoryRewind;
-  value: number;
+  readonly type: ActionTypes.StoryRewind;
+  readonly value: number;
 }
 
 export default IStoryRewindAction;

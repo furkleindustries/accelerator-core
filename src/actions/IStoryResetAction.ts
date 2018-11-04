@@ -3,7 +3,7 @@ import {
 } from './ActionTypes';
 
 export interface IStoryResetAction {
-  type: ActionTypes.StoryReset;
+  readonly type: ActionTypes.StoryReset;
 }
 
 export default IStoryResetAction;

@@ -3,7 +3,7 @@ import {
 } from './ActionTypes';
 
 export interface IStoryStateNewAction {
-  type: ActionTypes.StoryStateNew;
+  readonly type: ActionTypes.StoryStateNew;
 }
 
 export default IStoryStateNewAction;

@@ -1,5 +1,5 @@
 export interface IStoryStateInstance {
-  [key: string]: any;
+  readonly [key: string]: any;
 }
 
 export default IStoryStateInstance;

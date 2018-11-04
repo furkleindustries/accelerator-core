@@ -1,44 +1,15 @@
 import {
-  BuiltInTags,
-} from '../../tags/BuiltInTags';
+  PassageContentsContainerConnected,
+} from '../PassageContentsContainer/PassageContentsContainer';
 import {
-  createStoryStateUpdateAction,
-} from '../../actions/creators/createStoryStateUpdateAction';
+  PassageFooters,
+} from '../PassageFooters/PassageFooters';
 import {
-  getTag,
-} from '../../tags/getTag';
+  PassageHeaders,
+} from '../PassageHeaders/PassageHeaders';
 import {
-  IAction,
-} from '../../actions/IAction';
-import {
-  IPassageContainerDispatchProps,
-} from './IPassageContainerDispatchProps';
-import {
-  IPassageContainerOwnProps,
-} from './IPassageContainerOwnProps';
-import {
-  IPassageContainerStateProps,
-} from './IPassageContainerStateProps';
-import {
-  IPassageProps,
-} from '../../passages/IPassageProps';
-import {
-  IState,
-} from '../../reducers/IState';
-import {
-  navigate,
-} from '../../state/navigate';
-import {
-  connect,
-  MapDispatchToProps,
-  MapStateToProps,
-} from 'react-redux';
-import {
-  Dispatch,
-} from 'redux';
-import {
-  reset,
-} from '../../state/reset';
+  PassagePluginsWrapperConnected,
+} from '../PassagePluginsWrapper/PassagePluginsWrapper';
 
 import * as React from 'react';
 
@@ -46,108 +17,20 @@ import * as React from 'react';
 import _styles from './PassageContainer.scss';
 const styles = _styles || {};
 
-export const strings = {
-  PASSAGE_NOT_FOUND:
-    'No passage could be found in the passages map with the name %NAME%.',
-  
-    CANT_RENDER_NORENDER_PASSAGE:
-    'A passage with the tag "noRender" was passed to PassageContainer. ' +
-    'These passages cannot be rendered and should be used solely for ' +
-    'exporting reusable content.',
-};
-
-export class PassageContainer extends React.PureComponent<IPassageContainerOwnProps & IPassageContainerStateProps & IPassageContainerDispatchProps> {
+export class PassageContainer extends React.PureComponent {
   public render() {
-    const {
-      currentPassage,
-      currentPassage: {
-        contents,
-      },
-
-      dispatch,
-      lastLinkTags,
-      navigateTo,
-      restart,
-      setStoryState,
-      currentStoryState,
-    } = this.props;
-
-    if (Array.isArray(currentPassage.tags) &&
-        getTag(currentPassage.tags, BuiltInTags.NoRender))
-    {
-      throw new Error(strings.CANT_RENDER_NORENDER_PASSAGE);
-    }
-
-    const propsPassedDown: IPassageProps = {
-      dispatch,
-      lastLinkTags,
-      navigateTo,
-      restart,
-      setStoryState,
-      passageObject: currentPassage,
-      storyState: currentStoryState,
-    };
-
-    const child = React.createElement(
-      contents as React.ComponentClass<IPassageProps> | React.SFCFactory<IPassageProps>,
-      propsPassedDown,
-    );
-
     return (
       <div className={`${styles.passageContainer} passageContainer`}>
-        {child}
+        <PassagePluginsWrapperConnected>
+          <PassageHeaders />
+
+          <PassageContentsContainerConnected />
+
+          <PassageFooters />
+        </PassagePluginsWrapperConnected>
       </div>
     );
   }
 }
 
-
-export const mapStateToProps: MapStateToProps<IPassageContainerStateProps, IPassageContainerOwnProps, IState> = ({
-  currentPassageName,
-  passageHistory,
-  passages,
-  startPassageName,
-  storyStateHistory,
-}) => {
-  if (!(currentPassageName in passages)) {
-    const errStr = strings.PASSAGE_NOT_FOUND
-      .replace('%NAME%', currentPassageName);
-
-    throw new Error(errStr);
-  }
-
-  return {
-    currentPassage: passages[currentPassageName],
-    currentStoryState: storyStateHistory[0],
-    lastLinkTags: passageHistory[0].linkTags,
-    passages,
-    startPassageName,
-  };
-};
-
-export const mapDispatchToProps: MapDispatchToProps<IPassageContainerDispatchProps, IPassageContainerOwnProps & IPassageContainerStateProps> = (reduxDispatch: Dispatch<IAction>, props) => ({
-  dispatch(action) {
-    return reduxDispatch(action);
-  },
-
-  navigateTo(passageName, tags?) {
-    navigate({
-      dispatch: reduxDispatch,
-      passage: props.passages[passageName],
-      tags: tags || [],
-    });
-  },
-
-  restart() {
-    reset(reduxDispatch, props.startPassageName);
-  },
-
-  setStoryState(updatedStateProps) {
-    const action = createStoryStateUpdateAction(updatedStateProps);
-    return reduxDispatch(action);
-  },
-})
-
-export const PassageContainerConnected = connect(mapStateToProps, mapDispatchToProps)(PassageContainer);
-
-export default PassageContainerConnected;
+export default PassageContainer;

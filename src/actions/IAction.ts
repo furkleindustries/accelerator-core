@@ -3,8 +3,8 @@ import {
 } from 'redux';
 
 export interface IAction extends Action {
-  type: string;
-  value?: any;
+  readonly type: string;
+  readonly value?: any;
 }
 
 export default IAction;

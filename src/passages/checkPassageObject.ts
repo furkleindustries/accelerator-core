@@ -22,19 +22,19 @@ export const strings = {
     'The passage object\'s tags property was not an array.',
 };
 
-/* This function returns an error string if the passage fails, and nothing
- * if it is a normal passage object. */
-export const checkPassageObject = (passage: any) => {
+/* This function returns an error string if the passage fails, and null if it is
+ * a normal passage object. */
+export const checkPassageObject = (passage: any): null => {
   if (!passage || typeof passage !== 'object') {
-    throw strings.PASSAGE_INVALID;
+    throw new Error(strings.PASSAGE_INVALID);
   }
 
   if (!passage.name || typeof passage.name !== 'string') {
-    return strings.NAME_MISSING;
+    throw new Error(strings.NAME_MISSING);
   }
 
   if (passage.tags && !Array.isArray(passage.tags)) {
-    return strings.TAGS_INVALID;
+    throw new Error(strings.TAGS_INVALID);
   }
 
   /* Don't test for contents if it's a noRender passage. */
@@ -49,3 +49,5 @@ export const checkPassageObject = (passage: any) => {
 
   return null;
 }
+
+export default checkPassageObject;

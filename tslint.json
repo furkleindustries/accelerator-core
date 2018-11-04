@@ -2,7 +2,7 @@
   "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
   "linterOptions": {
     "exclude": [
-      "build/",
+      "build*/",
       "config/**/*.js",
       "node_modules/",
       "coverage/lcov-report/*.js",
@@ -10,6 +10,8 @@
     ]
   },
   "rules": {
+    "interface-name": false,
+    "jsx-self-close": false,
     "no-console": false,
     "no-debugger": false,
     "object-literal-sort-keys": false,

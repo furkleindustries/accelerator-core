@@ -22,7 +22,7 @@ export class FadeIn extends React.PureComponent<IFadeInOwnProps> {
       duration,
     } = this.props;
 
-    if (!(duration > 0)) {
+    if (!(duration >= 0)) {
       throw new Error(strings.DURATION_NOT_GREATER_THAN_ZERO_NUMBER);
     }
 

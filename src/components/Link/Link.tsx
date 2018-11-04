@@ -1,22 +1,18 @@
 import {
+  getPassagesMap,
+} from '../../passages/getPassagesMap';
+import {
   ILinkDispatchProps,
 } from './ILinkDispatchProps';
 import {
-  ILinkStateProps,
-} from './ILinkStateProps';
-import {
   ILinkOwnProps,
 } from './ILinkOwnProps';
-import {
-  IState,
-} from '../../reducers/IState';
 import {
   navigate,
 } from '../../state/navigate';
 import {
   connect,
   MapDispatchToProps,
-  MapStateToProps,
 } from 'react-redux';
 import {
   Dispatch,
@@ -31,9 +27,9 @@ export const strings = {
   PASSAGE_DOES_NOT_EXIST:
     'The passageName argument, %NAME%, does not match any passages within ' +
     'the passages map.',
-}
+};
 
-export class Link extends React.PureComponent<ILinkOwnProps & ILinkStateProps & ILinkDispatchProps> {
+export class Link extends React.PureComponent<ILinkOwnProps & ILinkDispatchProps> {
   constructor(props: any) {
     super(props);
 
@@ -63,11 +59,15 @@ export class Link extends React.PureComponent<ILinkOwnProps & ILinkStateProps & 
   private navigate() {
     const {
       dispatch,
-      passage,
       passageName,
       tags,
     } = this.props;
 
+    const {
+      passagesMap,
+    } = getPassagesMap();
+
+    const passage = passagesMap[passageName];
     if (!passage) {
       const errStr = strings.PASSAGE_DOES_NOT_EXIST.replace(
         '%NAME%',
@@ -86,27 +86,24 @@ export class Link extends React.PureComponent<ILinkOwnProps & ILinkStateProps & 
   
   private formatTags() {
     const {
-      passage,
+      passagesMap,
+    } = getPassagesMap();
+
+    const {
+      passageName,
     } = this.props;
 
+    const passage = passagesMap[passageName];
     return ((passage || {}).tags || []).map((aa: Tag) => (
       typeof aa === 'object' ? JSON.stringify(aa) : aa
     )).join('');
   }
 }
 
-export const mapStateToProps: MapStateToProps<ILinkStateProps, ILinkOwnProps, IState> = ({
-  passages,
-}, {
-  passageName,
-}) => ({
-  passage: passages[passageName],
-});
-
-export const mapDispatchToProps: MapDispatchToProps<ILinkDispatchProps, ILinkOwnProps & ILinkStateProps> = (dispatch: Dispatch) => ({
+export const mapDispatchToProps: MapDispatchToProps<ILinkDispatchProps, ILinkOwnProps> = (dispatch: Dispatch) => ({
   dispatch,
 }); 
 
-export const LinkConnected = connect(mapStateToProps, mapDispatchToProps)(Link);
+export const LinkConnected = connect(null, mapDispatchToProps)(Link);
 
 export default LinkConnected;

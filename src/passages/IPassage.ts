@@ -7,10 +7,10 @@ import {
 } from 'react';
 
 export interface IPassage {
-  name: string;
-  title?: string;
-  contents?: ComponentClass | SFCFactory<any>;
-  tags?: Tag[];
+  readonly name: string;
+  readonly title?: string;
+  readonly contents?: ComponentClass | SFCFactory<any>;
+  readonly tags?: Tag[];
 }
 
 export default IPassage;

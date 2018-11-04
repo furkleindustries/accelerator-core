@@ -1,9 +1,15 @@
 import {
-  IStoryStateUpdateAction,
-} from '../../actions/IStoryStateUpdateAction';
+  IState,
+} from '../../reducers/IState';
+import {
+  IStoryStateInstance,
+} from '../../state/IStoryStateInstance';
+import {
+  Store,
+} from 'redux';
 
 export interface ICyclingLinkDispatchProps {
-  setStoryState(newState: { [key: string]: any }): IStoryStateUpdateAction;
+  setStoryState(updatedStateProps: Partial<IStoryStateInstance>, store: Store<IState>): void;
 }
 
 export default ICyclingLinkDispatchProps;

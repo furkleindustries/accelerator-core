@@ -9,7 +9,7 @@ import _styles from './FadeOut.scss';
 const styles = _styles || {};
 
 export const strings = {
-  DURATION_NOT_GREATER_THAN_ZERO_NUMBER:
+  DURATION_NOT_GREATER_THAN_OR_EQUAL_TO_ZERO_NUMBER:
     'The duration argument passed to a Delay component was not a number ' +
     'greater than zero.',
 };
@@ -22,8 +22,8 @@ export class FadeOut extends React.PureComponent<IFadeOutOwnProps> {
       duration,
     } = this.props;
 
-    if (!(duration > 0)) {
-      throw new Error(strings.DURATION_NOT_GREATER_THAN_ZERO_NUMBER);
+    if (!(duration >= 0)) {
+      throw new Error(strings.DURATION_NOT_GREATER_THAN_OR_EQUAL_TO_ZERO_NUMBER);
     }
 
     return (

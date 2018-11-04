@@ -2,9 +2,6 @@ import {
   Cycler,
 } from '../Cycler/Cycler';
 import {
-  createStoryStateUpdateAction,
-} from '../../actions/creators/createStoryStateUpdateAction';
-import {
   IAction,
 } from '../../actions/IAction';
 import {
@@ -14,16 +11,30 @@ import {
   ICyclingLinkOwnProps,
 } from './ICyclingLinkOwnProps';
 import {
+  IState,
+} from '../../reducers/IState';
+import {
+  mutateCurrentStoryStateInstanceWithPluginExecution,
+} from '../../state/mutateCurrentStoryStateInstanceWithPluginExecution';
+import {
+  object as ObjectProp,
+} from 'prop-types';
+import {
   connect,
   MapDispatchToProps,
 } from 'react-redux';
 import {
   Dispatch,
+  Store,
 } from 'redux';
 
 import * as React from 'react';
 
 export class CyclingLink extends React.PureComponent<ICyclingLinkOwnProps & ICyclingLinkDispatchProps> {
+  public static contextTypes = {
+    store: ObjectProp,
+  };
+  
   constructor(props: any) {
     super(props);
 
@@ -37,10 +48,16 @@ export class CyclingLink extends React.PureComponent<ICyclingLinkOwnProps & ICyc
       variableToSet,
     } = this.props;
 
+    const {
+      store,
+    }: {
+      store: Store<IState>,
+    } = this.context;
+
     if (variableToSet && typeof variableToSet === 'string') {
       setStoryState({
         [variableToSet]: choices[0],
-      });
+      }, store);
     }
   }
 
@@ -66,18 +83,23 @@ export class CyclingLink extends React.PureComponent<ICyclingLinkOwnProps & ICyc
       variableToSet,
     } = this.props;
 
+    const {
+      store,
+    }: {
+      store: Store<IState>,
+    } = this.context;
+
     if (variableToSet && typeof variableToSet === 'string') {
       setStoryState({
         [variableToSet]: current,
-      });
+      }, store);
     }
   }
 }
 
-export const mapDispatchToProps: MapDispatchToProps<ICyclingLinkDispatchProps, ICyclingLinkOwnProps> = (dispatch: Dispatch<IAction>, ownProps) => ({
-  setStoryState(newState) {
-    const action = createStoryStateUpdateAction(newState);
-    return dispatch(action);
+export const mapDispatchToProps: MapDispatchToProps<ICyclingLinkDispatchProps, ICyclingLinkOwnProps> = (dispatch: Dispatch<IAction>, props) => ({
+  setStoryState(updatedStateProps, store) {
+    mutateCurrentStoryStateInstanceWithPluginExecution(updatedStateProps, store);
   },
 });
 

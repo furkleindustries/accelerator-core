@@ -12,9 +12,9 @@ import _styles from './Delay.scss';
 const styles = _styles || {};
 
 export const strings = {
-  TIMEOUT_NOT_GREATER_THAN_ZERO_NUMBER:
+  TIMEOUT_NOT_GREATER_THAN_OR_EQUAL_TO_ZERO_NUMBER:
     'The timeout argument passed to a Delay component was not a number ' +
-    'greater than zero.',
+    'greater than or equal to zero.',
 };
 
 export class Delay extends React.Component<IDelayOwnProps, IDelayState> {
@@ -27,8 +27,8 @@ export class Delay extends React.Component<IDelayOwnProps, IDelayState> {
       timeout,
     } = this.props;
 
-    if (!(timeout > 0)) {
-      throw new Error(strings.TIMEOUT_NOT_GREATER_THAN_ZERO_NUMBER);
+    if (!(timeout >= 0)) {
+      throw new Error(strings.TIMEOUT_NOT_GREATER_THAN_OR_EQUAL_TO_ZERO_NUMBER);
     }
 
     setTimeout(() => {
