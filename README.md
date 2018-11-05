@@ -75,11 +75,15 @@ import * as React from 'react';
 /* Accelerator components, interfaces, styles, functions, etc. Feel free to
  * destructure this as you see fit but watch out that you don't get mixed up
  * between bundle props and component props with the same name (e.g. tags). */
-import * as bundle from '../src/passages/bundle';
+import * as components from '../../src/passages/componentsBundle'; 
+import * as passages from '../../src/passages/passagesBundle';
+import * as tagsBundle from '../../src/passages/tagsBundle';
+// @ts-ignore
+import builtInStyles from '../../src/passages/styles.scss';
 
-import logo from '../public/logo.svg';
+import logo from '../../public/logo.svg';
 
-class Component extends React.PureComponent<bundle.passages.IPassageProps> {
+class Component extends React.PureComponent<passages.IPassageProps> {
   constructor(props: any) {
     super(props);
 
@@ -114,7 +118,21 @@ class Component extends React.PureComponent<bundle.passages.IPassageProps> {
           }}
         />
 
-        <button onClick={this.clickIncrementor}>
+        {/* Move to new passages with the Link component. */}
+        <components.Link
+          className={builtInStyles.link}
+          passageName="testPassage2">
+          This is a link.
+        </components.Link>
+
+
+        <button
+          onClick={this.clickIncrementor}
+          style={{
+            display: 'block',
+            margin: '0 auto',
+          }}
+          >
           Clicking me increments the counter!
         </button>
 
@@ -122,14 +140,7 @@ class Component extends React.PureComponent<bundle.passages.IPassageProps> {
           * logic on your part. */}
         <div>{storyState.counter || 0}</div>
 
-        {/* Move to new passages with the Link component. */}
-        <bundle.components.Link
-          className={bundle.styles.link}
-          passageName="testPassage2">
-          This is a link.
-        </bundle.components.Link>
-
-        <bundle.components.CyclingLink
+        <components.CyclingLink
           choices={[ 'one', 'two', 'three', ]}
           variableToSet="cycleVar"
         />
@@ -144,23 +155,20 @@ class Component extends React.PureComponent<bundle.passages.IPassageProps> {
   private clickIncrementor() {
     const {
       setStoryState,
-      storyState: {
-        counter,
-      },
+      storyState,
     } = this.props;
 
     setStoryState({
-      counter: (counter || 0) + 1,
+      counter: (storyState.counter || 0) + 1,
     });
   }
 }
 
-const passage: bundle.passages.IPassage = {
+const passage: passages.IPassage = {
   /* string: the story-unique name of the passage. */
   name: 'myPassage',
   
-  /* string: an optional expanded title for the passage to be printed
-   * each time a passage is displayed. */
+  /* string: an optional expanded title to be used as you see fit. */
   title: 'My cool passage',
   
   /* array: an optional collection of either plain strings or
@@ -168,7 +176,7 @@ const passage: bundle.passages.IPassage = {
   tags: [
     /* Mark the passage as the first that should be rendered when the story is
      * started. */
-    bundle.tags.BuiltInTags.Start,
+    tagsBundle.BuiltInTags.Start,
   
     {
       key: 'anotherTag',
@@ -176,10 +184,9 @@ const passage: bundle.passages.IPassage = {
     },
   ],
 
-  /* ComponentClass<IPassageProps, any> | SFCFactory<IPassageProps>:
-   * the content that should be displayed, or, in the case of noRender
-   * passages, a component that can be imported. Should be formatted in JSX
-   * style. */
+  /* ComponentClass | ReactElement: the content that should be displayed, or,
+   * in the case of noRender passages, a component that can be imported.
+   * Should be formatted in JSX style. */
   contents: Component,
 };
 

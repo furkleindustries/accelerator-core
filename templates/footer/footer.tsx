@@ -1,14 +1,16 @@
 /* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
 import * as React from 'react';
 
-import * as bundle from '../../src/passages/bundle';
+import * as passages from '../../src/passages/passagesBundle';
+// @ts-ignore
+import builtInStyles from '../../src/passages/styles.scss';
 
 // @ts-ignore
 import _styles from './%NAME%.scss';
 const styles = _styles || {};
 
 /* The footer gets all the same props as a normal passage. */
-class Component extends React.PureComponent<bundle.passages.IPassageProps> {
+class Component extends React.PureComponent<passages.IPassageProps> {
   public render() {
     const {
       lastLinkTags,
@@ -21,14 +23,14 @@ class Component extends React.PureComponent<bundle.passages.IPassageProps> {
 
     return (
       <div
-        className={`${styles[passageObject.name]} ${bundle.styles.footer} footer`}
+        className={`${styles[passageObject.name]} ${builtInStyles.footer} footer`}
       >
       </div>
     );
   }
 }
 
-const footer: bundle.passages.IFooter = {
+const footer: passages.IFooter = {
   /* string: the name of the footer. */
   name: '%NAME%',
   

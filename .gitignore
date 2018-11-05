@@ -3,7 +3,7 @@
 # passages
 /passages/*
 !/passages/_globalStyles/
-!/passages/_globalStyles/index.scss
+!/passages/start/
 
 # footers
 /footers/*
@@ -15,7 +15,8 @@
 
 # plugins
 /plugins/*
-!/plugins/.gitkeep
+!/plugins/debug
+!/plugins/debug/debug.tsx
 
 # dependencies
 /node_modules/

@@ -1,9 +1,6 @@
 import {
-  checkPluginObject,
-} from './checkPluginObject';
-import {
-  DebugPlugin,
-} from '../passages/pluginsBundle';
+  checkPluginExport,
+} from './checkPluginExport';
 import {
   IPlugin,
 } from './IPlugin';
@@ -40,7 +37,7 @@ export const getPluginsList = (): IPlugin[] => {
 
   manifest.forEach((pluginFileObj) => {
     const pluginObj = pluginFileObj.pluginExport;
-    const checkFailMsg = checkPluginObject(pluginObj);
+    const checkFailMsg = checkPluginExport(pluginObj);
     if (checkFailMsg) {
       const errStr = strings.PLUGIN_OBJECT_INVALID
         .replace('%FILEPATH%', pluginFileObj.filepath)
@@ -82,7 +79,7 @@ export const getPluginsList = (): IPlugin[] => {
   pluginsList = keys.map<IPluginExport[]>((key) => (
     /* Sort the plugins in each precedence in ascending lexicographic
      * order. */
-    pluginsPrecedenceMap[key].sort((aa, bb) => {
+    pluginsPrecedenceMap[key].filter((exp => exp.contents)).sort((aa, bb) => {
       if (aa.name < bb.name) {
         return -1;
       } else if (aa.name === bb.name) {
@@ -92,22 +89,8 @@ export const getPluginsList = (): IPlugin[] => {
       }
     })
   )).reduce<IPlugin[]>((prev, cur) => {
-    return prev.concat(cur.map((aa) => aa.contents));
+    return prev.concat(cur.map((aa) => aa.contents!));
   }, []);
-
-  pluginsList = (() => {
-    /* If the story is being developed, and ACCELERATOR_DEBUG is true, inject
-     * the DebugPlugin at the top of the stack. */
-    if (process &&
-        process.env &&
-        process.env.NODE_ENV === 'development' &&
-        process.env.ACCELERATOR_DEBUG === 'true')
-    {
-      return ([ new DebugPlugin() ] as IPlugin[]).concat(pluginsList);
-    }
-
-    return pluginsList;
-  })();
 
   return pluginsList;
 };

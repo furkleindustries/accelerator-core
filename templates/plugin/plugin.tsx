@@ -1,10 +1,10 @@
 /* Needed for adding JSX elements to child in beforeRender. */
 import * as React from 'react';
 
-import * as bundle from '../../src/passages/bundle';
+import * as plugins from '../../src/passages/pluginsBundle';
 
-class Plugin implements bundle.plugins.IPlugin {
-  public atStoryInit(args: bundle.plugins.IPluginMethodBaseArgs & bundle.plugins.IPluginMethodStateMutationArgs) {
+class Plugin implements plugins.IPlugin {
+  public atStoryInit(args: plugins.IPluginMethodBaseArgs & plugins.IPluginMethodStateMutationArgs) {
     const {
       currentPassageObject,
       currentStoryState,
@@ -14,7 +14,7 @@ class Plugin implements bundle.plugins.IPlugin {
     } = args;
   }
 
-  public beforePassageChange(args: bundle.plugins.IPluginMethodBaseArgs & bundle.plugins.IPluginMethodStateMutationArgs) {
+  public beforePassageChange(args: plugins.IPluginMethodBaseArgs & plugins.IPluginMethodStateMutationArgs) {
     const {
       currentPassageObject,
       currentStoryState,
@@ -27,7 +27,7 @@ class Plugin implements bundle.plugins.IPlugin {
   /* The beforeRender method gets one unique argument compared to the other
    * methods: children, the rendered passage, headers, and footers, and
    * returns this same element after any modification. */
-  public beforeRender(args: bundle.plugins.IPluginMethodBaseArgs & bundle.plugins.IPluginMethodChildArgs) {
+  public beforeRender(args: plugins.IPluginMethodBaseArgs & plugins.IPluginMethodChildArgs) {
     const {
       currentPassageObject,
       currentStoryState,
@@ -38,7 +38,7 @@ class Plugin implements bundle.plugins.IPlugin {
     return children;
   }
 
-  public afterPassageChange(args: bundle.plugins.IPluginMethodBaseArgs & bundle.plugins.IPluginMethodStateMutationArgs) {
+  public afterPassageChange(args: plugins.IPluginMethodBaseArgs & plugins.IPluginMethodStateMutationArgs) {
     const {
       currentPassageObject,
       currentStoryState,
@@ -48,7 +48,7 @@ class Plugin implements bundle.plugins.IPlugin {
     } = args;
   }
 
-  public afterStoryStateChange(args: bundle.plugins.IPluginMethodBaseArgs & bundle.plugins.IPluginMethodStateChangingArgs) {
+  public afterStoryStateChange(args: plugins.IPluginMethodBaseArgs & plugins.IPluginMethodStateChangingArgs) {
     const {
       currentPassageObject,
       currentStoryState,
@@ -57,7 +57,7 @@ class Plugin implements bundle.plugins.IPlugin {
     } = args;
   }
 
-  public beforeRestart(args: bundle.plugins.IPluginMethodBaseArgs) {
+  public beforeRestart(args: plugins.IPluginMethodBaseArgs) {
     const {
       currentPassageObject,
       currentStoryState,
@@ -66,7 +66,7 @@ class Plugin implements bundle.plugins.IPlugin {
   }
 }
 
-const plugin: bundle.plugins.IPluginExport = {
+const plugin: plugins.IPluginExport = {
   /* string: the name of the plugin. */
   name: '%NAME%',
 

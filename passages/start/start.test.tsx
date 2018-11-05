@@ -2,14 +2,15 @@ import {
   shallow,
 } from 'enzyme';
 
-import * as React from 'react';
-
-import passage from './%NAME%';
+import passage from './start';
 
 import {
   BuiltInTags,
   getTag,
+  Tag,
 } from '../../src/passages/tagsBundle';
+
+import * as React from 'react';
 
 const {
   name,
@@ -18,7 +19,7 @@ const {
   contents: Component,
 } = passage;
 
-describe('Tests for the %NAME% passage.', () => {
+describe('Tests for the start passage.', () => {
   it('Has a non-empty name string.', () => {
     expect(name && typeof name === 'string').toBe(true);
   });
@@ -28,7 +29,7 @@ describe('Tests for the %NAME% passage.', () => {
   });
 
   it('If it has tags, they are either non-empty strings or key-value objects.', () => {
-    expect(!tags || tags.filter((aa) => {
+    expect(!tags || tags.filter((aa: Tag) => {
       if (aa) {
         if (typeof aa === 'string') {
           return true;
@@ -49,7 +50,7 @@ describe('Tests for the %NAME% passage.', () => {
 
   it('Renders shallowly without crashing.', () => {
     /* Don't test if it's a noRender passage. */
-    if (!getTag(tags, BuiltInTags.NoRender)) {
+    if (getTag(tags, BuiltInTags.NoRender)) {
       shallow(<Component />);
     }
   });

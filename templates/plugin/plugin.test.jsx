@@ -1,7 +1,3 @@
-import {
-  shallow,
-} from 'enzyme';
-
 import pluginExport from './%NAME%';
 
 const {

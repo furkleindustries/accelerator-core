@@ -1,8 +1,6 @@
 /* Needed for adding JSX elements to child in beforeRender. */
 import * as React from 'react';
 
-import * as bundle from '../../src/passages/bundle';
-
 class Plugin {
   atStoryInit(args) {
     const {

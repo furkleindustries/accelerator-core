@@ -1,8 +1,9 @@
 const methods = [
-  'atStoryInit',
+  'afterStoryInit',
   'beforePassageChange',
   'beforeRender',
   'afterPassageChange',
+  'afterStoryStateChange',
   'beforeRestart',
 ];
 
@@ -26,7 +27,7 @@ export const strings = {
 
 /* This function returns an error string if the plugin fails, and null if it is
  * a normal plugin object. */
-export const checkPluginObject = (plugin: any) => {
+export const checkPluginExport = (plugin: any) => {
   if (!plugin || typeof plugin !== 'object') {
     throw new Error(strings.PLUGIN_INVALID);
   }
@@ -35,10 +36,14 @@ export const checkPluginObject = (plugin: any) => {
     throw new Error(strings.NAME_MISSING);
   }
 
+  if (!plugin.contents || typeof plugin.contents !== 'object') {
+    throw new Error(strings.CONTENTS_MISSING);
+  }
+
   let count = 0;
 
   methods.forEach((method) => {
-    if (typeof plugin[method] === 'function') {
+    if (typeof plugin.contents[method] === 'function') {
       count += 1;
     }
   });

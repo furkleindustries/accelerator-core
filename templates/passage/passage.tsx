@@ -1,13 +1,20 @@
 /* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
 import * as React from 'react';
 
-import * as bundle from '../../src/passages/bundle';
+/* Accelerator components, interfaces, styles, functions, etc. Feel free to
+ * destructure this as you see fit but watch out that you don't get mixed up
+ * between bundle props and component props with the same name (e.g. tags). */
+import * as components from '../../src/passages/componentsBundle'; 
+import * as passages from '../../src/passages/passagesBundle';
+import * as tagsBundle from '../../src/passages/tagsBundle';
+// @ts-ignore
+import builtInStyles from '../../src/passages/styles.scss';
 
 // @ts-ignore
 import _styles from './%NAME%.scss';
 const styles = _styles || {};
 
-class Component extends React.PureComponent<bundle.passages.IPassageProps> {
+class Component extends React.PureComponent<passages.IPassageProps> {
   public render() {
     const {
       lastLinkTags,
@@ -20,14 +27,14 @@ class Component extends React.PureComponent<bundle.passages.IPassageProps> {
 
     return (
       <div
-        className={`${styles[passageObject.name]} ${bundle.styles.passage} passage`}
+        className={`${styles[passageObject.name]} ${builtInStyles.passage} passage`}
       >
       </div>
     );
   }
 }
 
-const passage: bundle.passages.IPassage = {
+const passage: passages.IPassage = {
   /* string: the story-unique name of the passage. */
   name: '%NAME%',
   
