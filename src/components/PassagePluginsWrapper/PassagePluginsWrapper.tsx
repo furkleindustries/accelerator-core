@@ -53,7 +53,9 @@ export class PassagePluginsWrapper extends React.PureComponent<{ children: React
 
     /* Call the afterStoryInit method on all plugins. In practice, this should
      * only happen in two cases: firstly, when the story is first loaded in the
-     * browser, and secondly when the story is restarted. */
+     * browser, and secondly when the story is restarted. This must be
+     * performed in the constructor as componentDidMount occurs after render,
+     * and we want afterStoryInit to occur before beforeRender. */
     const plugins = getPluginsList();
     plugins.forEach((plugin) => {
       if (typeof plugin.afterStoryInit === 'function') {
