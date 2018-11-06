@@ -1,5 +1,3 @@
-'use strict';
-
 // Do this as the first thing so that any code reading it knows the right env.
 process.env.BABEL_ENV = 'test';
 process.env.NODE_ENV = 'test';
@@ -38,8 +36,10 @@ function isInMercurialRepository() {
   }
 }
 
-// Watch unless on CI, in coverage mode, or explicitly running all tests
-if (
+const dontWatchIndex = argv.indexOf('--dontWatch');
+if (dontWatchIndex !== -1) {
+  argv = argv.slice(0, dontWatchIndex).concat(argv.slice(dontWatchIndex + 1));
+} else if (
   !process.env.CI &&
   argv.indexOf('--coverage') === -1 &&
   argv.indexOf('--watchAll') === -1

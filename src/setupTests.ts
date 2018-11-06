@@ -8,22 +8,26 @@ import {
   join,
 } from 'path';
 
+import {
+  execSync,
+} from 'child_process';
+
 const appDir = join(__dirname, '..');
 
 if (!pathExistsSync(join(appDir, 'passages', 'passages-manifest.ts'))) {
-  require('../scripts/generatePassagesManifest');
+  execSync('node scripts/generatePassagesManifest.js');
 }
 
 if (!pathExistsSync(join(appDir, 'headers', 'headers-manifest.ts'))) {
-  require('../scripts/generateHeadersManifest');
+  execSync('node scripts/generateHeadersManifest.js');
 }
 
 if (!pathExistsSync(join(appDir, 'footers', 'footers-manifest.ts'))) {
-  require('../scripts/generateFootersManifest');
+  execSync('node scripts/generateFootersManifest.js');
 }
 
 if (!pathExistsSync(join(appDir, 'plugins', 'plugins-manifest.ts'))) {
-  require('../scripts/generatePluginsManifest');
+  execSync('node scripts/generatePluginsManifest.js');
 }
 
 Enzyme.configure({ adapter: new Adapter(), });
