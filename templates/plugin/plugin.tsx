@@ -4,7 +4,7 @@ import * as React from 'react';
 import * as plugins from '../../src/passages/pluginsBundle';
 
 class Plugin implements plugins.IPlugin {
-  public atStoryInit(args: plugins.IPluginMethodBaseArgs & plugins.IPluginMethodStateMutationArgs) {
+  public afterStoryInit(args: plugins.IPluginMethodBaseArgs & plugins.IPluginMethodStateMutationArgs) {
     const {
       currentPassageObject,
       currentStoryState,

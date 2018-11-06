@@ -17,7 +17,7 @@ describe('Tests for the %NAME% plugin.', () => {
   it('Has one of the lifecycle methods.', () => {
     let count = 0;
     const methods = [
-      'atStoryInit',
+      'afterStoryInit',
       'beforePassageChange',
       'beforeRender',
       'afterPassageChange',

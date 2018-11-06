@@ -2,7 +2,7 @@
 import * as React from 'react';
 
 class Plugin {
-  atStoryInit(args) {
+  afterStoryInit(args) {
     const {
       currentPassageObject,
       currentStoryState,

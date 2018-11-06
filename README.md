@@ -289,7 +289,7 @@ The Accelerator devtool (`accelerator-tool`) uses templates to construct new pas
 
 Accelerator also allows the use of plugins, which hook into lifecycle events in the Accelerator rendering and state cycles. The available lifecycle methods are as follows:
 
-* atStoryInit
+* afterStoryInit
 * beforePassageChange
 * beforeRender
 * afterPassageChange

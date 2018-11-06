@@ -5,20 +5,11 @@ import {
   createStore,
 } from './state/createStore';
 import {
-  createStoryStateUpdateAction,
-} from './actions/creators/createStoryStateUpdateAction';
-import {
-  getPassagesMap,
-} from './passages/getPassagesMap';
-import {
-  getPluginsList,
-} from './plugins/getPluginsList';
-import {
   initializeStore,
 } from './state/initializeStore';
 import {
   IState,
-} from './reducers/IState';
+} from './state/IState';
 import {
   Provider,
 } from 'react-redux';
@@ -53,27 +44,6 @@ if (!state) {
   // @ts-ignore
   window.REDUX_STATE = JSON.stringify(state);
 }
-
-const {
-  passagesMap,
-} = getPassagesMap();
-
-const plugins = getPluginsList();
-plugins.forEach((plugin) => {
-  if (typeof plugin.afterStoryInit === 'function') {
-    plugin.afterStoryInit({
-      store,
-      currentPassageObject: passagesMap[state.currentPassageName],
-      currentStoryState: state.storyStateHistory[0],
-      lastLinkTags: state.passageHistory[0].linkTags,
-      setStoryState(updatedStateProps) {
-        /* Do NOT call mutateCurrentStoryStateInstanceWithPluginExecution here,
-         * as it may cause an infinite loop of plugin actions. */
-        return store.dispatch(createStoryStateUpdateAction(updatedStateProps));
-      },
-    });
-  }
-});
 
 render(
   <Provider store={store}>

@@ -40,3 +40,9 @@ export {
 export {
   Permutation,
 } from '../components/Permutation/Permutation';
+export {
+  RestartButtonConnected as RestartButton,
+} from '../components/RestartButton/RestartButton';
+export {
+  RewindButtonConnected as RewindButton,
+} from '../components/RewindButton/RewindButton';

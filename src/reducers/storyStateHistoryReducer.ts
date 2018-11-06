@@ -26,7 +26,7 @@ export const strings = {
 
   INDEX_NOT_IN_STORY_STATE:
     'The index provided to did not exist in the story state.',
-}
+};
 
 const combineState = (oldState: IStoryStateInstance, newState: IStoryStateInstance) => (
   Object.assign({}, oldState, newState)

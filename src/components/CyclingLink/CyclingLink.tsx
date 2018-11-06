@@ -12,7 +12,7 @@ import {
 } from './ICyclingLinkOwnProps';
 import {
   IState,
-} from '../../reducers/IState';
+} from '../../state/IState';
 import {
   mutateCurrentStoryStateInstanceWithPluginExecution,
 } from '../../state/mutateCurrentStoryStateInstanceWithPluginExecution';

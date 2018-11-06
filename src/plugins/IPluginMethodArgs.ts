@@ -3,7 +3,7 @@ import {
 } from '../passages/IPassage';
 import {
   IState,
-} from '../reducers/IState';
+} from '../state/IState';
 import {
   IStoryStateInstance,
 } from '../state/IStoryStateInstance';

@@ -5,13 +5,13 @@
 !/passages/_globalStyles/
 !/passages/start/
 
+# headers
+/headers/*
+!/headers/menu/
+
 # footers
 /footers/*
 !/footers/.gitkeep
-
-# headers
-/headers/*
-!/headers/.gitkeep
 
 # plugins
 /plugins/*

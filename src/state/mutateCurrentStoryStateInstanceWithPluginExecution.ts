@@ -9,7 +9,7 @@ import {
 } from '../plugins/getPluginsList';
 import {
   IState,
-} from '../reducers/IState';
+} from './IState';
 import {
   IStoryStateInstance,
 } from './IStoryStateInstance';

@@ -17,10 +17,10 @@ export class DebugPlugin implements IPlugin {
       lastLinkTags,
     } = args;
 
-    console.log('---- atStoryInit ----');
+    console.log('---- afterStoryInit ----');
     console.log('The story is initializing.');
     console.log(`Current passage is: ${currentPassageObject.name}`);
-    console.log('The previous link tags at mount were:\n' +
+    console.log('The previous link tags after story initialization were:\n' +
                 JSON.stringify(lastLinkTags, null, 2));
   }
 
@@ -64,6 +64,12 @@ export class DebugPlugin implements IPlugin {
   }
 
   public afterPassageChange(args: IPluginMethodBaseArgs) {
+    const {
+      currentPassageObject: {
+        name,
+      },
+    } = args;
+
     console.log('---- afterRender ----');
     console.log(`PassageContainer has rendered the passage named ${name}.`);
   }
@@ -93,6 +99,7 @@ export class DebugPlugin implements IPlugin {
       currentPassageObject: {
         name,
       },
+
       currentStoryState,
     } = args;
 
@@ -101,5 +108,16 @@ export class DebugPlugin implements IPlugin {
     console.log(`The passage on which the user restarted was named ${name}.`);
     console.log('The story state at restart was:');
     console.log(JSON.stringify(currentStoryState, null, 2));
+
+    if (window &&
+      window.document &&
+      typeof window.document.querySelector === 'function')
+    {
+      /* Wipe the readout. */
+      const readout = window.document.querySelector('.debugStateReadout');
+      if (readout) {
+        readout.textContent = '{}';
+      }
+    }
   }
 }

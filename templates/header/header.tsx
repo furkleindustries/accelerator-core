@@ -1,7 +1,9 @@
 /* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
 import * as React from 'react';
 
+import * as components from '../../src/passages/componentsBundle';
 import * as passages from '../../src/passages/passagesBundle';
+import * as tagsBundle from '../../src/passages/tagsBundle';
 // @ts-ignore
 import builtInStyles from '../../src/passages/styles.scss';
 
@@ -23,7 +25,7 @@ class Component extends React.PureComponent<passages.IPassageProps> {
 
     return (
       <div
-        className={`${styles[passageObject.name]} ${builtInStyles.header} header`}
+        className={`${styles['%NAME%']} ${builtInStyles.header} header`}
       >
       </div>
     );

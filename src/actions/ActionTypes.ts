@@ -8,4 +8,5 @@ export enum ActionTypes {
   StoryReset = 'StoryReset',
   StoryStateNew = 'StoryStateNew',
   StoryStateUpdate = 'StoryStateUpdate',
+  StoryRequiresFullRerender = 'StoryRequiresFullRerender',
 }

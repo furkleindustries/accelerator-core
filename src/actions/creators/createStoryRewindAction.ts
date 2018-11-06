@@ -5,7 +5,7 @@ import {
   IStoryRewindAction,
 } from '../IStoryRewindAction';
 
-export const createStoryRewindAction = (value: number): IStoryRewindAction => (
+export const createStoryRewindAction = (value: number = 1): IStoryRewindAction => (
   Object.freeze({
     value,
     type: ActionTypes.StoryRewind,
