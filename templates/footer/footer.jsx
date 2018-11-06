@@ -1,9 +1,10 @@
 /* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
 import * as React from 'react';
 
-import * as bundle from '../../src/passages/bundle';
+import * as components from '../../src/passages/componentsBundle';
+import * as tagsBundle from '../../src/passages/tagsBundle';
+import builtInStyles from '../../src/passages/styles.scss';
 
-// @ts-ignore
 import _styles from './%NAME%.scss';
 const styles = _styles || {};
 
@@ -21,14 +22,14 @@ class Component extends React.PureComponent {
 
     return (
       <div
-        className={`${styles[passageObject.name]} ${bundle.styles.footer} footer`}
+        className={`${styles['%NAME%']} ${builtInStyles.footer} footer`}
       >
       </div>
     );
   }
 }
 
-const passage = {
+const footer = {
   /* string: the name of the footer. */
   name: '%NAME%',
   
@@ -38,4 +39,4 @@ const passage = {
 };
 
 /* Always make the passage object a default export. */
-export default passage;
+export default footer;

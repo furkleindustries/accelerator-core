@@ -8,5 +8,3 @@ export interface IFooter {
   name: string;
   precedence?: number;
 }
-
-export default IFooter;

@@ -27,5 +27,3 @@ export class ClickPrepend extends React.Component<IClickPrependOwnProps> {
     );
   }
 }
-
-export default ClickPrepend;

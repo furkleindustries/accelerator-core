@@ -27,5 +27,3 @@ export class ClickAppend extends React.PureComponent<IClickAppendOwnProps> {
     );
   }
 }
-
-export default ClickAppend;

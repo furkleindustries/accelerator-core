@@ -1,9 +1,6 @@
 import {
-  checkPluginObject,
-} from './checkPluginObject';
-import {
-  DebugPlugin,
-} from '../passages/pluginsBundle';
+  checkPluginExport,
+} from './checkPluginExport';
 import {
   IPlugin,
 } from './IPlugin';
@@ -11,25 +8,13 @@ import {
   IPluginExport,
 } from './IPluginExport';
 
-// @ts-ignore
-const pluginsManifest: string[] = (() => {
-  try {
-    return require('../../plugins/plugins-manifest.json');
-  } catch (e) {
-    return [];
-  }
-})();
-
-// tslint:disable
-// @ts-ignore
-const slash = require('slash');
-// tslint:enable
+import manifest from '../../plugins/plugins-manifest';
 
 export const strings = {
-  pluginS_MANIFEST_INVALID:
+  PLUGINS_MANIFEST_INVALID:
     'The plugins-manifest.json file was not parseable into an array.',
 
-  plugin_OBJECT_INVALID:
+  PLUGIN_OBJECT_INVALID:
     'One of the plugin objects, found at %FILEPATH%, was invalid. ' +
     '%REASON%.',
 };
@@ -42,41 +27,20 @@ export const getPluginsList = (): IPlugin[] => {
     return pluginsList;
   }
 
-  if (!Array.isArray(pluginsManifest)) {
-    throw new Error(strings.pluginS_MANIFEST_INVALID);
+  if (!Array.isArray(manifest)) {
+    throw new Error(strings.PLUGINS_MANIFEST_INVALID);
   }
 
   const pluginsPrecedenceMap: { [key: string]: IPluginExport[], } & { none: IPluginExport[], } = {
     none: [],
   };
 
-  let pluginObjects: IPluginExport[];
-  try {
-    pluginObjects = pluginsManifest.map((path) => (
-      /* Give webpack hints about where we're importing. If you don't do this,
-       * webpack will bundle a lot of stuff you don't care about and show you a
-       * confusing error about "Critical dependencies."
-       *
-       * I had a much nicer async/import() setup here but rendering after a
-       * promise resolves was not working at all, and it's doubtful anyone is
-       * going to try to kitbash this into an SSR setup, so the client-side
-       * difference is effectively nil.
-       *
-       * Note also that requires frequently fail in the browser when using
-       * Windows filepaths (modules are standardized with forward slashes)
-       * so the call to slash should ameliorate this issue. */
-      // @ts-ignore
-      require(`../../plugins/${slash(path)}`)
-    )).map((aa) => aa.default);
-  } catch (err) {
-    throw err;
-  }
-
-  pluginObjects.forEach((pluginObj, index) => {
-    const checkFailMsg = checkPluginObject(pluginObj);
+  manifest.forEach((pluginFileObj) => {
+    const pluginObj = pluginFileObj.pluginExport;
+    const checkFailMsg = checkPluginExport(pluginObj);
     if (checkFailMsg) {
-      const errStr = strings.plugin_OBJECT_INVALID
-        .replace('%FILEPATH%', pluginsManifest[index])
+      const errStr = strings.PLUGIN_OBJECT_INVALID
+        .replace('%FILEPATH%', pluginFileObj.filepath)
         .replace('%REASON%', checkFailMsg);
 
       throw new Error(errStr);
@@ -115,7 +79,7 @@ export const getPluginsList = (): IPlugin[] => {
   pluginsList = keys.map<IPluginExport[]>((key) => (
     /* Sort the plugins in each precedence in ascending lexicographic
      * order. */
-    pluginsPrecedenceMap[key].sort((aa, bb) => {
+    pluginsPrecedenceMap[key].filter((exp => exp.contents)).sort((aa, bb) => {
       if (aa.name < bb.name) {
         return -1;
       } else if (aa.name === bb.name) {
@@ -125,21 +89,8 @@ export const getPluginsList = (): IPlugin[] => {
       }
     })
   )).reduce<IPlugin[]>((prev, cur) => {
-    return prev.concat(cur.map((aa) => aa.contents));
+    return prev.concat(cur.map((aa) => aa.contents!));
   }, []);
-
-  pluginsList = (() => {
-    if (process && process.env &&
-        process.env.NODE_ENV === 'development' &&
-        process.env.ACCELERATOR_DEBUG === 'true')
-    {
-      return ([ new DebugPlugin() ] as IPlugin[]).concat(pluginsList);
-    }
-
-    return pluginsList;
-  })();
 
   return pluginsList;
 };
-
-export default getPluginsList;

@@ -9,5 +9,3 @@ export interface ICurrentPassageNameAction extends IAction {
   readonly type: ActionTypes.CurrentPassageName;
   readonly value: string;
 }
-
-export default ICurrentPassageNameAction;

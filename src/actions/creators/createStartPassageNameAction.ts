@@ -9,5 +9,3 @@ export const createStartPassageNameAction = (name: string): IStartPassageNameAct
   type: ActionTypes.StartPassageName,
   value: name,
 });
-
-export default createStartPassageNameAction;

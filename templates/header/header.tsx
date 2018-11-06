@@ -1,14 +1,18 @@
 /* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
 import * as React from 'react';
 
-import * as bundle from '../../src/passages/bundle';
+import * as components from '../../src/passages/componentsBundle';
+import * as passages from '../../src/passages/passagesBundle';
+import * as tagsBundle from '../../src/passages/tagsBundle';
+// @ts-ignore
+import builtInStyles from '../../src/passages/styles.scss';
 
 // @ts-ignore
 import _styles from './%NAME%.scss';
 const styles = _styles || {};
 
 /* The header gets all the same props as a normal passage. */
-class Component extends React.PureComponent<bundle.passages.IPassageProps> {
+class Component extends React.PureComponent<passages.IPassageProps> {
   public render() {
     const {
       lastLinkTags,
@@ -21,14 +25,14 @@ class Component extends React.PureComponent<bundle.passages.IPassageProps> {
 
     return (
       <div
-        className={`${styles[passageObject.name]} ${bundle.styles.header} header`}
+        className={`${styles['%NAME%']} ${builtInStyles.header} header`}
       >
       </div>
     );
   }
 }
 
-const passage: bundle.passages.IHeader = {
+const passage: passages.IHeader = {
   /* string: the name of the header. */
   name: '%NAME%',
 

@@ -5,6 +5,9 @@ import {
   createStoryResetAction,
 } from '../actions/creators/createStoryResetAction';
 import {
+  getPassagesMap,
+} from '../passages/getPassagesMap';
+import {
   getPluginsList,
 } from '../plugins/getPluginsList';
 import {
@@ -17,14 +20,19 @@ import {
   Dispatch,
 } from 'redux';
 
-export const reset = (args: IPluginMethodBaseArgs & { dispatch: Dispatch<IAction>, startPassageName: string, }) => {
+export const reset = (args: IPluginMethodBaseArgs & { dispatch: Dispatch<IAction>, }) => {
   const {
     currentPassageObject,
     currentStoryState,
     dispatch,
     lastLinkTags,
-    startPassageName,
   } = args;
+
+  const {
+    startPassage: {
+      name: startPassageName,
+    },
+  } = getPassagesMap();
 
   const plugins = getPluginsList();
   plugins.forEach((plugin) => {
@@ -40,5 +48,3 @@ export const reset = (args: IPluginMethodBaseArgs & { dispatch: Dispatch<IAction
   dispatch(createStoryResetAction());
   dispatch(createCurrentPassageNameAction(startPassageName));
 };
-
-export default reset;

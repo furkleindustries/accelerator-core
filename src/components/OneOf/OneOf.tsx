@@ -17,5 +17,3 @@ export class OneOf extends React.PureComponent {
     );
   }
 }
-
-export default OneOf;

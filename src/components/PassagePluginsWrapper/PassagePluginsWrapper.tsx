@@ -12,7 +12,7 @@ import {
 } from '../../plugins/IPlugin';
 import {
   IState,
-} from '../../reducers/IState';
+} from '../../state/IState';
 import {
   object as ObjectProp,
 } from 'prop-types';
@@ -25,6 +25,7 @@ import {
 } from 'redux';
 
 import * as React from 'react';
+import { createStoryStateUpdateAction } from '../../actions/creators/createStoryStateUpdateAction';
 
 export const strings = {
   PASSAGE_NOT_FOUND:
@@ -37,6 +38,41 @@ export class PassagePluginsWrapper extends React.PureComponent<{ children: React
   public static contextTypes = {
     store: ObjectProp,
   };
+
+  constructor(props: { children: React.ReactNode, } & IPassagePluginsWrapperStateProps, context: { store: Store<IState>, }) {
+    super(props);
+
+    const {
+      currentPassageObject,
+      lastLinkTags,
+    } = props;
+
+    const {
+      store,
+    } = context;
+
+    /* Call the afterStoryInit method on all plugins. In practice, this should
+     * only happen in two cases: firstly, when the story is first loaded in the
+     * browser, and secondly when the story is restarted. This must be
+     * performed in the constructor as componentDidMount occurs after render,
+     * and we want afterStoryInit to occur before beforeRender. */
+    const plugins = getPluginsList();
+    plugins.forEach((plugin) => {
+      if (typeof plugin.afterStoryInit === 'function') {
+        plugin.afterStoryInit({
+          store,
+          currentPassageObject,
+          currentStoryState: store.getState().storyStateHistory[0],
+          lastLinkTags,
+          setStoryState(updatedStateProps) {
+            /* Do NOT call mutateCurrentStoryStateInstanceWithPluginExecution here,
+            * as it may cause an infinite loop of plugin actions. */
+            return store.dispatch(createStoryStateUpdateAction(updatedStateProps));
+          },
+        });
+      }
+    });
+  }
 
   public render() {
     const {
@@ -64,6 +100,8 @@ export class PassagePluginsWrapper extends React.PureComponent<{ children: React
           lastLinkTags,
           currentPassageObject,
           currentStoryState: store.getState().storyStateHistory[0],
+          /* If for some reason the plugin is non-conformant and outputs
+           * something falsy, use the last good children value. */
         }) || finalChildren;
       }
     });        
@@ -118,5 +156,3 @@ export const mapStateToProps: MapStateToProps<IPassagePluginsWrapperStateProps, 
 };
 
 export const PassagePluginsWrapperConnected = connect(mapStateToProps)(PassagePluginsWrapper)
-
-export default PassagePluginsWrapper;

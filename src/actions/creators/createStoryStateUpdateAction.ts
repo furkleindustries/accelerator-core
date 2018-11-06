@@ -18,5 +18,3 @@ export const createStoryStateUpdateAction = (value: Partial<IStoryStateInstance>
     type: ActionTypes.StoryStateUpdate,
   }) as IStoryStateUpdateAction
 );
-
-export default createStoryStateUpdateAction;

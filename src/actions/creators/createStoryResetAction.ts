@@ -10,5 +10,3 @@ export const createStoryResetAction = (): IStoryResetAction => (
     type: ActionTypes.StoryReset,
   }) as IStoryResetAction
 );
-
-export default createStoryResetAction;

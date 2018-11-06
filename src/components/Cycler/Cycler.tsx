@@ -63,5 +63,3 @@ export class Cycler extends React.Component<ICyclerOwnProps, ICyclerState> {
     }
   }
 }
-
-export default Cycler;

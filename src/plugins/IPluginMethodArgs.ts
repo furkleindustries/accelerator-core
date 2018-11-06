@@ -3,7 +3,7 @@ import {
 } from '../passages/IPassage';
 import {
   IState,
-} from '../reducers/IState';
+} from '../state/IState';
 import {
   IStoryStateInstance,
 } from '../state/IStoryStateInstance';
@@ -38,5 +38,3 @@ export interface IPluginMethodStateMutationArgs {
 export interface IPluginMethodStateChangingArgs {
   updatedStateProps: Partial<IStoryStateInstance>;
 }
-
-export default IPluginMethodBaseArgs;

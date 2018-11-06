@@ -54,5 +54,3 @@ export class Clicker extends React.Component<IClickerOwnProps, IClickerState> {
     });
   }
 }
-
-export default Clicker;

@@ -27,5 +27,3 @@ export class ClickReplace extends React.Component<IClickReplaceOwnProps> {
     );
   }
 }
-
-export default ClickReplace;

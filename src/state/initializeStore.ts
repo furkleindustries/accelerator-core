@@ -60,5 +60,3 @@ export const initializeStore = (store: Store) => {
     },
   ));
 };
-
-export default initializeStore;

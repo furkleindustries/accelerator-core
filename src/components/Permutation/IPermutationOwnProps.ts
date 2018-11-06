@@ -5,5 +5,3 @@ import {
 export interface IPermutationOwnProps {
   children: ReactNodeArray;
 }
-
-export default IPermutationOwnProps;

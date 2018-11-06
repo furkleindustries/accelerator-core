@@ -1,5 +1,5 @@
 import {
-  PassageContainer,
+  PassageContainerConnected,
 } from '../PassageContainer/PassageContainer';
 
 import * as React from 'react';
@@ -12,10 +12,8 @@ export class App extends React.Component {
   public render() {
     return (
       <div className={`${styles.app} app`}>
-        <PassageContainer />
+        <PassageContainerConnected />
       </div>
     );
   }
 }
-
-export default App;

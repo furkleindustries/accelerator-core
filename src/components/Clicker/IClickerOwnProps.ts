@@ -7,5 +7,3 @@ export interface IClickerOwnProps {
   className?: string;
   contentAfterClick: ReactNode;
 }
-
-export default IClickerOwnProps;

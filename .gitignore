@@ -2,19 +2,21 @@
 
 # passages
 /passages/*
-!/passages/.gitkeep
+!/passages/_globalStyles/
+!/passages/start/
+
+# headers
+/headers/*
+!/headers/menu/
 
 # footers
 /footers/*
 !/footers/.gitkeep
 
-# headers
-/headers/*
-!/headers/.gitkeep
-
 # plugins
 /plugins/*
-!/plugins/.gitkeep
+!/plugins/debug
+!/plugins/debug/debug.tsx
 
 # dependencies
 /node_modules/

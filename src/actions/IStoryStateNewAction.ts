@@ -5,5 +5,3 @@ import {
 export interface IStoryStateNewAction {
   readonly type: ActionTypes.StoryStateNew;
 }
-
-export default IStoryStateNewAction;

@@ -9,7 +9,7 @@ import {
 } from '../plugins/getPluginsList';
 import {
   IState,
-} from '../reducers/IState';
+} from './IState';
 import {
   IStoryStateInstance,
 } from './IStoryStateInstance';
@@ -23,7 +23,7 @@ export const mutateCurrentStoryStateInstanceWithPluginExecution = (updatedStateP
   const action = createStoryStateUpdateAction(updatedStateProps);
   store.dispatch(action);
 
-  const currentStoryState = store.getState();
+  const state = store.getState();
   const {
     currentPassageName,
     passageHistory: [
@@ -31,7 +31,11 @@ export const mutateCurrentStoryStateInstanceWithPluginExecution = (updatedStateP
         linkTags: lastLinkTags, 
       },
     ],
-  } = currentStoryState;
+
+    storyStateHistory: [
+      currentStoryState,
+    ],
+  } = state;
 
   const {
     passagesMap,
@@ -49,5 +53,3 @@ export const mutateCurrentStoryStateInstanceWithPluginExecution = (updatedStateP
     }
   });
 };
-
-export default mutateCurrentStoryStateInstanceWithPluginExecution;

@@ -34,5 +34,3 @@ export class Permutation extends React.Component<IPermutationOwnProps, IPermutat
     return shuffled;
   }
 }
-
-export default Permutation;

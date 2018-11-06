@@ -63,23 +63,9 @@ export class Link extends React.PureComponent<ILinkOwnProps & ILinkDispatchProps
       tags,
     } = this.props;
 
-    const {
-      passagesMap,
-    } = getPassagesMap();
-
-    const passage = passagesMap[passageName];
-    if (!passage) {
-      const errStr = strings.PASSAGE_DOES_NOT_EXIST.replace(
-        '%NAME%',
-        passageName
-      );
-
-      throw new Error(errStr);
-    }
-
     navigate({
       dispatch,
-      passage,
+      passageName,
       tags,
     });
   }
@@ -105,5 +91,3 @@ export const mapDispatchToProps: MapDispatchToProps<ILinkDispatchProps, ILinkOwn
 }); 
 
 export const LinkConnected = connect(null, mapDispatchToProps)(Link);
-
-export default LinkConnected;

@@ -23,5 +23,3 @@ export interface IPassageProps {
   restart(): void;
   setStoryState(updatedStateProps: Partial<IStoryStateInstance>): void;
 }
-
-export default IPassageProps;

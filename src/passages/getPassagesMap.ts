@@ -1,6 +1,12 @@
 import {
+  BuiltInTags,
+} from '../tags/BuiltInTags';
+import {
   checkPassageObject,
 } from './checkPassageObject';
+import {
+  getTag,
+} from './tagsBundle';
 import {
   IPassage,
 } from './IPassage';
@@ -8,18 +14,7 @@ import {
   IPassagesMap,
 } from './IPassagesMap';
 
-const passagesManifest: string[] = (() => {
-  try {
-    return require('../../passages/passages-manifest.json');
-  } catch (e) {
-    return [];
-  }
-})();
-
-// tslint:disable
-// @ts-ignore
-const slash = require('slash');
-// tslint:enable
+import manifest from '../../passages/passages-manifest';
 
 export const strings = {
   MULTIPLE_DEFAULT_PASSAGES:
@@ -63,40 +58,19 @@ export const getPassagesMap = (): IReturn => {
     };
   }
 
-  if (!Array.isArray(passagesManifest)) {
+  if (!Array.isArray(manifest)) {
     throw new Error(strings.PASSAGES_MANIFEST_INVALID);
-  } else if (!passagesManifest.length) {
+  } else if (!manifest.length) {
     throw new Error(strings.PASSAGES_MANIFEST_EMPTY);
   }
 
   passagesMap = {};
-  let passageObjects: IPassage[];
-  try {
-    passageObjects = passagesManifest.map((path) => (
-      /* Give webpack hints about where we're importing. If you don't do this,
-       * webpack will bundle a lot of stuff you don't care about and show you a
-       * confusing error about "Critical dependencies.""
-       * 
-       * I had a much nicer async/import() setup here but rendering after a
-       * promise resolves was not working at all, and it's doubtful anyone is
-       * going to try to kitbash this into an SSR setup, so the client-side
-       * difference is effectively nil.
-       * 
-       * Note also that requires frequently fail in the browser when using
-       * Windows filepaths (modules are standardized with forward slashes)
-       * so the call to slash should ameliorate this issue. */
-      // @ts-ignore
-      require(`../../passages/${slash(path)}`)
-    )).map((aa) => aa.default);
-  } catch (err) {
-    throw err;
-  }
-
-  passageObjects.forEach((passageObj, index) => {
+  manifest.forEach((passageFileObj) => {
+    const passageObj = passageFileObj.passageObject;
     const checkFailMsg = checkPassageObject(passageObj);
     if (checkFailMsg) {
       const errStr = strings.PASSAGE_OBJECT_INVALID
-        .replace('%FILEPATH%', passagesManifest[index])
+        .replace('%FILEPATH%', passageFileObj.filepath)
         .replace('%REASON%', checkFailMsg);
 
       throw new Error(errStr);
@@ -109,7 +83,7 @@ export const getPassagesMap = (): IReturn => {
       throw new Error(errStr);
     }
 
-    if (passageObj.tags && passageObj.tags.indexOf('start') !== -1) {
+    if (getTag(passageObj.tags, BuiltInTags.Start)) {
       if (startPassage) {
         const errStr = strings.MULTIPLE_DEFAULT_PASSAGES
           .replace('%1%', startPassage.name)
@@ -119,6 +93,9 @@ export const getPassagesMap = (): IReturn => {
       }
 
       startPassage = passageObj;
+    } else if (getTag(passageObj.tags, BuiltInTags.NoRender)) {
+      /* Do not place NoRender passages in the passage map. */
+      return;
     }
 
     passagesMap![passageObj.name] = passageObj;
@@ -133,5 +110,3 @@ export const getPassagesMap = (): IReturn => {
     startPassage,
   };
 };
-
-export default getPassagesMap;

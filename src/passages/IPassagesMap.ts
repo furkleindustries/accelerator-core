@@ -5,5 +5,3 @@ import {
 export interface IPassagesMap {
   [key: string]: IPassage;
 };
-
-export default IPassagesMap;

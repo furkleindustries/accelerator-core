@@ -24,7 +24,7 @@ import {
 } from '../../passages/IPassageProps';
 import {
   IState,
-} from '../../reducers/IState';
+} from '../../state/IState';
 import {
   mutateCurrentStoryStateInstanceWithPluginExecution,
 } from '../../state/mutateCurrentStoryStateInstanceWithPluginExecution';
@@ -70,7 +70,7 @@ export const strings = {
 export class PassageContentsContainer extends React.PureComponent<IPassageContentsContainerOwnProps & IPassageContentsContainerDispatchProps & IPassageContentsContainerStateProps> {
   public static contextTypes = {
     store: ObjectProp,
-  }
+  };
 
   public render() {
     const {
@@ -152,28 +152,19 @@ export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDis
   dispatch,
 
   navigateTo(passageName, tags?) {
-    const {
-      passagesMap,
-    } = getPassagesMap();
-
     navigate({
       dispatch,
-      passage: passagesMap[passageName],
+      passageName,
       tags: tags || [],
     });
   },
 
   restart() {
-    const {
-      startPassage,
-    } = getPassagesMap();
-
     reset({
       dispatch,
       currentPassageObject: props.currentPassageObject,
       currentStoryState: props.currentStoryState,
       lastLinkTags: props.lastLinkTags,
-      startPassageName: startPassage.name,
     });
   },
 });
@@ -182,5 +173,3 @@ export const PassageContentsContainerConnected = connect(
   mapStateToProps,
   mapDispatchToProps,
 )(PassageContentsContainer);
-
-export default PassageContentsContainer;

@@ -30,11 +30,16 @@ export const passageHistoryReducer = (previousState: TPassageHistory = [], actio
   if (action.type === ActionTypes.PassageHistoryNew && action.value)  {
     return [ action.value as IPassageHistoryInstance, ].concat(previousState);
   } else if (action.type === ActionTypes.StoryRewind &&
-             (action.value >= 0 && (action.value as number) % 1 === 0))
+             (action.value > 0 && (action.value as number) % 1 === 0))
   {
     const index = action.value as number;
     if (!(index in previousState)) {
       throw new Error(strings.INDEX_NOT_IN_PASSAGE_HISTORY);
+    }
+
+    /* Do not rewind if there's only a single passage in the history. */
+    if (previousState.length === 1) {
+      return previousState;
     }
 
     return previousState.slice(index);
@@ -44,5 +49,3 @@ export const passageHistoryReducer = (previousState: TPassageHistory = [], actio
 
   return previousState;
 };
-
-export default passageHistoryReducer;

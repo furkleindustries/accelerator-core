@@ -3,5 +3,3 @@ export interface ICyclingLinkOwnProps {
   className?: string;
   variableToSet?: string;
 }
-
-export default ICyclingLinkOwnProps;

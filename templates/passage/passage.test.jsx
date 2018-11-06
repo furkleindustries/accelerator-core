@@ -6,7 +6,10 @@ import * as React from 'react';
 
 import passage from './%NAME%';
 
-import * as bundle from '../../src/passages/bundle';
+import {
+  BuiltInTags,
+  getTag,
+} from '../../src/passages/tagsBundle';
 
 const {
   name,
@@ -46,7 +49,7 @@ describe('Tests for the %NAME% passage.', () => {
 
   it('Renders shallowly without crashing.', () => {
     /* Don't test if it's a noRender passage. */
-    if (Array.isArray(tags) && !bundle.tags.getTag(tags, 'noRender')) {
+    if (!getTag(tags, BuiltInTags.NoRender)) {
       shallow(<Component />);
     }
   });

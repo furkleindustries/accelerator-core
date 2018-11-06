@@ -2,14 +2,9 @@ import {
   Tag,
 } from './Tag';
 
-export const strings = {
-  TAGS_INVALID:
-    'The tags argument passed to the getTag function was not an array.',
-}
-
-export const getTag = (tags: Tag[], key: string) => {
+export const getTag = (tags: Tag[] | undefined, key: string) => {
   if (!Array.isArray(tags)) {
-    throw new Error(strings.TAGS_INVALID);
+    return null;
   }
 
   for (const tag of tags) {
@@ -22,5 +17,3 @@ export const getTag = (tags: Tag[], key: string) => {
 
   return null;
 };
-
-export default getTag;

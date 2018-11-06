@@ -16,5 +16,3 @@ export interface IPlugin {
   afterStoryStateChange?(args: IPluginMethodBaseArgs & IPluginMethodStateChangingArgs): void;
   beforeRestart?(args: IPluginMethodBaseArgs): void;
 }
-
-export default IPlugin;

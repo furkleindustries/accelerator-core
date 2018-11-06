@@ -5,14 +5,11 @@ import {
   createStore,
 } from './state/createStore';
 import {
-  getPluginsList,
-} from './plugins/getPluginsList';
-import {
   initializeStore,
 } from './state/initializeStore';
 import {
   IState,
-} from './reducers/IState';
+} from './state/IState';
 import {
   Provider,
 } from 'react-redux';
@@ -26,8 +23,6 @@ import * as React from 'react';
 import { render, } from 'react-snapshot';
 
 import './index.scss';
-import getPassagesMap from './passages/getPassagesMap';
-import createStoryStateUpdateAction from './actions/creators/createStoryStateUpdateAction';
 
 /* Allow state to be saved on prerender and reused when the window is opened.
  * This will avoid a lot of superfluous logic. */
@@ -50,32 +45,23 @@ if (!state) {
   window.REDUX_STATE = JSON.stringify(state);
 }
 
-const {
-  passagesMap,
-} = getPassagesMap();
-
-const plugins = getPluginsList();
-plugins.forEach((plugin) => {
-  if (typeof plugin.afterStoryInit === 'function') {
-    plugin.afterStoryInit({
-      store,
-      currentPassageObject: passagesMap[state.currentPassageName],
-      currentStoryState: state.storyStateHistory[0],
-      lastLinkTags: state.passageHistory[0].linkTags,
-      setStoryState(updatedStateProps) {
-        /* Do NOT call mutateCurrentStoryStateInstance here, as it may cause an
-         * infinite loop of plugin actions. */
-        return store.dispatch(createStoryStateUpdateAction(updatedStateProps));
-      },
-    });
-  }
-});
-
 render(
   <Provider store={store}>
     <App />
   </Provider>,
   document.getElementById('root') as HTMLElement,
 );
+
+if ((module as any).hot) {
+  (module as any).hot.accept('./components/App/App', () => {
+      const UpdatedApp = require('./components/App/App').App;
+      render(
+        <Provider store={store}>
+          <UpdatedApp />
+        </Provider>,
+        document.getElementById('root') as HTMLElement,
+      );
+  });
+}
 
 registerServiceWorker();

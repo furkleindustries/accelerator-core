@@ -1,4 +1,7 @@
 import {
+  BuiltInTags,
+} from '../tags/BuiltInTags';
+import {
   createCurrentPassageNameAction,
 } from '../actions/creators/createCurrentPassageNameAction';
 import {
@@ -8,14 +11,14 @@ import {
   createStoryStateNewAction,
 } from '../actions/creators/createStoryStateNewAction';
 import {
+  getPassagesMap,
+} from '../passages/getPassagesMap';
+import {
   getTag,
 } from '../tags/getTag';
 import {
   IAction,
 } from '../actions/IAction';
-import {
-  IPassage,
-} from '../passages/IPassage';
 import {
   Dispatch,
 } from 'redux';
@@ -28,30 +31,44 @@ export const strings = {
     'You cannot link to a passage tagged noRender.',
 
   PASSAGE_INVALID:
-    'The passage argument passed to navigate was not valid.',
+    'No passage could be produced from the passageName argument passed to ' +
+    'navigate.',
+
+  PASSAGE_NAME_INVALID:
+    'The passageName argument was not passed to navigate, was not a string, ' +
+    'or was empty.',
 };
 
 export const navigate = ({
   dispatch,
-  passage,
+  passageName,
   tags,
 }: {
   dispatch: Dispatch<IAction>,
-  passage: IPassage,
+  passageName: string,
   tags?: Tag[],
 }) => {
-  if (!passage || !passage.name) {
+  if (!passageName || typeof passageName !== 'string') {
+    throw new Error(strings.PASSAGE_NAME_INVALID); 
+  }
+
+  const {
+    passagesMap,
+  } = getPassagesMap();
+
+  const passage = passagesMap[passageName];
+  if (!passage) {
     throw new Error(strings.PASSAGE_INVALID);
-  } else if (passage.tags && getTag(passage.tags, 'noRender')) {
+  } else if (getTag(passage.tags, BuiltInTags.NoRender)) {
     throw new Error(strings.NO_LINKING_TO_NORENDER_PASSAGES);
   }
 
   /* Update the current passage name. */
-  dispatch(createCurrentPassageNameAction(passage.name));
+  dispatch(createCurrentPassageNameAction(passageName));
 
   /* Add a new instance to the passage history. */
   dispatch(createPassageHistoryNewAction({
-    name: passage.name,
+    name: passageName,
     linkTags: tags || [],
   }));
 
@@ -59,5 +76,3 @@ export const navigate = ({
    * the same state as the prior passage did when leaving it. */ 
   dispatch(createStoryStateNewAction());
 };
-
-export default navigate;

@@ -8,5 +8,3 @@ export interface IDelayOwnProps {
   renderWithZeroOpacity?: boolean;
   timeout: number;
 }
-
-export default IDelayOwnProps;

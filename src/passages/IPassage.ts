@@ -12,5 +12,3 @@ export interface IPassage {
   readonly contents?: ComponentClass | SFCFactory<any>;
   readonly tags?: Tag[];
 }
-
-export default IPassage;
