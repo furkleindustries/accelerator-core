@@ -1,6 +1,6 @@
 {
   "name": "accelerator-core",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@svgr/webpack": "^4.0.0",
