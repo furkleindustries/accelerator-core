@@ -11,7 +11,7 @@ A lightweight, reactive hypertext fiction framework with the conveniences of mod
 1. [Why Accelerator?](#why-accelerator)
 2. [Installation](#installation)
 3. [Creating passages](#creating-passages)
-4. [The bundle import](#bundle-import)
+4. [The bundle imports](#bundle-imports)
 5. [The contents component class/function](#contents-component-creator)
 6. [Headers and footers](#headers-and-footers)
 7. [Development server](#development-server)
@@ -73,8 +73,9 @@ To write a new passage, either use `accelerator-tool new passage %YOUR_PASSAGE_N
 import * as React from 'react';
 
 /* Accelerator components, interfaces, styles, functions, etc. Feel free to
- * destructure this as you see fit but watch out that you don't get mixed up
- * between bundle props and component props with the same name (e.g. tags). */
+ * destructure these as you see fit but watch out that you don't get mixed up
+ * between bundle names and passage component props with the same name
+ * (e.g. tags). */
 import * as components from '../../src/passages/componentsBundle'; 
 import * as passages from '../../src/passages/passagesBundle';
 import * as tagsBundle from '../../src/passages/tagsBundle';
@@ -200,12 +201,12 @@ Note that, as alluded to above, passage files *must* end in `.jsx` or `.tsx`. Th
 
 If you are using Typescript (which you should be for the full value of Accelerator's built-in functionalities), you should indicate the type of the passage object by replacing `const passage =` with `const passage: bundle.passages.IPassage =`, and setting the props type of the React component to `bundle.passages.IPassageProps`, importing these interfaces from `../src/passages/bundle`. This will allow full type-checking of your story passages. (You can also just destructure the bundle, or the passages property, so that you can refer directly to `IPassage` and `IPassageProps`.)
 
-<a name="bundle-import"></a>
-## The bundle import
+<a name="bundle-imports"></a>
+## The bundle imports
 
-All Accelerator passages have simple access to the bundle import, located in `src/passages/bundle.ts`. (Note that `passages` and `src/passages` are different folders with wholly different purposes.) The bundle import, typically imported as `import * as bundle from '../../src/passages/bundle'`, has the following props:
+All Accelerator passages have simple access to the bundle imports, located in `src/passages/`. (Note that `passages` and `src/passages` are different folders with wholly different purposes.) Each bundle import is typically imported as so: `import * as myBundle from '../../src/passages/specificBundle';`. There are at present three export bundles intended for author reuse:
 
-* `components`, an object containing:
+* `componentsBundle`:
   * The [Link](src/components/Link/Link.md) component, which allows the user to navigate between passages.
   * The [ClickAppend](src/components/ClickAppend/ClickAppend.md) component, which places one piece of content after another once the first component is clicked.
   * The [ClickDisappear](src/components/ClickDisappear/ClickDisappear.md) component, which causes a piece of content to disappear (or fade out over a specified duration) after it is clicked.
@@ -219,11 +220,11 @@ All Accelerator passages have simple access to the bundle import, located in `sr
   * The [OneOf](src/components/OneOf/OneOf.md) component, which randomly selects a single item from the collection passed as children.
   * The [NOf](src/components/NOf/NOf.md) component, which is a lower-level component used by `OneOf`, and allows any random number (but not random order) of its children to be displayed.
   * The [Permutation](src/components/Permutation/Permutation.md) component, which randomly shuffles the collection passed as children.
-* `passages`, an object containing:
+* `passagesBundle`:
   * `IPassage`, an interface detailing the properties of the passage object, which is the default export of all passage files.
   * `IPassageProps`, an interface detailing the properties passed to the `contents` property of the passage object, assuming `contents` is a React component.
 * `styles`, an CSS modules object containing the classes and IDs defined in the passage's base stylesheet (located at `src/passages/passage.scss`). This could be automatically used/injected, but I intend on making it as easy as possible to do without default styling. 
-* `tags`, an object containing:
+* `tagsBundle`:
   * `BuiltInTags`, an enum which expresses the tags already configured for use by the Accelerator runtime.
   * `getTag`, a function which accepts a tag array and desired key, and produces either `true` if the key was in the array as a plain string, or the value string if the key was the key property of a key-value tag.
   * `Tag`, the type alias for tags.
@@ -231,7 +232,7 @@ All Accelerator passages have simple access to the bundle import, located in `sr
 <a name="contents-component-creator"></a>
 ## The contents component class/function
 
-If you choose to create a React component constructor, either with an ES6 class and render method, or a function returning a React element, the product of that constructor will be passed props automatically by the higher-order `PassageContainer` component. These props, outlined in `IPassageProps`, are as follows:
+For each passage, your ES6 class component (extending `React.Component` or `React.PureComponent`) or functional component (of type `React.StatelessFunctionalComponent`, or React's new stateful functional component types) will be passed props automatically by the higher-order `PassageContainer` component. These props, defined in `IPassageProps`, are as follows:
 
 * `passageObject`, the object from your authored passage file. This is of type `IPassage`.
 * `setStoryState`, a function accepting an object of new state keys and values object as its single argument. This will automatically update the state and any rendered instances of it.
@@ -282,7 +283,13 @@ Basic configuration can be performed through the `.env` file. There are currentl
 <a name="templates"></a>
 ## Templates
 
-The Accelerator devtool (`accelerator-tool`) uses templates to construct new passages. These templates are stored locally in `src/templates`. Feel free to modify them as you see fit. There is minor rewriting of these when they are being copied by `accelerator-tool`, but as of now that is restricted solely to the replacement in all generated files of `%NAME%` with the name of the new passage.
+The Accelerator devtool (`accelerator-tool`) uses templates to construct new passages. These templates are stored locally in `src/templates`. Feel free to modify them as you see fit.
+
+There is also automatic rewriting of templated files generated by `accelerator-tool new` based on the values in the `.env` file. Any value in that configuration file which begins with `ACCELERATOR_` will be conditionally injected into all rewritten content. Note that this does not apply to `PUBLIC_URL`, which is handled by the `Create React App` build system. An example of this kind of rewriting:
+
+Any instances of `%FOO%` in a core source file which is rewritten and redistributed in an Accelerator story will be rewritten by the `.env` value for `ACCELERATOR_FOO`. Note that the `ACCELERATOR_` prefix must be omitted in files which are rewritten.
+
+All instances of `%NAME%` are also rewritten with the name specified in the `package.json` file.
 
 <a name="plugins"></a>
 ## Plugins
@@ -309,6 +316,6 @@ Like any software project, Accelerator is influenced by and indebted to the soft
 * Redux, for providing elegant inversion of control and pure componenting in React.
 * create-react-app, a similarly-focused one-command prototype solution. 
 * Twine, which formed the basic notion of the story graph implemented here, with nodes connected by user-clickable links, and additionally most of the ideas for built-in components found here.
-* Angular (and to a lesser extent Django), for the concept of an adjacent tool that allows quick creation and prototyping of new project assets.
+* Angular (and to a lesser extent Django), for the concept of an adjacent tool which allows quick creation and prototyping of new project assets.
 
 The first three of these are also extensively used within Accelerator.
