@@ -60,7 +60,7 @@
     "typescript": "^3.1.6",
     "url-loader": "1.1.1",
     "webpack": "4.19.1",
-    "webpack-dev-server": "3.1.9",
+    "webpack-dev-server": "^3.1.14",
     "webpack-manifest-plugin": "2.0.4",
     "workbox-webpack-plugin": "3.6.3"
   },
@@ -74,6 +74,7 @@
     "react-dom": "^16.6.0",
     "react-redux": "^5.0.7",
     "redux": "^4.0.1",
+    "redux-undo": "^0.6.1",
     "slash": "^2.0.0",
     "whatwg-fetch": "2.0.3"
   },
@@ -102,7 +103,8 @@
     "accelerator",
     "if",
     "hypertext",
-    "fiction"
+    "fiction",
+    "twine"
   ],
   "author": "furkle",
   "license": "GPL-3.0",
