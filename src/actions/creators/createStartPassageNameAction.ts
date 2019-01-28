@@ -5,7 +5,9 @@ import {
   IStartPassageNameAction,
 } from '../IStartPassageNameAction';
 
-export const createStartPassageNameAction = (name: string): IStartPassageNameAction => ({
-  type: ActionTypes.StartPassageName,
-  value: name,
-});
+export function createStartPassageNameAction(name: string): IStartPassageNameAction {
+  return Object.freeze({
+    type: ActionTypes.StartPassageName,
+    value: name,
+  }) as IStartPassageNameAction;
+}

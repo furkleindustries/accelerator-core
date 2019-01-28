@@ -1,6 +1,6 @@
 import {
-  createStoryStateUpdateAction,
-} from '../actions/creators/createStoryStateUpdateAction';
+  createStoryStateAction,
+} from '../actions/creators/createStoryStateAction';
 import {
   getPassagesMap,
 } from '../passages/getPassagesMap';
@@ -19,22 +19,26 @@ import {
 
 /* Do NOT call this from within a plugin -- there is a very high chance you'll
  * cause an infinite loop, then a stack overflow. */
-export const mutateCurrentStoryStateInstanceWithPluginExecution = (updatedStateProps: Partial<IStoryStateInstance>, store: Store<IState>) => {
-  const action = createStoryStateUpdateAction(updatedStateProps);
+export function mutateCurrentStoryStateInstanceWithPluginExecution(
+  updatedStateProps: Partial<IStoryStateInstance>,
+  store: Store<IState>,
+)
+{
+  const action = createStoryStateAction(updatedStateProps);
   store.dispatch(action);
 
   const state = store.getState();
   const {
-    currentPassageName,
-    passageHistory: [
-      {
-        linkTags: lastLinkTags, 
-      },
-    ],
+    history: {
+      present: {
+        lastLinkTags,
+        passage: {
+          name: currentPassageName,
+        }, 
 
-    storyStateHistory: [
-      currentStoryState,
-    ],
+        storyState,
+      },
+    },
   } = state;
 
   const {
@@ -45,7 +49,7 @@ export const mutateCurrentStoryStateInstanceWithPluginExecution = (updatedStateP
   plugins.forEach((plugin) => {
     if (typeof plugin.afterStoryStateChange === 'function') {
       plugin.afterStoryStateChange({
-        currentStoryState,
+        storyState,
         lastLinkTags,
         updatedStateProps,
         currentPassageObject: passagesMap[currentPassageName],

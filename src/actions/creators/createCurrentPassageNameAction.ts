@@ -2,10 +2,15 @@ import {
   ActionTypes,
 } from '../ActionTypes';
 import {
-  ICurrentPassageNameAction,
-} from '../ICurrentPassageNameAction';
+  ICurrentPassageAction,
+} from '../ICurrentPassageAction';
+import {
+  IPassage,
+} from '../../passages/IPassage';
 
-export const createCurrentPassageNameAction = (name: string): ICurrentPassageNameAction => ({
-  type: ActionTypes.CurrentPassageName,
-  value: name,
-});
+export function createCurrentPassageAction(passage: IPassage): ICurrentPassageAction {
+  return {
+    type: ActionTypes.CurrentPassage,
+    value: name,
+  };
+}

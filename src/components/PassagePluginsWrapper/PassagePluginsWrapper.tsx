@@ -1,4 +1,7 @@
 import {
+  createStoryStateAction,
+} from '../../actions/creators/createStoryStateAction';
+import {
   getPassagesMap,
 } from '../../passages/getPassagesMap';
 import {
@@ -25,7 +28,6 @@ import {
 } from 'redux';
 
 import * as React from 'react';
-import { createStoryStateUpdateAction } from '../../actions/creators/createStoryStateUpdateAction';
 
 export const strings = {
   PASSAGE_NOT_FOUND:
@@ -62,12 +64,12 @@ export class PassagePluginsWrapper extends React.PureComponent<{ children: React
         plugin.afterStoryInit({
           store,
           currentPassageObject,
-          currentStoryState: store.getState().storyStateHistory[0],
+          storyState: store.getState().history.present.storyState,
           lastLinkTags,
           setStoryState(updatedStateProps) {
             /* Do NOT call mutateCurrentStoryStateInstanceWithPluginExecution here,
             * as it may cause an infinite loop of plugin actions. */
-            return store.dispatch(createStoryStateUpdateAction(updatedStateProps));
+            return store.dispatch(createStoryStateAction(updatedStateProps));
           },
         });
       }
@@ -99,7 +101,7 @@ export class PassagePluginsWrapper extends React.PureComponent<{ children: React
           children,
           lastLinkTags,
           currentPassageObject,
-          currentStoryState: store.getState().storyStateHistory[0],
+          storyState: store.getState().history.present.storyState,
           /* If for some reason the plugin is non-conformant and outputs
            * something falsy, use the last good children value. */
         }) || finalChildren;
@@ -127,7 +129,7 @@ export class PassagePluginsWrapper extends React.PureComponent<{ children: React
         plugin.afterPassageChange({
           currentPassageObject,
           lastLinkTags,
-          currentStoryState: store.getState().storyStateHistory[0],
+          storyState: store.getState().history.present.storyState,
         });
       }
     });
@@ -135,9 +137,14 @@ export class PassagePluginsWrapper extends React.PureComponent<{ children: React
 }
 
 export const mapStateToProps: MapStateToProps<IPassagePluginsWrapperStateProps, {}, IState> = ({
-  currentPassageName,
-  passageHistory,
-}) => {
+  history: {
+    present: {
+      passage: { name: currentPassageName },
+      lastLinkTags,
+    },
+  }
+}) =>
+{
   const {
     passagesMap,
   } = getPassagesMap();
@@ -150,8 +157,8 @@ export const mapStateToProps: MapStateToProps<IPassagePluginsWrapperStateProps, 
   }
 
   return {
+    lastLinkTags,
     currentPassageObject: passagesMap[currentPassageName],
-    lastLinkTags: passageHistory[0].linkTags,
   };
 };
 

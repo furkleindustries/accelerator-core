@@ -5,7 +5,7 @@ import {
   IStoryStateInstance,
 } from '../state/IStoryStateInstance';
 
-export interface IStoryStateUpdateAction {
-  readonly type: ActionTypes.StoryStateUpdate;
+export interface IStoryStateAction {
+  readonly type: ActionTypes.StoryState;
   readonly value: Partial<IStoryStateInstance>;
 }

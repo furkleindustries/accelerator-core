@@ -2,14 +2,8 @@ import {
   BuiltInTags,
 } from '../tags/BuiltInTags';
 import {
-  createCurrentPassageNameAction,
-} from '../actions/creators/createCurrentPassageNameAction';
-import {
-  createPassageHistoryNewAction,
-} from '../actions/creators/createPassageHistoryNewAction';
-import {
-  createStoryStateNewAction,
-} from '../actions/creators/createStoryStateNewAction';
+  createPassageNavigationAction,
+} from '../actions/creators/createPassageNavigationAction';
 import {
   getPassagesMap,
 } from '../passages/getPassagesMap';
@@ -20,14 +14,21 @@ import {
   IAction,
 } from '../actions/IAction';
 import {
+  IPassage,
+} from '../passages/IPassage';
+import {
   Dispatch,
 } from 'redux';
 import {
   Tag,
 } from '../tags/Tag';
+import {
+  assert,
+  assertValid,
+} from 'ts-assertions';
 
 export const strings = {
-  NO_LINKING_TO_NORENDER_PASSAGES:
+  NO_NAVIGATING_TO_NO_RENDER_PASSAGES:
     'You cannot link to a passage tagged noRender.',
 
   PASSAGE_INVALID:
@@ -48,31 +49,25 @@ export const navigate = ({
   passageName: string,
   tags?: Tag[],
 }) => {
-  if (!passageName || typeof passageName !== 'string') {
-    throw new Error(strings.PASSAGE_NAME_INVALID); 
-  }
+  assert(
+    passageName && typeof passageName !== 'string',
+    strings.PASSAGE_NAME_INVALID,
+  );
 
   const {
     passagesMap,
   } = getPassagesMap();
 
-  const passage = passagesMap[passageName];
-  if (!passage) {
-    throw new Error(strings.PASSAGE_INVALID);
-  } else if (getTag(passage.tags, BuiltInTags.NoRender)) {
-    throw new Error(strings.NO_LINKING_TO_NORENDER_PASSAGES);
-  }
+  const passage = assertValid<IPassage>(
+    passagesMap[passageName],
+    strings.PASSAGE_INVALID,
+  );
 
-  /* Update the current passage name. */
-  dispatch(createCurrentPassageNameAction(passageName));
+  assert(
+    !getTag(passage.tags, BuiltInTags.NoRender),
+    strings.NO_NAVIGATING_TO_NO_RENDER_PASSAGES,
+  );
 
-  /* Add a new instance to the passage history. */
-  dispatch(createPassageHistoryNewAction({
-    name: passageName,
-    linkTags: tags || [],
-  }));
-
-  /* Add a new instance to the story state. This new passage will have all
-   * the same state as the prior passage did when leaving it. */ 
-  dispatch(createStoryStateNewAction());
+  /* Update the current passage. */
+  dispatch(createPassageNavigationAction(passage, tags));
 };

@@ -30,18 +30,14 @@ export class RewindButton extends React.PureComponent<IRewindButtonOwnProps & IR
   
   render() {
     const {
+      canRewind,
       children,
       className,
-      passageHistory,
     } = this.props;
 
-    const statefulProps = (() => {
-      if (passageHistory.length === 1) {
-        return { disabled: true, };
-      }
-
-      return { onClick: this.rewind, };
-    })();
+    const statefulProps = canRewind ?
+        { disabled: true } :
+        { onClick: this.rewind };
 
     return (
       <button
@@ -63,9 +59,9 @@ export class RewindButton extends React.PureComponent<IRewindButtonOwnProps & IR
 }
 
 export const mapStateToProps: MapStateToProps<IRewindButtonStateProps, IRewindButtonOwnProps, IState> = ({
-  passageHistory,
+  history: { past },
 }) => ({
-  passageHistory,
+  canRewind: past.length > 1,
 });
 
 export const mapDispatchToProps: MapDispatchToProps<IRewindButtonDispatchProps, IRewindButtonOwnProps> = (dispatch) => ({

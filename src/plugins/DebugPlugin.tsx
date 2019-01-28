@@ -43,7 +43,7 @@ export class DebugPlugin implements IPlugin {
         tags,
       },
 
-      currentStoryState,
+      storyState: currentStoryState,
     } = args;
 
     console.log('---- beforeRender ----');
@@ -84,7 +84,7 @@ export class DebugPlugin implements IPlugin {
         typeof window.document.querySelector === 'function')
     {
       const {
-        currentStoryState,
+        storyState: currentStoryState,
       } = args;
 
       const readout = window.document.querySelector('.debugStateReadout');
@@ -100,7 +100,7 @@ export class DebugPlugin implements IPlugin {
         name,
       },
 
-      currentStoryState,
+      storyState: currentStoryState,
     } = args;
 
     console.log('---- beforeRestart ----');

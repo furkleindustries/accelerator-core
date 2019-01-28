@@ -1,12 +1,10 @@
 export enum ActionTypes {
-  CurrentPassageName = 'CurrentPassageName',
-  StartPassageName = 'StartPassageName',
-  HistoryIndex = 'HistoryIndex',
-  PassageHistoryNew = 'PassageHistoryNew',
+  CurrentPassage = 'CurrentPassage',
   LastLinkTags = 'LastLinkTags',
-  StoryRewind = 'StoryRewind',
+  PassageNavigation = 'PassageNavigation',
+  StartPassageName = 'StartPassageName',
   StoryReset = 'StoryReset',
-  StoryStateNew = 'StoryStateNew',
-  StoryStateUpdate = 'StoryStateUpdate',
+  StoryRewind = 'StoryRewind',
+  StoryState = 'StoryStateUpdate',
   StoryRequiresFullRerender = 'StoryRequiresFullRerender',
 }

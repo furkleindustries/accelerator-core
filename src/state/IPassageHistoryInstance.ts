@@ -1,8 +1,0 @@
-import {
-  Tag,
-} from '../tags/Tag';
-
-export interface IPassageHistoryInstance {
-  name: string;
-  linkTags: Tag[];
-}

@@ -1,14 +1,9 @@
 import {
-  TPassageHistory,
-} from './TPassageHistory';
-import {
-  TStoryStateHistory,
-} from './TStoryStateHistory';
+  IHistory,
+} from './IHistory';
 
 export interface IState {
-  currentPassageName: string;
-  passageHistory: TPassageHistory;
+  history: IHistory;
   startPassageName: string;
   storyRequiresFullRerender: boolean;
-  storyStateHistory: TStoryStateHistory;
 }

@@ -8,6 +8,6 @@ import {
   Dispatch,
 } from 'redux';
 
-export const rewind = (dispatch: Dispatch<IStoryRewindAction>, num: number = 1): IStoryRewindAction => (
-  dispatch(createStoryRewindAction(num))
-);
+export function rewind(dispatch: Dispatch<IStoryRewindAction>): IStoryRewindAction {
+  return dispatch(createStoryRewindAction());
+}

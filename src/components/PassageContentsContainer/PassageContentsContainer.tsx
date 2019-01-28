@@ -44,12 +44,6 @@ import {
 import {
   reset,
 } from '../../state/reset';
-import {
-  TPassageHistory,
-} from '../../state/TPassageHistory';
-import {
-  TStoryStateHistory,
-} from '../../state/TStoryStateHistory';
 
 import * as React from 'react';
 
@@ -121,18 +115,19 @@ export class PassageContentsContainer extends React.PureComponent<IPassageConten
 }
 
 export const mapStateToProps: MapStateToProps<IPassageContentsContainerStateProps, IPassageContentsContainerOwnProps, IState> = ({
-  currentPassageName,
-  passageHistory,
-  storyStateHistory,
-}: {
-  currentPassageName: string,
-  passageHistory: TPassageHistory,
-  storyStateHistory: TStoryStateHistory,
+  history: {
+    present: {
+      passage,   
+      storyState,
+      lastLinkTags,
+    },
+  },
 }) => {
   const {
     passagesMap,
   } = getPassagesMap();
 
+  const currentPassageName = passage.name;
   if (!(currentPassageName in passagesMap)) {
     const errStr = strings.PASSAGE_NOT_FOUND
       .replace('%NAME%', currentPassageName);
@@ -141,11 +136,11 @@ export const mapStateToProps: MapStateToProps<IPassageContentsContainerStateProp
   }
 
   return {
+    lastLinkTags,
     currentPassageObject: passagesMap[currentPassageName],
-    currentStoryState: storyStateHistory[0],
-    lastLinkTags: passageHistory[0].linkTags,
+    currentStoryState: storyState,
     passages: passagesMap,
-  };  
+  };
 };
 
 export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDispatchProps, IPassageContentsContainerOwnProps & IPassageContentsContainerStateProps> = (dispatch: Dispatch<IAction>, props) => ({
@@ -163,7 +158,7 @@ export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDis
     reset({
       dispatch,
       currentPassageObject: props.currentPassageObject,
-      currentStoryState: props.currentStoryState,
+      storyState: props.currentStoryState,
       lastLinkTags: props.lastLinkTags,
     });
   },

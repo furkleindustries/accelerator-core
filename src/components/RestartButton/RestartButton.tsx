@@ -57,7 +57,7 @@ export class RestartButton extends React.PureComponent<IRestartButtonOwnProps & 
 
     reset({
       currentPassageObject,
-      currentStoryState,
+      storyState: currentStoryState,
       dispatch,
       lastLinkTags,
     });
@@ -65,18 +65,18 @@ export class RestartButton extends React.PureComponent<IRestartButtonOwnProps & 
 }
 
 export const mapStateToProps: MapStateToProps<IRestartButtonStateProps, IRestartButtonOwnProps, IState> = ({
-  currentPassageName,
+  history: {
+    present: {
+      lastLinkTags,
+      passage: {
+        name: currentPassageName,
+      },
 
-  passageHistory: [
-    {
-      linkTags: lastLinkTags,
+      storyState: currentStoryState,
     },
-  ],
-
-  storyStateHistory: [
-    currentStoryState,
-  ],
-}) => ({
+  },
+}) =>
+({
   currentPassageObject: getPassagesMap().passagesMap[currentPassageName],
   currentStoryState,
   lastLinkTags,
