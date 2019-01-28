@@ -51,7 +51,7 @@ let startPassage: IPassage | null = null;
 interface IReturn {
   passagesMap: IPassagesMap;
   startPassage: IPassage;
-};
+}
 
 export function getPassagesMap(): IReturn {
   /* Return the memoized results if they exist. */

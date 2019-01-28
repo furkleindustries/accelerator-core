@@ -5,8 +5,8 @@ import {
   createStore,
 } from './state/createStore';
 import {
-  initializeStore,
-} from './state/initializeStore';
+  configureStore,
+} from './state/configureStore';
 import {
   IState,
 } from './state/IState';
@@ -24,20 +24,16 @@ import { render } from 'react-snapshot';
 
 import './index.scss';
 
-import { setConfig } from 'react-hot-loader'
-
-setConfig({ logLevel: 'debug' });
-
 /* Allow state to be saved on prerender and reused when the window is opened.
- * This will avoid a lot of superfluous logic. */
+* This will avoid a lot of superfluous logic. */
 // @ts-ignore
 const prerenderedState = window && window.REDUX_STATE;
 const store = (() => {
   if (prerenderedState) {
     return createStore(prerenderedState);
   }
-
-  return initializeStore(createStore());
+  
+  return configureStore(createStore());
 })();
 
 let state: IState = prerenderedState;
@@ -47,11 +43,13 @@ if (!state) {
   window.REDUX_STATE = JSON.stringify(state);
 }
 
-render(
+const renderFunc = () => render(
   <Provider store={store}>
     <App />
   </Provider>,
   document.querySelector('#root'),
 );
+
+renderFunc();
 
 registerServiceWorker();

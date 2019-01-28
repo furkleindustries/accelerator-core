@@ -38,7 +38,7 @@ export const strings = {
     '%REASON%.',
 };
 
-export function initializeStore(store: Store) {
+export function configureStore(store: Store) {
   const {
     startPassage,
     startPassage: { name },
