@@ -1,6 +1,9 @@
 import {
   PassageContainerConnected,
 } from '../PassageContainer/PassageContainer';
+import {
+  hot,
+} from 'react-hot-loader';
 
 import * as React from 'react';
 
@@ -17,3 +20,5 @@ export class App extends React.Component {
     );
   }
 }
+
+export default hot(module)(App);

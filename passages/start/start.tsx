@@ -30,7 +30,7 @@ class Component extends React.PureComponent<passages.IPassageProps> {
       /* The title will appear above here as an <h1> if you've set it. */
       <div id={passageObject.name}>
         <h2>
-          This is the sample accelerator passage.
+          This is the sample Accelerator passage.
         </h2>
 
         <img

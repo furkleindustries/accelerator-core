@@ -50,10 +50,7 @@ export class RewindButton extends React.PureComponent<IRewindButtonOwnProps & IR
   }
 
   private rewind() {
-    const {
-      dispatch,
-    } = this.props;
-
+    const { dispatch } = this.props;
     rewind(dispatch);
   }
 }

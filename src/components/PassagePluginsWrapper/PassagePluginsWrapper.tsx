@@ -2,6 +2,9 @@ import {
   createStoryStateAction,
 } from '../../actions/creators/createStoryStateAction';
 import {
+  getPassagesMap,
+} from '../../passages/getPassagesMap';
+import {
   getPluginsList,
 } from '../../plugins/getPluginsList';
 import {
@@ -134,14 +137,14 @@ export class PassagePluginsWrapper extends React.PureComponent<{ children: React
 export const mapStateToProps: MapStateToProps<IPassagePluginsWrapperStateProps, {}, IState> = ({
   history: {
     present: {
+      currentPassageName: name,
       lastLinkTags,
-      passage: currentPassageObject,
     },
   }
 }) =>
 ({
-  currentPassageObject,
   lastLinkTags,
+  currentPassageObject: getPassagesMap().passagesMap[name],
 });
 
 export const PassagePluginsWrapperConnected = connect(mapStateToProps)(PassagePluginsWrapper);

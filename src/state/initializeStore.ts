@@ -46,5 +46,10 @@ export function initializeStore(store: Store) {
 
   store.dispatch(createStartPassageNameAction(name));
   store.dispatch(createCurrentPassageNameAction(name));
-  store.dispatch(createPassageNavigationAction(startPassage, [ BuiltInTags.Start ]));
+  store.dispatch(createPassageNavigationAction(
+    startPassage,
+    [ BuiltInTags.Start ],
+  ));
+
+  return store;
 }

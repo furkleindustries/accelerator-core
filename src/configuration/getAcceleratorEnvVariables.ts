@@ -47,6 +47,5 @@ export function getAcceleratorEnvVariables(): IAcceleratorEnvVariables {
     }, {}),
   });
 
-  console.log(acceleratorEnvVariables);
   return acceleratorEnvVariables;
 }

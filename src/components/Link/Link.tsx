@@ -18,8 +18,8 @@ import {
   Dispatch,
 } from 'redux';
 import {
-  Tag,
-} from '../../tags/Tag';
+  assert,
+} from 'ts-assertions';
 
 import * as React from 'react';
 
@@ -32,8 +32,6 @@ export const strings = {
 export class Link extends React.PureComponent<ILinkOwnProps & ILinkDispatchProps> {
   constructor(props: any) {
     super(props);
-
-    this.formatTags = this.formatTags.bind(this);
     this.navigate = this.navigate.bind(this);
   }
 
@@ -48,7 +46,6 @@ export class Link extends React.PureComponent<ILinkOwnProps & ILinkDispatchProps
       <button
         className={`link${className ? ` ${className}` : ''}`}
         passage-name={passageName}
-        data-tags={this.formatTags()}
         onClick={this.navigate}
       >
         {children}
@@ -63,26 +60,16 @@ export class Link extends React.PureComponent<ILinkOwnProps & ILinkDispatchProps
       tags,
     } = this.props;
 
+    assert(
+      getPassagesMap().passagesMap[passageName],
+      strings.PASSAGE_DOES_NOT_EXIST.replace('%NAME%', passageName),
+    );
+
     navigate({
       dispatch,
       passageName,
       tags,
     });
-  }
-  
-  private formatTags() {
-    const {
-      passagesMap,
-    } = getPassagesMap();
-
-    const {
-      passageName,
-    } = this.props;
-
-    const passage = passagesMap[passageName];
-    return ((passage || {}).tags || []).map((aa: Tag) => (
-      typeof aa === 'object' ? JSON.stringify(aa) : aa
-    )).join('');
   }
 }
 

@@ -1,5 +1,5 @@
 import {
-  App,
+  default as App,
 } from './components/App/App';
 import {
   createStore,
@@ -20,9 +20,13 @@ import {
 import * as React from 'react';
 
 // @ts-ignore
-import { render, } from 'react-snapshot';
+import { render } from 'react-snapshot';
 
 import './index.scss';
+
+import { setConfig } from 'react-hot-loader'
+
+setConfig({ logLevel: 'debug' });
 
 /* Allow state to be saved on prerender and reused when the window is opened.
  * This will avoid a lot of superfluous logic. */
@@ -33,9 +37,7 @@ const store = (() => {
     return createStore(prerenderedState);
   }
 
-  const createdStore = createStore();
-  initializeStore(createdStore);
-  return createdStore;
+  return initializeStore(createStore());
 })();
 
 let state: IState = prerenderedState;
@@ -49,19 +51,7 @@ render(
   <Provider store={store}>
     <App />
   </Provider>,
-  document.getElementById('root') as HTMLElement,
+  document.querySelector('#root'),
 );
-
-if ((module as any).hot) {
-  (module as any).hot.accept('./components/App/App', () => {
-      const UpdatedApp = require('./components/App/App').App;
-      render(
-        <Provider store={store}>
-          <UpdatedApp />
-        </Provider>,
-        document.getElementById('root') as HTMLElement,
-      );
-  });
-}
 
 registerServiceWorker();
