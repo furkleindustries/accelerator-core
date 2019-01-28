@@ -1,7 +1,4 @@
 import {
-  getPassagesMap,
-} from '../../passages/getPassagesMap';
-import {
   IRestartButtonDispatchProps,
 } from './IRestartButtonDispatchProps';
 import {
@@ -68,16 +65,13 @@ export const mapStateToProps: MapStateToProps<IRestartButtonStateProps, IRestart
   history: {
     present: {
       lastLinkTags,
-      passage: {
-        name: currentPassageName,
-      },
-
+      passage: currentPassageObject,
       storyState: currentStoryState,
     },
   },
 }) =>
 ({
-  currentPassageObject: getPassagesMap().passagesMap[currentPassageName],
+  currentPassageObject,
   currentStoryState,
   lastLinkTags,
 });

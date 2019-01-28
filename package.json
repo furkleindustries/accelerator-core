@@ -74,7 +74,7 @@
     "react-dom": "^16.6.0",
     "react-redux": "^5.0.7",
     "redux": "^4.0.1",
-    "redux-undo": "^0.6.1",
+    "redux-undo": "^1.0.0-beta9-9-7",
     "slash": "^2.0.0",
     "ts-assertions": "^1.0.11",
     "whatwg-fetch": "2.0.3"

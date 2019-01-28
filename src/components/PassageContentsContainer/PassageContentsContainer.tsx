@@ -2,9 +2,6 @@ import {
   BuiltInTags,
 } from '../../tags/BuiltInTags';
 import {
-  getPassagesMap,
-} from '../../passages/getPassagesMap';
-import {
   getTag,
 } from '../../tags/getTag';
 import {
@@ -44,11 +41,15 @@ import {
 import {
   reset,
 } from '../../state/reset';
+import {
+  assert,
+  assertValid,
+} from 'ts-assertions';
 
 import * as React from 'react';
 
 export const strings = {
-  COMPONENT_CONSTRUCTOR_NOT_FOUND:
+  COMPONENT_NOT_FOUND:
     'The contents property of the passage object passed to PassageContainer ' +
     'was not found.',
 
@@ -86,13 +87,16 @@ export class PassageContentsContainer extends React.PureComponent<IPassageConten
       store: Store<IState>,
     } = this.context;
 
-    if (!contents) {
-      throw new Error(strings.COMPONENT_CONSTRUCTOR_NOT_FOUND);
-    } else if (Array.isArray(currentPassageObject.tags) &&
-               getTag(currentPassageObject.tags, BuiltInTags.NoRender))
-    {
-      throw new Error(strings.CANT_RENDER_NORENDER_PASSAGE);
-    }
+    const safeContents = assertValid<React.ComponentClass<IPassageProps> | React.SFC<IPassageProps>>(
+      contents,
+      strings.COMPONENT_NOT_FOUND,
+    );
+
+    assert(
+      Array.isArray(currentPassageObject.tags) &&
+        !getTag(currentPassageObject.tags, BuiltInTags.NoRender),
+      strings.CANT_RENDER_NORENDER_PASSAGE,
+    );
 
     const propsPassedDown: IPassageProps = {
       dispatch,
@@ -108,8 +112,8 @@ export class PassageContentsContainer extends React.PureComponent<IPassageConten
     };
 
     return React.createElement(
-      contents as React.ComponentClass<IPassageProps> | React.SFCFactory<IPassageProps>,
-      propsPassedDown
+      safeContents,
+      propsPassedDown,
     );
   }
 }
@@ -117,37 +121,38 @@ export class PassageContentsContainer extends React.PureComponent<IPassageConten
 export const mapStateToProps: MapStateToProps<IPassageContentsContainerStateProps, IPassageContentsContainerOwnProps, IState> = ({
   history: {
     present: {
-      passage,   
-      storyState,
+      currentPassageName,
+      passage: currentPassageObject,
+      storyState: currentStoryState,
       lastLinkTags,
     },
   },
-}) => {
-  const {
-    passagesMap,
-  } = getPassagesMap();
-
-  const currentPassageName = passage.name;
-  if (!(currentPassageName in passagesMap)) {
-    const errStr = strings.PASSAGE_NOT_FOUND
-      .replace('%NAME%', currentPassageName);
-
-    throw new Error(errStr);
-  }
+}) =>
+{
+  assert(
+    currentPassageObject,
+    strings.PASSAGE_NOT_FOUND.replace('%NAME%', currentPassageName),
+  );
 
   return {
+    currentPassageObject,
+    currentStoryState,
     lastLinkTags,
-    currentPassageObject: passagesMap[currentPassageName],
-    currentStoryState: storyState,
-    passages: passagesMap,
   };
 };
 
-export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDispatchProps, IPassageContentsContainerOwnProps & IPassageContentsContainerStateProps> = (dispatch: Dispatch<IAction>, props) => ({
+export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDispatchProps, IPassageContentsContainerOwnProps & IPassageContentsContainerStateProps> = (
+  dispatch: Dispatch<IAction>,
+  {
+    currentPassageObject,
+    currentStoryState,
+    lastLinkTags,
+  },
+) => ({
   dispatch,
 
   navigateTo(passageName, tags?) {
-    navigate({
+    return navigate({
       dispatch,
       passageName,
       tags: tags || [],
@@ -155,11 +160,11 @@ export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDis
   },
 
   restart() {
-    reset({
+    return reset({
+      currentPassageObject,
       dispatch,
-      currentPassageObject: props.currentPassageObject,
-      storyState: props.currentStoryState,
-      lastLinkTags: props.lastLinkTags,
+      lastLinkTags,
+      storyState: currentStoryState,
     });
   },
 });

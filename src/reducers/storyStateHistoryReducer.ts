@@ -2,18 +2,18 @@ import {
   ActionTypes,
 } from '../actions/ActionTypes';
 import {
+  IStoryResetAction,
+} from '../actions/IStoryResetAction';
+import {
   IStoryStateAction,
 } from '../actions/IStoryStateAction';
 import {
   IStoryStateInstance,
 } from '../state/IStoryStateInstance';
 
-export const strings = {
-};
-
 export function storyStateReducer(
   previousState: IStoryStateInstance = {},
-  action: IStoryStateAction,
+  action: IStoryStateAction | IStoryResetAction,
 )
 {
   if (action.type === ActionTypes.StoryState) {
@@ -21,7 +21,9 @@ export function storyStateReducer(
       ...previousState,
       ...action.value,
     };
+  } else if (action.type === ActionTypes.StoryReset) {
+    return {};
   }
 
   return previousState;
-};
+}

@@ -33,7 +33,7 @@ export function getPluginsList(): IPlugin[] {
 
   assert(Array.isArray(manifest), strings.PLUGINS_MANIFEST_INVALID);
 
-  const pluginsPrecedenceMap: { [key: string]: IPluginExport[], } & { none: IPluginExport[], } = {
+  const pluginsPrecedenceMap: { [key: string]: IPluginExport[] } & { none: IPluginExport[] } = {
     none: [],
   };
 

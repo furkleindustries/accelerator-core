@@ -1,6 +1,5 @@
 export enum ActionTypes {
-  CurrentPassage = 'CurrentPassage',
-  LastLinkTags = 'LastLinkTags',
+  CurrentPassageName = 'CurrentPassageName',
   PassageNavigation = 'PassageNavigation',
   StartPassageName = 'StartPassageName',
   StoryReset = 'StoryReset',

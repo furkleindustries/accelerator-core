@@ -17,7 +17,7 @@ const methods = [
 
 export const strings = {
   CONTENTS_INVALID:
-    'The plugin object\'s contents property were not an object or function.',
+    'The plugin object\'s contents property was not an object or function.',
 
   NAME_MISSING:
     'The plugin object had no name string.',
@@ -37,18 +37,22 @@ export function checkPluginExport(plugin: any): plugin is IPluginExport {
     contents,
     name,
   } = assertValid<IPluginExport>(
-    plugin && typeof plugin === 'object',
+    plugin,
     strings.PLUGIN_INVALID,
   );
 
-  assert(name && typeof name !== 'string', strings.NAME_MISSING);
+  assert(name && typeof name === 'string', strings.NAME_MISSING);
 
-  const count = methods.reduce((count, method) => (
-    typeof plugin.contents[method] === 'function' ? count + 1 : count
-  ), 0);
+  if (contents) {
+    assert(/^object|function$/.test(typeof contents), strings.CONTENTS_INVALID);
 
-  assert(count > 0, strings.PLUGIN_NO_LIFECYCLE_METHODS);
-  assert(/^object|function$/.test(typeof contents), strings.CONTENTS_INVALID);
+    const count = methods.reduce((count, method) => (
+      typeof contents[method] === 'function' ? count + 1 : count
+    ), 0);
+
+    assert(count > 0, strings.PLUGIN_NO_LIFECYCLE_METHODS);
+  }
+
 
   return true;
 }

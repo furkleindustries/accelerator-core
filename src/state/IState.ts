@@ -4,6 +4,5 @@ import {
 
 export interface IState {
   history: IHistory;
-  startPassageName: string;
   storyRequiresFullRerender: boolean;
 }

@@ -2,20 +2,30 @@ import {
   ActionTypes,
 } from '../actions/ActionTypes';
 import {
-  ICurrentPassageAction,
-} from '../actions/ICurrentPassageAction';
+  getPassagesMap,
+} from '../passages/getPassagesMap';
 import {
   IPassage,
 } from '../passages/IPassage';
+import {
+  IPassageNavigationAction,
+} from '../actions/IPassageNavigationAction';
+import {
+  IStoryResetAction,
+} from '../actions/IStoryResetAction';
+
+const { startPassage } = getPassagesMap();
 
 export function currentPassageReducer(
   previousState: IPassage | null = null,
-  action: ICurrentPassageAction,
-)
+  action: IPassageNavigationAction | IStoryResetAction,
+): IPassage | null
 {
-  if (action.type === ActionTypes.CurrentPassage) {
-    return action.value;
+  if (action.type === ActionTypes.PassageNavigation) {
+    return action.value.passage;
+  } else if (action.type === ActionTypes.StoryReset) {
+    return startPassage;
   }
 
   return previousState;
-};
+}

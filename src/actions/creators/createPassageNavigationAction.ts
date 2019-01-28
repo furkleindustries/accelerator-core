@@ -11,12 +11,12 @@ import {
   Tag,
 } from '../../tags/Tag';
 
-export function createPassageNavigationAction(passage: IPassage, tags?: Tag[]): IPassageNavigationAction {
+export function createPassageNavigationAction(passage: IPassage, linkTags: Tag[] = []): IPassageNavigationAction {
   return Object.freeze({
     type: ActionTypes.PassageNavigation,
     value: {
       passage,
-      ...(tags ? { tags } : {}),
+      linkTags: linkTags,
     },
   }) as IPassageNavigationAction;
 }

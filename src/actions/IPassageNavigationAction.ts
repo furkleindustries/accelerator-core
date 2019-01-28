@@ -14,7 +14,7 @@ import {
 export interface IPassageNavigationAction extends IAction {
   readonly type: ActionTypes.PassageNavigation;
   readonly value: {
-    passage: IPassage;
-    tags?: Tag[];
+    passage: IPassage,
+    tags?: Tag[],
   };
 }

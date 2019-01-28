@@ -13,24 +13,28 @@ import {
 import {
   Dispatch,
 } from 'redux';
+// @ts-ignore
+import { ActionCreators } from 'redux-undo';
 
-export function reset(args: IPluginMethodBaseArgs & { dispatch: Dispatch<IAction> }) {
+export function reset(args: IPluginMethodBaseArgs & { dispatch: Dispatch<IAction> })
+{
   const {
     currentPassageObject,
-    storyState: currentStoryState,
     dispatch,
     lastLinkTags,
+    storyState,
   } = args;
 
-  getPluginsList().forEach((plugin) => {
-    if (typeof plugin.beforeRestart === 'function') {
-      plugin.beforeRestart({
+  getPluginsList().forEach(({ beforeRestart }) => {
+    if (typeof beforeRestart === 'function') {
+      beforeRestart({
         currentPassageObject,
-        storyState: currentStoryState,
         lastLinkTags,
+        storyState,
       });
     }
   });
 
+  dispatch(ActionCreators.clearHistory());
   dispatch(createStoryResetAction());
-};
+}

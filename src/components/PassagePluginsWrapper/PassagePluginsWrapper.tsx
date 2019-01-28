@@ -2,9 +2,6 @@ import {
   createStoryStateAction,
 } from '../../actions/creators/createStoryStateAction';
 import {
-  getPassagesMap,
-} from '../../passages/getPassagesMap';
-import {
   getPluginsList,
 } from '../../plugins/getPluginsList';
 import {
@@ -119,9 +116,7 @@ export class PassagePluginsWrapper extends React.PureComponent<{ children: React
 
     const {
       store,
-    }: {
-      store: Store<IState>,
-    } = this.context;
+    }: { store: Store<IState> } = this.context;
 
     const plugins = getPluginsList();
     plugins.forEach((plugin) => {
@@ -139,27 +134,14 @@ export class PassagePluginsWrapper extends React.PureComponent<{ children: React
 export const mapStateToProps: MapStateToProps<IPassagePluginsWrapperStateProps, {}, IState> = ({
   history: {
     present: {
-      passage: { name: currentPassageName },
       lastLinkTags,
+      passage: currentPassageObject,
     },
   }
 }) =>
-{
-  const {
-    passagesMap,
-  } = getPassagesMap();
-  
-  if (!(currentPassageName in passagesMap)) {
-    const errStr = strings.PASSAGE_NOT_FOUND
-      .replace('%NAME%', currentPassageName);
+({
+  currentPassageObject,
+  lastLinkTags,
+});
 
-    throw new Error(errStr);
-  }
-
-  return {
-    lastLinkTags,
-    currentPassageObject: passagesMap[currentPassageName],
-  };
-};
-
-export const PassagePluginsWrapperConnected = connect(mapStateToProps)(PassagePluginsWrapper)
+export const PassagePluginsWrapperConnected = connect(mapStateToProps)(PassagePluginsWrapper);

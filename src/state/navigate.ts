@@ -26,6 +26,7 @@ import {
   assert,
   assertValid,
 } from 'ts-assertions';
+import { IPassageNavigationAction } from '../actions/IPassageNavigationAction';
 
 export const strings = {
   NO_NAVIGATING_TO_NO_RENDER_PASSAGES:
@@ -40,7 +41,7 @@ export const strings = {
     'or was empty.',
 };
 
-export const navigate = ({
+export function navigate({
   dispatch,
   passageName,
   tags,
@@ -48,7 +49,8 @@ export const navigate = ({
   dispatch: Dispatch<IAction>,
   passageName: string,
   tags?: Tag[],
-}) => {
+}): IPassageNavigationAction
+{
   assert(
     passageName && typeof passageName !== 'string',
     strings.PASSAGE_NAME_INVALID,
@@ -69,5 +71,5 @@ export const navigate = ({
   );
 
   /* Update the current passage. */
-  dispatch(createPassageNavigationAction(passage, tags));
-};
+  return dispatch(createPassageNavigationAction(passage, tags));
+}

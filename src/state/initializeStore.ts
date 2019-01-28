@@ -1,6 +1,12 @@
 import {
-  createCurrentPassageAction,
+  BuiltInTags,
+} from '../tags/BuiltInTags';
+import {
+  createCurrentPassageNameAction,
 } from '../actions/creators/createCurrentPassageNameAction';
+import {
+  createPassageNavigationAction,
+} from '../actions/creators/createPassageNavigationAction';
 import {
   createStartPassageNameAction,
 } from '../actions/creators/createStartPassageNameAction';
@@ -35,9 +41,10 @@ export const strings = {
 export function initializeStore(store: Store) {
   const {
     startPassage,
+    startPassage: { name },
   } = getPassagesMap();
 
-  const name = startPassage.name;
   store.dispatch(createStartPassageNameAction(name));
-  store.dispatch(createCurrentPassageAction(startPassage));
-};
+  store.dispatch(createCurrentPassageNameAction(name));
+  store.dispatch(createPassageNavigationAction(startPassage, [ BuiltInTags.Start ]));
+}

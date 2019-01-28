@@ -2,19 +2,24 @@ import {
   ActionTypes,
 } from '../actions/ActionTypes';
 import {
-  ILastLinkTagsAction,
-} from '../actions/ILastLinkTagsAction';
+  IPassageNavigationAction,
+} from '../actions/IPassageNavigationAction';
+import {
+  IStoryResetAction,
+} from '../actions/IStoryResetAction';
 import {
   Tag,
 } from '../tags/Tag';
 
 export function lastLinkTagsReducer(
   previousState: Tag[] = [],
-  action: ILastLinkTagsAction,
+  action: IPassageNavigationAction | IStoryResetAction,
 )
 {
-  if (action.type === ActionTypes.LastLinkTags) {
-    return action.value;
+  if (action.type === ActionTypes.PassageNavigation) {
+    return action.value.tags || [];
+  } else if (action.type === ActionTypes.StoryReset) {
+    return [];
   }
 
   return previousState;

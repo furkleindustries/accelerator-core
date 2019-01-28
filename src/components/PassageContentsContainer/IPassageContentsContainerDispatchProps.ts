@@ -2,6 +2,9 @@ import {
   IAction,
 } from '../../actions/IAction';
 import {
+  IPassageNavigationAction,
+} from '../../actions/IPassageNavigationAction';
+import {
   Dispatch,
 } from 'redux';
 import {
@@ -10,6 +13,6 @@ import {
 
 export interface IPassageContentsContainerDispatchProps {
   dispatch: Dispatch<IAction>;
-  navigateTo(passageName: string, tags?: Readonly<Tag[]>): void;
+  navigateTo(passageName: string, tags?: Readonly<Tag[]>): IPassageNavigationAction;
   restart(): void;
 }

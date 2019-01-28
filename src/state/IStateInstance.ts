@@ -9,9 +9,8 @@ import {
 } from '../tags/Tag';
 
 export interface IStateInstance {
+  currentPassageName: string;
   lastLinkTags: Tag[];
   passage: IPassage;
-  startPassageName: string;
-  storyRequiresFullRerender: boolean;
   storyState: IStoryStateInstance;
 }

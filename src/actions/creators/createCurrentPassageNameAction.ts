@@ -2,15 +2,12 @@ import {
   ActionTypes,
 } from '../ActionTypes';
 import {
-  ICurrentPassageAction,
-} from '../ICurrentPassageAction';
-import {
-  IPassage,
-} from '../../passages/IPassage';
+  ICurrentPassageNameAction,
+} from '../ICurrentPassageNameAction';
 
-export function createCurrentPassageAction(passage: IPassage): ICurrentPassageAction {
-  return {
-    type: ActionTypes.CurrentPassage,
+export function createCurrentPassageNameAction(name: string): ICurrentPassageNameAction {
+  return Object.freeze({
+    type: ActionTypes.CurrentPassageName,
     value: name,
-  };
+  }) as ICurrentPassageNameAction;
 }
