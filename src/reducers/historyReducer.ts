@@ -2,9 +2,6 @@ import {
   currentPassageNameReducer,
 } from './currentPassageNameReducer';
 import {
-  currentPassageReducer,
-} from './currentPassageReducer';
-import {
   IAction,
 } from '../actions/IAction';
 import {
@@ -48,7 +45,6 @@ export const historyReducer = undoable(
   combineReducers({
     currentPassageName: currentPassageNameReducer,
     lastLinkTags: lastLinkTagsReducer,
-    passage: currentPassageReducer,
     storyState: storyStateReducer,
   }),
   {

@@ -5,6 +5,9 @@ import {
   BuiltInTags,
 } from '../../tags/BuiltInTags';
 import {
+  getPassagesMap,
+} from '../../passages/getPassagesMap';
+import {
   getTag,
 } from '../../tags/getTag';
 import {
@@ -13,6 +16,9 @@ import {
 import {
   IHistoryFilter,
 } from '../../reducers/IHistoryFilter';
+import {
+  IPassage,
+} from '../../passages/IPassage';
 import {
   IPassageContentsContainerDispatchProps,
 } from './IPassageContentsContainerDispatchProps';
@@ -142,24 +148,23 @@ export const mapStateToProps: MapStateToProps<IPassageContentsContainerStateProp
   history,
   history: {
     present: {
-      currentPassageName,
-      passage: currentPassageObject,
-      storyState: currentStoryState,
+      currentPassageName: name,
+      storyState,
       lastLinkTags,
     },
   },
 }) =>
 {
-  assert(
-    currentPassageObject,
-    strings.PASSAGE_NOT_FOUND.replace('%NAME%', currentPassageName),
+  const passageObject = assertValid<IPassage>(
+    getPassagesMap().passagesMap[name],
+    strings.PASSAGE_NOT_FOUND.replace('%NAME%', name),
   );
 
   return {
-    passageObject: currentPassageObject,
-    storyState: currentStoryState,
     history,
     lastLinkTags,
+    passageObject,
+    storyState,
   };
 };
 

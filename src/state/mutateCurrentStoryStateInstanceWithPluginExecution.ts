@@ -31,19 +31,12 @@ export function mutateCurrentStoryStateInstanceWithPluginExecution(
   const {
     history: {
       present: {
+        currentPassageName: name,
         lastLinkTags,
-        passage: {
-          name: currentPassageName,
-        }, 
-
         storyState,
       },
     },
   } = state;
-
-  const {
-    passagesMap,
-  } = getPassagesMap();
 
   const plugins = getPluginsList();
   plugins.forEach((plugin) => {
@@ -52,7 +45,7 @@ export function mutateCurrentStoryStateInstanceWithPluginExecution(
         storyState,
         lastLinkTags,
         updatedStateProps,
-        currentPassageObject: passagesMap[currentPassageName],
+        currentPassageObject: getPassagesMap().passagesMap[name],
       });
     }
   });

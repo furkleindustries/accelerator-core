@@ -20,6 +20,7 @@ import {
 } from '../../state/reset';
 
 import * as React from 'react';
+import { getPassagesMap } from '../../passages/getPassagesMap';
 
 export class RestartButton extends React.PureComponent<IRestartButtonOwnProps & IRestartButtonStateProps & IRestartButtonDispatchProps> {
   constructor(props: any) {
@@ -64,14 +65,14 @@ export class RestartButton extends React.PureComponent<IRestartButtonOwnProps & 
 export const mapStateToProps: MapStateToProps<IRestartButtonStateProps, IRestartButtonOwnProps, IState> = ({
   history: {
     present: {
+      currentPassageName: name,
       lastLinkTags,
-      passage: currentPassageObject,
       storyState: currentStoryState,
     },
   },
 }) =>
 ({
-  currentPassageObject,
+  currentPassageObject: getPassagesMap().passagesMap[name],
   currentStoryState,
   lastLinkTags,
 });

@@ -1,9 +1,6 @@
 const {
   join,
 } = require('path');
-const {
-  promisify,
-} = require('util');
 
 const fs = require('fs-extra');
 
@@ -35,29 +32,29 @@ const mainStr =
   `} = require('electron');\n` +
   `let win;\n` +
   `app.on('ready', () => {\n` +
-    `\twin = new BrowserWindow();\n` +
-    `\t// Load a local HTML file.\n` +
-    '\twin.loadURL(`file://${__dirname}/index.html`);\n' +
-    `\t// ready-to-show; should prevent slow load i.e. issue in Safari.\n` +
-    `\twin.once('ready-to-show', () => {\n` +
-      `\t\twin.show();\n` +
-    `\t});\n` +
-    `\t// Emitted when the window is closed.\n` +
-    `\twin.on('closed', () => {\n` +
-      `\t\t// Dereference the window object, usually you would store windows\n` +
-      `\t\t// in an array if your app supports multi windows, this is the time\n` +
-      `\t\t// when you should delete the corresponding element.\n` +
-      `\t\twin = null;\n` +
-    `\t});\n` +
+  `  win = new BrowserWindow();\n` +
+  `  // Load a local HTML file.\n` +
+  '  twin.loadURL(`file://${__dirname}/index.html`);\n' +
+  `  // ready-to-show; should prevent slow load i.e. issue in Safari.\n` +
+  `  win.once('ready-to-show', () => {\n` +
+  `    win.show();\n` +
+  `  });\n` +
+  `  // Emitted when the window is closed.\n` +
+  `  win.on('closed', () => {\n` +
+  `    // Dereference the window object, usually you would store windows\n` +
+  `    // in an array if your app supports multi windows, this is the time\n` +
+  `    // when you should delete the corresponding element.\n` +
+  `    win = null;\n` +
+  `  });\n` +
   `});\n` +
   `// Quit when all windows are closed.\n` +
   `app.on('window-all-closed', () => {\n` +
-    `\t// On macOS it is common for applications and their menu bar\n` +
-    `\t// to stay active until the user quits explicitly with Cmd + Q.\n` +
-    `\tif (process.platform !== 'darwin') {\n` +
-      `\t\tapp.quit()\n` +
-    `\t}\n` +
-  `});`.replace(/\t/g, '  ');
+  `  // On macOS it is common for applications and their menu bar\n` +
+  `  // to stay active until the user quits explicitly with Cmd + Q.\n` +
+  `  if (process.platform !== 'darwin') {\n` +
+  `    app.quit()\n` +
+  `  }\n` +
+  `});`;
 
 const packageStr = JSON.stringify({
   name: process.env.ACCELERATOR_STORY_TITLE || 'Untitled Accelerator Story',
