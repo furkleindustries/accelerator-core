@@ -2,6 +2,9 @@ import {
   IAction,
 } from '../actions/IAction';
 import {
+  IHistoryFilter,
+} from '../reducers/IHistoryFilter';
+import {
   IPassage,
 } from './IPassage';
 import {
@@ -19,7 +22,9 @@ export interface IPassageProps {
   passageObject: IPassage;
   storyState: IStoryStateInstance;
   dispatch: Dispatch<IAction>;
+  bookmark(): void;
   navigateTo(passageName: string, tags?: Readonly<Tag[]>): void;
   restart(): void;
+  rewind(filter?: IHistoryFilter): void;
   setStoryState(updatedStateProps: Partial<IStoryStateInstance>): void;
 }

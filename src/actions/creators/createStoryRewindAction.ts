@@ -1,13 +1,11 @@
 import {
-  ActionTypes,
-} from '../ActionTypes';
-import {
-  IStoryRewindAction,
-} from '../IStoryRewindAction';
+  ActionCreators,
+} from 'redux-undo';
 
-export const createStoryRewindAction = (value: number = 1): IStoryRewindAction => (
-  Object.freeze({
-    value,
-    type: ActionTypes.StoryRewind,
-  }) as IStoryRewindAction
-);
+export function createStoryRewindAction(index?: number) {
+  if (index) {
+    return ActionCreators.jumpToPast(index);
+  }
+
+  return ActionCreators.undo();
+}

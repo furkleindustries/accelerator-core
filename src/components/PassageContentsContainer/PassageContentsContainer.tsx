@@ -1,15 +1,18 @@
 import {
+  bookmark,
+} from '../../state/bookmark';
+import {
   BuiltInTags,
 } from '../../tags/BuiltInTags';
-import {
-  getPassagesMap,
-} from '../../passages/getPassagesMap';
 import {
   getTag,
 } from '../../tags/getTag';
 import {
   IAction,
 } from '../../actions/IAction';
+import {
+  IHistoryFilter,
+} from '../../reducers/IHistoryFilter';
 import {
   IPassageContentsContainerDispatchProps,
 } from './IPassageContentsContainerDispatchProps';
@@ -35,7 +38,9 @@ import {
   object as ObjectProp,
 } from 'prop-types';
 import {
-  connect, MapStateToProps, MapDispatchToProps,
+  connect,
+  MapDispatchToProps,
+  MapStateToProps,
 } from 'react-redux';
 import {
   Dispatch,
@@ -45,16 +50,17 @@ import {
   reset,
 } from '../../state/reset';
 import {
-  TPassageHistory,
-} from '../../state/TPassageHistory';
+  rewind,
+} from '../../state/rewind';
 import {
-  TStoryStateHistory,
-} from '../../state/TStoryStateHistory';
+  assert,
+  assertValid,
+} from 'ts-assertions';
 
 import * as React from 'react';
 
 export const strings = {
-  COMPONENT_CONSTRUCTOR_NOT_FOUND:
+  COMPONENT_NOT_FOUND:
     'The contents property of the passage object passed to PassageContainer ' +
     'was not found.',
 
@@ -67,23 +73,30 @@ export const strings = {
     'No passage could be found in the passages map with the name %NAME%.',
 };
 
-export class PassageContentsContainer extends React.PureComponent<IPassageContentsContainerOwnProps & IPassageContentsContainerDispatchProps & IPassageContentsContainerStateProps> {
+export class PassageContentsContainer extends React.PureComponent<
+  IPassageContentsContainerOwnProps &
+  IPassageContentsContainerDispatchProps &
+  IPassageContentsContainerStateProps
+>
+{
   public static contextTypes = {
     store: ObjectProp,
   };
 
   public render() {
     const {
-      currentPassageObject,
-      currentPassageObject: {
+      bookmark,
+      passageObject: currentPassageObject,
+      passageObject: {
         contents,
       },
 
-      currentStoryState,
+      storyState: currentStoryState,
       dispatch,
       lastLinkTags,
       navigateTo,
       restart,
+      rewind,
     } = this.props;
 
     const {
@@ -92,19 +105,24 @@ export class PassageContentsContainer extends React.PureComponent<IPassageConten
       store: Store<IState>,
     } = this.context;
 
-    if (!contents) {
-      throw new Error(strings.COMPONENT_CONSTRUCTOR_NOT_FOUND);
-    } else if (Array.isArray(currentPassageObject.tags) &&
-               getTag(currentPassageObject.tags, BuiltInTags.NoRender))
-    {
-      throw new Error(strings.CANT_RENDER_NORENDER_PASSAGE);
-    }
+    const safeContents = assertValid<React.ComponentClass<IPassageProps> | React.SFC<IPassageProps>>(
+      contents,
+      strings.COMPONENT_NOT_FOUND,
+    );
+
+    assert(
+      Array.isArray(currentPassageObject.tags) &&
+        !getTag(currentPassageObject.tags, BuiltInTags.NoRender),
+      strings.CANT_RENDER_NORENDER_PASSAGE,
+    );
 
     const propsPassedDown: IPassageProps = {
+      bookmark,
       dispatch,
       lastLinkTags,
       navigateTo,
       restart,
+      rewind,
       storyState: currentStoryState,
       passageObject: currentPassageObject,
 
@@ -114,42 +132,51 @@ export class PassageContentsContainer extends React.PureComponent<IPassageConten
     };
 
     return React.createElement(
-      contents as React.ComponentClass<IPassageProps> | React.SFCFactory<IPassageProps>,
-      propsPassedDown
+      safeContents,
+      propsPassedDown,
     );
   }
 }
 
 export const mapStateToProps: MapStateToProps<IPassageContentsContainerStateProps, IPassageContentsContainerOwnProps, IState> = ({
-  currentPassageName,
-  passageHistory,
-  storyStateHistory,
-}: {
-  currentPassageName: string,
-  passageHistory: TPassageHistory,
-  storyStateHistory: TStoryStateHistory,
-}) => {
-  const {
-    passagesMap,
-  } = getPassagesMap();
-
-  if (!(currentPassageName in passagesMap)) {
-    const errStr = strings.PASSAGE_NOT_FOUND
-      .replace('%NAME%', currentPassageName);
-
-    throw new Error(errStr);
-  }
+  history,
+  history: {
+    present: {
+      currentPassageName,
+      passage: currentPassageObject,
+      storyState: currentStoryState,
+      lastLinkTags,
+    },
+  },
+}) =>
+{
+  assert(
+    currentPassageObject,
+    strings.PASSAGE_NOT_FOUND.replace('%NAME%', currentPassageName),
+  );
 
   return {
-    currentPassageObject: passagesMap[currentPassageName],
-    currentStoryState: storyStateHistory[0],
-    lastLinkTags: passageHistory[0].linkTags,
-    passages: passagesMap,
-  };  
+    passageObject: currentPassageObject,
+    storyState: currentStoryState,
+    history,
+    lastLinkTags,
+  };
 };
 
-export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDispatchProps, IPassageContentsContainerOwnProps & IPassageContentsContainerStateProps> = (dispatch: Dispatch<IAction>, props) => ({
+export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDispatchProps, IPassageContentsContainerOwnProps & IPassageContentsContainerStateProps> = (
+  dispatch: Dispatch<IAction>,
+  {
+    passageObject: currentPassageObject,
+    storyState: currentStoryState,
+    history,
+    lastLinkTags,
+  },
+) => ({
   dispatch,
+
+  bookmark() {
+    bookmark(dispatch);
+  },
 
   navigateTo(passageName, tags?) {
     navigate({
@@ -161,11 +188,33 @@ export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDis
 
   restart() {
     reset({
+      currentPassageObject,
       dispatch,
-      currentPassageObject: props.currentPassageObject,
-      currentStoryState: props.currentStoryState,
-      lastLinkTags: props.lastLinkTags,
+      lastLinkTags,
+      storyState: currentStoryState,
     });
+  },
+
+  rewind(filter?: IHistoryFilter) {
+    if (typeof filter === 'function') {
+      let index = 0;
+      let done = false;
+      history.past.forEach((frame) => {
+        if (!done && filter(frame)) {
+          done = true;
+        } else {
+          index += 1;
+        }
+      });
+
+      if (!index) {
+        throw new Error();
+      }
+
+      rewind(dispatch, index);
+    } else {
+      rewind(dispatch);
+    }
   },
 });
 

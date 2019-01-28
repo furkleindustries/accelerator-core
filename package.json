@@ -1,6 +1,6 @@
 {
   "name": "accelerator-core",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@svgr/webpack": "^4.0.0",
@@ -23,8 +23,8 @@
     "case-sensitive-paths-webpack-plugin": "2.1.2",
     "chalk": "2.4.1",
     "css-loader": "1.0.0",
-    "dotenv": "6.0.0",
-    "dotenv-expand": "4.2.0",
+    "dotenv": "^6.0.0",
+    "dotenv-expand": "^4.2.0",
     "electron-download": "^4.1.1",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.6.0",
@@ -60,7 +60,7 @@
     "typescript": "^3.1.6",
     "url-loader": "1.1.1",
     "webpack": "4.19.1",
-    "webpack-dev-server": "3.1.9",
+    "webpack-dev-server": "^3.1.14",
     "webpack-manifest-plugin": "2.0.4",
     "workbox-webpack-plugin": "3.6.3"
   },
@@ -74,7 +74,9 @@
     "react-dom": "^16.6.0",
     "react-redux": "^5.0.7",
     "redux": "^4.0.1",
+    "redux-undo": "^1.0.0-beta9-9-7",
     "slash": "^2.0.0",
+    "ts-assertions": "^1.0.11",
     "whatwg-fetch": "2.0.3"
   },
   "scripts": {
@@ -102,7 +104,8 @@
     "accelerator",
     "if",
     "hypertext",
-    "fiction"
+    "fiction",
+    "twine"
   ],
   "author": "furkle",
   "license": "GPL-3.0",

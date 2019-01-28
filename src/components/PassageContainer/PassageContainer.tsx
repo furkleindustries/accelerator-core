@@ -71,8 +71,9 @@ export class PassageContainer extends React.PureComponent<IPassageContainerState
 
     if (storyRequiresFullRerender) {
       /* Reset the value of the property to false immediately. This logic
-       * causes two full walks of the tree, but I don't think anyone expects or
-       * requires restarting the entire story to be super-high-efficiency. */
+       * causes two full walks of the component tree, but I don't think anyone
+       * expects or requires restarting the entire story to be
+       * super-high-efficiency. */
       resetStoryRequiresFullRerender();
     }
   }

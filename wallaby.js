@@ -22,7 +22,7 @@ module.exports = function (wallaby) {
 
     env: {
       runner: 'node',
-      type: 'node'
+      type: 'node',
     },
 
     compilers: {

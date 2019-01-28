@@ -2,8 +2,8 @@ import {
   ActionTypes,
 } from '../ActionTypes';
 import {
-  IStoryStateUpdateAction,
-} from '../IStoryStateUpdateAction';
+  IStoryStateAction,
+} from '../IStoryStateAction';
 import {
   IStoryStateInstance,
 } from '../../state/IStoryStateInstance';
@@ -12,9 +12,9 @@ import {
  * IStoryState is a very simple type, but it indicates the purpose: the value
  * argument is an object to be merged into the storyState object, not a
  * replacement. */
-export const createStoryStateUpdateAction = (value: Partial<IStoryStateInstance>): IStoryStateUpdateAction => (
-  Object.freeze({
+export function createStoryStateAction(value: Partial<IStoryStateInstance>): IStoryStateAction {
+  return Object.freeze({
     value,
-    type: ActionTypes.StoryStateUpdate,
-  }) as IStoryStateUpdateAction
-);
+    type: ActionTypes.StoryState,
+  }) as IStoryStateAction;
+}

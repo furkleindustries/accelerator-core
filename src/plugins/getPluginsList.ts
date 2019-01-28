@@ -7,6 +7,9 @@ import {
 import {
   IPluginExport,
 } from './IPluginExport';
+import {
+  assert,
+} from 'ts-assertions';
 
 import manifest from '../../plugins/plugins-manifest';
 
@@ -22,34 +25,34 @@ export const strings = {
 /* Memoize results and return them without computation on repeat calls. */
 let pluginsList: IPlugin[] | null = null;
 
-export const getPluginsList = (): IPlugin[] => {
+export function getPluginsList(): IPlugin[] {
+  /* Return the memoized list if it exists. */
   if (pluginsList) {
     return pluginsList;
   }
 
-  if (!Array.isArray(manifest)) {
-    throw new Error(strings.PLUGINS_MANIFEST_INVALID);
-  }
+  assert(Array.isArray(manifest), strings.PLUGINS_MANIFEST_INVALID);
 
-  const pluginsPrecedenceMap: { [key: string]: IPluginExport[], } & { none: IPluginExport[], } = {
+  const pluginsPrecedenceMap: { [key: string]: IPluginExport[] } & { none: IPluginExport[] } = {
     none: [],
   };
 
   manifest.forEach((pluginFileObj) => {
     const pluginObj = pluginFileObj.pluginExport;
-    const checkFailMsg = checkPluginExport(pluginObj);
-    if (checkFailMsg) {
+    try {
+      checkPluginExport(pluginObj);
+    } catch (err) {
       const errStr = strings.PLUGIN_OBJECT_INVALID
         .replace('%FILEPATH%', pluginFileObj.filepath)
-        .replace('%REASON%', checkFailMsg);
-
+        .replace('%REASON%', err);
+  
       throw new Error(errStr);
     }
 
     if (typeof pluginObj.precedence === 'number' &&
         !Number.isNaN(pluginObj.precedence))
     {
-      const precedence = pluginObj.precedence.toString();
+      const precedence = String(pluginObj.precedence);
       if (!pluginsPrecedenceMap[precedence]) {
         pluginsPrecedenceMap[precedence] = [];
       }
@@ -61,19 +64,15 @@ export const getPluginsList = (): IPlugin[] => {
   });
 
   /* Sort precedence in descending lexicographic order. In practice, this means
-     4, 3, 2, 1, and then 'none' is always appended. */
+   * 4, 3, 2, 1, and then 'none' is always appended. */
   const keys = Object.keys(pluginsPrecedenceMap).sort((aa, bb) => {
-    if (aa === 'none') {
-      return 1;
-    } else if (bb === 'none') {
-      return -1;
-    } else if (aa > bb) {
+    if (aa !== 'none' && (bb === 'none' || aa > bb)) {
       return -1;
     } else if (aa === bb) {
       return 0;
-    } else {
-      return 1;
     }
+
+    return 1;
   });
 
   pluginsList = keys.map<IPluginExport[]>((key) => (
@@ -84,13 +83,13 @@ export const getPluginsList = (): IPlugin[] => {
         return -1;
       } else if (aa.name === bb.name) {
         return 0;
-      } else {
-        return 1;
       }
+
+      return 1;
     })
-  )).reduce<IPlugin[]>((prev, cur) => {
-    return prev.concat(cur.map((aa) => aa.contents!));
-  }, []);
+  )).reduce<IPlugin[]>((prev, curr) => (
+    prev.concat(curr.map((aa) => aa.contents!))
+  ), []);
 
   return pluginsList;
 };

@@ -1,7 +1,10 @@
 /* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
 import * as React from 'react';
 
-import * as components from '../../src/passages/componentsBundle';
+import {
+  RestartButton,
+  RewindButton,
+} from '../../src/passages/componentsBundle';
 import * as passages from '../../src/passages/passagesBundle';
 // @ts-ignore
 import builtInStyles from '../../src/passages/styles.scss';
@@ -18,15 +21,15 @@ class Component extends React.PureComponent<passages.IPassageProps> {
         className={`${styles.menu} ${builtInStyles.header} header`}
       >
         <div className={styles.rewind}>
-          <components.RewindButton>
+          <RewindButton>
             Rewind
-          </components.RewindButton>
+          </RewindButton>
         </div>
 
         <div className={styles.restartContainer}>
-          <components.RestartButton>
+          <RestartButton>
             Restart
-          </components.RestartButton>
+          </RestartButton>
         </div>
       </div>
     );

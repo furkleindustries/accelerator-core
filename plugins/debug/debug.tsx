@@ -1,14 +1,18 @@
-import * as plugins from '../../src/passages/pluginsBundle';
+import {
+  DebugPlugin,
+  IPluginExport,
+} from '../../src/passages/pluginsBundle';
+import {
+  getAcceleratorEnvVariables,
+} from '../../src/configuration/getAcceleratorEnvVariables';
 
-const plugin: plugins.IPluginExport = {
+/* Only inject the dev plugin if the story is in dev mode. */
+const maybeContents = getAcceleratorEnvVariables().debug ?
+  new DebugPlugin() :
+  {};
+
+export default {
+  ...maybeContents,
   name: 'Debug',
   precedence: Number.MAX_SAFE_INTEGER,
-  contents: process &&
-            process.env &&
-            process.env.NODE_ENV === 'development' &&
-            process.env.ACCELERATOR_DEBUG === 'true' ?
-              new plugins.DebugPlugin() :
-              null,
-};
-
-export default plugin;
+} as IPluginExport;

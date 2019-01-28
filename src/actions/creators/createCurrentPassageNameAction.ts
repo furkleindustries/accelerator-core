@@ -5,7 +5,9 @@ import {
   ICurrentPassageNameAction,
 } from '../ICurrentPassageNameAction';
 
-export const createCurrentPassageNameAction = (name: string): ICurrentPassageNameAction => ({
-  type: ActionTypes.CurrentPassageName,
-  value: name,
-});
+export function createCurrentPassageNameAction(name: string): ICurrentPassageNameAction {
+  return Object.freeze({
+    type: ActionTypes.CurrentPassageName,
+    value: name,
+  }) as ICurrentPassageNameAction;
+}

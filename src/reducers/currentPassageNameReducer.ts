@@ -2,12 +2,28 @@ import {
   ActionTypes,
 } from '../actions/ActionTypes';
 import {
+  getPassagesMap,
+} from '../passages/getPassagesMap';
+import {
   ICurrentPassageNameAction,
 } from '../actions/ICurrentPassageNameAction';
+import {
+  IStoryResetAction,
+} from '../actions/IStoryResetAction';
 
-export const currentPassageNameReducer = (previousState: string = '', action: ICurrentPassageNameAction) => {
-  if (action.type === ActionTypes.CurrentPassageName && action.value && typeof action.value === 'string') {
+const {
+  startPassage,
+} = getPassagesMap();
+
+export function currentPassageNameReducer(
+  previousState: string = startPassage.name,
+  action: ICurrentPassageNameAction | IStoryResetAction,
+)
+{
+  if (action.type === ActionTypes.CurrentPassageName) {
     return action.value;
+  } else if (action.type === ActionTypes.StoryReset) {
+    return startPassage.name;
   }
 
   return previousState;

@@ -5,8 +5,6 @@ import {
   IStoryResetAction,
 } from '../IStoryResetAction';
 
-export const createStoryResetAction = (): IStoryResetAction => (
-  Object.freeze({
-    type: ActionTypes.StoryReset,
-  }) as IStoryResetAction
-);
+export function createStoryResetAction(): IStoryResetAction {
+  return Object.freeze({ type: ActionTypes.StoryReset }) as IStoryResetAction;
+}

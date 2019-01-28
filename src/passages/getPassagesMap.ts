@@ -13,6 +13,9 @@ import {
 import {
   IPassagesMap,
 } from './IPassagesMap';
+import {
+  assert, assertValid,
+} from 'ts-assertions';
 
 import manifest from '../../passages/passages-manifest';
 
@@ -50,7 +53,8 @@ interface IReturn {
   startPassage: IPassage;
 };
 
-export const getPassagesMap = (): IReturn => {
+export function getPassagesMap(): IReturn {
+  /* Return the memoized results if they exist. */
   if (passagesMap && startPassage) {
     return {
       passagesMap,
@@ -58,55 +62,59 @@ export const getPassagesMap = (): IReturn => {
     };
   }
 
-  if (!Array.isArray(manifest)) {
-    throw new Error(strings.PASSAGES_MANIFEST_INVALID);
-  } else if (!manifest.length) {
-    throw new Error(strings.PASSAGES_MANIFEST_EMPTY);
-  }
+  assert(Array.isArray(manifest), strings.PASSAGES_MANIFEST_INVALID);
+  assert(manifest.length, strings.PASSAGES_MANIFEST_EMPTY);
 
   passagesMap = {};
   manifest.forEach((passageFileObj) => {
-    const passageObj = passageFileObj.passageObject;
-    const checkFailMsg = checkPassageObject(passageObj);
-    if (checkFailMsg) {
+    const { passageObject } = passageFileObj;
+    try {
+      checkPassageObject(passageObject);
+    } catch (err) {
       const errStr = strings.PASSAGE_OBJECT_INVALID
         .replace('%FILEPATH%', passageFileObj.filepath)
-        .replace('%REASON%', checkFailMsg);
+        .replace('%REASON%', err);
 
       throw new Error(errStr);
     }
 
-    if (passageObj.name in passagesMap!) {
+    const {
+      name,
+      tags,
+    } = passageObject;
+
+    if (name in passagesMap!) {
       const errStr = strings.PASSAGE_OBJECT_INVALID
-        .replace('%NAME%', passageObj.name);
+        .replace('%NAME%', passageObject.name);
 
       throw new Error(errStr);
     }
 
-    if (getTag(passageObj.tags, BuiltInTags.Start)) {
+    if (getTag(tags, BuiltInTags.Start)) {
       if (startPassage) {
         const errStr = strings.MULTIPLE_DEFAULT_PASSAGES
           .replace('%1%', startPassage.name)
-          .replace('%2%', passageObj.name);
+          .replace('%2%', passageObject.name);
 
         throw new Error(errStr);
       }
 
-      startPassage = passageObj;
-    } else if (getTag(passageObj.tags, BuiltInTags.NoRender)) {
+      startPassage = passageObject;
+    } else if (getTag(passageObject.tags, BuiltInTags.NoRender)) {
       /* Do not place NoRender passages in the passage map. */
       return;
     }
 
-    passagesMap![passageObj.name] = passageObj;
+    passagesMap![name] = passageObject;
   });
 
-  if (!startPassage) {
-    throw new Error(strings.NO_START_PASSAGE);
-  }
+  const safeStartPassage = assertValid<IPassage>(
+    startPassage,
+    strings.NO_START_PASSAGE,
+  );
 
   return {
     passagesMap,
-    startPassage,
+    startPassage: safeStartPassage,
   };
-};
+}

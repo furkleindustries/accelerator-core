@@ -8,8 +8,8 @@ import {
   IStoryStateInstance,
 } from '../state/IStoryStateInstance';
 import {
-  IStoryStateUpdateAction,
-} from '../actions/IStoryStateUpdateAction';
+  IStoryStateAction,
+} from '../actions/IStoryStateAction';
 import {
   Tag,
 } from '../tags/Tag';
@@ -21,20 +21,20 @@ import {
 } from 'redux';
 
 export interface IPluginMethodBaseArgs {
-  currentPassageObject: IPassage;
-  currentStoryState: IStoryStateInstance;
-  lastLinkTags: Readonly<Tag[]>;
+  readonly currentPassageObject: IPassage;
+  readonly storyState: IStoryStateInstance;
+  readonly lastLinkTags: Readonly<Tag[]>;
 }
 
 export interface IPluginMethodChildArgs {
-  children: ReactNode;
+  readonly children: ReactNode;
 }
 
 export interface IPluginMethodStateMutationArgs {
-  store: Store<IState>;
-  setStoryState(updatedStateProps: Partial<IStoryStateInstance>): IStoryStateUpdateAction;
+  readonly store: Store<IState>;
+  setStoryState(updatedStateProps: Partial<IStoryStateInstance>): IStoryStateAction;
 }
 
 export interface IPluginMethodStateChangingArgs {
-  updatedStateProps: Partial<IStoryStateInstance>;
+  readonly updatedStateProps: Partial<IStoryStateInstance>;
 }

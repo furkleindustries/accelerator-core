@@ -47,12 +47,14 @@ export const strings = {
 export class PassageHeaders extends React.PureComponent<IPassageContentsContainerOwnProps & IPassageContentsContainerStateProps & IPassageContentsContainerDispatchProps> {
   public render() {
     const {
-      currentPassageObject,
-      currentStoryState,
+      bookmark,
+      passageObject,
+      storyState,
       dispatch,
       lastLinkTags,
       navigateTo,
       restart,
+      rewind,
     } = this.props;
 
     const {
@@ -62,12 +64,14 @@ export class PassageHeaders extends React.PureComponent<IPassageContentsContaine
     } = this.context;
 
     const propsPassedDown: IPassageProps = {
+      bookmark,
       dispatch,
       lastLinkTags,
       navigateTo,
       restart,
-      storyState: currentStoryState,
-      passageObject: currentPassageObject,
+      rewind,
+      storyState,
+      passageObject,
       
       setStoryState(updatedStateProps) {
         mutateCurrentStoryStateInstanceWithPluginExecution(updatedStateProps, store);

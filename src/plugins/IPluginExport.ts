@@ -4,6 +4,6 @@ import {
 
 export interface IPluginExport {
   name: string;
-  contents: IPlugin | null;
+  contents?: IPlugin;
   precedence?: number;
 }

@@ -2,6 +2,9 @@ import {
   IAction,
 } from '../../actions/IAction';
 import {
+  IHistoryFilter,
+} from '../../reducers/IHistoryFilter';
+import {
   Dispatch,
 } from 'redux';
 import {
@@ -10,6 +13,8 @@ import {
 
 export interface IPassageContentsContainerDispatchProps {
   dispatch: Dispatch<IAction>;
+  bookmark(): void;
   navigateTo(passageName: string, tags?: Readonly<Tag[]>): void;
   restart(): void;
+  rewind(filter: IHistoryFilter): void;
 }

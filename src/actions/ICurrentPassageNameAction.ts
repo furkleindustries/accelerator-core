@@ -6,6 +6,6 @@ import {
 } from './IAction';
 
 export interface ICurrentPassageNameAction extends IAction {
-  readonly type: ActionTypes.CurrentPassageName;
-  readonly value: string;
+  type: ActionTypes.CurrentPassageName;
+  value: string;
 }

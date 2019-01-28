@@ -1,12 +1,6 @@
 import {
-  createCurrentPassageNameAction,
-} from '../actions/creators/createCurrentPassageNameAction';
-import {
   createStoryResetAction,
 } from '../actions/creators/createStoryResetAction';
-import {
-  getPassagesMap,
-} from '../passages/getPassagesMap';
 import {
   getPluginsList,
 } from '../plugins/getPluginsList';
@@ -19,32 +13,28 @@ import {
 import {
   Dispatch,
 } from 'redux';
+// @ts-ignore
+import { ActionCreators } from 'redux-undo';
 
-export const reset = (args: IPluginMethodBaseArgs & { dispatch: Dispatch<IAction>, }) => {
+export function reset(args: IPluginMethodBaseArgs & { dispatch: Dispatch<IAction> })
+{
   const {
     currentPassageObject,
-    currentStoryState,
     dispatch,
     lastLinkTags,
+    storyState,
   } = args;
 
-  const {
-    startPassage: {
-      name: startPassageName,
-    },
-  } = getPassagesMap();
-
-  const plugins = getPluginsList();
-  plugins.forEach((plugin) => {
-    if (typeof plugin.beforeRestart === 'function') {
-      plugin.beforeRestart({
+  getPluginsList().forEach(({ beforeRestart }) => {
+    if (typeof beforeRestart === 'function') {
+      beforeRestart({
         currentPassageObject,
-        currentStoryState,
         lastLinkTags,
+        storyState,
       });
     }
   });
 
+  dispatch(ActionCreators.clearHistory());
   dispatch(createStoryResetAction());
-  dispatch(createCurrentPassageNameAction(startPassageName));
-};
+}
