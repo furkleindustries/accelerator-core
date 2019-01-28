@@ -47,27 +47,27 @@ export const strings = {
 export class PassageFooters extends React.PureComponent<IPassageContentsContainerOwnProps & IPassageContentsContainerStateProps & IPassageContentsContainerDispatchProps> {
   public render() {
     const {
-      currentPassageObject,
-      currentStoryState,
+      bookmark,
+      passageObject,
+      storyState,
       dispatch,
       lastLinkTags,
       navigateTo,
       restart,
+      rewind,
     } = this.props;
 
-    const {
-      store,
-    }: {
-      store: Store<IState>,
-    } = this.context;
+    const { store }: { store: Store<IState> } = this.context;
 
     const propsPassedDown: IPassageProps = {
+      bookmark,
       dispatch,
       lastLinkTags,
       navigateTo,
       restart,
-      storyState: currentStoryState,
-      passageObject: currentPassageObject,
+      rewind,
+      passageObject,
+      storyState,
 
       setStoryState(updatedStateProps) {
         mutateCurrentStoryStateInstanceWithPluginExecution(updatedStateProps, store);

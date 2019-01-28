@@ -2,8 +2,8 @@ import {
   IAction,
 } from '../../actions/IAction';
 import {
-  IPassageNavigationAction,
-} from '../../actions/IPassageNavigationAction';
+  IHistoryFilter,
+} from '../../reducers/IHistoryFilter';
 import {
   Dispatch,
 } from 'redux';
@@ -13,6 +13,8 @@ import {
 
 export interface IPassageContentsContainerDispatchProps {
   dispatch: Dispatch<IAction>;
-  navigateTo(passageName: string, tags?: Readonly<Tag[]>): IPassageNavigationAction;
+  bookmark(): void;
+  navigateTo(passageName: string, tags?: Readonly<Tag[]>): void;
   restart(): void;
+  rewind(filter: IHistoryFilter): void;
 }

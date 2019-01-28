@@ -3,11 +3,13 @@ import {
   IPluginExport,
 } from '../../src/passages/pluginsBundle';
 import {
-  isDev,
-} from '../../src/functions/isDev';
+  getAcceleratorEnvVariables,
+} from '../../src/configuration/getAcceleratorEnvVariables';
 
 /* Only inject the dev plugin if the story is in dev mode. */
-const maybeContents = isDev() ? new DebugPlugin() : {};
+const maybeContents = getAcceleratorEnvVariables().debug ?
+  new DebugPlugin() :
+  {};
 
 export default {
   ...maybeContents,

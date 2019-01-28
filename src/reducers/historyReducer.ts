@@ -8,12 +8,6 @@ import {
   IAction,
 } from '../actions/IAction';
 import {
-  IPassage,
-} from '../passages/IPassage';
-import {
-  IStateInstance,
-} from '../state/IStateInstance';
-import {
   lastLinkTagsReducer,
 } from './lastLinkTagsReducer';
 import {
@@ -23,13 +17,42 @@ import {
   combineReducers,
   Reducer,
 } from 'redux';
+import {
+  ActionTypes,
+} from '../actions/ActionTypes';
+import {
+  getAcceleratorEnvVariables,
+} from '../configuration/getAcceleratorEnvVariables';
+import {
+  IHistory,
+} from '../state/IHistory';
+import {
+  default as undoable,
+  includeAction,
+} from 'redux-undo';
 
-export const historyReducer: Reducer<IStateInstance, IAction> = combineReducers({
-  currentPassageName: currentPassageNameReducer,
-  lastLinkTags: lastLinkTagsReducer,
-  /* In practice the passage can be null but this should only be an ephemeral,
-   * internal state which cannot be observed, so we type this as if it were
-   * never null. */
-  passage: currentPassageReducer as Reducer<IPassage, IAction>,
-  storyState: storyStateReducer,
-});
+const {
+  history_save_types,
+  history_stack_limit: limit,
+} = getAcceleratorEnvVariables();
+
+const actionsToInclude = history_save_types === 'all' ?
+  [
+    ActionTypes.Bookmark,
+    ActionTypes.PassageNavigation,
+    ActionTypes.StoryState,      
+  ] :
+  history_save_types;
+
+export const historyReducer = undoable(
+  combineReducers({
+    currentPassageName: currentPassageNameReducer,
+    lastLinkTags: lastLinkTagsReducer,
+    passage: currentPassageReducer,
+    storyState: storyStateReducer,
+  }),
+  {
+    limit,
+    filter: includeAction(actionsToInclude),
+  },
+) as Reducer<IHistory, IAction>;

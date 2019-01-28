@@ -1,4 +1,7 @@
 import {
+  IHistory,
+} from '../../state/IHistory';
+import {
   IPassage,
 } from '../../passages/IPassage';
 import {
@@ -9,7 +12,8 @@ import {
 } from '../../tags/Tag';
 
 export interface IPassageContentsContainerStateProps {
-  currentPassageObject: IPassage;
-  currentStoryState: IStoryStateInstance;
+  passageObject: IPassage;
+  storyState: IStoryStateInstance;
   lastLinkTags: Tag[];
+  history: IHistory;
 }

@@ -1,4 +1,7 @@
 import {
+  bookmark,
+} from '../../state/bookmark';
+import {
   BuiltInTags,
 } from '../../tags/BuiltInTags';
 import {
@@ -7,6 +10,9 @@ import {
 import {
   IAction,
 } from '../../actions/IAction';
+import {
+  IHistoryFilter,
+} from '../../reducers/IHistoryFilter';
 import {
   IPassageContentsContainerDispatchProps,
 } from './IPassageContentsContainerDispatchProps';
@@ -32,7 +38,9 @@ import {
   object as ObjectProp,
 } from 'prop-types';
 import {
-  connect, MapStateToProps, MapDispatchToProps,
+  connect,
+  MapDispatchToProps,
+  MapStateToProps,
 } from 'react-redux';
 import {
   Dispatch,
@@ -41,6 +49,9 @@ import {
 import {
   reset,
 } from '../../state/reset';
+import {
+  rewind,
+} from '../../state/rewind';
 import {
   assert,
   assertValid,
@@ -62,23 +73,30 @@ export const strings = {
     'No passage could be found in the passages map with the name %NAME%.',
 };
 
-export class PassageContentsContainer extends React.PureComponent<IPassageContentsContainerOwnProps & IPassageContentsContainerDispatchProps & IPassageContentsContainerStateProps> {
+export class PassageContentsContainer extends React.PureComponent<
+  IPassageContentsContainerOwnProps &
+  IPassageContentsContainerDispatchProps &
+  IPassageContentsContainerStateProps
+>
+{
   public static contextTypes = {
     store: ObjectProp,
   };
 
   public render() {
     const {
-      currentPassageObject,
-      currentPassageObject: {
+      bookmark,
+      passageObject: currentPassageObject,
+      passageObject: {
         contents,
       },
 
-      currentStoryState,
+      storyState: currentStoryState,
       dispatch,
       lastLinkTags,
       navigateTo,
       restart,
+      rewind,
     } = this.props;
 
     const {
@@ -99,10 +117,12 @@ export class PassageContentsContainer extends React.PureComponent<IPassageConten
     );
 
     const propsPassedDown: IPassageProps = {
+      bookmark,
       dispatch,
       lastLinkTags,
       navigateTo,
       restart,
+      rewind,
       storyState: currentStoryState,
       passageObject: currentPassageObject,
 
@@ -119,6 +139,7 @@ export class PassageContentsContainer extends React.PureComponent<IPassageConten
 }
 
 export const mapStateToProps: MapStateToProps<IPassageContentsContainerStateProps, IPassageContentsContainerOwnProps, IState> = ({
+  history,
   history: {
     present: {
       currentPassageName,
@@ -135,8 +156,9 @@ export const mapStateToProps: MapStateToProps<IPassageContentsContainerStateProp
   );
 
   return {
-    currentPassageObject,
-    currentStoryState,
+    passageObject: currentPassageObject,
+    storyState: currentStoryState,
+    history,
     lastLinkTags,
   };
 };
@@ -144,15 +166,20 @@ export const mapStateToProps: MapStateToProps<IPassageContentsContainerStateProp
 export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDispatchProps, IPassageContentsContainerOwnProps & IPassageContentsContainerStateProps> = (
   dispatch: Dispatch<IAction>,
   {
-    currentPassageObject,
-    currentStoryState,
+    passageObject: currentPassageObject,
+    storyState: currentStoryState,
+    history,
     lastLinkTags,
   },
 ) => ({
   dispatch,
 
+  bookmark() {
+    bookmark(dispatch);
+  },
+
   navigateTo(passageName, tags?) {
-    return navigate({
+    navigate({
       dispatch,
       passageName,
       tags: tags || [],
@@ -160,12 +187,34 @@ export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDis
   },
 
   restart() {
-    return reset({
+    reset({
       currentPassageObject,
       dispatch,
       lastLinkTags,
       storyState: currentStoryState,
     });
+  },
+
+  rewind(filter?: IHistoryFilter) {
+    if (typeof filter === 'function') {
+      let index = 0;
+      let done = false;
+      history.past.forEach((frame) => {
+        if (!done && filter(frame)) {
+          done = true;
+        } else {
+          index += 1;
+        }
+      });
+
+      if (!index) {
+        throw new Error();
+      }
+
+      rewind(dispatch, index);
+    } else {
+      rewind(dispatch);
+    }
   },
 });
 
