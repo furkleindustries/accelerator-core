@@ -20,7 +20,7 @@
     "build-desktop": "npm run get-electron-redists && npm run promote-content-to-executables",
     "get-electron-redists": "node scripts/getElectronRedists.js",
     "promote-content-to-executables": "node scripts/promoteContentToExecutables.js",
-    "test": "node scripts/test.js --config=config/jest.config.js",
+    "test": "node scripts/test.js --config=config/jest/jest.config.js",
     "test-coverage": "npm run test -- --coverage",
     "debug": "cross-env NODE_ENV=development webpack --config config/webpack.config.dev.js --verbose",
     "prepublishOnly": "npm run test -- --dontWatch"
