@@ -37,7 +37,7 @@ export class RestartButton extends React.PureComponent<IRestartButtonOwnProps & 
 
     return (
       <button
-        className={`resetButton${className ? ` ${className}` : ''}`}
+        className={`resetButton navigationButton${className ? ` ${className}` : ''}`}
         onClick={this.restart}
       >
         {children}

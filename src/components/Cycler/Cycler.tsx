@@ -5,20 +5,17 @@ import {
   ICyclerState,
 } from './ICyclerState';
 
-// @ts-ignore
+/*// @ts-ignore
 import _styles from './Cycler.scss';
-const styles = _styles || {};
+const styles = _styles || {};*/
 
 import * as React from 'react';
 
 export class Cycler extends React.Component<ICyclerOwnProps, ICyclerState> {
-  public state = {
-    index: 0,
-  }
+  public state = { index: 0 };
 
   constructor(props: any) {
     super(props);
-
     this.advance = this.advance.bind(this);
   }
   
@@ -34,7 +31,7 @@ export class Cycler extends React.Component<ICyclerOwnProps, ICyclerState> {
 
     return (
       <button 
-        className={`${styles.cyclingLink} cyclingLink${className ? ` ${className}` : ''}`}
+        className={`cyclingLink${className ? ` ${className}` : ''}`}
         onClick={this.advance}
       >
         {React.Children.toArray(children)[index]}
@@ -48,16 +45,11 @@ export class Cycler extends React.Component<ICyclerOwnProps, ICyclerState> {
       notifyOfChange,
     } = this.props;
 
-    const {
-      index,
-    } = this.state;
+    const { index } = this.state;
 
     const childArray = React.Children.toArray(children);
-    const newIndex = index + 1 >= childArray.length ? 0 : index + 1
-    this.setState({
-      index: newIndex,
-    });
-
+    const newIndex = index + 1 >= childArray.length ? 0 : index + 1;
+    this.setState({ index: newIndex });
     if (typeof notifyOfChange === 'function') {
       notifyOfChange(childArray[newIndex], newIndex);
     }

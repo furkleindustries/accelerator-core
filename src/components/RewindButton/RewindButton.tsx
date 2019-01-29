@@ -41,7 +41,7 @@ export class RewindButton extends React.PureComponent<IRewindButtonOwnProps & IR
 
     return (
       <button
-        className={`rewindButton${className ? ` ${className}` : ''}`}
+        className={`rewindButton navigationButton${className ? ` ${className}` : ''}`}
         {...statefulProps}
       >
         {children}

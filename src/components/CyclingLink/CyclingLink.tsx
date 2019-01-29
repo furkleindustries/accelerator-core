@@ -37,7 +37,6 @@ export class CyclingLink extends React.PureComponent<ICyclingLinkOwnProps & ICyc
   
   constructor(props: any) {
     super(props);
-
     this.receiveNotification = this.receiveNotification.bind(this);
   }
 
@@ -48,16 +47,9 @@ export class CyclingLink extends React.PureComponent<ICyclingLinkOwnProps & ICyc
       variableToSet,
     } = this.props;
 
-    const {
-      store,
-    }: {
-      store: Store<IState>,
-    } = this.context;
-
     if (variableToSet && typeof variableToSet === 'string') {
-      setStoryState({
-        [variableToSet]: choices[0],
-      }, store);
+      const { store }: { store: Store<IState> } = this.context;
+      setStoryState({ [variableToSet]: choices[0] }, store);
     }
   }
 
@@ -90,9 +82,7 @@ export class CyclingLink extends React.PureComponent<ICyclingLinkOwnProps & ICyc
     } = this.context;
 
     if (variableToSet && typeof variableToSet === 'string') {
-      setStoryState({
-        [variableToSet]: current,
-      }, store);
+      setStoryState({ [variableToSet]: current }, store);
     }
   }
 }

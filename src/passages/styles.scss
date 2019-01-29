@@ -1,11 +1,16 @@
-.passage {
+$hover-color: rgb(255, 50, 50);
+
+@mixin passage {
   position: relative;
   width: 100%;
   height: 100%;
 }
 
-.link {
-  display: inline;
+.passage {
+  @include passage;
+}
+
+@mixin link {
   padding: 0;
   border: 0;
   margin: 0;
@@ -13,9 +18,17 @@
   font-weight: 700;
   font-size: inherit;
   background: none;
-  cursor: pointer;
+  transition: color 0.3s;
 
-  &:hover {
-    color: red;
+  &:not([disabled]) {
+    cursor: pointer;
+
+    &:hover {
+      color: $hover-color;
+    }
   }
+}
+
+.link {
+  @include link;
 }
