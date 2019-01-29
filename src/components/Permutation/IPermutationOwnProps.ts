@@ -4,4 +4,5 @@ import {
 
 export interface IPermutationOwnProps {
   children: ReactNodeArray;
+  pick?: number;
 }

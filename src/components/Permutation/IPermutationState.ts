@@ -3,5 +3,5 @@ import {
 } from 'react';
 
 export interface IPermutationState {
-  shuffled: ReactNode[];
+  readonly shuffled: ReactNode[];
 }

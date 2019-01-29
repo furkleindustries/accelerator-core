@@ -12,25 +12,19 @@ const arrayShuffle: (arr: any[]) => any[] = require('array-shuffle');
 import * as React from 'react';
 
 export class Permutation extends React.Component<IPermutationOwnProps, IPermutationState> {
-  public state = {
-    shuffled: [],
-  };
+  public state = { shuffled: [] };
 
   public componentDidMount() {
     const {
       children,
+      pick,
     } = this.props;
 
-    this.setState({
-      shuffled: arrayShuffle(React.Children.toArray(children)),
-    });
+    const arr = arrayShuffle(React.Children.toArray(children));
+    this.setState({ shuffled: arr.slice(0, pick || arr.length) });
   }
 
   public render() {
-    const {
-      shuffled,
-    } = this.state;
-
-    return shuffled;
+    return this.state.shuffled;
   }
 }
