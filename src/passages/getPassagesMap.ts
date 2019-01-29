@@ -14,7 +14,8 @@ import {
   IPassagesMap,
 } from './IPassagesMap';
 import {
-  assert, assertValid,
+  assert,
+  assertValid,
 } from 'ts-assertions';
 
 import manifest from '../../passages/passages-manifest';
