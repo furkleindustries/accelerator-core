@@ -1,6 +1,36 @@
 {
   "name": "accelerator-core",
+  "author": "furkle",
   "version": "0.8.1",
+  "license": "GPL-3.0",
+  "homepage": "https://github.com/furkleindustries/accelerator-core#readme",
+  "bugs": {
+    "url": "https://github.com/furkleindustries/accelerator-core/issues"
+  },
+  "scripts": {
+    "start": "npm run generate-manifests && node scripts/start.js",
+    "build": "npm run generate-manifests && node scripts/build.js && npm run generate-rendered-site",
+    "build-with-desktop": "npm run build && npm run build-desktop",
+    "generate-manifests": "node scripts/generateManifests.js",
+    "generate-passages-manifest": "node scripts/generatePassagesManifest.js",
+    "generate-plugins-manifest": "node scripts/generatePluginsManifest.js",
+    "generate-headers-manifest": "node scripts/generateHeadersManifest.js",
+    "generate-footers-manifest": "node scripts/generateFootersManifest.js",
+    "generate-rendered-site": "react-snapshot --build-dir build-web",
+    "build-desktop": "npm run get-electron-redists && npm run promote-content-to-executables",
+    "get-electron-redists": "node scripts/getElectronRedists.js",
+    "promote-content-to-executables": "node scripts/promoteContentToExecutables.js",
+    "test": "node scripts/test.js --config=config/jest.config.js",
+    "test-coverage": "npm run test -- --coverage",
+    "debug": "cross-env NODE_ENV=development webpack --config config/webpack.config.dev.js --verbose",
+    "prepublishOnly": "npm run test -- --dontWatch"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@svgr/webpack": "^4.0.0",
@@ -80,24 +110,6 @@
     "ts-assertions": "^1.0.11",
     "whatwg-fetch": "2.0.3"
   },
-  "scripts": {
-    "start": "npm run generate-manifests && node scripts/start.js",
-    "build": "npm run generate-manifests && node scripts/build.js && npm run generate-rendered-site",
-    "build-with-desktop": "npm run build && npm run build-desktop",
-    "generate-manifests": "node scripts/generateManifests.js",
-    "generate-passages-manifest": "node scripts/generatePassagesManifest.js",
-    "generate-plugins-manifest": "node scripts/generatePluginsManifest.js",
-    "generate-headers-manifest": "node scripts/generateHeadersManifest.js",
-    "generate-footers-manifest": "node scripts/generateFootersManifest.js",
-    "generate-rendered-site": "react-snapshot --build-dir build-web",
-    "build-desktop": "npm run get-electron-redists && npm run promote-content-to-executables",
-    "get-electron-redists": "node scripts/getElectronRedists.js",
-    "promote-content-to-executables": "node scripts/promoteContentToExecutables.js",
-    "test": "node scripts/test.js",
-    "test-coverage": "npm run test -- --coverage",
-    "debug": "cross-env NODE_ENV=development webpack --config config/webpack.config.dev.js --verbose",
-    "prepublishOnly": "npm run test -- --dontWatch"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/furkleindustries/accelerator-core.git"
@@ -108,71 +120,5 @@
     "hypertext",
     "fiction",
     "twine"
-  ],
-  "author": "furkle",
-  "license": "GPL-3.0",
-  "bugs": {
-    "url": "https://github.com/furkleindustries/accelerator-core/issues"
-  },
-  "homepage": "https://github.com/furkleindustries/accelerator-core#readme",
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ],
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}",
-      "!src/**/*.d.ts"
-    ],
-    "resolver": "jest-pnp-resolver",
-    "setupTestFrameworkScriptFile": "<rootDir>/src/setupTests.ts",
-    "setupFiles": [
-      "react-app-polyfill/jsdom"
-    ],
-    "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
-      "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,ts,tsx}",
-      "<rootDir>/footers/**/?(*.)(spec|test).{js,jsx,ts,tsx}",
-      "<rootDir>/headers/**/?(*.)(spec|test).{js,jsx,ts,tsx}",
-      "<rootDir>/passages/**/?(*.)(spec|test).{js,jsx,ts,tsx}",
-      "<rootDir>/plugins/**/?(*.)(spec|test).{js,jsx,ts,tsx}"
-    ],
-    "testEnvironment": "jsdom",
-    "testURL": "http://localhost",
-    "transform": {
-      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
-    },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
-      "^.+\\.module\\.(css|sass|scss)$"
-    ],
-    "moduleNameMapper": {
-      "^react-native$": "react-native-web",
-      "^.+\\.(sass|scss)$": "identity-obj-proxy"
-    },
-    "moduleFileExtensions": [
-      "web.js",
-      "js",
-      "web.ts",
-      "ts",
-      "web.tsx",
-      "tsx",
-      "json",
-      "web.jsx",
-      "jsx",
-      "node"
-    ]
-  },
-  "babel": {
-    "presets": [
-      "react-app"
-    ]
-  }
+  ]
 }
