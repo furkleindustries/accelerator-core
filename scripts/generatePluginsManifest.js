@@ -1,33 +1,28 @@
 const {
   writeFile,
 } = require('fs-extra');
+const getAuthoredAssetObjectDefinitions = require('./functions/getAuthoredAssetObjectDefinitions');
 const getFileImports = require('./functions/getFileImports');
 const getHotReloadAcceptor = require('./functions/getHotReloadAcceptor');
-const getPassageObjectDefinitions = require('./functions/getPassageObjectDefinitions');
-const glob = require('glob');
 const path = require('path');
-const slash = require('slash');
+const scrapeAssets = require('./functions/scrapeAssets');
 
 const authoredPluginsDir = path.join(__dirname, '..', 'plugins');
 
-/* Collect all files within the plugins directory ending in .jsx, .js, .tsx, or .ts. */
-glob(path.join(authoredPluginsDir, '**/!(*.test).[jt]sx?'), async (err, files) => {
+(async () => {
   try {
-    if (err) {
-      throw err;
-    }
+    const files = await scrapeAssets(authoredPluginsDir);
 
-    const normalizedFiles = files.map(slash);
     const {
       importPaths,
       imports,
-    } = getFileImports(normalizedFiles);
+    } = getFileImports(files);
   
     const manifestStr =
       'import { IPluginExport, } from \'../src/plugins/IPluginExport\';\n' +
       imports.join('\n') +
       '\nconst manifest: Array<{ filepath: string, pluginExport: IPluginExport }> = [\n' +
-      getPassageObjectDefinitions(files).join('\n') +
+      getAuthoredAssetObjectDefinitions(files, 'pluginExport').join('\n') +
       '\n];\n\n' +
       'export default manifest;\n' + 
       getHotReloadAcceptor(importPaths) +
@@ -38,4 +33,4 @@ glob(path.join(authoredPluginsDir, '**/!(*.test).[jt]sx?'), async (err, files) =
     console.error(err);
     process.exit(1);
   }
-});
+})();

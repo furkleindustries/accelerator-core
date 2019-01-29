@@ -3,32 +3,27 @@ const {
 } = require('fs-extra');
 const getFileImports = require('./functions/getFileImports');
 const getHotReloadAcceptor = require('./functions/getHotReloadAcceptor');
-const getPassageObjectDefinitions = require('./functions/getPassageObjectDefinitions');
-const glob = require('glob');
+const getPassageObjectDefinitions = require('./functions/getAuthoredAssetObjectDefinitions');
 const path = require('path');
-const slash = require('slash');
+const scrapeAssets = require('./functions/scrapeAssets');
 
 const authoredPassagesDir = path.join(__dirname, '..', 'passages');
 
-/* Collect all files within the passages directory ending in .js, .jsx, .ts, or .tsx. */
-glob(path.join(authoredPassagesDir, '**/!(*.test).[jt]sx?'), async (err, files) => {
+(async () => {
   try {
-    if (err) {
-      throw err;
-    }
+    const files = await scrapeAssets(authoredPassagesDir);
 
-    const normalizedFiles = files.map(slash);
     const {
       importPaths,
       imports,
-    } = getFileImports(normalizedFiles);
+    } = getFileImports(files);
   
     const manifestStr =
       'import { IPassage } from \'../src/passages/IPassage\';\n\n' +
-      imports.join('') +
+      imports.join('\n') +
       '\nconst manifest: Array<{ filepath: string, passageObject: IPassage, }> = [\n' +
-      getPassageObjectDefinitions().join('') +
-      '\n];\n\nexport default manifest;\n' +
+      getPassageObjectDefinitions(files, 'passageObject').join('\n') +
+      '\n];\n\nexport default manifest;\n\n' +
       getHotReloadAcceptor(importPaths) +
       '\n';
     
@@ -37,4 +32,4 @@ glob(path.join(authoredPassagesDir, '**/!(*.test).[jt]sx?'), async (err, files) 
     console.error(err);
     process.exit(1);
   }
-});
+})();

@@ -1,19 +1,21 @@
 const path = require('path');
+const slash = require('slash');
 
 module.exports = function getFileImports(files) {
   const importPaths = [];
-  const ret = {
+  return {
     imports: files.map((filePath, index) => {
-      const importPath = (
-        path.relative(__dirname, filePath).replace(/\.[jt]sx?$/, '')
+      const importPath = slash(
+        path.relative(
+          path.dirname(__dirname),
+          filePath,
+        ).replace(/\.[jt]sx?$/, '')
       );
-
+        
       importPaths.push(importPath);
       return `import import_${index} from '${importPath}';`;
     }),
+
+    importPaths,
   };
-
-  ret.importPaths = importPaths;
-
-  return ret;
 };

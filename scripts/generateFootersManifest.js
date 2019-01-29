@@ -3,31 +3,27 @@ const {
 } = require('fs-extra');
 const getFileImports = require('./functions/getFileImports');
 const getHotReloadAcceptor = require('./functions/getHotReloadAcceptor');
-const getPassageObjectDefinitions = require('./functions/getPassageObjectDefinitions');
-const glob = require('glob');
+const getPassageObjectDefinitions = require('./functions/getAuthoredAssetObjectDefinitions');
 const path = require('path');
-const slash = require('slash');
+const scrapeAssets = require('./functions/scrapeAssets');
 
 const authoredFootersDir = path.join(__dirname, '..', 'footers');
 
 /* Collect all files within the footers directory ending in .js, .jsx, .ts, or .tsx. */
-glob(path.join(authoredFootersDir, '**/!(*.test).[jt]sx'), async (err, files) => {
+(async () => {
   try {
-    if (err) {
-      throw err;
-    }
+    const files = await scrapeAssets(authoredFootersDir);
 
-    const normalizedFiles = files.map(slash);
     const {
       importPaths,
       imports,
-    } = getFileImports(normalizedFiles);
+    } = getFileImports(files);
 
     const manifestStr =
       'import { IFooter } from \'../src/passages/IFooter\';\n\n' +
       imports.join('\n') +
-      '\nconst manifest: Array<{ filepath: string, footerObject: IFooter, }> = [\n' +
-      getPassageObjectDefinitions(files).join('') +
+      '\nconst manifest: Array<{ filepath: string, footerObject: IFooter }> = [\n' +
+      getPassageObjectDefinitions(files, 'footerObject').join('\n') +
       '\n];\n\nexport default manifest;\n\n' +
       getHotReloadAcceptor(importPaths) +
       '\n';
@@ -37,4 +33,4 @@ glob(path.join(authoredFootersDir, '**/!(*.test).[jt]sx'), async (err, files) =>
     console.error(err);
     process.exit(1);
   }
-});
+})();
