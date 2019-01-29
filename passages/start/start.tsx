@@ -2,14 +2,30 @@
 import * as React from 'react';
 
 /* Accelerator components, interfaces, styles, functions, etc. Feel free to
- * destructure this as you see fit but watch out that you don't get mixed up
- * between bundle props and component props with the same name (e.g. tags). */
+ * destructure these as you see fit but watch out that you don't get mixed up
+ * between bundle names and passage component props with the same name
+ * (e.g. tags). */
 import * as components from '../../src/passages/componentsBundle'; 
 import * as passages from '../../src/passages/passagesBundle';
 import * as tagsBundle from '../../src/passages/tagsBundle';
+
+/* @ts-ignore tells the TypeScript linter to ignore the following line,
+ * because TypeScript doesn't know how to type style imports.
+ *
+ * Import the passage style.
+ */
+// @ts-ignore
+import _styles from './start.scss';
+/* Make sure that styles is always an object, even if the import fails. */
+const styles = _styles || {};
+
+/* Import the built-in styles. These are bare-minimum defaults that are meant
+ * to be overridden by authors. */
 // @ts-ignore
 import builtInStyles from '../../src/passages/styles.scss';
 
+/* Images (see images.d.ts for allowed types) are imported as URLs to
+ * the file in the public/ directory. */
 import logo from '../../public/logo.svg';
 
 class Component extends React.PureComponent<passages.IPassageProps> {
@@ -23,82 +39,96 @@ class Component extends React.PureComponent<passages.IPassageProps> {
   public render() {
     const {
       passageObject,
-      storyState,
+      storyState: {
+        counter,
+        cycleVar,
+      },
     } = this.props;
 
     return (
       /* The title will appear above here as an <h1> if you've set it. */
-      <div id={passageObject.name}>
-        <h2>foo
+      <div className={passageObject.name}>
+        <h2>
           This is the sample Accelerator passage.
         </h2>
 
         <img
-          /* Images are imported as filepaths and will automatically be
-           * copied into the build directory by the build system. */
+          /* See note above on logo import. */
           src={logo}
-          /* This should ordinarily be done in .scss/.css files, but this is a
-           * compact example. */
-          style={{
-            display: 'block',
-            width: '300px',
-            margin: '0 auto',
-            maxWidth: '60%',
-          }}
+          style={styles.image}
         />
 
         {/* Move to new passages with the Link component. */}
         <components.Link
+          /* Use the built in style for links. This is opt-in because it should
+           * be as easy as possible to do without default framework styling. */
           className={builtInStyles.link}
-          passageName="testPassage2">
+          passageName="testPassage2"
+        >
           This is a link.
         </components.Link>
 
 
         <button
+          /* Set the click handler of the element to execute the component's
+           * clickIncrementor method. If the .bind() call in the constructor
+           * is not performed, `this` will be undefined when the click handler
+           * executes. */
           onClick={this.clickIncrementor}
           style={{
             display: 'block',
             margin: '0 auto',
           }}
-          >
+        >
           Clicking me increments the counter!
         </button>
 
         {/* This will update reactively, without the need for any rendering
           * logic on your part. */}
-        <div>{storyState.counter || 0}</div>
+        <div style={{ marginBottom: '10px' }}>{counter || 0}</div>
 
         <components.CyclingLink
-          choices={[ 'one', 'two', 'three', ]}
+          className={builtInStyles.link}
+          /* Choices should be an array of strings. */
+          choices={[
+            'one',
+            'two',
+            'three',
+          ]}
+
+          /* Set the value of the cycleVar variable to the current state of
+           * the cycling link. */
           variableToSet="cycleVar"
         />
 
         {/* This value updates automatically to match the cycling link
           * choice. */}
-        <div>{storyState.cycleVar}</div>
+        <div>{cycleVar}</div>
       </div>
     );
   }
 
   private clickIncrementor() {
     const {
+      bookmark,
       setStoryState,
-      storyState,
+      storyState: { counter },
     } = this.props;
 
-    setStoryState({
-      counter: (storyState.counter || 0) + 1,
-    });
+    /* Set a bookmark every 5 times the clicker is clicked. You may notice
+     * that (assuming the ACCELERATOR_HISTORY_SAVE_TYPES value is the default),
+     * the rewind button becomes usable. */ 
+    if (counter % 5 === 0) {
+      bookmark();
+    }
+
+    setStoryState({ counter: (counter || 0) + 1 });
   }
 }
 
 const passage: passages.IPassage = {
   /* string: the story-unique name of the passage. */
   name: 'myPassage',
-  
-  /* string: an optional expanded title to be used as you see fit. */
-  title: 'My cool passage',
   
   /* array: an optional collection of either plain strings or
    * { key: string, value: string, } Tag objects. */
@@ -113,7 +143,7 @@ const passage: passages.IPassage = {
     },
   ],
 
-  /* ComponentClass | ReactElement: the content that should be displayed, or,
+  /* ComponentClass | SFC: the content that should be displayed, or,
    * in the case of noRender passages, a component that can be imported.
    * Should be formatted in JSX style. */
   contents: Component,

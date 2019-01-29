@@ -66,147 +66,18 @@ After a minute or so, the installation should be complete, and a folder named `%
 
 An Accelerator story is notionally similar to a Twine story: it is a series of passages, joined by links. Each of these passages are TypeScript or JavaScript files. They contain a small amount of metadata and React component constructor (either a class implementing React.Component or React.PureComponent, or a stateless functional component) or a React element. Each is placed in the `passages` directory.
 
-To write a new passage, either use `accelerator-tool new passage %YOUR_PASSAGE_NAME%`, or manually create a code file (ending in `.jsx` or `.tsx`) within the passages directory. A complete passage file will look something like this:
+To write a new passage, either use `accelerator-tool new passage %YOUR_PASSAGE_NAME%`, or manually create a code file (ending in `.jsx` or `.tsx`) within the passages directory. A complete passage file will look something like [this](/passages/start/start.tsx).
 
-```javascript
-/* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
-import * as React from 'react';
+The exported object must be the passage object, and it must be the default export. You can use any valid JSX, including functional and class-based components. You may use any named export for whatever you please. You may also feel free to organize your files however you please, as Accelerator will search any number of folders deep within the `passages` folder.
 
-/* Accelerator components, interfaces, styles, functions, etc. Feel free to
- * destructure these as you see fit but watch out that you don't get mixed up
- * between bundle names and passage component props with the same name
- * (e.g. tags). */
-import * as components from '../../src/passages/componentsBundle'; 
-import * as passages from '../../src/passages/passagesBundle';
-import * as tagsBundle from '../../src/passages/tagsBundle';
-// @ts-ignore
-import builtInStyles from '../../src/passages/styles.scss';
+Note that passage files *must* end in `.jsx` or `.tsx`. This is convenient because it fits VS Code's syntax highlighting for files containing JSX elements, and also because it reserves all `.js` or `.ts` files for you to use and import as you see fit.
 
-import logo from '../../public/logo.svg';
-
-class Component extends React.PureComponent<passages.IPassageProps> {
-  constructor(props: any) {
-    super(props);
-
-    /* Bind the function so we can properly access this.props. */
-    this.clickIncrementor = this.clickIncrementor.bind(this);
-  }
-
-  public render() {
-    const {
-      passageObject,
-      storyState: {
-        counter,
-        cycleVar,
-      },
-    } = this.props;
-
-    return (
-      /* The title will appear above here as an <h1> if you've set it. */
-      <div id={passageObject.name}>
-        <h2>
-          This is the sample accelerator passage.
-        </h2>
-
-        <img
-          /* Images are imported as filepaths and will automatically be
-           * copied into the build directory by the build system. */
-          src={logo}
-          /* This should ordinarily be done in .scss/.css files, but this is a
-           * compact example. */
-          style={{
-            display: 'block',
-            width: '300px',
-            margin: '0 auto',
-            maxWidth: '60%',
-          }}
-        />
-
-        {/* Move to new passages with the Link component. */}
-        <components.Link
-          className={builtInStyles.link}
-          passageName="testPassage2"
-        >
-          This is a link.
-        </components.Link>
-
-
-        <button
-          onClick={this.clickIncrementor}
-          style={{
-            display: 'block',
-            margin: '0 auto',
-          }}
-        >
-          Clicking me increments the counter!
-        </button>
-
-        {/* This will update reactively, without the need for any rendering
-          * logic on your part. */}
-        <div>{counter || 0}</div>
-
-        <components.CyclingLink
-          choices={[ 'one', 'two', 'three', ]}
-          variableToSet="cycleVar"
-        />
-
-        {/* This value updates automatically to match the cycling link
-          * choice. */}
-        <div>{cycleVar}</div>
-      </div>
-    );
-  }
-
-  private clickIncrementor() {
-    const {
-      setStoryState,
-      storyState: { counter },
-    } = this.props;
-
-    setStoryState({ counter: (counter || 0) + 1 });
-  }
-}
-
-const passage: passages.IPassage = {
-  /* string: the story-unique name of the passage. */
-  name: 'myPassage',
-  
-  /* string: an optional expanded title to be used as you see fit. */
-  title: 'My cool passage',
-  
-  /* array: an optional collection of either plain strings or
-   * { key: string, value: string, } Tag objects. */
-  tags: [
-    /* Mark the passage as the first that should be rendered when the story is
-     * started. */
-    tagsBundle.BuiltInTags.Start,
-  
-    {
-      key: 'anotherTag',
-      value: 'anotherTagValue',
-    },
-  ],
-
-  /* ComponentClass | SFC: the content that should be displayed, or,
-   * in the case of noRender passages, a component that can be imported.
-   * Should be formatted in JSX style. */
-  contents: Component,
-};
-
-/* Always make the passage object a default export. */
-export default passage;
-```
-
-The exported object must be the passage object, and it must be the default export. You can use any valid JSX, including functional and class-based components. You may use any named export for whatever you please. You can also feel free to organize your files however you please, as Accelerator will search any number of folders deep within the `passages` folder.
-
-Note that, as alluded to above, passage files *must* end in `.jsx` or `.tsx`. This is convenient because it fits VS Code's syntax highlighting for files containing JSX elements, and also because it reserves all `.js` or `.ts` files for you to use and import as you see fit.
-
-If you are using Typescript (allowing for the full value of Accelerator's built-in functionalities), you should indicate the type of the passage object by replacing `const passage =` with `const passage: bundle.passages.IPassage =`, and setting the props type of the React component to `bundle.passages.IPassageProps`, importing these interfaces from `../src/passages/bundle`. This will allow full type-checking of your story passages. (You can also just destructure the bundle, or the passages property, so that you can refer directly to `IPassage` and `IPassageProps`.)
+If you are using TypeScript (allowing for the full value of Accelerator's built-in functionalities), you should indicate the type of the passage object by replacing `const passage =` with `const passage: passagesBundle.IPassage =`, and setting the props type of the React component to `passagesBundle.IPassageProps`, importing these interfaces from `../src/passages/passagesBundle`. This will allow full type-checking of your story passages. (You can also just destructure the bundle, or the passages property, so that you can refer directly to `IPassage` and `IPassageProps`.)
 
 <a name="bundle-imports"></a>
 ## The bundle imports
 
-All Accelerator passages have simple access to the bundle imports, located in `src/passages/`. (Note that `passages` and `src/passages` are different folders with wholly different purposes.) Each bundle import is typically imported as so: `import * as myBundle from '../../src/passages/specificBundle';`. There are at present three export bundles intended for author reuse:
+All Accelerator passages have simple access to the bundle imports, located in `src/passages/`. (Note that `passages` and `src/passages` are different folders with wholly different purposes.) Each bundle import is typically imported as so: `import * as widgets from '../../src/passages/widgetsBundle';`. There are at present three export bundles intended for author reuse:
 
 * `componentsBundle`:
   * The [Link](src/components/Link/Link.md) component, which allows the user to navigate between passages.

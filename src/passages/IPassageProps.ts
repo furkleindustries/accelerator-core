@@ -18,10 +18,10 @@ import {
 } from '../tags/Tag';
 
 export interface IPassageProps {
+  dispatch: Dispatch<IAction>;
   lastLinkTags: Readonly<Tag[]>;
   passageObject: IPassage;
   storyState: IStoryStateInstance;
-  dispatch: Dispatch<IAction>;
   bookmark(): void;
   navigateTo(passageName: string, tags?: Readonly<Tag[]>): void;
   restart(): void;

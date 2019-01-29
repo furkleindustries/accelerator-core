@@ -4,6 +4,7 @@ const slash = require('slash');
 module.exports = function getFileImports(files) {
   const importPaths = [];
   return {
+    importPaths,
     imports: files.map((filePath, index) => {
       const importPath = slash(
         path.relative(
@@ -15,7 +16,5 @@ module.exports = function getFileImports(files) {
       importPaths.push(importPath);
       return `import import_${index} from '${importPath}';`;
     }),
-
-    importPaths,
   };
 };
