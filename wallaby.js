@@ -9,7 +9,7 @@ module.exports = function (wallaby) {
     files: [
       'tsconfig.json',
       'tsconfig.test.json',
-      'src/setupTests.ts',
+      'src/setupTests.js',
       'passages/**/*.+(js|jsx|ts|tsx)',
       'src/**/*.+(js|jsx|ts|tsx|json|snap|css|less|sass|scss|jpg|jpeg|gif|png|svg)',
       {pattern: 'config/**/*.js', instrument: false},
