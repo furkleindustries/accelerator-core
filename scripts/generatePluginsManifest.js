@@ -1,35 +1,33 @@
 const {
   writeFile,
 } = require('fs-extra');
-const getHotReloadAcceptor = require('./getHotReloadAcceptor');
+const getFileImports = require('./functions/getFileImports');
+const getHotReloadAcceptor = require('./functions/getHotReloadAcceptor');
+const getPassageObjectDefinitions = require('./functions/getPassageObjectDefinitions');
 const glob = require('glob');
 const path = require('path');
 const slash = require('slash');
 
 const authoredPluginsDir = path.join(__dirname, '..', 'plugins');
-/* Collect all files within the plugins directory ending in .jsx or .tsx. */
-glob(path.join(authoredPluginsDir, '**/!(*.test).[jt]sx'), async (err, files) => {
+
+/* Collect all files within the plugins directory ending in .jsx, .js, .tsx, or .ts. */
+glob(path.join(authoredPluginsDir, '**/!(*.test).[jt]sx?'), async (err, files) => {
   try {
     if (err) {
       throw err;
     }
-  
-    const importPaths = [];
+
+    const normalizedFiles = files.map(slash);
+    const {
+      importPaths,
+      imports,
+    } = getFileImports(normalizedFiles);
   
     const manifestStr =
       'import { IPluginExport, } from \'../src/plugins/IPluginExport\';\n' +
-      files.map((filePath, index) => {
-        const importPath = slash(
-          path.relative(__dirname, filePath).replace(/.[jt]sx$/, ''),
-        );
-
-        importPaths.push(importPath);
-        return `import import_${index} from '${importPath}';\n`;
-      }).join('') +
-      '\nconst manifest: Array<{ filepath: string, pluginExport: IPluginExport, }> = [\n' +
-      files.map((path, index) => {
-        return `  {\n    filepath: \`${path}\`,\n    pluginExport: import_${index},\n  },`;
-      }).join('') +
+      imports.join('\n') +
+      '\nconst manifest: Array<{ filepath: string, pluginExport: IPluginExport }> = [\n' +
+      getPassageObjectDefinitions(files).join('\n') +
       '\n];\n\n' +
       'export default manifest;\n' + 
       getHotReloadAcceptor(importPaths) +

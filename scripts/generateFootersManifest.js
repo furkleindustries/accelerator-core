@@ -1,7 +1,9 @@
 const {
   writeFile,
 } = require('fs-extra');
-const getHotReloadAcceptor = require('./getHotReloadAcceptor');
+const getFileImports = require('./functions/getFileImports');
+const getHotReloadAcceptor = require('./functions/getHotReloadAcceptor');
+const getPassageObjectDefinitions = require('./functions/getPassageObjectDefinitions');
 const glob = require('glob');
 const path = require('path');
 const slash = require('slash');
@@ -14,27 +16,22 @@ glob(path.join(authoredFootersDir, '**/!(*.test).[jt]sx'), async (err, files) =>
     if (err) {
       throw err;
     }
-  
-    const importPaths = [];
+
+    const normalizedFiles = files.map(slash);
+    const {
+      importPaths,
+      imports,
+    } = getFileImports(normalizedFiles);
 
     const manifestStr =
       'import { IFooter } from \'../src/passages/IFooter\';\n\n' +
-      files.map((filePath, index) => {
-        const importPath = slash(
-          path.relative(__dirname, filePath).replace(/\.[jt]sx?$/, ''),
-        );
-
-        importPaths.push(importPath);
-        return `import import_${index} from '${importPath}';`;
-      }).join('\n') +
+      imports.join('\n') +
       '\nconst manifest: Array<{ filepath: string, footerObject: IFooter, }> = [\n' +
-      files.map((path, index) => {
-        return `  {\n    filepath: \`${path}\`,\n    footerObject: import_${index},\n  },`;
-      }).join('') +
+      getPassageObjectDefinitions(files).join('') +
       '\n];\n\nexport default manifest;\n\n' +
       getHotReloadAcceptor(importPaths) +
       '\n';
-  
+
     await writeFile(path.join(authoredFootersDir, 'footers-manifest.ts'), manifestStr);
   } catch (err) {
     console.error(err);

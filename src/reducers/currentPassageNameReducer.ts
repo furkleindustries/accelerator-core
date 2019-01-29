@@ -18,7 +18,7 @@ const {
 export function currentPassageNameReducer(
   previousState: string = startPassage.name,
   action: ICurrentPassageNameAction | IStoryResetAction,
-)
+): string
 {
   if (action.type === ActionTypes.CurrentPassageName) {
     return action.value;
@@ -27,4 +27,4 @@ export function currentPassageNameReducer(
   }
 
   return previousState;
-};
+}

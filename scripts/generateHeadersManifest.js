@@ -1,7 +1,9 @@
 const {
   writeFile,
 } = require('fs-extra');
-const getHotReloadAcceptor = require('./getHotReloadAcceptor');
+const getFileImports = require('./functions/getFileImports');
+const getHotReloadAcceptor = require('./functions/getHotReloadAcceptor');
+const getPassageObjectDefinitions = require('./functions/getPassageObjectDefinitions');
 const glob = require('glob');
 const path = require('path');
 const slash = require('slash');
@@ -14,23 +16,18 @@ glob(path.join(authoredHeadersDir, '**/!(*.test).[jt]sx?'), async (err, files) =
     if (err) {
       throw err;
     }
-  
-    const importPaths = [];
+
+    const normalizedFiles = files.map(slash);
+    const {
+      importPaths,
+      imports,
+    } = getFileImports(normalizedFiles);
   
     const manifestStr =
       'import { IHeader } from \'../src/passages/IHeader\';\n\n' +
-      files.map((filePath, index) => {
-        const importPath = slash(
-          path.relative(__dirname, filePath).replace(/\.[jt]sx?$/, ''),
-        );
-
-        importPaths.push(importPath); 
-        return `import import_${index} from '${importPath}';\n`;
-      }).join('') +
+      imports.join('') +
       '\nconst manifest: Array<{ filepath: string, headerObject: IHeader, }> = [\n' +
-      files.map((path, index) => {
-        return `  {\n    filepath: \`${path}\`,\n    headerObject: import_${index},\n  },`;
-      }).join('') +
+      getPassageObjectDefinitions(normalizedFiles).join('') +
       '\n];\n\nexport default manifest;\n' +
       getHotReloadAcceptor(importPaths) +
       '\n';

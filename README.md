@@ -95,7 +95,10 @@ class Component extends React.PureComponent<passages.IPassageProps> {
   public render() {
     const {
       passageObject,
-      storyState,
+      storyState: {
+        counter,
+        cycleVar,
+      },
     } = this.props;
 
     return (
@@ -122,7 +125,8 @@ class Component extends React.PureComponent<passages.IPassageProps> {
         {/* Move to new passages with the Link component. */}
         <components.Link
           className={builtInStyles.link}
-          passageName="testPassage2">
+          passageName="testPassage2"
+        >
           This is a link.
         </components.Link>
 
@@ -133,13 +137,13 @@ class Component extends React.PureComponent<passages.IPassageProps> {
             display: 'block',
             margin: '0 auto',
           }}
-          >
+        >
           Clicking me increments the counter!
         </button>
 
         {/* This will update reactively, without the need for any rendering
           * logic on your part. */}
-        <div>{storyState.counter || 0}</div>
+        <div>{counter || 0}</div>
 
         <components.CyclingLink
           choices={[ 'one', 'two', 'three', ]}
@@ -148,7 +152,7 @@ class Component extends React.PureComponent<passages.IPassageProps> {
 
         {/* This value updates automatically to match the cycling link
           * choice. */}
-        <div>{storyState.cycleVar}</div>
+        <div>{cycleVar}</div>
       </div>
     );
   }
@@ -156,12 +160,10 @@ class Component extends React.PureComponent<passages.IPassageProps> {
   private clickIncrementor() {
     const {
       setStoryState,
-      storyState,
+      storyState: { counter },
     } = this.props;
 
-    setStoryState({
-      counter: (storyState.counter || 0) + 1,
-    });
+    setStoryState({ counter: (counter || 0) + 1 });
   }
 }
 
@@ -185,7 +187,7 @@ const passage: passages.IPassage = {
     },
   ],
 
-  /* ComponentClass | ReactElement: the content that should be displayed, or,
+  /* ComponentClass | SFC: the content that should be displayed, or,
    * in the case of noRender passages, a component that can be imported.
    * Should be formatted in JSX style. */
   contents: Component,
@@ -195,11 +197,11 @@ const passage: passages.IPassage = {
 export default passage;
 ```
 
-The exported object must be the passage object, and it must be the default export. You can use any valid JSX, including functional and class-based components. You may use any named export for whatever you please. You can also feel free to organize your files however you please, as Accelerator will search any numbers of folders deep within the `passages` folder.
+The exported object must be the passage object, and it must be the default export. You can use any valid JSX, including functional and class-based components. You may use any named export for whatever you please. You can also feel free to organize your files however you please, as Accelerator will search any number of folders deep within the `passages` folder.
 
 Note that, as alluded to above, passage files *must* end in `.jsx` or `.tsx`. This is convenient because it fits VS Code's syntax highlighting for files containing JSX elements, and also because it reserves all `.js` or `.ts` files for you to use and import as you see fit.
 
-If you are using Typescript (which you should be for the full value of Accelerator's built-in functionalities), you should indicate the type of the passage object by replacing `const passage =` with `const passage: bundle.passages.IPassage =`, and setting the props type of the React component to `bundle.passages.IPassageProps`, importing these interfaces from `../src/passages/bundle`. This will allow full type-checking of your story passages. (You can also just destructure the bundle, or the passages property, so that you can refer directly to `IPassage` and `IPassageProps`.)
+If you are using Typescript (allowing for the full value of Accelerator's built-in functionalities), you should indicate the type of the passage object by replacing `const passage =` with `const passage: bundle.passages.IPassage =`, and setting the props type of the React component to `bundle.passages.IPassageProps`, importing these interfaces from `../src/passages/bundle`. This will allow full type-checking of your story passages. (You can also just destructure the bundle, or the passages property, so that you can refer directly to `IPassage` and `IPassageProps`.)
 
 <a name="bundle-imports"></a>
 ## The bundle imports
@@ -235,8 +237,9 @@ All Accelerator passages have simple access to the bundle imports, located in `s
 For each passage, your ES6 class component (extending `React.Component` or `React.PureComponent`) or functional component (of type `React.StatelessFunctionalComponent`, or React's new stateful functional component types) will be passed props automatically by the higher-order `PassageContainer` component. These props, defined in `IPassageProps`, are as follows:
 
 * `passageObject`, the object from your authored passage file. This is of type `IPassage`.
-* `setStoryState`, a function accepting an object of new state keys and values object as its single argument. This will automatically update the state and any rendered instances of it.
 * `storyState`, a copy of the story state. Due to the way Redux and its bindings update components, this object will always be up-to-date, relative to the actual, hidden state store, and changes to it are pointless. If you want to change the story state, use `setStoryState`.
+* `setStoryState`, a function accepting an object of new state keys and values object as its single argument. This will automatically update the state and any rendered instances of it.
+* `bookmark`, a function which produces a new rewind point in the story.
 * `dispatch`, a no-complexity wrapper of the Redux state store's `dispatch` function, allowing lower-level dispatching of Redux actions. This will likely not be useful unless you're doing some sort of notional reflection with the Accelerator internals, or you're authoring your own actions and have modified the default state store accordingly.
 
 <a name="headers-and-footers"></a>
