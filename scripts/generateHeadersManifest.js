@@ -22,7 +22,7 @@ glob(path.join(authoredHeadersDir, '**/!(*.test).[jt]sx?'), async (err, files) =
       importPaths,
       imports,
     } = getFileImports(normalizedFiles);
-  
+
     const manifestStr =
       'import { IHeader } from \'../src/passages/IHeader\';\n\n' +
       imports.join('') +
