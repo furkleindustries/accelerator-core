@@ -15,19 +15,19 @@ import {
 const appDir = join(__dirname, '..');
 
 if (!pathExistsSync(join(appDir, 'passages', 'passages-manifest.ts'))) {
-  execSync('node scripts/generatePassagesManifest.js');
+  require('../scripts/generatePassagesManifest');
 }
 
 if (!pathExistsSync(join(appDir, 'headers', 'headers-manifest.ts'))) {
-  execSync('node scripts/generateHeadersManifest.js');
+  require('../scripts/generateHeadersManifest');
 }
 
 if (!pathExistsSync(join(appDir, 'footers', 'footers-manifest.ts'))) {
-  execSync('node scripts/generateFootersManifest.js');
+  require('../scripts/generateFootersManifest');
 }
 
 if (!pathExistsSync(join(appDir, 'plugins', 'plugins-manifest.ts'))) {
-  execSync('node scripts/generatePluginsManifest.js');
+  require('../scripts/generatePluginsManifest');
 }
 
 Enzyme.configure({ adapter: new Adapter() });
