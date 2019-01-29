@@ -93,7 +93,7 @@
     "build-desktop": "npm run get-electron-redists && npm run promote-content-to-executables",
     "get-electron-redists": "node scripts/getElectronRedists.js",
     "promote-content-to-executables": "node scripts/promoteContentToExecutables.js",
-    "test": "node scripts/test.js --env=jsdom",
+    "test": "node scripts/test.js",
     "test-coverage": "npm run test -- --coverage",
     "debug": "cross-env NODE_ENV=development webpack --config config/webpack.config.dev.js --verbose",
     "prepublishOnly": "npm run test -- --dontWatch"
@@ -136,7 +136,11 @@
     ],
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
-      "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,ts,tsx}"
+      "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,ts,tsx}",
+      "<rootDir>/footers/**/?(*.)(spec|test).{js,jsx,ts,tsx}",
+      "<rootDir>/headers/**/?(*.)(spec|test).{js,jsx,ts,tsx}",
+      "<rootDir>/passages/**/?(*.)(spec|test).{js,jsx,ts,tsx}",
+      "<rootDir>/plugins/**/?(*.)(spec|test).{js,jsx,ts,tsx}"
     ],
     "testEnvironment": "jsdom",
     "testURL": "http://localhost",
