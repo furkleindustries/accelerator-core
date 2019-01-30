@@ -3,6 +3,7 @@ const includedDirectories = '(footers|headers|passages|plugins|src)';
 /** @see https://jestjs.io/docs/en/configuration.html */
 module.exports = {
   rootDir: '../../',
+
   testMatch: [
     `<rootDir>/${includedDirectories}/**/?(*.){spec,test}.{js,jsx,ts,tsx}`,
   ],

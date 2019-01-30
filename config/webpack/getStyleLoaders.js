@@ -20,22 +20,22 @@ module.exports = function getStyleLoaders({
     (
       mode === 'development' ?
         require.resolve('style-loader') :
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              ...(
-                shouldUseRelativeAssetPaths ?
-                  { publicPath: '../../' } :
-                  undefined
-              ),
-            },
-          },
-
         {
-          loader: require.resolve('css-loader'),
-          options: cssOptions,
+          loader: MiniCssExtractPlugin.loader,
+          options: {
+            ...(
+              shouldUseRelativeAssetPaths ?
+                { publicPath: '../../' } :
+                undefined
+            ),
+          },
         }
     ),
+
+    {
+      loader: require.resolve('css-loader'),
+      options: cssOptions,
+    },
 
     {
       // Options for PostCSS as we reference these options twice
