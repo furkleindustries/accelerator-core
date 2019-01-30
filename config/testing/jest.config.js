@@ -1,29 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const includedDirectories = '(footers|headers|passages|plugins|src)';
 
 /** @see https://jestjs.io/docs/en/configuration.html */
