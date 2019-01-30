@@ -1,8 +1,10 @@
+/** @see https://jestjs.io/docs/en/configuration.html */
+
 const includedDirectories = '(footers|headers|passages|plugins|src)';
 
 module.exports = {
   testMatch: [
-    '<rootDir>/**/?(*.)(spec|test).{js,jsx,ts,tsx}',
+    `<rootDir>/**/${includedDirectories}/?(*.)(spec|test).{js,jsx,ts,tsx}`,
   ],
 
   collectCoverageFrom: [
@@ -45,4 +47,4 @@ module.exports = {
   ],
 
   resolver: 'jest-pnp-resolver',
-}
+};
