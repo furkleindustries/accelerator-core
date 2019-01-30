@@ -21,10 +21,12 @@ import {
 
 import * as React from 'react';
 
-export class RewindButton extends React.PureComponent<IRewindButtonOwnProps & IRewindButtonStateProps & IRewindButtonDispatchProps> {
+export class RewindButtonUnconnected extends React.PureComponent<
+  IRewindButtonOwnProps & IRewindButtonStateProps & IRewindButtonDispatchProps
+>
+{
   constructor(props: any) {
     super(props);
-
     this.rewind = this.rewind.bind(this);
   }
   
@@ -57,7 +59,7 @@ export class RewindButton extends React.PureComponent<IRewindButtonOwnProps & IR
 
 export const mapStateToProps: MapStateToProps<IRewindButtonStateProps, IRewindButtonOwnProps, IState> = ({
   history: {
-    past: { length }
+    past: { length },
   },
 }) => ({
   canRewind: length > 1,
@@ -70,4 +72,4 @@ export const mapDispatchToProps: MapDispatchToProps<
   dispatch,
 });
 
-export const RewindButtonConnected = connect(mapStateToProps, mapDispatchToProps)(RewindButton);
+export const RewindButton = connect(mapStateToProps, mapDispatchToProps)(RewindButtonUnconnected);

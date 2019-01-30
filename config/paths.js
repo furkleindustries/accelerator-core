@@ -77,7 +77,7 @@ module.exports = {
   headersSrc: resolveApp('headers/'),
   footersSrc: resolveApp('footers/'),
   pluginsSrc: resolveApp('plugins/'),
-  appTsConfig: resolveApp('tsconfig.json'),
+  appTsConfig: resolveApp('config/typescript/tsconfig.json'),
   yarnLockFile: resolveApp('yarn.lock'),
   testsSetup: resolveModule(resolveApp, 'src/setupTests'),
   proxySetup: resolveApp('src/setupProxy.js'),

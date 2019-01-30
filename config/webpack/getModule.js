@@ -22,6 +22,9 @@ module.exports = function getModule(mode, publicPath) {
         test: /\.(js|mjs|jsx)$/,
         enforce: 'pre',
         use: [
+          /**
+           * @see https://github.com/webpack-contrib/eslint-loader
+           */
           {
             loader: require.resolve('eslint-loader'),
             options: {

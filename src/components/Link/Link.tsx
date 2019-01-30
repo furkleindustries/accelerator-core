@@ -29,7 +29,10 @@ export const strings = {
     'the passages map.',
 };
 
-export class Link extends React.PureComponent<ILinkOwnProps & ILinkDispatchProps> {
+export class LinkUnconnected extends React.PureComponent<
+  ILinkOwnProps & ILinkDispatchProps
+>
+{
   constructor(props: any) {
     super(props);
     this.navigate = this.navigate.bind(this);
@@ -77,4 +80,4 @@ export const mapDispatchToProps: MapDispatchToProps<ILinkDispatchProps, ILinkOwn
   dispatch,
 }); 
 
-export const LinkConnected = connect(null, mapDispatchToProps)(Link);
+export const Link = connect(null, mapDispatchToProps)(LinkUnconnected);

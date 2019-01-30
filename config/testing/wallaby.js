@@ -1,25 +1,28 @@
 // tslint:disable
+const path = require('path');
+
+process.env.NODE_PATH = path.join(__dirname, '..', '..', 'node_modules');
+
 module.exports = function (wallaby) {
-  const testPathExp = 'src/**/*.test.ts?(x)';
-  const compilerOptions = Object.assign(
-    require('./tsconfig.json').compilerOptions,
-    require('./tsconfig.test.json').compilerOptions);
+  const testPathExp = '../../(footers|headers|passages|plugins|src)/**/*.(spec|test).[jt]s?(x)';
+  const compilerOptions = {
+    ...require('../typescript/tsconfig.json').compilerOptions,
+    ...require('../typescript/tsconfig.test.json').compilerOptions,
+  };
 
   return {
     files: [
-      'tsconfig.json',
-      'tsconfig.test.json',
-      'src/setupTests.js',
-      'passages/**/*.+(js|jsx|ts|tsx)',
-      'src/**/*.+(js|jsx|ts|tsx|json|snap|css|less|sass|scss|jpg|jpeg|gif|png|svg)',
-      {pattern: 'config/**/*.js', instrument: false},
-      `!${testPathExp}`
+      '../../(footers|headers|passages|plugins|src)/**/*.+(js|jsx|ts|tsx|json|snap|css|less|sass|scss|jpg|jpeg|gif|png|svg)',
+      '../typescript/tsconfig.json',
+      '../typescript/tsconfig.test.json',
+      `!${testPathExp}`,
+      {
+        pattern: './**/*',
+        instrument: false,
+      },
     ],
 
-    tests: [
-      testPathExp,
-    ],
-
+    tests: [ testPathExp ],
     env: {
       runner: 'node',
       type: 'node',
@@ -45,16 +48,16 @@ module.exports = function (wallaby) {
       ),
     },
 
-    setup: () => {
-      const jestConfig = require('./package.json').jest;
+    setup() {
+      const jestConfig = require('./jest.config');
       Object.keys(jestConfig.transform || {}).forEach(
         k => ~k.indexOf('^.+\\.(js|jsx') && void delete jestConfig.transform[k]
       );
+
       delete jestConfig.testEnvironment;
-      jestConfig.setupTestFrameworkScriptFile = jestConfig.setupTestFrameworkScriptFile.replace('.ts', '.js');
       wallaby.testFramework.configure(jestConfig);
     },
 
-    testFramework: 'jest'
+    testFramework: 'jest',
   };
 };

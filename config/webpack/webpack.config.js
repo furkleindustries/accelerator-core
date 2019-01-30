@@ -1,5 +1,4 @@
 const fs = require('fs-extra');
-const getClientEnvironment = require('../env');
 const getEmptyNodeModulesMap = require('./getEmptyNodeModulesMap');
 const getEntry = require('./getEntry');
 const getModule = require('./getModule');
@@ -51,7 +50,13 @@ module.exports = {
   resolve: getResolve(useTypeScript),
   resolveLoader: getResolveLoader(),
   module: getModule(mode, publicPath),
-  plugins: getPlugins(mode, publicPath, useTypeScript, shouldInlineRuntimeChunk),
+  plugins: getPlugins({
+    mode,
+    publicPath,
+    shouldInlineRuntimeChunk,
+    useTypeScript,
+  }),
+
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
   node: getEmptyNodeModulesMap(),

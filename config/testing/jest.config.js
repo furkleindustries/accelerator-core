@@ -1,29 +1,53 @@
-/** @see https://jestjs.io/docs/en/configuration.html */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const includedDirectories = '(footers|headers|passages|plugins|src)';
 
+/** @see https://jestjs.io/docs/en/configuration.html */
 module.exports = {
+  rootDir: '../../',
   testMatch: [
-    `<rootDir>/**/${includedDirectories}/?(*.)(spec|test).{js,jsx,ts,tsx}`,
+    `<rootDir>/${includedDirectories}/**/?(*.){spec,test}.{js,jsx,ts,tsx}`,
   ],
 
   collectCoverageFrom: [
-    `**/${includedDirectories}/*.{js,jsx,ts,tsx}`,
+    `${includedDirectories}/**/*.{js,jsx,ts,tsx}`,
     '!**/*.d.ts',
   ],
 
-  rootDir: '../../',
-
-  setupTestFrameworkScriptFile: '<rootDir>/config/jest/setupTests.ts',
-  globalSetup: '<rootDir>/config/jest/globalSetup.js',
+  setupTestFrameworkScriptFile: '<rootDir>/config/testing/setupTests.ts',
+  globalSetup: '<rootDir>/config/testing/globalSetup.js',
   setupFiles: [
-    'react-app-polyfill/jsdom'
+    'react-app-polyfill/jsdom',
   ],
 
   transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': '<rootDir>/node_modules/babel-jest',
-    '^.+\\.css$': '<rootDir>/config/jest/cssTransform.js',
-    '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '<rootDir>/config/jest/fileTransform.js',
+    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
+    '^.+\\.css$': '<rootDir>/config/testing/cssTransform.js',
+    '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '<rootDir>/config/testing/fileTransform.js',
   },
 
   transformIgnorePatterns: [
@@ -33,7 +57,6 @@ module.exports = {
 
   testEnvironment: 'jsdom',
   testURL: 'http://localhost',
-
   moduleNameMapper: {
     '^react-native$': 'react-native-web',
     '^.+\\.(sass|scss)$': 'identity-obj-proxy',

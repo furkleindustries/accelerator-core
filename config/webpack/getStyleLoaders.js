@@ -17,20 +17,25 @@ module.exports = function getStyleLoaders({
   // Some apps do not use client-side routing with pushState.
   // For these, "homepage" can be set to "./" to enable relative asset paths.
   const loaders = [
-    mode === 'development' ?
-    require.resolve('style-loader') :
-      {
-        loader: MiniCssExtractPlugin.loader,
-        options: Object.assign(
-          {},
-          shouldUseRelativeAssetPaths ? { publicPath: '../../' } : undefined,
-        ),
-      },
+    (
+      mode === 'development' ?
+        require.resolve('style-loader') :
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              ...(
+                shouldUseRelativeAssetPaths ?
+                  { publicPath: '../../' } :
+                  undefined
+              ),
+            },
+          },
 
-    {
-      loader: require.resolve('css-loader'),
-      options: cssOptions,
-    },
+        {
+          loader: require.resolve('css-loader'),
+          options: cssOptions,
+        }
+    ),
 
     {
       // Options for PostCSS as we reference these options twice
@@ -44,10 +49,7 @@ module.exports = function getStyleLoaders({
         plugins: () => [
           require('postcss-flexbugs-fixes'),
           require('postcss-preset-env')({
-            autoprefixer: {
-              flexbox: 'no-2009',
-            },
-
+            autoprefixer: { flexbox: 'no-2009' },
             stage: 3,
           }),
         ],
@@ -63,9 +65,7 @@ module.exports = function getStyleLoaders({
     } else {
       loaders.push({
         loader: require.resolve(preProcessor),
-        options: {
-          sourceMap: shouldUseSourceMap,
-        },
+        options: { sourceMap: shouldUseSourceMap },
       });
     }
   }

@@ -8,8 +8,13 @@ const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeM
 const webpack = require('webpack');
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 
-
-module.exports = function getPlugins(mode, publicUrl, useTypeScript, shouldInlineRuntimeChunk) {
+module.exports = function getPlugins({
+  mode,
+  publicUrl,
+  shouldInlineRuntimeChunk,
+  useTypeScript,
+})
+{
   const base = getCommonPlugins(mode, useTypeScript);
   if (mode === 'development') {
     return [
@@ -27,40 +32,40 @@ module.exports = function getPlugins(mode, publicUrl, useTypeScript, shouldInlin
       // See https://github.com/facebook/create-react-app/issues/186
       new WatchMissingNodeModulesPlugin(paths.appNodeModules),
     ];
-  } else {
-    return [
-      ...base,
-
-      // Inlines the webpack runtime script. This script is too small to warrant
-      // a network request.
-      ...(
-        shouldInlineRuntimeChunk ?
-          [ new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [ /runtime~.+[.]js/ ]) ] :
-          []
-      ),
-
-      new MiniCssExtractPlugin({
-        // Options similar to the same options in webpackOptions.output
-        // both options are optional
-        filename: 'static/css/[name].[contenthash:8].css',
-        chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
-      }),
-      
-      // Generate a service worker script that will precache, and keep up to date,
-      // the HTML & assets that are part of the Webpack build.
-      new WorkboxWebpackPlugin.GenerateSW({
-        clientsClaim: true,
-        exclude: [/\.map$/, /asset-manifest\.json$/],
-        importWorkboxFrom: 'cdn',
-        navigateFallback: `${publicUrl}/index.html`,
-        navigateFallbackBlacklist: [
-          // Exclude URLs starting with /_, as they're likely an API call
-          new RegExp('^/_'),
-          // Exclude URLs containing a dot, as they're likely a resource in
-          // public/ and not a SPA route
-          new RegExp('/[^/]+\\.[^/]+$'),
-        ],
-      }),
-    ];
   }
+  
+  return [
+    ...base,
+
+    // Inlines the webpack runtime script. This script is too small to warrant
+    // a network request.
+    ...(
+      shouldInlineRuntimeChunk ?
+        [ new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [ /runtime~.+[.]js/ ]) ] :
+        []
+    ),
+
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: 'static/css/[name].[contenthash:8].css',
+      chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
+    }),
+    
+    // Generate a service worker script that will precache, and keep up to date,
+    // the HTML & assets that are part of the Webpack build.
+    new WorkboxWebpackPlugin.GenerateSW({
+      clientsClaim: true,
+      exclude: [/\.map$/, /asset-manifest\.json$/],
+      importWorkboxFrom: 'cdn',
+      navigateFallback: `${publicUrl}/index.html`,
+      navigateFallbackBlacklist: [
+        // Exclude URLs starting with /_, as they're likely an API call
+        new RegExp('^/_'),
+        // Exclude URLs containing a dot, as they're likely a resource in
+        // public/ and not a SPA route
+        new RegExp('/[^/]+\\.[^/]+$'),
+      ],
+    }),
+  ];
 };

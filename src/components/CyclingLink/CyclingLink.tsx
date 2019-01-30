@@ -30,7 +30,10 @@ import {
 
 import * as React from 'react';
 
-export class CyclingLink extends React.PureComponent<ICyclingLinkOwnProps & ICyclingLinkDispatchProps> {
+export class CyclingLinkUnconnected extends React.PureComponent<
+  ICyclingLinkOwnProps & ICyclingLinkDispatchProps
+>
+{
   public static contextTypes = {
     store: ObjectProp,
   };
@@ -75,11 +78,7 @@ export class CyclingLink extends React.PureComponent<ICyclingLinkOwnProps & ICyc
       variableToSet,
     } = this.props;
 
-    const {
-      store,
-    }: {
-      store: Store<IState>,
-    } = this.context;
+    const { store }: { store: Store<IState> } = this.context;
 
     if (variableToSet && typeof variableToSet === 'string') {
       setStoryState({ [variableToSet]: current }, store);
@@ -93,4 +92,7 @@ export const mapDispatchToProps: MapDispatchToProps<ICyclingLinkDispatchProps, I
   },
 });
 
-export const CyclingLinkConnected = connect(null, mapDispatchToProps)(CyclingLink);
+export const CyclingLink = connect(
+  null,
+  mapDispatchToProps,
+)(CyclingLinkUnconnected);
