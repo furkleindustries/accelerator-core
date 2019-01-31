@@ -38,7 +38,7 @@ if (isNode()) {
 
 /* Allow state to be saved on prerender and reused when the window is opened.
 * This will avoid a lot of superfluous logic. */
-// @ts-ignore
+declare const window: any;
 const prerenderedState = window && window.REDUX_STATE;
 const store = (() => {
   if (prerenderedState) {
@@ -51,7 +51,6 @@ const store = (() => {
 let state: IState = prerenderedState;
 if (!state) {
   state = store.getState();
-  // @ts-ignore
   window.REDUX_STATE = JSON.stringify(state);
 }
 

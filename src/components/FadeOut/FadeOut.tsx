@@ -1,12 +1,13 @@
 import {
   IFadeOutOwnProps,
 } from './IFadeOutOwnProps';
+import {
+  assert,
+} from 'ts-assertions';
 
 import * as React from 'react';
 
-// @ts-ignore
-import _styles from './FadeOut.scss';
-const styles = _styles || {};
+import styles from './FadeOut.scss';
 
 export const strings = {
   DURATION_NOT_GREATER_THAN_OR_EQUAL_TO_ZERO_NUMBER:
@@ -22,9 +23,10 @@ export class FadeOut extends React.PureComponent<IFadeOutOwnProps> {
       duration,
     } = this.props;
 
-    if (!(duration >= 0)) {
-      throw new Error(strings.DURATION_NOT_GREATER_THAN_OR_EQUAL_TO_ZERO_NUMBER);
-    }
+    assert(
+      !(duration >= 0),
+      strings.DURATION_NOT_GREATER_THAN_OR_EQUAL_TO_ZERO_NUMBER,
+    );
 
     return (
       <div

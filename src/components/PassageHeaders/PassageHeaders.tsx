@@ -35,9 +35,7 @@ import {
 
 import * as React from 'react';
 
-// @ts-ignore
-import _styles from './PassageHeaders.scss';
-const styles = _styles || {};
+import styles from './PassageHeaders.scss';
 
 export const strings = {
   COMPONENT_CONSTRUCTOR_NOT_FOUND:

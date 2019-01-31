@@ -7,13 +7,8 @@ import * as components from '../../src/passages/componentsBundle';
 import * as passages from '../../src/passages/passagesBundle';
 import * as tags from '../../src/passages/tagsBundle';
 
-// @ts-ignore
-import _builtInStyles from '../../src/passages/styles.scss';
-const builtInStyles = _builtInStyles || {};
-
-// @ts-ignore
-import _styles from './%NAME%.scss';
-const styles = _styles || {};
+import builtInStyles from '../../src/passages/styles.scss';
+import styles from './%NAME%.scss';
 
 class Component extends React.PureComponent<passages.IPassageProps> {
   public render() {

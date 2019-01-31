@@ -5,10 +5,6 @@ import {
   ICyclerState,
 } from './ICyclerState';
 
-/*// @ts-ignore
-import _styles from './Cycler.scss';
-const styles = _styles || {};*/
-
 import * as React from 'react';
 
 export class Cycler extends React.Component<ICyclerOwnProps, ICyclerState> {
@@ -29,7 +25,7 @@ export class Cycler extends React.Component<ICyclerOwnProps, ICyclerState> {
 
     return (
       <button 
-        className={`cyclingLink${className ? ` ${className}` : ''}`}
+        className={`cycler${className ? ` ${className}` : ''}`}
         onClick={this.advance}
       >
         {React.Children.toArray(children)[index]}

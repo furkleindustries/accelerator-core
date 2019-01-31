@@ -13,8 +13,9 @@ import {
 import {
   Dispatch,
 } from 'redux';
-// @ts-ignore
-import { ActionCreators } from 'redux-undo';
+import {
+  ActionCreators,
+} from 'redux-undo';
 
 export function reset(args: IPluginMethodBaseArgs & { dispatch: Dispatch<IAction> })
 {

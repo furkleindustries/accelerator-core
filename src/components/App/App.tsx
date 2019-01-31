@@ -7,9 +7,7 @@ import {
 
 import * as React from 'react';
 
-// @ts-ignore
-import _styles from './App.scss';
-const styles = _styles || {};
+import styles from './App.scss';
 
 export class App extends React.Component {
   public render() {

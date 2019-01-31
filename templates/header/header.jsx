@@ -5,9 +5,7 @@ import * as components from '../../src/passages/componentsBundle';
 import * as tagsBundle from '../../src/passages/tagsBundle';
 import builtInStyles from '../../src/passages/styles.scss';
 
-// @ts-ignore
-import _styles from './%NAME%.scss';
-const styles = _styles || {};
+import styles from './%NAME%.scss';
 
 /* The header gets all the same props as a normal passage. */
 class Component extends React.PureComponent {

@@ -30,9 +30,7 @@ import {
 
 import * as React from 'react';
 
-// @ts-ignore
-import _styles from './PassageContainer.scss';
-const styles = _styles || {};
+import styles from './PassageContainer.scss';
 
 export class PassageContainer extends React.PureComponent<IPassageContainerStateProps & IPassageContainerDispatchProps> {
   public render() {
