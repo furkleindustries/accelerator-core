@@ -5,8 +5,8 @@ import {
   IState,
 } from './IState';
 import {
-  IStoryStateInstance,
-} from './IStoryStateInstance';
+  IStoryStateFrame,
+} from './IStoryStateFrame';
 import {
   Store,
 } from 'redux';
@@ -18,5 +18,5 @@ export interface ICurrentStoryStateMutationArgs {
   currentPassageObject: IPassage;
   store: Store<IState>;
   lastLinkTags: Tag[];
-  updatedStateProps: Partial<IStoryStateInstance>;
+  updatedStateProps: Partial<IStoryStateFrame>;
 }

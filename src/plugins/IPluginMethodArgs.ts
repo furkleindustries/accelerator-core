@@ -5,8 +5,8 @@ import {
   IState,
 } from '../state/IState';
 import {
-  IStoryStateInstance,
-} from '../state/IStoryStateInstance';
+  IStoryStateFrame,
+} from '../state/IStoryStateFrame';
 import {
   IStoryStateAction,
 } from '../actions/IStoryStateAction';
@@ -22,7 +22,7 @@ import {
 
 export interface IPluginMethodBaseArgs {
   readonly currentPassageObject: IPassage;
-  readonly storyState: IStoryStateInstance;
+  readonly storyState: IStoryStateFrame;
   readonly lastLinkTags: Readonly<Tag[]>;
 }
 
@@ -32,9 +32,9 @@ export interface IPluginMethodChildArgs {
 
 export interface IPluginMethodStateMutationArgs {
   readonly store: Store<IState>;
-  setStoryState(updatedStateProps: Partial<IStoryStateInstance>): IStoryStateAction;
+  setStoryState(updatedStateProps: Partial<IStoryStateFrame>): IStoryStateAction;
 }
 
 export interface IPluginMethodStateChangingArgs {
-  readonly updatedStateProps: Partial<IStoryStateInstance>;
+  readonly updatedStateProps: Partial<IStoryStateFrame>;
 }

@@ -1,9 +1,9 @@
 import {
-  IStateInstance,
-} from './IStateInstance';
+  IStateFrame,
+} from './IStateFrame';
 
 export interface IHistory {
-  past: IStateInstance[];
-  present: IStateInstance;
-  future: IStateInstance[];
+  past: IStateFrame[];
+  present: IStateFrame;
+  future: IStateFrame[];
 }

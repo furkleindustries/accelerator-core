@@ -14,94 +14,121 @@ import {
   ICyclingLinkOwnProps,
 } from './ICyclingLinkOwnProps';
 import {
+  ICyclingLinkStateProps,
+} from './ICyclingLinkStateProps';
+import {
   IState,
 } from '../../state/IState';
 import {
   mutateCurrentStoryStateInstanceWithPluginExecution,
 } from '../../state/mutateCurrentStoryStateInstanceWithPluginExecution';
 import {
-  object as ObjectProp,
-} from 'prop-types';
-import {
   connect,
   MapDispatchToProps,
+  MapStateToProps,
 } from 'react-redux';
 import {
   Dispatch,
-  Store,
 } from 'redux';
+import {
+  assertValid,
+} from 'ts-assertions';
 
 import * as React from 'react';
 
 export class CyclingLinkUnconnected extends React.PureComponent<
-  ICyclingLinkOwnProps & ICyclingLinkDispatchProps
+  ICyclingLinkOwnProps & ICyclingLinkStateProps & ICyclingLinkDispatchProps
 >
 {
-  public static contextTypes = {
-    store: ObjectProp,
-  };
-
   constructor(props: any) {
     super(props);
-    this.receiveNotification = this.receiveNotification.bind(this);
+    this.callback = this.callback.bind(this);
   }
 
   public componentDidMount() {
     const {
-      choices,
+      callback,
+      children,
       dispatch,
+      dontCallbackOnMount,
+      dontSetVariableOnMount,
+      history,
       setStoryState,
       variableToSet,
     } = this.props;
 
-    if (variableToSet && typeof variableToSet === 'string') {
-      const { store }: { store: Store<IState> } = this.context;
-      setStoryState({ [variableToSet]: choices[0] }, store);
+    const firstState = assertValid<string>(
+      children[0],
+    );
+
+    if (!dontSetVariableOnMount &&
+        variableToSet &&
+        typeof variableToSet === 'string')
+    {
+      setStoryState({ [variableToSet]: firstState }, history);
 
       /* Issue a midrender signal action to prevent rewinding over state
        * assigned during the rendering process. */
       dispatch(createMidrenderSignalAction());
+
+      if (!dontCallbackOnMount && typeof callback === 'function') {
+        callback(firstState);
+      }
     }
   }
 
   public render() {
     const {
-      choices,
+      children,
       className,
     } = this.props;
 
     return (
       <Cycler
+        callback={this.callback}
         className={`cyclingLink${className ? ` ${className}` : ''}`}
-        notifyOfChange={this.receiveNotification}
       >
-        {choices}
+        {children}
       </Cycler>
     );
   }
 
-  private receiveNotification(current: string) {
+  private callback(current: string) {
     const {
+      callback,
+      history,
       setStoryState,
       variableToSet,
     } = this.props;
 
-    const { store }: { store: Store<IState> } = this.context;
-
     if (variableToSet && typeof variableToSet === 'string') {
-      setStoryState({ [variableToSet]: current }, store);
+      setStoryState({ [variableToSet]: current }, history);
+    }
+
+    if (typeof callback === 'function') {
+      callback(current);
     }
   }
 }
 
+export const mapStateToProps: MapStateToProps<
+  ICyclingLinkStateProps,
+  ICyclingLinkOwnProps,
+  IState
+> = ({ history }) => ({ history });
+
 export const mapDispatchToProps: MapDispatchToProps<ICyclingLinkDispatchProps, ICyclingLinkOwnProps> = (dispatch: Dispatch<IAction>) => ({
   dispatch,
-  setStoryState(updatedStateProps, store) {
-    mutateCurrentStoryStateInstanceWithPluginExecution(updatedStateProps, store);
+  setStoryState(updatedStateProps, history) {
+    mutateCurrentStoryStateInstanceWithPluginExecution({
+      dispatch,
+      history,
+      updatedStateProps,
+    });
   },
 });
 
 export const CyclingLink = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(CyclingLinkUnconnected);

@@ -35,14 +35,17 @@ import {
   IState,
 } from '../../state/IState';
 import {
+  IStateFrame,
+} from '../../state/IStateFrame';
+import {
+  IStoryStateFrame,
+} from '../../state/IStoryStateFrame';
+import {
   mutateCurrentStoryStateInstanceWithPluginExecution,
 } from '../../state/mutateCurrentStoryStateInstanceWithPluginExecution';
 import {
   navigate,
 } from '../../state/navigate';
-import {
-  object as ObjectProp,
-} from 'prop-types';
 import {
   connect,
   MapDispatchToProps,
@@ -50,7 +53,6 @@ import {
 } from 'react-redux';
 import {
   Dispatch,
-  Store,
 } from 'redux';
 import {
   reset,
@@ -59,14 +61,14 @@ import {
   rewind,
 } from '../../state/rewind';
 import {
+  Tag,
+} from '../../tags/Tag';
+import {
   assert,
   assertValid,
 } from 'ts-assertions';
 
 import * as React from 'react';
-import { Tag } from '../../tags/Tag';
-import { IStoryStateFrame } from '../../state/IStoryStateFrame';
-import { IStateFrame } from '../../state/IStateFrame';
 
 export const strings = {
   COMPONENT_NOT_FOUND:
@@ -88,10 +90,6 @@ export class PassageContentsContainer extends React.PureComponent<
   IPassageContentsContainerStateProps
 >
 {
-  public static contextTypes = {
-    store: ObjectProp,
-  };
-
   constructor(props: any) {
     super(props);
 
@@ -103,14 +101,13 @@ export class PassageContentsContainer extends React.PureComponent<
     const {
       bookmark,
       dispatch,
+      history,
       lastLinkTags,
       navigateTo,
       passageObject: currentPassageObject,
       passageObject: { contents },
       storyState: currentStoryState,
     } = this.props;
-
-    const { store }: { store: Store<IState> } = this.context;
 
     const safeContents = assertValid<React.ComponentClass<IPassageProps> | React.SFC<IPassageProps>>(
       contents,
@@ -133,7 +130,11 @@ export class PassageContentsContainer extends React.PureComponent<
       rewind: this.rewind,
       storyState: currentStoryState,
       setStoryState(updatedStateProps) {
-        mutateCurrentStoryStateInstanceWithPluginExecution(updatedStateProps, store);
+        mutateCurrentStoryStateInstanceWithPluginExecution({
+          dispatch,
+          history,
+          updatedStateProps,
+        });
       },
     };
 

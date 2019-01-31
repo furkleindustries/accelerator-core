@@ -25,9 +25,7 @@ export class Cycler extends React.Component<ICyclerOwnProps, ICyclerState> {
       className,
     } = this.props;
 
-    const {
-      index,
-    } = this.state;
+    const { index } = this.state;
 
     return (
       <button 
@@ -41,8 +39,8 @@ export class Cycler extends React.Component<ICyclerOwnProps, ICyclerState> {
 
   private advance() {
     const {
+      callback,
       children,
-      notifyOfChange,
     } = this.props;
 
     const { index } = this.state;
@@ -50,8 +48,8 @@ export class Cycler extends React.Component<ICyclerOwnProps, ICyclerState> {
     const childArray = React.Children.toArray(children);
     const newIndex = index + 1 >= childArray.length ? 0 : index + 1;
     this.setState({ index: newIndex });
-    if (typeof notifyOfChange === 'function') {
-      notifyOfChange(childArray[newIndex], newIndex);
+    if (typeof callback === 'function') {
+      callback(childArray[newIndex], newIndex);
     }
   }
 }

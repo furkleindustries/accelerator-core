@@ -11,20 +11,18 @@ export function getUnfilteredRewindIndex(
 ): number {
   assert(present);
   assert(Array.isArray(past));
-  console.log('present: ', present);
-  console.log('past: ', past);
 
   let index = -1;
   let lastSeen = present;
-  for (const frame of past) {
+  for (let ii = past.length - 1; ii >= 0; ii -= 1) {
+    const frame = past[ii];
     if (lastSeen.midrenderSignalCounter === frame.midrenderSignalCounter) {
+      index = ii;
       break;
     }
 
     lastSeen = frame;
-    index += 1;
   }
 
-  console.log(index);
   return index;
 }

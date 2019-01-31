@@ -8,44 +8,52 @@ import {
   getPluginsList,
 } from '../plugins/getPluginsList';
 import {
-  IState,
-} from './IState';
+  IHistory,
+} from './IHistory';
 import {
-  IStoryStateInstance,
-} from './IStoryStateInstance';
+  IStoryStateAction,
+} from '../actions/IStoryStateAction';
 import {
-  Store,
+  IStoryStateFrame,
+} from './IStoryStateFrame';
+import {
+  Dispatch,
 } from 'redux';
 
 /* Do NOT call this from within a plugin -- there is a very high chance you'll
  * cause an infinite loop, then a stack overflow. */
-export function mutateCurrentStoryStateInstanceWithPluginExecution(
-  updatedStateProps: Partial<IStoryStateInstance>,
-  store: Store<IState>,
-)
+export function mutateCurrentStoryStateInstanceWithPluginExecution({
+  dispatch,
+  history,
+  updatedStateProps,
+}: {
+  dispatch: Dispatch<IStoryStateAction>,
+  history: IHistory,
+  updatedStateProps: Partial<IStoryStateFrame>,
+}): void
 {
   const action = createStoryStateAction(updatedStateProps);
-  store.dispatch(action);
+  dispatch(action);
 
-  const state = store.getState();
   const {
-    history: {
-      present: {
-        currentPassageName: name,
-        lastLinkTags,
-        storyState,
-      },
+    present: {
+      currentPassageName,
+      lastLinkTags,
+      storyState,
     },
-  } = state;
+  } = history;
 
-  const plugins = getPluginsList();
-  plugins.forEach((plugin) => {
-    if (typeof plugin.afterStoryStateChange === 'function') {
-      plugin.afterStoryStateChange({
-        storyState,
+  const {
+    passagesMap: { [currentPassageName]: currentPassageObject },
+  } = getPassagesMap();
+
+  getPluginsList().forEach(({ afterStoryStateChange }) => {
+    if (typeof afterStoryStateChange === 'function') {
+      afterStoryStateChange({
+        currentPassageObject,
         lastLinkTags,
+        storyState,
         updatedStateProps,
-        currentPassageObject: getPassagesMap().passagesMap[name],
       });
     }
   });

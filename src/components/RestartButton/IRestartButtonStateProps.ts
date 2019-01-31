@@ -2,14 +2,14 @@ import {
   IPassage,
 } from '../../passages/IPassage';
 import {
-  IStoryStateInstance,
-} from '../../state/IStoryStateInstance';
+  IStoryStateFrame,
+} from '../../state/IStoryStateFrame';
 import {
   Tag,
 } from '../../tags/Tag';
 
 export interface IRestartButtonStateProps {
   currentPassageObject: IPassage;
-  currentStoryState: IStoryStateInstance;
+  currentStoryState: IStoryStateFrame;
   lastLinkTags: Tag[];
 }

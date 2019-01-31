@@ -1,7 +1,7 @@
 import {
-  IStateInstance,
-} from '../state/IStateInstance';
+  IStateFrame,
+} from '../state/IStateFrame';
 
 export interface IHistoryFilter {
-  (state: IStateInstance): boolean;
+  (state: IStateFrame): boolean;
 }

@@ -31,20 +31,11 @@ import {
 } from '../state/IHistory';
 import {
   default as undoable,
-  includeAction,
 } from 'redux-undo';
-import {
-  assert,
-} from 'ts-assertions';
 
 const {
-  history_save_types,
   history_stack_limit: limit,
 } = getAcceleratorEnvVariables();
-
-assert(
-  history_save_types,
-);
 
 export const historyReducer = undoable(
   combineReducers({
@@ -57,6 +48,5 @@ export const historyReducer = undoable(
   }),
   {
     limit,
-    filter: includeAction(history_save_types),
   },
 ) as Reducer<IHistory, IAction>;

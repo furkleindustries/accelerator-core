@@ -48,7 +48,7 @@ export function rewind(
     assert(found);
   } else {
     index = getUnfilteredRewindIndex(past, present);
-    assert(index >= 0);
+    assert(index > -1);
   }
 
   return dispatch(createStoryRewindAction(index));

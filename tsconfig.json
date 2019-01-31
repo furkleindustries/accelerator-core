@@ -16,7 +16,16 @@
     "importHelpers": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules",
+        "options": {
+          "camelCase": "dashes",
+          "customMatcher": "\\.(sa|sc|c)ss$"
+        },
+      }
+    ]
   },
   "exclude": [
     "build*",
@@ -25,9 +34,6 @@
     "node_modules/",
     "templates/",
     "acceptance-tests",
-    "webpack",
-    "jest",
-    "**/*.test.*",
-    "src/setupTests.ts"
+    "**/*.test.*"
   ]
 }

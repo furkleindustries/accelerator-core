@@ -8,11 +8,11 @@ import {
   IPassage,
 } from '../../passages/IPassage';
 import {
-  IStateInstance,
-} from '../../state/IStateInstance';
+  IStateFrame,
+} from '../../state/IStateFrame';
 import {
-  IStoryStateInstance,
-} from '../../state/IStoryStateInstance';
+  IStoryStateFrame,
+} from '../../state/IStoryStateFrame';
 import {
   Dispatch,
 } from 'redux';
@@ -26,13 +26,13 @@ export interface IPassageContentsContainerDispatchProps {
   navigateTo(passageName: string, tags?: Readonly<Tag[]>): void;
   restart(
     currentPassageObject: IPassage,
-    currentStoryState: IStoryStateInstance,
+    currentStoryState: IStoryStateFrame,
     lastLinkTags: Tag[],
   ): void,
 
   rewind(
-    present: IStateInstance,
-    past: IStateInstance[],
+    present: IStateFrame,
+    past: IStateFrame[],
     filter?: IHistoryFilter,
   ): void;
 }

@@ -83,7 +83,7 @@ export const mapStateToProps: MapStateToProps<
     canRewind: (
       typeof filter === 'function' ?
         past.filter(filter).length > 0 :
-        getUnfilteredRewindIndex(past, present) >= 0
+        getUnfilteredRewindIndex(past, present) > 0
     ),
   };
 };

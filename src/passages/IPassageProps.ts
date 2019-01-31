@@ -8,8 +8,8 @@ import {
   IPassage,
 } from './IPassage';
 import {
-  IStoryStateInstance,
-} from '../state/IStoryStateInstance';
+  IStoryStateFrame,
+} from '../state/IStoryStateFrame';
 import {
   Dispatch,
 } from 'redux';
@@ -21,10 +21,10 @@ export interface IPassageProps {
   dispatch: Dispatch<IAction>;
   lastLinkTags: Readonly<Tag[]>;
   passageObject: IPassage;
-  storyState: IStoryStateInstance;
+  storyState: IStoryStateFrame;
   bookmark(): void;
   navigateTo(passageName: string, tags?: Readonly<Tag[]>): void;
   restart(): void;
   rewind(filter?: IHistoryFilter): void;
-  setStoryState(updatedStateProps: Partial<IStoryStateInstance>): void;
+  setStoryState(updatedStateProps: Partial<IStoryStateFrame>): void;
 }
