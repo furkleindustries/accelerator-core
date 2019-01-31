@@ -1,4 +1,4 @@
-export * from './IFooter';
-export * from './IHeader';
-export * from './IPassage';
-export * from './IPassageProps';
+export { IFooter } from './IFooter';
+export { IHeader } from './IHeader';
+export { IPassage } from './IPassage';
+export { IPassageProps } from './IPassageProps';

@@ -1,8 +1,9 @@
 export enum ActionTypes {
   Bookmark = 'Bookmark',
   CurrentPassageName = 'CurrentPassageName',
+  MidrenderSignal = 'MidrenderSignal',
   PassageNavigation = 'PassageNavigation',
-  StartPassageName = 'StartPassageName',
+  PassageTime = 'PassageTime',
   StoryReset = 'StoryReset',
   StoryRewind = 'StoryRewind',
   StoryState = 'StoryState',

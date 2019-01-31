@@ -64,6 +64,9 @@ import {
 } from 'ts-assertions';
 
 import * as React from 'react';
+import { Tag } from '../../tags/Tag';
+import { IStoryStateFrame } from '../../state/IStoryStateFrame';
+import { IStateFrame } from '../../state/IStateFrame';
 
 export const strings = {
   COMPONENT_NOT_FOUND:
@@ -89,27 +92,25 @@ export class PassageContentsContainer extends React.PureComponent<
     store: ObjectProp,
   };
 
+  constructor(props: any) {
+    super(props);
+
+    this.restart = this.restart.bind(this);
+    this.rewind = this.rewind.bind(this);
+  }
+
   public render() {
     const {
       bookmark,
-      passageObject: currentPassageObject,
-      passageObject: {
-        contents,
-      },
-
-      storyState: currentStoryState,
       dispatch,
       lastLinkTags,
       navigateTo,
-      restart,
-      rewind,
+      passageObject: currentPassageObject,
+      passageObject: { contents },
+      storyState: currentStoryState,
     } = this.props;
 
-    const {
-      store,
-    }: {
-      store: Store<IState>,
-    } = this.context;
+    const { store }: { store: Store<IState> } = this.context;
 
     const safeContents = assertValid<React.ComponentClass<IPassageProps> | React.SFC<IPassageProps>>(
       contents,
@@ -127,11 +128,10 @@ export class PassageContentsContainer extends React.PureComponent<
       dispatch,
       lastLinkTags,
       navigateTo,
-      restart,
-      rewind,
-      storyState: currentStoryState,
       passageObject: currentPassageObject,
-
+      restart: this.restart,
+      rewind: this.rewind,
+      storyState: currentStoryState,
       setStoryState(updatedStateProps) {
         mutateCurrentStoryStateInstanceWithPluginExecution(updatedStateProps, store);
       },
@@ -141,6 +141,29 @@ export class PassageContentsContainer extends React.PureComponent<
       safeContents,
       propsPassedDown,
     );
+  }
+
+  private restart() {
+    const {
+      lastLinkTags,
+      restart,
+      passageObject: currentPassageObject,
+      storyState: currentStoryState,
+    } = this.props;
+
+    restart(currentPassageObject, currentStoryState, lastLinkTags);
+  }
+
+  private rewind(filter?: IHistoryFilter) {
+    const {
+      rewind,
+      history: {
+        present,
+        past,
+      },
+    } = this.props;
+
+    rewind(present, past, filter);
   }
 }
 
@@ -168,14 +191,8 @@ export const mapStateToProps: MapStateToProps<IPassageContentsContainerStateProp
   };
 };
 
-export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDispatchProps, IPassageContentsContainerOwnProps & IPassageContentsContainerStateProps> = (
+export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDispatchProps, IPassageContentsContainerOwnProps> = (
   dispatch: Dispatch<IAction>,
-  {
-    passageObject: currentPassageObject,
-    storyState: currentStoryState,
-    history,
-    lastLinkTags,
-  },
 ) => ({
   dispatch,
 
@@ -191,7 +208,11 @@ export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDis
     });
   },
 
-  restart() {
+  restart(
+    currentPassageObject: IPassage,
+    currentStoryState: IStoryStateFrame,
+    lastLinkTags: Tag[],
+  ) {
     reset({
       currentPassageObject,
       dispatch,
@@ -200,25 +221,15 @@ export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDis
     });
   },
 
-  rewind(filter?: IHistoryFilter) {
+  rewind(
+    present: IStateFrame,
+    past: IStateFrame[],
+    filter?: IHistoryFilter,
+  ) {
     if (typeof filter === 'function') {
-      let index = 0;
-      let done = false;
-      history.past.forEach((frame) => {
-        if (!done && filter(frame)) {
-          done = true;
-        } else {
-          index += 1;
-        }
-      });
-
-      if (!index) {
-        throw new Error();
-      }
-
-      rewind(dispatch, index);
+      rewind(dispatch, present, past, filter);
     } else {
-      rewind(dispatch);
+      rewind(dispatch, present, past);
     }
   },
 });

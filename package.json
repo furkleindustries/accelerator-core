@@ -34,6 +34,7 @@
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@svgr/webpack": "^4.0.0",
+    "@types/deep-equal": "^1.0.1",
     "@types/detect-node": "^2.0.0",
     "@types/enzyme": "^3.1.14",
     "@types/enzyme-adapter-react-16": "^1.0.3",

@@ -33,8 +33,14 @@ import * as React from 'react';
 // @ts-ignore
 import _styles from './PassageContainer.scss';
 const styles = _styles || {};
-
+import {
+  object as ObjectProp,
+} from 'prop-types';
 export class PassageContainer extends React.PureComponent<IPassageContainerStateProps & IPassageContainerDispatchProps> {
+  public static contextTypes = {
+    store: ObjectProp,
+  };
+
   public render() {
     const {
       storyRequiresFullRerender,
@@ -79,7 +85,7 @@ export class PassageContainer extends React.PureComponent<IPassageContainerState
   }
 }
 
-export const mapStateToProps: MapStateToProps<IPassageContainerStateProps, {}, IState> = ({
+export const mapStateToProps: MapStateToProps<IPassageContainerStateProps, null, IState> = ({
   storyRequiresFullRerender,
 }) => ({
   storyRequiresFullRerender,

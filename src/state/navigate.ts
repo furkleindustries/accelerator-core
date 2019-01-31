@@ -5,6 +5,9 @@ import {
   createPassageNavigationAction,
 } from '../actions/creators/createPassageNavigationAction';
 import {
+  createPassageTimeAction,
+} from '../actions/creators/createPassageTimeAction';
+import {
   getPassagesMap,
 } from '../passages/getPassagesMap';
 import {
@@ -17,6 +20,9 @@ import {
   IPassage,
 } from '../passages/IPassage';
 import {
+  IPassageNavigationAction,
+} from '../actions/IPassageNavigationAction';
+import {
   Dispatch,
 } from 'redux';
 import {
@@ -26,7 +32,6 @@ import {
   assert,
   assertValid,
 } from 'ts-assertions';
-import { IPassageNavigationAction } from '../actions/IPassageNavigationAction';
 
 export const strings = {
   NO_NAVIGATING_TO_NO_RENDER_PASSAGES:
@@ -69,6 +74,9 @@ export function navigate({
     !getTag(passage.tags, BuiltInTags.NoRender),
     strings.NO_NAVIGATING_TO_NO_RENDER_PASSAGES,
   );
+
+  /* Update the passage time. */
+  dispatch(createPassageTimeAction());
 
   /* Update the current passage. */
   return dispatch(createPassageNavigationAction(passage, tags));

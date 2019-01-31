@@ -1,4 +1,7 @@
 import {
+  createMidrenderSignalAction,
+} from '../../actions/creators/createMidrenderSignalAction';
+import {
   Cycler,
 } from '../Cycler/Cycler';
 import {
@@ -37,7 +40,7 @@ export class CyclingLinkUnconnected extends React.PureComponent<
   public static contextTypes = {
     store: ObjectProp,
   };
-  
+
   constructor(props: any) {
     super(props);
     this.receiveNotification = this.receiveNotification.bind(this);
@@ -46,6 +49,7 @@ export class CyclingLinkUnconnected extends React.PureComponent<
   public componentDidMount() {
     const {
       choices,
+      dispatch,
       setStoryState,
       variableToSet,
     } = this.props;
@@ -53,6 +57,10 @@ export class CyclingLinkUnconnected extends React.PureComponent<
     if (variableToSet && typeof variableToSet === 'string') {
       const { store }: { store: Store<IState> } = this.context;
       setStoryState({ [variableToSet]: choices[0] }, store);
+
+      /* Issue a midrender signal action to prevent rewinding over state
+       * assigned during the rendering process. */
+      dispatch(createMidrenderSignalAction());
     }
   }
 
@@ -86,7 +94,8 @@ export class CyclingLinkUnconnected extends React.PureComponent<
   }
 }
 
-export const mapDispatchToProps: MapDispatchToProps<ICyclingLinkDispatchProps, ICyclingLinkOwnProps> = (dispatch: Dispatch<IAction>, props) => ({
+export const mapDispatchToProps: MapDispatchToProps<ICyclingLinkDispatchProps, ICyclingLinkOwnProps> = (dispatch: Dispatch<IAction>) => ({
+  dispatch,
   setStoryState(updatedStateProps, store) {
     mutateCurrentStoryStateInstanceWithPluginExecution(updatedStateProps, store);
   },

@@ -6,7 +6,7 @@ import {
 } from '../actions/IBookmarkAction';
 
 
-export function bookmarkReducer(
+export function bookmarkCounterReducer(
   previousState: number = 0,
   action: IBookmarkAction,
 )
