@@ -2,7 +2,7 @@ import {
   IAction,
 } from '../../actions/IAction';
 import {
-  IHistoryFilter,
+  HistoryFilter,
 } from '../../reducers/IHistoryFilter';
 import {
   IPassage,
@@ -33,6 +33,6 @@ export interface IPassageContentsContainerDispatchProps {
   rewind(
     present: IStateFrame,
     past: IStateFrame[],
-    filter?: IHistoryFilter,
+    filter?: HistoryFilter,
   ): void;
 }

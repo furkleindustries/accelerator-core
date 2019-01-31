@@ -6,15 +6,15 @@ process.env.NODE_PATH = path.join(__dirname, '..', '..', 'node_modules');
 module.exports = function (wallaby) {
   const testPathExp = '../../(footers|headers|passages|plugins|src)/**/*.(spec|test).[jt]s?(x)';
   const compilerOptions = {
-    ...require('../typescript/tsconfig.json').compilerOptions,
-    ...require('../typescript/tsconfig.test.json').compilerOptions,
+    ...require('../../tsconfig.json').compilerOptions,
+    ...require('../../tsconfig.test.json').compilerOptions,
   };
 
   return {
     files: [
       '../../(footers|headers|passages|plugins|src)/**/*.+(js|jsx|ts|tsx|json|snap|css|less|sass|scss|jpg|jpeg|gif|png|svg)',
-      '../typescript/tsconfig.json',
-      '../typescript/tsconfig.test.json',
+      '../../tsconfig.json',
+      '../../tsconfig.test.json',
       `!${testPathExp}`,
       {
         pattern: './**/*',

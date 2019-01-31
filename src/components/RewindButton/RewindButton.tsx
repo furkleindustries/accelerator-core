@@ -33,7 +33,7 @@ export class RewindButtonUnconnected extends React.PureComponent<
     this.rewind = this.rewind.bind(this);
   }
   
-  render() {
+  public render() {
     const {
       canRewind,
       children,

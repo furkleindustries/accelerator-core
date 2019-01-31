@@ -23,13 +23,14 @@
         "options": {
           "camelCase": "dashes",
           "customMatcher": "\\.(sa|sc|c)ss$"
-        },
+        }
       }
     ]
   },
   "exclude": [
     "build*",
     "config/",
+    "coverage/",
     "scripts/",
     "node_modules/",
     "templates/",

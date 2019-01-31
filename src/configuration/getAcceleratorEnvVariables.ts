@@ -36,7 +36,9 @@ export function getAcceleratorEnvVariables(): IAcceleratorEnvVariables {
             if (Array.isArray(maybeArr)) {
               value = maybeArr;
             }
-          } catch (err) {}
+          } catch (err) {
+            /* Do nothing. */
+          }
         }
 
 

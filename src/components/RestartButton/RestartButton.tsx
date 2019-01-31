@@ -33,7 +33,7 @@ export class RestartButtonUnconnected extends React.PureComponent<
     this.restart = this.restart.bind(this);
   }
   
-  render() {
+  public render() {
     const {
       children,
       className,

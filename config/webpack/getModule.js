@@ -12,10 +12,10 @@ module.exports = function getModule(mode, publicPath) {
   return {
     strictExportPresence: true,
     rules: [
-      // Disable require.ensure as it's not a standard language feature.
       {
         parser: {
           amd: false,
+          // Disable require.ensure as it's not a standard language feature.
           requireEnsure: false,
         }
       },

@@ -2,6 +2,4 @@ import {
   IStateFrame,
 } from '../state/IStateFrame';
 
-export interface IHistoryFilter {
-  (state: IStateFrame): boolean;
-}
+export type HistoryFilter = (state: IStateFrame) => boolean; 

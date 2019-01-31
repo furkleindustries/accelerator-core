@@ -5,7 +5,7 @@ import {
   getUnfilteredRewindIndex,
 } from './getUnfilteredRewindIndex';
 import {
-  IHistoryFilter,
+  HistoryFilter,
 } from '../reducers/IHistoryFilter';
 import {
   IStateFrame,
@@ -24,7 +24,7 @@ export function rewind(
   dispatch: Dispatch<IStoryRewindAction>,
   present: IStateFrame,
   past: IStateFrame[],
-  filter?: IHistoryFilter,
+  filter?: HistoryFilter,
 ): IStoryRewindAction
 {
   assert(typeof dispatch === 'function');
@@ -35,14 +35,13 @@ export function rewind(
   let index = 0;
   if (typeof filter === 'function') {
     let found = true;
-    let done = false;
-    for (const frame of past) {
-      if (!done && filter(frame)) {
+    for (let ii = past.length - 1; ii >= 0; ii -= 1) {
+      const frame = past[ii];
+      if (filter(frame)) {
         found = true;
+        index = ii;
         break;
       }
-
-      index += 1;
     }
   
     assert(found);

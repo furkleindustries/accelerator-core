@@ -17,9 +17,6 @@ import {
   IPassageContentsContainerStateProps,
 } from '../PassageContentsContainer/IPassageContentsContainerStateProps';
 import {
-  IState,
-} from '../../state/IState';
-import {
   mutateCurrentStoryStateInstanceWithPluginExecution,
 } from '../../state/mutateCurrentStoryStateInstanceWithPluginExecution';
 import {
@@ -29,13 +26,12 @@ import {
 import {
   connect,
 } from 'react-redux';
-import {
-  Store,
-} from 'redux';
 
 import * as React from 'react';
 
 import styles from './PassageHeaders.scss';
+import { HistoryFilter } from '../../reducers/IHistoryFilter';
+import { assert } from 'ts-assertions';
 
 export const strings = {
   COMPONENT_CONSTRUCTOR_NOT_FOUND:
@@ -43,46 +39,48 @@ export const strings = {
 };
 
 export class PassageHeaders extends React.PureComponent<IPassageContentsContainerOwnProps & IPassageContentsContainerStateProps & IPassageContentsContainerDispatchProps> {
+  constructor(props: any) {
+    super(props);
+
+    this.restart = this.restart.bind(this);
+    this.rewind = this.rewind.bind(this);
+  }
+  
   public render() {
     const {
-      bookmark,
-      passageObject,
-      storyState,
+      bookmark: bookmark,
       dispatch,
+      history,
       lastLinkTags,
       navigateTo,
-      restart,
-      rewind,
+      passageObject,
+      storyState,
     } = this.props;
-
-    const {
-      store,
-    }: {
-      store: Store<IState>,
-    } = this.context;
 
     const propsPassedDown: IPassageProps = {
       bookmark,
       dispatch,
       lastLinkTags,
       navigateTo,
-      restart,
-      rewind,
-      storyState,
       passageObject,
-      
+      storyState,
+      restart: this.restart,
+      rewind: this.rewind,
       setStoryState(updatedStateProps) {
-        mutateCurrentStoryStateInstanceWithPluginExecution(updatedStateProps, store);
+        mutateCurrentStoryStateInstanceWithPluginExecution({
+          dispatch,
+          history,
+          updatedStateProps,
+        });
       },
     };
 
     const headers: IHeader[] = getHeadersList();
-    const headerComponents = headers.map((header, index) => {
-      const contents = header.contents;
-      if (!contents) {
-        const errStr = strings.COMPONENT_CONSTRUCTOR_NOT_FOUND;
-        throw new Error(errStr);
-      }
+    const headerComponents = headers.map(({ contents }, index) => {
+      assert(
+        contents,
+        strings.COMPONENT_CONSTRUCTOR_NOT_FOUND,
+      );
 
       return React.createElement(
         contents as React.ComponentClass<IPassageProps> | React.SFCFactory<IPassageProps>,
@@ -95,6 +93,29 @@ export class PassageHeaders extends React.PureComponent<IPassageContentsContaine
         {headerComponents}
       </div>
     );
+  }
+
+  private restart() {
+    const {
+      lastLinkTags,
+      restart,
+      passageObject: currentPassageObject,
+      storyState: currentStoryState,
+    } = this.props;
+
+    restart(currentPassageObject, currentStoryState, lastLinkTags);
+  }
+
+  private rewind(filter?: HistoryFilter) {
+    const {
+      rewind,
+      history: {
+        present,
+        past,
+      },
+    } = this.props;
+
+    rewind(present, past, filter);
   }
 }
 

@@ -20,13 +20,13 @@ module.exports = {
   ],
 
   transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
+    '^.+\\.[jt]sx?$': 'babel-jest',
     '^.+\\.css$': '<rootDir>/config/testing/cssTransform.js',
     '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '<rootDir>/config/testing/fileTransform.js',
   },
 
   transformIgnorePatterns: [
-    '[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$',
+    '[/\\\\]node_modules[/\\\\].+\\.[jt]sx?$',
     '^.+\\.module\\.(css|sass|scss)$',
   ],
 

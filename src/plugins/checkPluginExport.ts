@@ -46,8 +46,8 @@ export function checkPluginExport(plugin: any): plugin is IPluginExport {
   if (contents) {
     assert(/^object|function$/.test(typeof contents), strings.CONTENTS_INVALID);
 
-    const count = methods.reduce((count, method) => (
-      typeof contents[method] === 'function' ? count + 1 : count
+    const count = methods.reduce((total, method) => (
+      typeof contents[method] === 'function' ? total + 1 : total
     ), 0);
 
     assert(count > 0, strings.PLUGIN_NO_LIFECYCLE_METHODS);

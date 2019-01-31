@@ -15,8 +15,8 @@ export function createPassageNavigationAction(passage: IPassage, linkTags: Tag[]
   return Object.freeze({
     type: ActionTypes.PassageNavigation,
     value: {
+      linkTags,
       passage,
-      linkTags: linkTags,
     },
   }) as IPassageNavigationAction;
 }

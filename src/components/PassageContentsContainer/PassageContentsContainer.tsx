@@ -1,5 +1,5 @@
 import {
-  bookmark,
+  bookmark as doBookmark,
 } from '../../state/bookmark';
 import {
   BuiltInTags,
@@ -14,7 +14,7 @@ import {
   IAction,
 } from '../../actions/IAction';
 import {
-  IHistoryFilter,
+  HistoryFilter,
 } from '../../reducers/IHistoryFilter';
 import {
   IPassage,
@@ -104,9 +104,9 @@ export class PassageContentsContainer extends React.PureComponent<
       history,
       lastLinkTags,
       navigateTo,
-      passageObject: currentPassageObject,
+      passageObject,
       passageObject: { contents },
-      storyState: currentStoryState,
+      storyState,
     } = this.props;
 
     const safeContents = assertValid<React.ComponentClass<IPassageProps> | React.SFC<IPassageProps>>(
@@ -115,8 +115,8 @@ export class PassageContentsContainer extends React.PureComponent<
     );
 
     assert(
-      Array.isArray(currentPassageObject.tags) &&
-        !getTag(currentPassageObject.tags, BuiltInTags.NoRender),
+      Array.isArray(passageObject.tags) &&
+        !getTag(passageObject.tags, BuiltInTags.NoRender),
       strings.CANT_RENDER_NORENDER_PASSAGE,
     );
 
@@ -125,10 +125,10 @@ export class PassageContentsContainer extends React.PureComponent<
       dispatch,
       lastLinkTags,
       navigateTo,
-      passageObject: currentPassageObject,
+      passageObject,
+      storyState,
       restart: this.restart,
       rewind: this.rewind,
-      storyState: currentStoryState,
       setStoryState(updatedStateProps) {
         mutateCurrentStoryStateInstanceWithPluginExecution({
           dispatch,
@@ -155,16 +155,16 @@ export class PassageContentsContainer extends React.PureComponent<
     restart(currentPassageObject, currentStoryState, lastLinkTags);
   }
 
-  private rewind(filter?: IHistoryFilter) {
+  private rewind(filter?: HistoryFilter) {
     const {
-      rewind,
+      rewind: doRewind,
       history: {
         present,
         past,
       },
     } = this.props;
 
-    rewind(present, past, filter);
+    doRewind(present, past, filter);
   }
 }
 
@@ -198,7 +198,7 @@ export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDis
   dispatch,
 
   bookmark() {
-    bookmark(dispatch);
+    doBookmark(dispatch);
   },
 
   navigateTo(passageName, tags?) {
@@ -225,7 +225,7 @@ export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDis
   rewind(
     present: IStateFrame,
     past: IStateFrame[],
-    filter?: IHistoryFilter,
+    filter?: HistoryFilter,
   ) {
     if (typeof filter === 'function') {
       rewind(dispatch, present, past, filter);
