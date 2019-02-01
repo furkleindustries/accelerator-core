@@ -19,6 +19,7 @@ module.exports = function getModule(mode, publicPath) {
           requireEnsure: false,
         }
       },
+
       // First, run the linter.
       // It's important to do this before Babel processes the JS.
       {
@@ -45,6 +46,7 @@ module.exports = function getModule(mode, publicPath) {
           paths.pluginsSrc,
         ],
       },
+
       {
         // "oneOf" will traverse all following loaders until one will
         // match the requirements. When no loader matches it will fall

@@ -39,6 +39,7 @@ module.exports = function getTypeScriptForkChecker() {
       paths.headersSrc,
       paths.footersSrc,
       paths.pluginsSrc,
+      paths.acceleratorConfig,
     ],
   
     silent: true,

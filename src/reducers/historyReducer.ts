@@ -24,18 +24,21 @@ import {
   Reducer,
 } from 'redux';
 import {
-  getAcceleratorEnvVariables,
-} from '../configuration/getAcceleratorEnvVariables';
+  getAcceleratorConfig,
+} from '../configuration/getAcceleratorConfig';
 import {
   IHistory,
 } from '../state/IHistory';
 import {
   default as undoable,
+  excludeAction,
 } from 'redux-undo';
 
 const {
-  history_stack_limit: limit,
-} = getAcceleratorEnvVariables();
+  historySaveTypes,
+  historyStackLimit: limit,
+  historySynchronizeUnrewindableStateWithPresent: syncFilter,
+} = getAcceleratorConfig();
 
 export const historyReducer = undoable(
   combineReducers({
@@ -48,5 +51,7 @@ export const historyReducer = undoable(
   }),
   {
     limit,
+    syncFilter,
+    filter: excludeAction(historySaveTypes),
   },
 ) as Reducer<IHistory, IAction>;

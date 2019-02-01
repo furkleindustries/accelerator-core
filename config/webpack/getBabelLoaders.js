@@ -15,13 +15,11 @@ module.exports = function getBabelLoaders(mode) {
         paths.headersSrc,
         paths.footersSrc,
         paths.pluginsSrc,
+        paths.acceleratorConfig,
       ],
 
       loader: require.resolve('babel-loader'),
       options: {
-        /* Allows us to keep .babelrc outside of root directory. */
-        babelrcRoots: './config/webpack',
-
         customize: require.resolve(
           'babel-preset-react-app/webpack-overrides',
         ),

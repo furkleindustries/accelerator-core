@@ -1,10 +1,13 @@
 import {
+  IPassageProps,
+} from './IPassageProps';
+import {
   ComponentClass,
-  SFCFactory,
+  SFC,
 } from 'react';
 
 export interface IHeader {
-  contents: ComponentClass | SFCFactory<any>;
+  contents: ComponentClass<IPassageProps> | SFC<IPassageProps>;
   name: string;
   precedence?: number;
 }

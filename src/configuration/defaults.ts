@@ -2,23 +2,28 @@ import {
   ActionTypes,
 } from '../actions/ActionTypes';
 import {
-  IAcceleratorEnvVariables,
-} from './IAcceleratorEnvVariables';
+  IAcceleratorConfig,
+} from './IAcceleratorConfig';
 
-export const configurationDefaults: IAcceleratorEnvVariables = Object.freeze({
+export const defaults: IAcceleratorConfig = {
   debug: false,
-  history_stack_limit: 500,
+  historyStackLimit: 500,
   /* Silly workaround for stupid TypeScript bug where it does not properly
    * narrow the type for an obvious usage of an array literal. */
-  history_save_types: [
+  historySaveTypes: [
     ActionTypes.Bookmark,
     ActionTypes.PassageNavigation,
-  ] as Array<ActionTypes.Bookmark | ActionTypes.PassageNavigation>,
+  ],
 
-  story_description:
+  historySynchronizeUnrewindableStateWithPresent: true,
+
+  publicUrl: './',
+
+  storyDescription:
     'An untitled story written with Accelerator ' +
     '(https://github.com/furkleindustries/accelerator-core)',
 
-  story_title:
+  storyTitle:
     'Untitled Accelerator Story',
-});
+
+};

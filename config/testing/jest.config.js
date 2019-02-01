@@ -20,7 +20,7 @@ module.exports = {
   ],
 
   transform: {
-    '^.+\\.[jt]sx?$': 'babel-jest',
+    '^.+\\.[jt]sx?$': require.resolve('babel-jest'),
     '^.+\\.css$': '<rootDir>/config/testing/cssTransform.js',
     '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '<rootDir>/config/testing/fileTransform.js',
   },
