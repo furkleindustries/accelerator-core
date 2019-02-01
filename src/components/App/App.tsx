@@ -14,11 +14,11 @@ export class App extends React.Component {
     /* No clue why this is working. Something in the Redux typing is failing
      * in a way that's making it ask for store state props as own props. */
     // @ts-ignore
-    const child = <PassageContainerConnected />;
+    const passageContainer = <PassageContainerConnected />;
 
     return (
       <div className={`${styles.app} app`}>
-        {child}
+        {passageContainer}
       </div>
     );
   }

@@ -28,6 +28,7 @@ module.exports = {
   transformIgnorePatterns: [
     '[/\\\\]node_modules[/\\\\].+\\.[jt]sx?$',
     '^.+\\.module\\.(css|sass|scss)$',
+    'scripts/',
   ],
 
   testEnvironment: 'jsdom',

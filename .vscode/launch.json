@@ -7,7 +7,9 @@
       "request": "launch",
       "runtimeArgs": [
         "--inspect-brk",
-        "scripts/test.js --dontWatch",
+        "./scripts/test.js",
+        "--dontWatch",
+        "--config=config/testing/jest.config.js",
         "--runInBand"
       ],
       "console": "integratedTerminal",

@@ -45,7 +45,9 @@ module.exports = function getBabelLoaders(mode) {
           ],
         ],
 
-        presets: [ require.resolve('babel-preset-react-app') ],
+        presets: [
+          require.resolve('babel-preset-react-app'),
+        ],
 
         // This is a feature of `babel-loader` for webpack (not Babel itself).
         // It enables caching results in ./node_modules/.cache/babel-loader/

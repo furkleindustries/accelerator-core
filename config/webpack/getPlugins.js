@@ -10,6 +10,7 @@ const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 
 module.exports = function getPlugins({
   mode,
+  modern,
   publicUrl,
   shouldInlineRuntimeChunk,
   useTypeScript,
@@ -19,7 +20,7 @@ module.exports = function getPlugins({
   if (mode === 'development') {
     return [
       ...base,
-      
+
       // This is necessary to emit hot updates:
       new webpack.HotModuleReplacementPlugin(),
       // Watcher doesn't work well if you mistype casing in a path so we use
@@ -59,7 +60,7 @@ module.exports = function getPlugins({
       exclude: [/\.map$/, /asset-manifest\.json$/],
       importWorkboxFrom: 'cdn',
       navigateFallback: `${publicUrl}/index.html`,
-      navigateFallbackBlacklist: [
+       navigateFallbackBlacklist: [
         // Exclude URLs starting with /_, as they're likely an API call
         new RegExp('^/_'),
         // Exclude URLs containing a dot, as they're likely a resource in

@@ -10,44 +10,47 @@ process.on('unhandledRejection', err => {
   throw err;
 });
 
+const jest = require('jest');
+const { exec } = require('child_process');
+
 // Ensure environment variables are read.
 require('../config/env');
 
-
-const jest = require('jest');
-const execSync = require('child_process').execSync;
 let argv = process.argv.slice(2);
 
-function isInGitRepository() {
+async function isInGitRepository() {
   try {
-    execSync('git rev-parse --is-inside-work-tree', { stdio: 'ignore' });
+    await exec('git rev-parse --is-inside-work-tree', { stdio: 'ignore' });
     return true;
   } catch (e) {
     return false;
   }
 }
 
-function isInMercurialRepository() {
+async function isInMercurialRepository() {
   try {
-    execSync('hg --cwd . root', { stdio: 'ignore' });
+    await exec('hg --cwd . root', { stdio: 'ignore' });
     return true;
   } catch (e) {
     return false;
   }
 }
 
-const dontWatchIndex = argv.indexOf('--dontWatch');
-if (dontWatchIndex !== -1) {
-  argv = argv.slice(0, dontWatchIndex).concat(argv.slice(dontWatchIndex + 1));
-} else if (
-  !process.env.CI &&
-  argv.indexOf('--coverage') === -1 &&
-  argv.indexOf('--watchAll') === -1
-) {
-  // https://github.com/facebook/create-react-app/issues/5210
-  const hasSourceControl = isInGitRepository() || isInMercurialRepository();
-  argv.push(hasSourceControl ? '--watch' : '--watchAll');
-}
+(async () => {
+  const dontWatchIndex = argv.indexOf('--dontWatch');
+  if (dontWatchIndex !== -1) {
+    argv = argv.slice(0, dontWatchIndex).concat(argv.slice(dontWatchIndex + 1));
+  } else if (!process.env.CI &&
+             argv.indexOf('--coverage') === -1 &&
+             argv.indexOf('--watchAll') === -1)
+  {
+    // https://github.com/facebook/create-react-app/issues/5210
+    const hasSourceControl =
+      await isInGitRepository() ||
+      await isInMercurialRepository();
 
+    argv.push(hasSourceControl ? '--watch' : '--watchAll');
+  }
+})();
 
 jest.run(argv);
