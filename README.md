@@ -86,13 +86,14 @@ All Accelerator passages have simple access to the bundle imports, located in `s
   * The [ClickPrepend](src/components/ClickPrepend/ClickPrepend.md) component, which places one piece of content before another after the first component is clicked.
   * The [ClickReplace](src/components/ClickReplace/ClickReplace.md) component, which replaces one piece of content with another after the first component is clicked.
   * The [Clicker](src/components/Clicker/Clicker.md) component, which is a lower-level component allowing one to show one portion of content before it is clicked, and another after. This is used to implement all the other `Click*` components. 
+  * The [Combination](src/components/Combination/Permutation.md) component, which allows selecting a random, contiguous slice of a collection, e.g. `bar` and `baz` from `[ 'foo', 'bar', 'baz', 'bux', ]`.
   * The [CyclingLink](src/components/CyclingLink/CyclingLink.md) component, which allows the user to select between several string options, and optionally stores the choice in a variable.
   * The [Cycler](src/components/Cycler/Cycler.md) component, which is a lower-level component used by `CyclingLink`, allowing cycling between any pieces of content (not just strings as with `CyclingLink`), and aditionally accepts a callback which is fired when cycles are performed.
   * The [Delay](src/components/Delay/Delay.md) component, which delays rendering of content (or it being opaque) for an arbitrary period.
   * The [FadeIn](src/components/FadeIn/FadeIn.md) component, which increases the opacity of content from invisibility to full opacity over an arbitrary period.
   * The [OneOf](src/components/OneOf/OneOf.md) component, which randomly selects a single item from the collection passed as children.
   * The [NOf](src/components/NOf/NOf.md) component, which is a lower-level component used by `OneOf`, and allows any random number (but not random order) of its children to be displayed.
-  * The [Permutation](src/components/Permutation/Permutation.md) component, which randomly shuffles the collection passed as children.
+  * The [Permutation](src/components/Permutation/Permutation.md) component, which randomly shuffles the collection passed as children, and allows picking a slice of the contents.
 * `passagesBundle`:
   * `IPassage`, an interface detailing the properties of the passage object, which is the default export of all passage files.
   * `IPassageProps`, an interface detailing the properties passed to the `contents` property of the passage object, assuming `contents` is a React component.

@@ -7,14 +7,14 @@ module.exports = function (wallaby) {
   const testPathExp = '../../(footers|headers|passages|plugins|src)/**/*.(spec|test).[jt]s?(x)';
   const compilerOptions = {
     ...require('../../tsconfig.json').compilerOptions,
-    ...require('../../tsconfig.test.json').compilerOptions,
   };
+
+  compilerOptions.module = 'commonjs';
 
   return {
     files: [
       '../../(footers|headers|passages|plugins|src)/**/*.+(js|jsx|ts|tsx|json|snap|css|less|sass|scss|jpg|jpeg|gif|png|svg)',
       '../../tsconfig.json',
-      '../../tsconfig.test.json',
       `!${testPathExp}`,
       {
         pattern: './**/*',
@@ -42,7 +42,7 @@ module.exports = function (wallaby) {
         require('babel-core').transform(file.content, {
           compact: false,
           filename: file.path,
-          presets: [ 'react-app', ],
+          presets: [ 'react-app' ],
           sourceMap: true,
         })
       ),
