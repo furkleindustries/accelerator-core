@@ -14,7 +14,6 @@ module.exports = {
   ],
 
   setupTestFrameworkScriptFile: '<rootDir>/config/testing/setupTests.ts',
-  globalSetup: '<rootDir>/config/testing/globalSetup.js',
   setupFiles: [
     'react-app-polyfill/jsdom',
   ],
