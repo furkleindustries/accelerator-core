@@ -1,5 +1,5 @@
 import {
-  bookmark,
+  bookmark as doBookmark,
 } from '../../state/bookmark';
 import {
   BuiltInTags,
@@ -14,7 +14,7 @@ import {
   IAction,
 } from '../../actions/IAction';
 import {
-  IHistoryFilter,
+  HistoryFilter,
 } from '../../reducers/IHistoryFilter';
 import {
   IPassage,
@@ -35,14 +35,17 @@ import {
   IState,
 } from '../../state/IState';
 import {
+  IStateFrame,
+} from '../../state/IStateFrame';
+import {
+  IStoryStateFrame,
+} from '../../state/IStoryStateFrame';
+import {
   mutateCurrentStoryStateInstanceWithPluginExecution,
 } from '../../state/mutateCurrentStoryStateInstanceWithPluginExecution';
 import {
   navigate,
 } from '../../state/navigate';
-import {
-  object as ObjectProp,
-} from 'prop-types';
 import {
   connect,
   MapDispatchToProps,
@@ -50,7 +53,6 @@ import {
 } from 'react-redux';
 import {
   Dispatch,
-  Store,
 } from 'redux';
 import {
   reset,
@@ -58,6 +60,9 @@ import {
 import {
   rewind,
 } from '../../state/rewind';
+import {
+  Tag,
+} from '../../tags/Tag';
 import {
   assert,
   assertValid,
@@ -85,31 +90,24 @@ export class PassageContentsContainer extends React.PureComponent<
   IPassageContentsContainerStateProps
 >
 {
-  public static contextTypes = {
-    store: ObjectProp,
-  };
+  constructor(props: any) {
+    super(props);
+
+    this.restart = this.restart.bind(this);
+    this.rewind = this.rewind.bind(this);
+  }
 
   public render() {
     const {
       bookmark,
-      passageObject: currentPassageObject,
-      passageObject: {
-        contents,
-      },
-
-      storyState: currentStoryState,
       dispatch,
+      history,
       lastLinkTags,
       navigateTo,
-      restart,
-      rewind,
+      passageObject,
+      passageObject: { contents },
+      storyState,
     } = this.props;
-
-    const {
-      store,
-    }: {
-      store: Store<IState>,
-    } = this.context;
 
     const safeContents = assertValid<React.ComponentClass<IPassageProps> | React.SFC<IPassageProps>>(
       contents,
@@ -117,8 +115,8 @@ export class PassageContentsContainer extends React.PureComponent<
     );
 
     assert(
-      Array.isArray(currentPassageObject.tags) &&
-        !getTag(currentPassageObject.tags, BuiltInTags.NoRender),
+      Array.isArray(passageObject.tags) &&
+        !getTag(passageObject.tags, BuiltInTags.NoRender),
       strings.CANT_RENDER_NORENDER_PASSAGE,
     );
 
@@ -127,13 +125,16 @@ export class PassageContentsContainer extends React.PureComponent<
       dispatch,
       lastLinkTags,
       navigateTo,
-      restart,
-      rewind,
-      storyState: currentStoryState,
-      passageObject: currentPassageObject,
-
+      passageObject,
+      storyState,
+      restart: this.restart,
+      rewind: this.rewind,
       setStoryState(updatedStateProps) {
-        mutateCurrentStoryStateInstanceWithPluginExecution(updatedStateProps, store);
+        mutateCurrentStoryStateInstanceWithPluginExecution({
+          dispatch,
+          history,
+          updatedStateProps,
+        });
       },
     };
 
@@ -141,6 +142,29 @@ export class PassageContentsContainer extends React.PureComponent<
       safeContents,
       propsPassedDown,
     );
+  }
+
+  private restart() {
+    const {
+      lastLinkTags,
+      restart,
+      passageObject: currentPassageObject,
+      storyState: currentStoryState,
+    } = this.props;
+
+    restart(currentPassageObject, currentStoryState, lastLinkTags);
+  }
+
+  private rewind(filter?: HistoryFilter) {
+    const {
+      rewind: doRewind,
+      history: {
+        present,
+        past,
+      },
+    } = this.props;
+
+    doRewind(present, past, filter);
   }
 }
 
@@ -168,19 +192,13 @@ export const mapStateToProps: MapStateToProps<IPassageContentsContainerStateProp
   };
 };
 
-export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDispatchProps, IPassageContentsContainerOwnProps & IPassageContentsContainerStateProps> = (
+export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDispatchProps, IPassageContentsContainerOwnProps> = (
   dispatch: Dispatch<IAction>,
-  {
-    passageObject: currentPassageObject,
-    storyState: currentStoryState,
-    history,
-    lastLinkTags,
-  },
 ) => ({
   dispatch,
 
   bookmark() {
-    bookmark(dispatch);
+    doBookmark(dispatch);
   },
 
   navigateTo(passageName, tags?) {
@@ -191,7 +209,11 @@ export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDis
     });
   },
 
-  restart() {
+  restart(
+    currentPassageObject: IPassage,
+    currentStoryState: IStoryStateFrame,
+    lastLinkTags: Tag[],
+  ) {
     reset({
       currentPassageObject,
       dispatch,
@@ -200,25 +222,15 @@ export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDis
     });
   },
 
-  rewind(filter?: IHistoryFilter) {
+  rewind(
+    present: IStateFrame,
+    past: IStateFrame[],
+    filter?: HistoryFilter,
+  ) {
     if (typeof filter === 'function') {
-      let index = 0;
-      let done = false;
-      history.past.forEach((frame) => {
-        if (!done && filter(frame)) {
-          done = true;
-        } else {
-          index += 1;
-        }
-      });
-
-      if (!index) {
-        throw new Error();
-      }
-
-      rewind(dispatch, index);
+      rewind(dispatch, present, past, filter);
     } else {
-      rewind(dispatch);
+      rewind(dispatch, present, past);
     }
   },
 });

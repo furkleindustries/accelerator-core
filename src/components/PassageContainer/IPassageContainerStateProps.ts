@@ -1,3 +1,3 @@
 export interface IPassageContainerStateProps {
-  storyRequiresFullRerender: boolean;
+  readonly storyRequiresFullRerender: boolean;
 }

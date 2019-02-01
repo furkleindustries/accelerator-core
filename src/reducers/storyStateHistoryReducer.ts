@@ -8,11 +8,11 @@ import {
   IStoryStateAction,
 } from '../actions/IStoryStateAction';
 import {
-  IStoryStateInstance,
-} from '../state/IStoryStateInstance';
+  IStoryStateFrame,
+} from '../state/IStoryStateFrame';
 
 export function storyStateReducer(
-  previousState: IStoryStateInstance = {},
+  previousState: IStoryStateFrame = {},
   action: IStoryStateAction | IStoryResetAction,
 )
 {

@@ -1,37 +1,29 @@
 const {
   writeFile,
 } = require('fs-extra');
-const getHotReloadAcceptor = require('./getHotReloadAcceptor');
-const glob = require('glob');
+const getFileImports = require('./functions/getFileImports');
+const getHotReloadAcceptor = require('./functions/getHotReloadAcceptor');
+const getPassageObjectDefinitions = require('./functions/getAuthoredAssetObjectDefinitions');
 const path = require('path');
-const slash = require('slash');
+const scrapeAssets = require('./functions/scrapeAssets');
 
 const authoredPassagesDir = path.join(__dirname, '..', 'passages');
 
-/* Collect all files within the passage directory ending in .js, .jsx, .ts, or .tsx. */
-glob(path.join(authoredPassagesDir, '**/!(*.test).[jt]sx'), async (err, files) => {
+(async () => {
   try {
-    if (err) {
-      throw err;
-    }
-  
-    const importPaths = [];
+    const files = await scrapeAssets(authoredPassagesDir);
+
+    const {
+      importPaths,
+      imports,
+    } = getFileImports(files);
   
     const manifestStr =
       'import { IPassage } from \'../src/passages/IPassage\';\n\n' +
-      files.map((filePath, index) => {
-        const importPath = slash(
-          path.relative(__dirname, filePath).replace(/\.[jt]sx?$/, ''),
-        );
-
-        importPaths.push(importPath);
-        return `import import_${index} from '${importPath}';\n`;
-      }).join('') +
+      imports.join('\n') +
       '\nconst manifest: Array<{ filepath: string, passageObject: IPassage, }> = [\n' +
-      files.map((path, index) => {
-        return `  {\n    filepath: \`${path}\`,\n    passageObject: import_${index},\n  },`;
-      }).join('') +
-      '\n];\n\nexport default manifest;\n' +
+      getPassageObjectDefinitions(files, 'passageObject').join('\n') +
+      '\n];\n\nexport default manifest;\n\n' +
       getHotReloadAcceptor(importPaths) +
       '\n';
     
@@ -40,4 +32,4 @@ glob(path.join(authoredPassagesDir, '**/!(*.test).[jt]sx'), async (err, files) =
     console.error(err);
     process.exit(1);
   }
-});
+})();

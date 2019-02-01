@@ -1,4 +1,7 @@
 import {
+  getPassagesMap,
+} from '../../passages/getPassagesMap';
+import {
   IRestartButtonDispatchProps,
 } from './IRestartButtonDispatchProps';
 import {
@@ -20,16 +23,17 @@ import {
 } from '../../state/reset';
 
 import * as React from 'react';
-import { getPassagesMap } from '../../passages/getPassagesMap';
 
-export class RestartButton extends React.PureComponent<IRestartButtonOwnProps & IRestartButtonStateProps & IRestartButtonDispatchProps> {
+export class RestartButtonUnconnected extends React.PureComponent<
+  IRestartButtonOwnProps & IRestartButtonStateProps & IRestartButtonDispatchProps
+>
+{
   constructor(props: any) {
     super(props);
-
     this.restart = this.restart.bind(this);
   }
   
-  render() {
+  public render() {
     const {
       children,
       className,
@@ -37,7 +41,7 @@ export class RestartButton extends React.PureComponent<IRestartButtonOwnProps & 
 
     return (
       <button
-        className={`resetButton${className ? ` ${className}` : ''}`}
+        className={`resetButton navigationButton${className ? ` ${className}` : ''}`}
         onClick={this.restart}
       >
         {children}
@@ -81,4 +85,4 @@ export const mapDispatchToProps: MapDispatchToProps<IRestartButtonDispatchProps,
   dispatch,
 });
 
-export const RestartButtonConnected = connect(mapStateToProps, mapDispatchToProps)(RestartButton);
+export const RestartButton = connect(mapStateToProps, mapDispatchToProps)(RestartButtonUnconnected);

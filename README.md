@@ -66,177 +66,54 @@ After a minute or so, the installation should be complete, and a folder named `%
 
 An Accelerator story is notionally similar to a Twine story: it is a series of passages, joined by links. Each of these passages are TypeScript or JavaScript files. They contain a small amount of metadata and React component constructor (either a class implementing React.Component or React.PureComponent, or a stateless functional component) or a React element. Each is placed in the `passages` directory.
 
-To write a new passage, either use `accelerator-tool new passage %YOUR_PASSAGE_NAME%`, or manually create a code file (ending in `.jsx` or `.tsx`) within the passages directory. A complete passage file will look something like this:
+To write a new passage, either use `accelerator-tool new passage %YOUR_PASSAGE_NAME%`, or manually create a code file (ending in `.jsx` or `.tsx`) within the passages directory. A complete passage file will look something like [this](/passages/start/start.tsx).
 
-```javascript
-/* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
-import * as React from 'react';
+The exported object must be the passage object, and it must be the default export. You can use any valid JSX, including functional and class-based components. You may use any named export for whatever you please. You may also feel free to organize your files however you please, as Accelerator will search any number of folders deep within the `passages` folder.
 
-/* Accelerator components, interfaces, styles, functions, etc. Feel free to
- * destructure these as you see fit but watch out that you don't get mixed up
- * between bundle names and passage component props with the same name
- * (e.g. tags). */
-import * as components from '../../src/passages/componentsBundle'; 
-import * as passages from '../../src/passages/passagesBundle';
-import * as tagsBundle from '../../src/passages/tagsBundle';
-// @ts-ignore
-import builtInStyles from '../../src/passages/styles.scss';
+Note that passage files *must* end in `.jsx` or `.tsx`. This is convenient because it fits VS Code's syntax highlighting for files containing JSX elements, and also because it reserves all `.js` or `.ts` files for you to use and import as you see fit.
 
-import logo from '../../public/logo.svg';
-
-class Component extends React.PureComponent<passages.IPassageProps> {
-  constructor(props: any) {
-    super(props);
-
-    /* Bind the function so we can properly access this.props. */
-    this.clickIncrementor = this.clickIncrementor.bind(this);
-  }
-
-  public render() {
-    const {
-      passageObject,
-      storyState,
-    } = this.props;
-
-    return (
-      /* The title will appear above here as an <h1> if you've set it. */
-      <div id={passageObject.name}>
-        <h2>
-          This is the sample accelerator passage.
-        </h2>
-
-        <img
-          /* Images are imported as filepaths and will automatically be
-           * copied into the build directory by the build system. */
-          src={logo}
-          /* This should ordinarily be done in .scss/.css files, but this is a
-           * compact example. */
-          style={{
-            display: 'block',
-            width: '300px',
-            margin: '0 auto',
-            maxWidth: '60%',
-          }}
-        />
-
-        {/* Move to new passages with the Link component. */}
-        <components.Link
-          className={builtInStyles.link}
-          passageName="testPassage2">
-          This is a link.
-        </components.Link>
-
-
-        <button
-          onClick={this.clickIncrementor}
-          style={{
-            display: 'block',
-            margin: '0 auto',
-          }}
-          >
-          Clicking me increments the counter!
-        </button>
-
-        {/* This will update reactively, without the need for any rendering
-          * logic on your part. */}
-        <div>{storyState.counter || 0}</div>
-
-        <components.CyclingLink
-          choices={[ 'one', 'two', 'three', ]}
-          variableToSet="cycleVar"
-        />
-
-        {/* This value updates automatically to match the cycling link
-          * choice. */}
-        <div>{storyState.cycleVar}</div>
-      </div>
-    );
-  }
-
-  private clickIncrementor() {
-    const {
-      setStoryState,
-      storyState,
-    } = this.props;
-
-    setStoryState({
-      counter: (storyState.counter || 0) + 1,
-    });
-  }
-}
-
-const passage: passages.IPassage = {
-  /* string: the story-unique name of the passage. */
-  name: 'myPassage',
-  
-  /* string: an optional expanded title to be used as you see fit. */
-  title: 'My cool passage',
-  
-  /* array: an optional collection of either plain strings or
-   * { key: string, value: string, } Tag objects. */
-  tags: [
-    /* Mark the passage as the first that should be rendered when the story is
-     * started. */
-    tagsBundle.BuiltInTags.Start,
-  
-    {
-      key: 'anotherTag',
-      value: 'anotherTagValue',
-    },
-  ],
-
-  /* ComponentClass | ReactElement: the content that should be displayed, or,
-   * in the case of noRender passages, a component that can be imported.
-   * Should be formatted in JSX style. */
-  contents: Component,
-};
-
-/* Always make the passage object a default export. */
-export default passage;
-```
-
-The exported object must be the passage object, and it must be the default export. You can use any valid JSX, including functional and class-based components. You may use any named export for whatever you please. You can also feel free to organize your files however you please, as Accelerator will search any numbers of folders deep within the `passages` folder.
-
-Note that, as alluded to above, passage files *must* end in `.jsx` or `.tsx`. This is convenient because it fits VS Code's syntax highlighting for files containing JSX elements, and also because it reserves all `.js` or `.ts` files for you to use and import as you see fit.
-
-If you are using Typescript (which you should be for the full value of Accelerator's built-in functionalities), you should indicate the type of the passage object by replacing `const passage =` with `const passage: bundle.passages.IPassage =`, and setting the props type of the React component to `bundle.passages.IPassageProps`, importing these interfaces from `../src/passages/bundle`. This will allow full type-checking of your story passages. (You can also just destructure the bundle, or the passages property, so that you can refer directly to `IPassage` and `IPassageProps`.)
+If you are using TypeScript (allowing for the full value of Accelerator's built-in functionalities), you should indicate the type of the passage object by replacing `const passage =` with `const passage: passagesBundle.IPassage =`, and setting the props type of the React component to `passagesBundle.IPassageProps`, importing these interfaces from `..//src/passages/passagesBundle`. This will allow full type-checking of your story passages. (You can also just destructure the bundle, or the passages property, so that you can refer directly to `IPassage` and `IPassageProps`.)
 
 <a name="bundle-imports"></a>
 ## The bundle imports
 
-All Accelerator passages have simple access to the bundle imports, located in `src/passages/`. (Note that `passages` and `src/passages` are different folders with wholly different purposes.) Each bundle import is typically imported as so: `import * as myBundle from '../../src/passages/specificBundle';`. There are at present three export bundles intended for author reuse:
+All Accelerator passages have simple access to the bundle imports, located in `/src/passages/`. (Note that `passages` and `/src/passages` are different folders with wholly different purposes.) Each bundle import is typically imported as so: `import * as widgets from '../..//src/passages/widgetsBundle';`. There are at present four export bundles intended for common author reuse:
 
 * `componentsBundle`:
-  * The [Link](src/components/Link/Link.md) component, which allows the user to navigate between passages.
-  * The [ClickAppend](src/components/ClickAppend/ClickAppend.md) component, which places one piece of content after another once the first component is clicked.
-  * The [ClickDisappear](src/components/ClickDisappear/ClickDisappear.md) component, which causes a piece of content to disappear (or fade out over a specified duration) after it is clicked.
-  * The [ClickPrepend](src/components/ClickPrepend/ClickPrepend.md) component, which places one piece of content before another after the first component is clicked.
-  * The [ClickReplace](src/components/ClickReplace/ClickReplace.md) component, which replaces one piece of content with another after the first component is clicked.
-  * The [Clicker](src/components/Clicker/Clicker.md) component, which is a lower-level component allowing one to show one portion of content before it is clicked, and another after. This is used to implement all the other `Click*` components. 
-  * The [CyclingLink](src/components/CyclingLink/CyclingLink.md) component, which allows the user to select between several string options, and optionally stores the choice in a variable.
-  * The [Cycler](src/components/Cycler/Cycler.md) component, which is a lower-level component used by `CyclingLink`, allowing cycling between any pieces of content (not just strings as with `CyclingLink`), and aditionally accepts a callback which is fired when cycles are performed.
-  * The [Delay](src/components/Delay/Delay.md) component, which delays rendering of content (or it being opaque) for an arbitrary period.
-  * The [FadeIn](src/components/FadeIn/FadeIn.md) component, which increases the opacity of content from invisibility to full opacity over an arbitrary period.
-  * The [OneOf](src/components/OneOf/OneOf.md) component, which randomly selects a single item from the collection passed as children.
-  * The [NOf](src/components/NOf/NOf.md) component, which is a lower-level component used by `OneOf`, and allows any random number (but not random order) of its children to be displayed.
-  * The [Permutation](src/components/Permutation/Permutation.md) component, which randomly shuffles the collection passed as children.
+  * The [Link](/src/components/Link/Link.md) component, which allows the user to navigate between passages.
+  * The [ClickAppend](/src/components/ClickAppend/ClickAppend.md) component, which places one piece of content after another once the first component is clicked.
+  * The [ClickDisappear](/src/components/ClickDisappear/ClickDisappear.md) component, which causes a piece of content to disappear (or fade out over a specified duration) after it is clicked.
+  * The [ClickPrepend](/src/components/ClickPrepend/ClickPrepend.md) component, which places one piece of content before another after the first component is clicked.
+  * The [ClickReplace](/src/components/ClickReplace/ClickReplace.md) component, which replaces one piece of content with another after the first component is clicked.
+  * The [Clicker](/src/components/Clicker/Clicker.md) component, which is a lower-level component allowing one to show one portion of content before it is clicked, and another after. This is used to implement all the other `Click*` components. 
+  * The [Combination](/src/components/Combination/Permutation.md) component, which allows selecting a random, contiguous slice of a collection, e.g. `bar` and `baz` from `[ 'foo', 'bar', 'baz', 'bux', ]`.
+  * The [CyclingLink](/src/components/CyclingLink/CyclingLink.md) component, which allows the user to select between several string options, and optionally stores the choice in a variable.
+  * The [Cycler](/src/components/Cycler/Cycler.md) component, which is a lower-level component used by `CyclingLink`, allowing cycling between any pieces of content (not just strings as with `CyclingLink`), and aditionally accepts a callback which is fired when cycles are performed.
+  * The [Delay](/src/components/Delay/Delay.md) component, which delays rendering of content (or it being opaque) for an arbitrary period.
+  * The [FadeIn](/src/components/FadeIn/FadeIn.md) component, which increases the opacity of content from invisibility to full opacity over an arbitrary period.
+  * The [OneOf](/src/components/OneOf/OneOf.md) component, which randomly selects a single item from the collection passed as children.
+  * The [NOf](/src/components/NOf/NOf.md) component, which is a lower-level component used by `OneOf`, and allows any random number (but not random order) of its children to be displayed.
+  * The [Permutation](/src/components/Permutation/Permutation.md) component, which randomly shuffles the collection passed as children, and allows picking a slice of the contents.
 * `passagesBundle`:
   * `IPassage`, an interface detailing the properties of the passage object, which is the default export of all passage files.
   * `IPassageProps`, an interface detailing the properties passed to the `contents` property of the passage object, assuming `contents` is a React component.
-* `styles`, an CSS modules object containing the classes and IDs defined in the passage's base stylesheet (located at `src/passages/passage.scss`). This could be automatically used/injected, but I intend on making it as easy as possible to do without default styling. 
+* `builtInStyles`, an CSS modules object containing the classes and IDs defined in the passage's base stylesheet (located at [/src/passages/passage.scss]). This could be automatically used/injected, but I intend on making it as easy as possible to do without default styling. This may change in the future. 
 * `tagsBundle`:
   * `BuiltInTags`, an enum which expresses the tags already configured for use by the Accelerator runtime.
   * `getTag`, a function which accepts a tag array and desired key, and produces either `true` if the key was in the array as a plain string, or the value string if the key was the key property of a key-value tag.
   * `Tag`, the type alias for tags.
 
+There is also the [pluginsBundle](/src/passages/pluginBundle.ts), which contains interfaces for plugins and the `DebugPlugin`, and the [actionsBundle](/src/passages/actionsBundle.ts), which contains Redux action interfaces and creator functions, if you want to e.g. manually dispatch built-in Accelerator actions with the `dispatch` function.
+
 <a name="contents-component-creator"></a>
 ## The contents component class/function
 
-For each passage, your ES6 class component (extending `React.Component` or `React.PureComponent`) or functional component (of type `React.StatelessFunctionalComponent`, or React's new stateful functional component types) will be passed props automatically by the higher-order `PassageContainer` component. These props, defined in `IPassageProps`, are as follows:
+For each passage, your ES6 class component (extending `React.Component` or `React.PureComponent`), or functional component (of type `React.SFC`), or React's new stateful functional component types) will be passed props automatically by the higher-order `PassageContainer` component. These props, defined in `IPassageProps`, are as follows:
 
 * `passageObject`, the object from your authored passage file. This is of type `IPassage`.
-* `setStoryState`, a function accepting an object of new state keys and values object as its single argument. This will automatically update the state and any rendered instances of it.
 * `storyState`, a copy of the story state. Due to the way Redux and its bindings update components, this object will always be up-to-date, relative to the actual, hidden state store, and changes to it are pointless. If you want to change the story state, use `setStoryState`.
+* `setStoryState`, a function accepting an object of new state keys and values object as its single argument. This will automatically update the state and any rendered instances of it.
+* `bookmark`, a function which produces a new rewind point in the story.
 * `dispatch`, a no-complexity wrapper of the Redux state store's `dispatch` function, allowing lower-level dispatching of Redux actions. This will likely not be useful unless you're doing some sort of notional reflection with the Accelerator internals, or you're authoring your own actions and have modified the default state store accordingly.
 
 <a name="headers-and-footers"></a>
@@ -283,7 +160,7 @@ Basic configuration can be performed through the `.env` file. There are currentl
 <a name="templates"></a>
 ## Templates
 
-The Accelerator devtool (`accelerator-tool`) uses templates to construct new passages. These templates are stored locally in `src/templates`. Feel free to modify them as you see fit.
+The Accelerator devtool (`accelerator-tool`) uses templates to construct new passages. These templates are stored locally in `/src/templates`. Feel free to modify them as you see fit.
 
 There is also automatic rewriting of templated files generated by `accelerator-tool new` based on the values in the `.env` file. Any value in that configuration file which begins with `ACCELERATOR_` will be conditionally injected into all rewritten content. Note that this does not apply to `PUBLIC_URL`, which is handled by the `Create React App` build system. An example of this kind of rewriting:
 
@@ -303,7 +180,7 @@ Accelerator also allows the use of plugins, which hook into lifecycle events in 
 * afterStoryStateChange
 * beforeRestart
 
-Accelerator comes bundled with a single plugin, [DebugPlugin](./src/plugins/DebugPlugin.tsx), which is included automatically in the plugin stack if you are running the development server and the `ACCELERATOR_DEBUG` environment variable has been set to `true` in the `.env` file. You may also consult the [template](./templates/plugins/plugin.tsx) for further details on which methods receive which arguments.
+Accelerator comes bundled with a single plugin, [DebugPlugin](.//src/plugins/DebugPlugin.tsx), which is included automatically in the plugin stack if you are running the development server and the `ACCELERATOR_DEBUG` environment variable has been set to `true` in the `.env` file. You may also consult the [template](./templates/plugins/plugin.tsx) for further details on which methods receive which arguments.
 
 Plugins follow the same precedence rules as headers and footers, and are stored in the `plugins/` directory.
 

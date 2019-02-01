@@ -1,0 +1,25 @@
+{
+  "extends": [
+    "tslint:recommended",
+    "tslint-react",
+    "tslint-config-prettier"
+  ],
+  "linterOptions": {
+    "exclude": [
+      "**/*",
+      "build*/",
+      "config/",
+      "coverage/**/*",
+      "node_modules/",
+      "templates/"
+    ]
+  },
+  "rules": {
+    "interface-name": false,
+    "jsx-self-close": false,
+    "no-console": false,
+    "no-debugger": false,
+    "object-literal-sort-keys": false,
+    "ordered-imports": false
+  }
+}

@@ -3,6 +3,7 @@ import {
 } from 'react';
 
 export interface INOfOwnProps {
-  children: ReactNodeArray;
-  n: number;
+  readonly children: ReactNodeArray;
+  readonly n: number;
+  readonly shuffle?: boolean;
 }

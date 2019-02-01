@@ -1,4 +1,7 @@
 import {
+  bookmarkCounterReducer,
+} from './bookmarkCounterReducer';
+import {
   currentPassageNameReducer,
 } from './currentPassageNameReducer';
 import {
@@ -8,6 +11,12 @@ import {
   lastLinkTagsReducer,
 } from './lastLinkTagsReducer';
 import {
+  midrenderSignalCounterReducer,
+} from './midrenderSignalCounterReducer';
+import {
+  passageTimeReducer,
+} from './passageTimeReducer';
+import {
   storyStateReducer,
 } from './storyStateHistoryReducer';
 import {
@@ -15,40 +24,34 @@ import {
   Reducer,
 } from 'redux';
 import {
-  ActionTypes,
-} from '../actions/ActionTypes';
-import {
-  getAcceleratorEnvVariables,
-} from '../configuration/getAcceleratorEnvVariables';
+  getAcceleratorConfig,
+} from '../configuration/getAcceleratorConfig';
 import {
   IHistory,
 } from '../state/IHistory';
 import {
   default as undoable,
-  includeAction,
+  excludeAction,
 } from 'redux-undo';
 
 const {
-  history_save_types,
-  history_stack_limit: limit,
-} = getAcceleratorEnvVariables();
-
-const actionsToInclude = history_save_types === 'all' ?
-  [
-    ActionTypes.Bookmark,
-    ActionTypes.PassageNavigation,
-    ActionTypes.StoryState,      
-  ] :
-  history_save_types;
+  historySaveTypes,
+  historyStackLimit: limit,
+  historySynchronizeUnrewindableStateWithPresent: syncFilter,
+} = getAcceleratorConfig();
 
 export const historyReducer = undoable(
   combineReducers({
+    bookmarkCounter: bookmarkCounterReducer,
     currentPassageName: currentPassageNameReducer,
     lastLinkTags: lastLinkTagsReducer,
+    midrenderSignalCounter: midrenderSignalCounterReducer,
+    passageTime: passageTimeReducer,
     storyState: storyStateReducer,
   }),
   {
     limit,
-    filter: includeAction(actionsToInclude),
+    syncFilter,
+    filter: excludeAction(historySaveTypes),
   },
 ) as Reducer<IHistory, IAction>;

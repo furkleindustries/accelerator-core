@@ -7,10 +7,6 @@ import {
 
 import * as React from 'react';
 
-// @ts-ignore
-import _styles from './Delay.scss';
-const styles = _styles || {};
-
 export const strings = {
   TIMEOUT_NOT_GREATER_THAN_OR_EQUAL_TO_ZERO_NUMBER:
     'The timeout argument passed to a Delay component was not a number ' +
@@ -49,7 +45,7 @@ export class Delay extends React.Component<IDelayOwnProps, IDelayState> {
       shown,
     } = this.state;
 
-    const classNameStr = `${styles.delay} delay${className ? ` ${className}` : ''}`;
+    const classNameStr = `delay${className ? ` ${className}` : ''}`;
 
     if (shown) {
       return (
@@ -61,7 +57,7 @@ export class Delay extends React.Component<IDelayOwnProps, IDelayState> {
       return (
         <div
           className={classNameStr}
-          style={{ opacity: 0, }}
+          style={{ opacity: 0 }}
         >
           {children}
         </div>

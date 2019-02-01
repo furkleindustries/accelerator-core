@@ -14,10 +14,13 @@ export {
   ClickReplace,
 } from '../components/ClickReplace/ClickReplace';
 export {
+  Combination,
+} from '../components/Combination/Combination';
+export {
   Cycler,
 } from '../components/Cycler/Cycler';
 export {
-  CyclingLinkConnected as CyclingLink,
+  CyclingLink,
 } from '../components/CyclingLink/CyclingLink';
 export {
   Delay,
@@ -29,7 +32,7 @@ export {
   FadeOut,
 }  from '../components/FadeOut/FadeOut';
 export {
-  LinkConnected as Link,
+  Link,
 } from '../components/Link/Link';
 export {
   NOf,
@@ -41,8 +44,8 @@ export {
   Permutation,
 } from '../components/Permutation/Permutation';
 export {
-  RestartButtonConnected as RestartButton,
+  RestartButton,
 } from '../components/RestartButton/RestartButton';
 export {
-  RewindButtonConnected as RewindButton,
+  RewindButton,
 } from '../components/RewindButton/RewindButton';

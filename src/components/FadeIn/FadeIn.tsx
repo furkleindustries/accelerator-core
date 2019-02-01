@@ -1,12 +1,13 @@
 import {
   IFadeInOwnProps,
 } from './IFadeInOwnProps';
+import {
+  assert,
+} from 'ts-assertions';
 
 import * as React from 'react';
 
-// @ts-ignore
-import _styles from './FadeIn.scss';
-const styles = _styles || {};
+import styles from './FadeIn.scss';
 
 export const strings = {
   DURATION_NOT_GREATER_THAN_ZERO_NUMBER:
@@ -22,16 +23,15 @@ export class FadeIn extends React.PureComponent<IFadeInOwnProps> {
       duration,
     } = this.props;
 
-    if (!(duration >= 0)) {
-      throw new Error(strings.DURATION_NOT_GREATER_THAN_ZERO_NUMBER);
-    }
+    assert(
+      !(duration >= 0),
+      strings.DURATION_NOT_GREATER_THAN_ZERO_NUMBER,
+    );
 
     return (
       <div
         className={`${styles.fadeIn} fadeIn${className ? ` ${className}` : ''}`}
-        style={{
-          animationDuration: `${duration}ms`,
-        }}
+        style={{ animationDuration: `${duration}ms` }}
       >
         {children}
       </div>

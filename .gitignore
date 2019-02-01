@@ -1,23 +1,5 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
-# passages
-/passages/*
-!/passages/_globalStyles/
-!/passages/start/
-
-# headers
-/headers/*
-!/headers/menu/
-
-# footers
-/footers/*
-!/footers/.gitkeep
-
-# plugins
-/plugins/*
-!/plugins/debug
-!/plugins/debug/debug.tsx
-
 # dependencies
 /node_modules/
 
@@ -28,7 +10,20 @@
 /build*/
 /.zips/
 
+# footers
+footers/*-manifest.ts
+
+# headers
+headers/*-manifest.ts
+
+# passages
+passages/*-manifest.ts
+
+# plugins
+plugins/*-manifest.ts
+
 # misc
+
 .DS_Store
 .env.local
 .env.development.local

@@ -1,5 +1,3 @@
-'use strict';
-
 // Do this as the first thing so that any code reading it knows the right env.
 process.env.BABEL_ENV = 'development';
 process.env.NODE_ENV = 'development';
@@ -28,8 +26,8 @@ const {
 } = require('react-dev-utils/WebpackDevServerUtils');
 const openBrowser = require('react-dev-utils/openBrowser');
 const paths = require('../config/paths');
-const config = require('../config/webpack.config.dev');
-const createDevServerConfig = require('../config/webpackDevServer.config');
+const config = require('../config/webpack/webpack.config');
+const createDevServerConfig = require('../config/webpack/webpackDevServer.config');
 
 const useYarn = fs.existsSync(paths.yarnLockFile);
 const isInteractive = process.stdout.isTTY;

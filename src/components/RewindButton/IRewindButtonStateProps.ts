@@ -1,3 +1,8 @@
+import {
+  IHistory,
+} from '../../state/IHistory';
+
 export interface IRewindButtonStateProps {
-  canRewind: boolean;
+  readonly canRewind: boolean;
+  readonly history: IHistory;
 }

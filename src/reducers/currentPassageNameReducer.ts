@@ -12,19 +12,19 @@ import {
 } from '../actions/IStoryResetAction';
 
 const {
-  startPassage,
+  startPassage: { name },
 } = getPassagesMap();
 
 export function currentPassageNameReducer(
-  previousState: string = startPassage.name,
+  previousState: string = name,
   action: ICurrentPassageNameAction | IStoryResetAction,
-)
+): string
 {
   if (action.type === ActionTypes.CurrentPassageName) {
     return action.value;
   } else if (action.type === ActionTypes.StoryReset) {
-    return startPassage.name;
+    return name;
   }
 
   return previousState;
-};
+}

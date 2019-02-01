@@ -21,10 +21,10 @@ class Component extends React.PureComponent {
     } = this.props;
 
     return (
-      <div
+      <footer
         className={`${styles['%NAME%']} ${builtInStyles.footer} footer`}
       >
-      </div>
+      </footer>
     );
   }
 }

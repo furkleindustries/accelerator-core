@@ -1,36 +1,28 @@
 const {
   writeFile,
 } = require('fs-extra');
-const getHotReloadAcceptor = require('./getHotReloadAcceptor');
-const glob = require('glob');
+const getFileImports = require('./functions/getFileImports');
+const getHotReloadAcceptor = require('./functions/getHotReloadAcceptor');
+const getPassageObjectDefinitions = require('./functions/getAuthoredAssetObjectDefinitions');
 const path = require('path');
-const slash = require('slash');
+const scrapeAssets = require('./functions/scrapeAssets');
 
 const authoredHeadersDir = path.join(__dirname, '..', 'headers');
 
-/* Collect all files within the headers directory ending in .js, .jsx, .ts, or .tsx. */
-glob(path.join(authoredHeadersDir, '**/!(*.test).[jt]sx?'), async (err, files) => {
+(async () => {
   try {
-    if (err) {
-      throw err;
-    }
-  
-    const importPaths = [];
-  
+    const files = await scrapeAssets(authoredHeadersDir);
+
+    const {
+      importPaths,
+      imports,
+    } = getFileImports(files);
+
     const manifestStr =
       'import { IHeader } from \'../src/passages/IHeader\';\n\n' +
-      files.map((filePath, index) => {
-        const importPath = slash(
-          path.relative(__dirname, filePath).replace(/\.[jt]sx?$/, ''),
-        );
-
-        importPaths.push(importPath); 
-        return `import import_${index} from '${importPath}';\n`;
-      }).join('') +
+      imports.join('\n') +
       '\nconst manifest: Array<{ filepath: string, headerObject: IHeader, }> = [\n' +
-      files.map((path, index) => {
-        return `  {\n    filepath: \`${path}\`,\n    headerObject: import_${index},\n  },`;
-      }).join('') +
+      getPassageObjectDefinitions(files, 'headerObject').join('\n') +
       '\n];\n\nexport default manifest;\n' +
       getHotReloadAcceptor(importPaths) +
       '\n';
@@ -40,4 +32,4 @@ glob(path.join(authoredHeadersDir, '**/!(*.test).[jt]sx?'), async (err, files) =
     console.error(err);
     process.exit(1);
   }
-});
+})();

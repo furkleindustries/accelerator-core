@@ -6,15 +6,13 @@ import {
   RewindButton,
 } from '../../src/passages/componentsBundle';
 import * as passages from '../../src/passages/passagesBundle';
-// @ts-ignore
 import builtInStyles from '../../src/passages/styles.scss';
 
-// @ts-ignore
 import _styles from './menu.scss';
 const styles = _styles || {};
 
 /* The header gets all the same props as a normal passage. */
-class Component extends React.PureComponent<passages.IPassageProps> {
+class Menu extends React.PureComponent<passages.IPassageProps> {
   public render() {
     return (
       <div
@@ -42,7 +40,7 @@ const passage: passages.IHeader = {
 
   /* ComponentClass<IPassageProps, any> | SFCFactory<IPassageProps>:
    * the content that should be displayed. Should be formatted in JSX style. */
-  contents: Component,
+  contents: Menu,
 };
 
 /* Always make the passage object a default export. */

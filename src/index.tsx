@@ -8,6 +8,9 @@ import {
   configureStore,
 } from './state/configureStore';
 import {
+  isNode,
+} from './functions/isNode';
+import {
   IState,
 } from './state/IState';
 import {
@@ -24,9 +27,18 @@ import { render } from 'react-snapshot';
 
 import './index.scss';
 
+if (isNode()) {
+  // Makes the script crash on unhandled rejections instead of silently
+  // ignoring them. In the future, promise rejections that are not handled will
+  // terminate the Node.js process with a non-zero exit code.
+  process.on('unhandledRejection', err => {
+    throw err;
+  });
+}
+
 /* Allow state to be saved on prerender and reused when the window is opened.
 * This will avoid a lot of superfluous logic. */
-// @ts-ignore
+declare const window: any;
 const prerenderedState = window && window.REDUX_STATE;
 const store = (() => {
   if (prerenderedState) {
@@ -39,7 +51,6 @@ const store = (() => {
 let state: IState = prerenderedState;
 if (!state) {
   state = store.getState();
-  // @ts-ignore
   window.REDUX_STATE = JSON.stringify(state);
 }
 

@@ -1,10 +1,9 @@
 import {
   ReactNode,
-  ReactNodeArray,
 } from 'react';
 
 export interface ICyclerOwnProps {
-  children: ReactNodeArray;
+  children: ReactNode[];
   className?: string;
-  notifyOfChange?: (current: ReactNode, index?: number) => void;
+  callback?(current: ReactNode, index?: number): void;
 }

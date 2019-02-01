@@ -1,4 +1,7 @@
 import {
+  getUnfilteredRewindIndex,
+} from '../../state/getUnfilteredRewindIndex';
+import {
   IRewindButtonOwnProps,
 } from './IRewindButtonOwnProps';
 import {
@@ -21,14 +24,16 @@ import {
 
 import * as React from 'react';
 
-export class RewindButton extends React.PureComponent<IRewindButtonOwnProps & IRewindButtonStateProps & IRewindButtonDispatchProps> {
+export class RewindButtonUnconnected extends React.PureComponent<
+  IRewindButtonOwnProps & IRewindButtonStateProps & IRewindButtonDispatchProps
+>
+{
   constructor(props: any) {
     super(props);
-
     this.rewind = this.rewind.bind(this);
   }
   
-  render() {
+  public render() {
     const {
       canRewind,
       children,
@@ -41,7 +46,7 @@ export class RewindButton extends React.PureComponent<IRewindButtonOwnProps & IR
 
     return (
       <button
-        className={`rewindButton${className ? ` ${className}` : ''}`}
+        className={`rewindButton navigationButton${className ? ` ${className}` : ''}`}
         {...statefulProps}
       >
         {children}
@@ -50,24 +55,45 @@ export class RewindButton extends React.PureComponent<IRewindButtonOwnProps & IR
   }
 
   private rewind() {
-    const { dispatch } = this.props;
-    rewind(dispatch);
+    const {
+      dispatch,
+      history: {
+        past,
+        present,
+      },
+    } = this.props;
+
+    rewind(dispatch, present, past);
   }
 }
 
-export const mapStateToProps: MapStateToProps<IRewindButtonStateProps, IRewindButtonOwnProps, IState> = ({
+export const mapStateToProps: MapStateToProps<
+  IRewindButtonStateProps,
+  IRewindButtonOwnProps,
+  IState
+> = ({
+  history,
   history: {
-    past: { length }
+    past,
+    present,
   },
-}) => ({
-  canRewind: length > 1,
-});
+}, { filter }) => {
+  return {
+    history,
+    canRewind: (
+      typeof filter === 'function' ?
+        past.filter(filter).length > 0 :
+        getUnfilteredRewindIndex(past, present) > 0
+    ),
+  };
+};
 
 export const mapDispatchToProps: MapDispatchToProps<
   IRewindButtonDispatchProps,
   IRewindButtonOwnProps
-> = (dispatch) => ({
-  dispatch,
-});
+> = (dispatch) => ({ dispatch });
 
-export const RewindButtonConnected = connect(mapStateToProps, mapDispatchToProps)(RewindButton);
+export const RewindButton = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(RewindButtonUnconnected);

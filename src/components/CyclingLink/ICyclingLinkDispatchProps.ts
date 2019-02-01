@@ -1,13 +1,20 @@
 import {
-  IState,
-} from '../../state/IState';
+  IAction,
+} from '../../actions/IAction';
 import {
-  IStoryStateInstance,
-} from '../../state/IStoryStateInstance';
+  IHistory,
+} from '../../state/IHistory';
 import {
-  Store,
+  IStoryStateFrame,
+} from '../../state/IStoryStateFrame';
+import {
+  Dispatch,
 } from 'redux';
 
 export interface ICyclingLinkDispatchProps {
-  setStoryState(updatedStateProps: Partial<IStoryStateInstance>, store: Store<IState>): void;
+  readonly dispatch: Dispatch<IAction>;
+  setStoryState(
+    updatedStateProps: Partial<IStoryStateFrame>,
+    history: IHistory,
+  ): void;
 }

@@ -2,10 +2,10 @@ import {
   ActionTypes,
 } from './ActionTypes';
 import {
-  IStoryStateInstance,
-} from '../state/IStoryStateInstance';
+  IStoryStateFrame,
+} from '../state/IStoryStateFrame';
 
 export interface IStoryStateAction {
   readonly type: ActionTypes.StoryState;
-  readonly value: Partial<IStoryStateInstance>;
+  readonly value: Partial<IStoryStateFrame>;
 }

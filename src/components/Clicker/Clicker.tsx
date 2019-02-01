@@ -7,9 +7,7 @@ import {
 
 import * as React from 'react';
 
-// @ts-ignore
-import _styles from './Clicker.scss';
-const styles = _styles || {};
+import styles from './Clicker.scss';
 
 export class Clicker extends React.Component<IClickerOwnProps, IClickerState> {
   public state = {

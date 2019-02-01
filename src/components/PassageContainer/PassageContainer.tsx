@@ -30,9 +30,7 @@ import {
 
 import * as React from 'react';
 
-// @ts-ignore
-import _styles from './PassageContainer.scss';
-const styles = _styles || {};
+import styles from './PassageContainer.scss';
 
 export class PassageContainer extends React.PureComponent<IPassageContainerStateProps & IPassageContainerDispatchProps> {
   public render() {
@@ -79,11 +77,9 @@ export class PassageContainer extends React.PureComponent<IPassageContainerState
   }
 }
 
-export const mapStateToProps: MapStateToProps<IPassageContainerStateProps, {}, IState> = ({
+export const mapStateToProps: MapStateToProps<IPassageContainerStateProps, null, IState> = ({
   storyRequiresFullRerender,
-}) => ({
-  storyRequiresFullRerender,
-});
+}) => ({ storyRequiresFullRerender });
 
 export const mapDispatchToProps: MapDispatchToProps<IPassageContainerDispatchProps, IPassageContainerStateProps> = (dispatch) => ({
   resetStoryRequiresFullRerender() {
@@ -91,4 +87,7 @@ export const mapDispatchToProps: MapDispatchToProps<IPassageContainerDispatchPro
   },
 });
 
-export const PassageContainerConnected = connect(mapStateToProps, mapDispatchToProps)(PassageContainer);
+export const PassageContainerConnected = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(PassageContainer);

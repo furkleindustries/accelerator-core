@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "build/dist",
+    "outDir": "build-web/",
     "module": "esnext",
     "target": "es5",
     "lib": ["es6", "dom"],
@@ -16,18 +16,25 @@
     "importHelpers": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules",
+        "options": {
+          "camelCase": "dashes",
+          "customMatcher": "\\.(sa|sc|c)ss$"
+        }
+      }
+    ]
   },
   "exclude": [
     "build*",
     "config/",
+    "coverage/",
     "scripts/",
     "node_modules/",
     "templates/",
     "acceptance-tests",
-    "webpack",
-    "jest",
-    "**/*.test.*",
-    "src/setupTests.ts"
+    "**/*.test.*"
   ]
 }

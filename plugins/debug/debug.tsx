@@ -3,11 +3,11 @@ import {
   IPluginExport,
 } from '../../src/passages/pluginsBundle';
 import {
-  getAcceleratorEnvVariables,
-} from '../../src/configuration/getAcceleratorEnvVariables';
+  getAcceleratorConfig,
+} from '../../src/configuration/getAcceleratorConfig';
 
 /* Only inject the dev plugin if the story is in dev mode. */
-const maybeContents = getAcceleratorEnvVariables().debug ?
+const maybeContents = getAcceleratorConfig().debug ?
   new DebugPlugin() :
   {};
 

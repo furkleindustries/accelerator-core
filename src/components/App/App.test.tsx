@@ -8,5 +8,6 @@ import {
 import * as React from 'react';
 
 it ('Renders shallowly without crashing.', () => {
-  shallow(<App />);
+  const func = () => shallow(<App />);
+  expect(func).not.toThrow();
 });

@@ -5,12 +5,17 @@ import {
   rootReducer,
 } from '../reducers/rootReducer';
 
+declare const window: any;
+
 export function createStore(prerenderedState?: object) {
   const store = reduxCreateStore(
     rootReducer,
     prerenderedState,
-    // @ts-ignore
-    typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    (
+      window &&
+      window.__REDUX_DEVTOOLS_EXTENSION__ &&
+      window.__REDUX_DEVTOOLS_EXTENSION__()
+    ),
   );
 
   if (process.env.NODE_ENV === 'development' && (module as any).hot) {
