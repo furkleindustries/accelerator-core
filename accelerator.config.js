@@ -1,7 +1,9 @@
-import { ActionTypes } from './src/actions/ActionTypes';
-import { IAcceleratorConfig } from './src/configuration/IAcceleratorConfig';
+/** @see https://github.com/furkleindustries/ */
 
-export const config: IAcceleratorConfig = {
+// @ts-ignore
+const { ActionTypes } = require('./src/actions/ActionTypes');
+
+module.exports = {
   /**
    * @property {string}
    * The page title which will be displayed in the browser.
@@ -14,7 +16,8 @@ export const config: IAcceleratorConfig = {
    * good descriptions drive traffic and positive SEO.
    */
   storyDescription:
-    'A story created with the Accelerator hypertext fiction framework.',
+    'A story created with the Accelerator hypertext fiction framework ' +
+    '(https://github.com/furkleindustries/accelerator-core).',
 
   /**
    * @property {boolean}
@@ -30,7 +33,7 @@ export const config: IAcceleratorConfig = {
    * and js/css bundles. This will work fine for all cases except if you need to
    * know the absolute path the story is hosted at ahead of time.
    */
-  publicUrl: './',
+  publicUrl: '.',
 
   /**
    * @property {number}

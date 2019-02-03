@@ -3,6 +3,6 @@ import {
 } from './IHistory';
 
 export interface IState {
-  history: IHistory;
-  storyRequiresFullRerender: boolean;
+  readonly history: IHistory;
+  readonly storyRequiresFullRerender: boolean;
 }

@@ -5,7 +5,7 @@ export enum ActionTypes {
   PassageNavigation = 'PassageNavigation',
   PassageTime = 'PassageTime',
   StoryReset = 'StoryReset',
+  StoryRequiresFullRerender = 'StoryRequiresFullRerender',
   StoryRewind = 'StoryRewind',
   StoryState = 'StoryState',
-  StoryRequiresFullRerender = 'StoryRequiresFullRerender',
 }

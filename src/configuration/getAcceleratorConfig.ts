@@ -1,6 +1,4 @@
-import {
-  config,
-} from '../../accelerator.config';
+import * as config from '../../accelerator.config';
 import {
   defaults,
 } from './defaults';
@@ -9,13 +7,7 @@ import {
 } from './IAcceleratorConfig';
 
 let memoized: IAcceleratorConfig | null = null;
-export function getAcceleratorConfig() {
-  if (!memoized) {
-    memoized = {
-      ...defaults,
-      ...config,
-    };
-  }
-
+export function getAcceleratorConfig(): IAcceleratorConfig {
+  memoized = memoized || Object.freeze({ ...defaults, ...config, });
   return memoized;
 }
