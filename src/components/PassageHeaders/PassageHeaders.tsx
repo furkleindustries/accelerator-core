@@ -2,6 +2,9 @@ import {
   getHeadersList,
 } from '../../passages/getHeadersList';
 import {
+  HistoryFilter,
+} from '../../reducers/IHistoryFilter';
+import {
   IHeader,
 } from '../../passages/IHeader';
 import {
@@ -26,12 +29,11 @@ import {
 import {
   connect,
 } from 'react-redux';
+import {
+  assert,
+} from 'ts-assertions';
 
 import * as React from 'react';
-
-import styles from './PassageHeaders.scss';
-import { HistoryFilter } from '../../reducers/IHistoryFilter';
-import { assert } from 'ts-assertions';
 
 export const strings = {
   COMPONENT_CONSTRUCTOR_NOT_FOUND:
@@ -89,7 +91,7 @@ export class PassageHeaders extends React.PureComponent<IPassageContentsContaine
     });
 
     return (
-      <div className={`${styles.passageHeaders} passageHeaders`}>
+      <div className="passageHeaders">
         {headerComponents}
       </div>
     );

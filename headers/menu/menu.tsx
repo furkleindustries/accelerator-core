@@ -6,10 +6,9 @@ import {
   RewindButton,
 } from '../../src/passages/componentsBundle';
 import * as passages from '../../src/passages/passagesBundle';
-import builtInStyles from '../../src/passages/styles.scss';
 
-import _styles from './menu.scss';
-const styles = _styles || {};
+import builtInStyles from '../../src/passages/styles.scss';
+import styles from './menu.scss';
 
 /* The header gets all the same props as a normal passage. */
 class Menu extends React.PureComponent<passages.IPassageProps> {

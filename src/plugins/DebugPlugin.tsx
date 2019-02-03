@@ -10,6 +10,8 @@ import {
 
 import * as React from 'react';
 
+import styles from './DebugPlugin.scss';
+
 export class DebugPlugin implements IPlugin {
   public afterStoryInit(args: IPluginMethodBaseArgs & IPluginMethodStateMutationArgs) {
     const {
@@ -51,13 +53,20 @@ export class DebugPlugin implements IPlugin {
     console.log('The story state before render is:');
     console.log(JSON.stringify(currentStoryState, null, 2));
 
-    const debugChildren: React.ReactChild[] = [
-      <p className="debugStateTitle" key={0}>
-        Current story state:
-      </p>,
-      <div className="debugStateReadout" key={1}>{
-        JSON.stringify(currentStoryState, null, 2)
-      }</div>
+    const debugChildren = [
+      <div className={`${styles.debugContainer} debugContainer`} key={0}>
+        <p className={`${styles.debugStateTitleContainer} debugStateTitle`}>
+          <strong className={styles.debugStateTitle}>
+            Current story state:
+          </strong>
+        </p>
+
+        <div className={`${styles.debugReadoutContainer} debugReadoutContainer`}>
+          <pre className={`${styles.debugStateReadout} debugStateReadout`}>{
+            JSON.stringify(currentStoryState, null, 2)
+          }</pre>
+        </div>
+      </div>
     ];
 
     return React.Children.toArray(children).concat(debugChildren);

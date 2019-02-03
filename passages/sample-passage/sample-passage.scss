@@ -28,7 +28,8 @@ $space-med: 10px;
 /* You can use math expressions in SCSS files too. */
 $space-lg: $space-med * 3;
 
-$image-width: 300px;
+$image-width: 250px;
+$max-image-width: 80%;
 
 .sample-passage {
   padding: $space-med;
@@ -42,7 +43,7 @@ $image-width: 300px;
 .image {
   display: block;
   width: $image-width;
-  max-width: 60%;
+  max-width: $max-image-width;
   margin: 0 auto $space-lg auto;
 }
 

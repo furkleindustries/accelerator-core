@@ -3,22 +3,18 @@
 /* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
 import * as React from 'react';
 
-/* Accelerator components, interfaces, styles, functions, etc. Feel free to
- * destructure these as you see fit. */
+/* Accelerator components, interfaces, functions, etc. Feel free to destructure
+ * these as you see fit. */
 import * as components from '../../src/passages/componentsBundle'; 
 import * as passages from '../../src/passages/passagesBundle';
 import * as tags from '../../src/passages/tagsBundle';
 
-/*
- * Import the passage style.
- */
+/* Import the passage style. See css-modules.d.ts for types. */
 import styles from './sample-passage.scss';
 
 /* Import the built-in styles. These are bare-minimum defaults that are meant
  * to be overridden by authors. */
-// @ts-ignore
-import _builtInStyles from '../../src/passages/styles.scss';
-const builtInStyles = _builtInStyles || {};
+import builtInStyles from '../../src/passages/styles.scss';
 
 /* Images (see images.d.ts for allowed types) are imported as URLs to
  * the file in the public/ directory. */
@@ -106,7 +102,7 @@ class Component extends React.PureComponent<passages.IPassageProps> {
           ]
         }</components.CyclingLink>
 
-        <p>
+        <p className={styles.paragraph}>
           {/* This value updates automatically to match the cycling link
             * choice. */}
           <em className={styles.cycleVar}>
@@ -114,7 +110,7 @@ class Component extends React.PureComponent<passages.IPassageProps> {
           </em>
         </p>
 
-        <p>
+        <p className={styles.paragraph}>
           <button
             className={builtInStyles.link}
             onClick={bookmark}

@@ -10,6 +10,14 @@ $hover-color: rgb(255, 50, 50);
   @include passage;
 }
 
+@mixin header {
+  position: relative;
+}
+
+.header {
+  @include header;
+}
+
 @mixin link {
   padding: 0;
   border: 0;

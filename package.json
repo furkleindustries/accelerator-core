@@ -24,7 +24,7 @@
     "test": "npm run generate-manifests && node scripts/test.js --config=config/testing/jest.config.js",
     "test:nowatch": "npm run test -- --dontWatch",
     "test:coverage": "npm run test -- --coverage",
-    "prepublishOnly": "npm run test:coverage"
+    "prepublishOnly": "npm run test:nowatch"
   },
   "browserslist": [
     ">0.2%",
