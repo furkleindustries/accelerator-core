@@ -31,7 +31,7 @@ import {
 } from '../state/IHistory';
 import {
   default as undoable,
-  excludeAction,
+  includeAction,
 } from 'redux-undo';
 
 const {
@@ -52,6 +52,6 @@ export const historyReducer = undoable(
   {
     limit,
     syncFilter,
-    filter: excludeAction(historySaveTypes),
+    filter: includeAction(historySaveTypes),
   },
 ) as Reducer<IHistory, IAction>;

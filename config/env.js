@@ -1,11 +1,12 @@
 const fs = require('fs-extra');
+const getAcceleratorConfigJs = require('./getAcceleratorConfigJs');
 const path = require('path');
 const paths = require('./paths');
 
 // Make sure that including paths.js after env.js will read .env variables.
 delete require.cache[require.resolve('./paths')];
 
-const NODE_ENV = process.env.NODE_ENV;
+const { NODE_ENV } = process.env;
 if (!NODE_ENV) {
   throw new Error(
     'The NODE_ENV environment variable is required but was not specified.'
@@ -28,7 +29,7 @@ var dotenvFiles = [
 // that have already been set.  Variable expansion is supported in .env files.
 // https://github.com/motdotla/dotenv
 // https://github.com/motdotla/dotenv-expand
-dotenvFiles.forEach(dotenvFile => {
+dotenvFiles.forEach((dotenvFile) => {
   if (fs.existsSync(dotenvFile)) {
     require('dotenv-expand')(
       require('dotenv').config({
@@ -50,33 +51,39 @@ dotenvFiles.forEach(dotenvFile => {
 const appDirectory = fs.realpathSync(process.cwd());
 process.env.NODE_PATH = (process.env.NODE_PATH || '')
   .split(path.delimiter)
-  .filter(folder => folder && !path.isAbsolute(folder))
-  .map(folder => path.resolve(appDirectory, folder))
+  .filter((folder) => folder && !path.isAbsolute(folder))
+  .map((folder) => path.resolve(appDirectory, folder))
   .join(path.delimiter);
+
+const acceleratorConfig = getAcceleratorConfigJs();
+delete acceleratorConfig.publicUrl;
 
 // Grab NODE_ENV, REACT_APP_*, and ACCELERATOR_* environment variables and prepare them to be
 // injected into the application via DefinePlugin in Webpack configuration.
-const REACT_APP = /^(REACT_APP_|ACCELERATOR_)/i;
+const keys = /^(REACT_APP_|ACCELERATOR_)/i;
 
 function getClientEnvironment(publicUrl) {
   const raw = Object.keys(process.env)
-    .filter(key => REACT_APP.test(key))
+    .filter((key) => keys.test(key))
     .reduce(
       (env, key) => {
         env[key] = process.env[key];
         return env;
       },
       {
+        ...acceleratorConfig,
+
         // Useful for determining whether we’re running in production mode.
         // Most importantly, it switches React into the correct mode.
-        NODE_ENV: process.env.NODE_ENV || 'development',
+        NODE_ENV: process.env.NODE_ENV || 'production',
         // Useful for resolving the correct path to static assets in `public`.
         // For example, <img src={process.env.PUBLIC_URL + '/img/logo.png'} />.
         // This should only be used as an escape hatch. Normally you would put
         // images into the `src` and `import` them in code to get their paths.
         PUBLIC_URL: publicUrl,
-      }
+      },
     );
+
   // Stringify all values so we can feed into Webpack DefinePlugin
   const stringified = {
     'process.env': Object.keys(raw).reduce(
@@ -84,11 +91,14 @@ function getClientEnvironment(publicUrl) {
         env[key] = JSON.stringify(raw[key]);
         return env;
       },
-      {}
+      {},
     ),
   };
 
-  return { raw, stringified };
+  return {
+    raw,
+    stringified,
+  };
 }
 
 module.exports = getClientEnvironment;

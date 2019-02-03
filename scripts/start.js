@@ -12,7 +12,7 @@ process.on('unhandledRejection', err => {
 // Ensure environment variables are read.
 require('../config/env');
 
-const fs = require('fs');
+const fs = require('fs-extra');
 const chalk = require('chalk');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
@@ -33,7 +33,7 @@ const useYarn = fs.existsSync(paths.yarnLockFile);
 const isInteractive = process.stdout.isTTY;
 
 // Warn and crash if required files are missing
-if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
+if (!checkRequiredFiles([paths.appHtml, paths.appIndex])) {
   process.exit(1);
 }
 
@@ -90,10 +90,10 @@ checkBrowsers(paths.appPath, isInteractive)
     devServer.listen(port, HOST, err => {
       if (err) {
         return console.log(err);
-      }
-      if (isInteractive) {
+      } else if (isInteractive) {
         clearConsole();
       }
+
       console.log(chalk.cyan('Starting the development server...\n'));
       openBrowser(urls.localUrlForBrowser);
     });

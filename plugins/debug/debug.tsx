@@ -6,13 +6,9 @@ import {
   getAcceleratorConfig,
 } from '../../src/configuration/getAcceleratorConfig';
 
-/* Only inject the dev plugin if the story is in dev mode. */
-const maybeContents = getAcceleratorConfig().debug ?
-  new DebugPlugin() :
-  {};
-
 export default {
-  ...maybeContents,
+  /* Only inject the debug plugin if the story is in debug mode. */
+  ...(getAcceleratorConfig().debug ? { contents: new DebugPlugin() } : {}),
   name: 'Debug',
   precedence: Number.MAX_SAFE_INTEGER,
 } as IPluginExport;
