@@ -8,11 +8,11 @@ import {
   getPluginsList,
 } from '../plugins/getPluginsList';
 import {
+  IAction,
+} from '../actions/IAction';
+import {
   IHistory,
 } from './IHistory';
-import {
-  IStoryStateAction,
-} from '../actions/IStoryStateAction';
 import {
   IStoryStateFrame,
 } from './IStoryStateFrame';
@@ -27,7 +27,7 @@ export function mutateCurrentStoryStateInstanceWithPluginExecution({
   history,
   updatedStateProps,
 }: {
-  dispatch: Dispatch<IStoryStateAction>,
+  dispatch: Dispatch<IAction>,
   history: IHistory,
   updatedStateProps: Partial<IStoryStateFrame>,
 }): void
@@ -39,9 +39,14 @@ export function mutateCurrentStoryStateInstanceWithPluginExecution({
     present: {
       currentPassageName,
       lastLinkTags,
-      storyState,
+      storyState: preupdateStoryState,
     },
   } = history;
+
+  const storyState = {
+    ...preupdateStoryState,
+    ...updatedStateProps,
+  };
 
   const {
     passagesMap: { [currentPassageName]: currentPassageObject },

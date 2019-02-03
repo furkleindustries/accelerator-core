@@ -8,6 +8,9 @@ import {
   getPluginsList,
 } from '../../plugins/getPluginsList';
 import {
+  IAction,
+} from '../../actions/IAction';
+import {
   IPassagePluginsWrapperStateProps,
 } from './IPassagePluginsWrapperStateProps';
 import {
@@ -38,7 +41,7 @@ export class PassagePluginsWrapper extends React.PureComponent<{ children: React
     store: ObjectProp,
   };
 
-  constructor(props: any) {
+  constructor(props: any, context: { store: Store<IState, IAction> }) {
     super(props);
 
     const {
@@ -52,7 +55,7 @@ export class PassagePluginsWrapper extends React.PureComponent<{ children: React
         dispatch,
         getState,
       },
-    }: { store: Store<IState> } = this.context;
+    } = context;
 
     /* Call the afterStoryInit method on all plugins. In practice, this should
      * only happen in two cases: firstly, when the story is first loaded in the
@@ -87,13 +90,12 @@ export class PassagePluginsWrapper extends React.PureComponent<{ children: React
      * plugins' beforeRender method each time story state is mutated. */
     const {
       store: { getState },
-    }: { store: Store<IState> } = this.context;
+    }: { store: Store<IState, IAction> } = this.context;
 
     let finalChildren = children;
     /* Apply the beforeRender lifecycle method of each plugin. */
     getPluginsList().forEach(({ beforeRender }) => {
       if (typeof beforeRender === 'function') {
-        debugger;
         finalChildren = beforeRender({
           children,
           lastLinkTags,
@@ -116,7 +118,7 @@ export class PassagePluginsWrapper extends React.PureComponent<{ children: React
 
     const {
       store: { getState },
-    }: { store: Store<IState> } = this.context;
+    }: { store: Store<IState, IAction> } = this.context;
     getPluginsList().forEach(({ afterPassageChange }) => {
       if (typeof afterPassageChange === 'function') {
         afterPassageChange({

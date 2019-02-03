@@ -37,16 +37,16 @@ export function getPluginsList(): IPlugin[] {
     none: [],
   };
 
-  manifest.forEach((pluginFileObj) => {
-    const pluginObj = pluginFileObj.pluginExport;
+  manifest.forEach(({ filepath, pluginExport, }) => {
+    const pluginObj = pluginExport;
     try {
       checkPluginExport(pluginObj);
     } catch (err) {
       const errStr = strings.PLUGIN_OBJECT_INVALID
-        .replace('%FILEPATH%', pluginFileObj.filepath)
+        .replace('%FILEPATH%', filepath)
         .replace('%REASON%', err);
   
-      throw new Error(errStr);
+      assert(null, errStr);
     }
 
     if (typeof pluginObj.precedence === 'number' &&
@@ -78,15 +78,17 @@ export function getPluginsList(): IPlugin[] {
   pluginsList = keys.map<IPluginExport[]>((key) => (
     /* Sort the plugins in each precedence in ascending lexicographic
      * order. */
-    pluginsPrecedenceMap[key].filter((exp => exp.contents)).sort((aa, bb) => {
-      if (aa.name < bb.name) {
-        return -1;
-      } else if (aa.name === bb.name) {
-        return 0;
-      }
+    pluginsPrecedenceMap[key]
+      .filter(((exp) => exp.contents))
+      .sort((aa, bb) => {
+        if (aa.name < bb.name) {
+          return -1;
+        } else if (aa.name === bb.name) {
+          return 0;
+        }
 
-      return 1;
-    })
+        return 1;
+      })
   )).reduce<IPlugin[]>((prev, curr) => (
     prev.concat(curr.map((aa) => aa.contents!))
   ), []);

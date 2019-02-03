@@ -23,6 +23,9 @@ import {
   mutateCurrentStoryStateInstanceWithPluginExecution,
 } from '../../state/mutateCurrentStoryStateInstanceWithPluginExecution';
 import {
+  object as ObjectProp,
+} from 'prop-types';
+import {
   connect,
   MapDispatchToProps,
   MapStateToProps,
@@ -40,6 +43,10 @@ export class CyclingLinkUnconnected extends React.PureComponent<
   ICyclingLinkOwnProps & ICyclingLinkStateProps & ICyclingLinkDispatchProps
 >
 {
+  public static contextTypes = {
+    context: ObjectProp,
+  };
+
   constructor(props: any) {
     super(props);
     this.callback = this.callback.bind(this);
