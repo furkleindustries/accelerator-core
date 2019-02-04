@@ -14,14 +14,18 @@ import {
   Dispatch,
 } from 'redux';
 import {
+  IManager,
+} from 'sound-manager';
+import {
   Tag,
 } from '../tags/Tag';
 
 export interface IPassageProps {
-  dispatch: Dispatch<IAction>;
-  lastLinkTags: Readonly<Tag[]>;
-  passageObject: IPassage;
-  storyState: IStoryStateFrame;
+  readonly dispatch: Dispatch<IAction>;
+  readonly lastLinkTags: Readonly<Tag[]>;
+  readonly passageObject: IPassage;
+  readonly soundManager: IManager;
+  readonly storyState: IStoryStateFrame;
   bookmark(): void;
   navigateTo(passageName: string, tags?: Readonly<Tag[]>): void;
   restart(): void;

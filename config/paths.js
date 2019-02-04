@@ -25,7 +25,6 @@ module.exports = {
   ],
 
   publicUrl,
-  dotenv: resolveApp('.env'),
   appPath: resolveApp('.'),
   appBuild: resolveApp('build-web'),
   appPublic: resolveApp('public'),

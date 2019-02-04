@@ -1,12 +1,15 @@
 import {
+  context,
+} from '../App/context';
+import {
   getFootersList,
 } from '../../passages/getFootersList';
 import {
-  IFooter,
-} from '../../passages/IFooter';
-import {
   HistoryFilter,
 } from '../../reducers/IHistoryFilter';
+import {
+  IManager,
+} from 'sound-manager';
 import {
   IPassageProps,
 } from '../../passages/IPassageProps';
@@ -38,6 +41,8 @@ export const strings = {
 };
 
 export class PassageFooters extends React.PureComponent<IPassageContentsContainerStateProps & IPassageContentsContainerDispatchProps> {
+  public static contextType = context;
+  
   public render() {
     const {
       bookmark: bookmark,
@@ -49,12 +54,15 @@ export class PassageFooters extends React.PureComponent<IPassageContentsContaine
       navigateTo,
     } = this.props;
 
+    const { soundManager }: { soundManager: IManager } = this.context;
+
     const propsPassedDown: IPassageProps = {
       bookmark,
       dispatch,
       lastLinkTags,
       navigateTo,
       passageObject,
+      soundManager,
       storyState,
       restart: this.restart,
       rewind: this.rewind,
@@ -67,8 +75,7 @@ export class PassageFooters extends React.PureComponent<IPassageContentsContaine
       },
     };
 
-    const footers: IFooter[] = getFootersList();
-    const footerComponents = footers.map(({ contents }, index) => {
+    const footerComponents = getFootersList().map(({ contents }, index) => {
       const safeContents = assertValid<React.ComponentClass<IPassageProps> | React.SFCFactory<IPassageProps>>(
         contents,
         strings.COMPONENT_CONSTRUCTOR_NOT_FOUND,

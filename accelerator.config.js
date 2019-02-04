@@ -8,7 +8,7 @@ module.exports = {
    * @property {string}
    * The page title which will be displayed in the browser.
    */
-  storyTitle: 'Untitled Accelerator Story',
+  storyTitle: '%name%',
 
   /** @property {string} 
    * The description of the story. This should be short and illustrative, and
@@ -35,6 +35,12 @@ module.exports = {
    */
   publicUrl: '.',
 
+  /**
+   * @property {string}
+   * The Interactive Fiction ID of the story.
+   */
+
+   ifid: '%ifid%',
   /**
    * @property {number}
    * Determines how many undo states will be saved. Any point in history further

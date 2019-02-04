@@ -1,4 +1,4 @@
-const getClientEnvironment = require('../env');
+const getAcceleratorConfigJs = require('../getAcceleratorConfigJs');
 const getHtmlWebpackPlugin = require('./getHtmlWebpackPlugin');
 const getManifestPlugin = require('./getManifestPlugin');
 const getTypeScriptForkChecker = require('./getTypeScriptForkChecker');
@@ -8,27 +8,23 @@ const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const paths = require('../paths');
 const webpack = require('webpack');
 
-// `publicUrl` is just like `publicPath`, but we will provide it to our app
-// as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
-// Omit trailing slash as %PUBLIC_PATH%/xyz looks better than %PUBLIC_PATH%xyz.
-const publicUrl = paths.publicUrl;
-// Get environment variables to inject into our app.
-const env = getClientEnvironment(publicUrl);
+// Get the accelerator config.
+const config = getAcceleratorConfigJs();
 
 module.exports = function getCommonPlugins(mode, useTypeScript) {  
   return [
     getHtmlWebpackPlugin(mode),
-    // Makes some environment variables available in index.html.
-    // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
-    // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    // Makes some environment variables and the config variables available in
+    // index.html The public URL is available as %publicUrl% in index.html,
+    // e.g.: <link rel="shortcut icon" href="%publicUrl%/favicon.ico">
     // In development, this will be an empty string.
-    new InterpolateHtmlPlugin(HtmlWebpackPlugin, env.raw),
+    new InterpolateHtmlPlugin(HtmlWebpackPlugin, config),
     // This gives some necessary context to module not found errors, such as
     // the requesting resource.
     new ModuleNotFoundPlugin(paths.appPath),
     // Makes some environment variables available to the JS code, for example:
     // if (process.env.NODE_ENV === 'development') { ... }. See `./env.js`.
-    new webpack.DefinePlugin(env.stringified),
+    new webpack.DefinePlugin({ NODE_ENV: process.env.NODE_ENV }),
     // Moment.js is an extremely popular library that bundles large locale files
     // by default due to how Webpack interprets its code. This is a practical
     // solution that requires the user to opt into importing specific locales.

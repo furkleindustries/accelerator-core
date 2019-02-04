@@ -1,9 +1,15 @@
 import {
+  context,
+} from './context';
+import {
   PassageContainerConnected,
 } from '../PassageContainer/PassageContainer';
 import {
   hot,
 } from 'react-hot-loader';
+import {
+  Manager,
+} from 'sound-manager';
 
 import * as React from 'react';
 
@@ -17,9 +23,11 @@ export class App extends React.Component {
     const passageContainer = <PassageContainerConnected />;
 
     return (
-      <div className={`${styles.app} app`}>
-        {passageContainer}
-      </div>
+      <context.Provider value={{ soundManager: new Manager() }}>
+        <div className={`${styles.app} app`}>
+          {passageContainer}
+        </div>
+      </context.Provider>
     );
   }
 }

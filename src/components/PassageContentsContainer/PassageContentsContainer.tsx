@@ -5,6 +5,9 @@ import {
   BuiltInTags,
 } from '../../tags/BuiltInTags';
 import {
+  context,
+} from '../App/context';
+import {
   getPassagesMap,
 } from '../../passages/getPassagesMap';
 import {
@@ -61,6 +64,9 @@ import {
   rewind,
 } from '../../state/rewind';
 import {
+  IManager,
+} from 'sound-manager';
+import {
   Tag,
 } from '../../tags/Tag';
 import {
@@ -90,6 +96,8 @@ export class PassageContentsContainer extends React.PureComponent<
   IPassageContentsContainerStateProps
 >
 {
+  public static contextType = context;
+
   constructor(props: any) {
     super(props);
 
@@ -109,6 +117,8 @@ export class PassageContentsContainer extends React.PureComponent<
       storyState,
     } = this.props;
 
+    const { soundManager }: { soundManager: IManager } = this.context;
+
     const safeContents = assertValid<React.ComponentClass<IPassageProps> | React.SFC<IPassageProps>>(
       contents,
       strings.COMPONENT_NOT_FOUND,
@@ -126,6 +136,7 @@ export class PassageContentsContainer extends React.PureComponent<
       lastLinkTags,
       navigateTo,
       passageObject,
+      soundManager,
       storyState,
       restart: this.restart,
       rewind: this.rewind,

@@ -1,4 +1,7 @@
 import {
+  context,
+} from '../App/context';
+import {
   getHeadersList,
 } from '../../passages/getHeadersList';
 import {
@@ -7,6 +10,9 @@ import {
 import {
   IHeader,
 } from '../../passages/IHeader';
+import {
+  IManager,
+} from 'sound-manager';
 import {
   IPassageProps,
 } from '../../passages/IPassageProps';
@@ -41,6 +47,8 @@ export const strings = {
 };
 
 export class PassageHeaders extends React.PureComponent<IPassageContentsContainerOwnProps & IPassageContentsContainerStateProps & IPassageContentsContainerDispatchProps> {
+  public static contextType = context;
+  
   constructor(props: any) {
     super(props);
 
@@ -59,12 +67,15 @@ export class PassageHeaders extends React.PureComponent<IPassageContentsContaine
       storyState,
     } = this.props;
 
+    const { soundManager }: { soundManager: IManager } = this.context;
+
     const propsPassedDown: IPassageProps = {
       bookmark,
       dispatch,
       lastLinkTags,
       navigateTo,
       passageObject,
+      soundManager,
       storyState,
       restart: this.restart,
       rewind: this.rewind,
