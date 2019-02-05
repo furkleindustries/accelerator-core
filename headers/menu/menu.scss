@@ -8,6 +8,10 @@
   margin: 0 10px;
 }
 
+.soundPanelButton {
+  position: relative;
+}
+
 .soundPanelCloseButton {
   position: absolute;
   right: 5px;
@@ -25,10 +29,6 @@
   box-sizing: border-box;
 }
 
-.soundPanelButton {
-  position: relative;
-}
-
 .soundPanelContentsContainer {
-  position: relative;
+  position: static;
 }

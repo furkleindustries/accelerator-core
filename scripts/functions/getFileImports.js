@@ -7,11 +7,8 @@ module.exports = function getFileImports(files) {
     importPaths,
     imports: files.map((filePath, index) => {
       const importPath = slash(
-        path.relative(
-          path.dirname(__dirname),
-          filePath,
-        ).replace(/\.[jt]sx?$/, '')
-      );
+        path.relative(path.dirname(__dirname), filePath),
+      ).replace(/\.[jt]sx?$/, '');
         
       importPaths.push(importPath);
       return `import import_${index} from '${importPath}';`;

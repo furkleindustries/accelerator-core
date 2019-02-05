@@ -21,11 +21,7 @@ import styles from './menu.scss';
 
 /* The header gets all the same props as a normal passage. */
 class Menu extends React.PureComponent<IPassageProps, IMenuState> {
-  public readonly state = {
-    soundPanel: undefined,
-    soundPanelVisible: false,
-  };
-
+  public readonly state: IMenuState = { soundPanelVisible: false };
   private readonly soundPanelRef: React.RefObject<HTMLDivElement> = React.createRef();
 
   constructor(props: any) {
@@ -95,7 +91,7 @@ class Menu extends React.PureComponent<IPassageProps, IMenuState> {
 
     /* All of this must be done through refs as sound-manager does not export
      * React components at present. */
-    const safeNode = assertValid<HTMLDivElement>(
+    const safeContainer = assertValid<HTMLDivElement>(
       this.soundPanelRef.current,
     );
 
@@ -104,9 +100,9 @@ class Menu extends React.PureComponent<IPassageProps, IMenuState> {
     );
 
     if (newVal) {
-      safeNode.appendChild(safeSoundPanel);
+      safeContainer.appendChild(safeSoundPanel);
     } else {
-      safeNode.removeChild(safeSoundPanel);
+      safeContainer.removeChild(safeSoundPanel);
     }
   }
 }
