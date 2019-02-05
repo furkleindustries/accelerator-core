@@ -116,7 +116,7 @@
     "react-redux": "^5.1.1",
     "redux": "^4.0.1",
     "redux-undo": "^1.0.0-beta9-9-7",
-    "sound-manager": "^0.6.6",
+    "sound-manager": "^0.6.11",
     "ts-assertions": "^1.0.11",
     "whatwg-fetch": "2.0.3"
   },

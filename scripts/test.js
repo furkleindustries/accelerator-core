@@ -14,7 +14,7 @@ const jest = require('jest');
 const { exec } = require('child_process');
 
 // Ensure environment variables are read.
-require('../config/env');
+require('../config/setBaseEnv')();
 
 let argv = process.argv.slice(2);
 

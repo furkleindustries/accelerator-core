@@ -5,7 +5,7 @@ import * as components from '../../src/passages/componentsBundle';
 import * as tagsBundle from '../../src/passages/tagsBundle';
 import builtInStyles from '../../src/passages/styles.scss';
 
-import styles from './%NAME%.scss';
+import styles from './%name%.scss';
 
 /* The header gets all the same props as a normal passage. */
 class Component extends React.PureComponent {
@@ -21,7 +21,7 @@ class Component extends React.PureComponent {
 
     return (
       <div
-        className={`${styles['%NAME%']} ${builtInStyles.header} header`}
+        className={`${styles['%name%']} ${builtInStyles.header} header`}
       >
       </div>
     );
@@ -30,7 +30,7 @@ class Component extends React.PureComponent {
 
 const passage = {
   /* string: the name of the header. */
-  name: '%NAME%',
+  name: '%name%',
 
   /* ComponentClass<IPassageProps, any> | SFCFactory<IPassageProps>:
    * the content that should be displayed. Should be formatted in JSX style. */

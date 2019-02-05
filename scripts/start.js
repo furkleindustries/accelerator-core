@@ -10,7 +10,7 @@ process.on('unhandledRejection', err => {
 });
 
 // Ensure environment variables are read.
-require('../config/env');
+require('../config/setBaseEnv')();
 
 const fs = require('fs-extra');
 const chalk = require('chalk');

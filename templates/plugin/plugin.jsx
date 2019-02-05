@@ -27,9 +27,9 @@ class Plugin {
    * returns this same element after any modification. */
   beforeRender(args) {
     const {
+      children,
       currentPassageObject,
       currentStoryState,
-      children,
       lastLinkTags,
     } = args;
     
@@ -66,7 +66,7 @@ class Plugin {
 
 const plugin = {
   /* string: the name of the plugin. */
-  name: '%NAME%',
+  name: '%name%',
 
   /* IPlugin: the instantiated plugin object. */
   contents: new Plugin(),

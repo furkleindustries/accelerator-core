@@ -5,6 +5,9 @@ import {
   HistoryFilter,
 } from '../reducers/IHistoryFilter';
 import {
+  IManager,
+} from 'sound-manager';
+import {
   IPassage,
 } from './IPassage';
 import {
@@ -13,9 +16,6 @@ import {
 import {
   Dispatch,
 } from 'redux';
-import {
-  IManager,
-} from 'sound-manager';
 import {
   Tag,
 } from '../tags/Tag';

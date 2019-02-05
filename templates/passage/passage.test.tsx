@@ -2,7 +2,7 @@ import {
   shallow,
 } from 'enzyme';
 
-import passage from './%NAME%';
+import passage from './%name%';
 
 import {
   BuiltInTags,
@@ -19,7 +19,7 @@ const {
   contents: Component,
 } = passage;
 
-describe('Tests for the %NAME% passage.', () => {
+describe('Tests for the %name% passage.', () => {
   it('Has a non-empty name string.', () => {
     expect(name && typeof name === 'string').toBe(true);
   });

@@ -23,7 +23,7 @@ class Component extends React.PureComponent<passages.IPassageProps> {
 
     return (
       <footer
-        className={`${styles['%NAME%']} ${builtInStyles.footer} footer`}
+        className={`${styles['%name%']} ${builtInStyles.footer} footer`}
       >
       </footer>
     );
@@ -32,7 +32,7 @@ class Component extends React.PureComponent<passages.IPassageProps> {
 
 const footer: passages.IFooter = {
   /* string: the name of the footer. */
-  name: '%NAME%',
+  name: '%name%',
   
   /* ComponentClass<IPassageProps, any> | SFCFactory<IPassageProps>:
    * the content that should be displayed. Should be formatted in JSX style. */

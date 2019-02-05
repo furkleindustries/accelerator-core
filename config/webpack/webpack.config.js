@@ -9,6 +9,9 @@ const getResolve = require('./getResolve');
 const getResolveLoader = require('./getResolveLoader');
 const paths = require('../paths');
 
+// Set the environment variables.
+require('../setBaseEnv')();
+
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
 const publicPath = '/';

@@ -7,20 +7,20 @@ class Plugin implements plugins.IPlugin {
   public afterStoryInit(args: plugins.IPluginMethodBaseArgs & plugins.IPluginMethodStateMutationArgs) {
     const {
       currentPassageObject,
-      currentStoryState,
       lastLinkTags,
       setStoryState,
       store,
+      storyState,
     } = args;
   }
 
   public beforePassageChange(args: plugins.IPluginMethodBaseArgs & plugins.IPluginMethodStateMutationArgs) {
     const {
       currentPassageObject,
-      currentStoryState,
       lastLinkTags,
       setStoryState,
       store,
+      storyState,
     } = args;
   }
 
@@ -30,9 +30,9 @@ class Plugin implements plugins.IPlugin {
   public beforeRender(args: plugins.IPluginMethodBaseArgs & plugins.IPluginMethodChildArgs) {
     const {
       currentPassageObject,
-      currentStoryState,
       children,
       lastLinkTags,
+      storyState,
     } = args;
     
     return children;
@@ -41,34 +41,34 @@ class Plugin implements plugins.IPlugin {
   public afterPassageChange(args: plugins.IPluginMethodBaseArgs & plugins.IPluginMethodStateMutationArgs) {
     const {
       currentPassageObject,
-      currentStoryState,
       lastLinkTags,
       setStoryState,
       store,
+      storyState,
     } = args;
   }
 
   public afterStoryStateChange(args: plugins.IPluginMethodBaseArgs & plugins.IPluginMethodStateChangingArgs) {
     const {
       currentPassageObject,
-      currentStoryState,
       lastLinkTags,
       updatedStateProps,
+      storyState,
     } = args;
   }
 
   public beforeRestart(args: plugins.IPluginMethodBaseArgs) {
     const {
       currentPassageObject,
-      currentStoryState,
       lastLinkTags,
+      storyState,
     } = args;
   }
 }
 
 const plugin: plugins.IPluginExport = {
   /* string: the name of the plugin. */
-  name: '%NAME%',
+  name: '%name%',
 
   /* IPlugin: the instantiated plugin object. */
   contents: new Plugin(),

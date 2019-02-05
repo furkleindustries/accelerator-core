@@ -6,7 +6,7 @@ import * as passages from '../../src/passages/passagesBundle';
 import * as tagsBundle from '../../src/passages/tagsBundle';
 import builtInStyles from '../../src/passages/styles.scss';
 
-import styles from './%NAME%.scss';
+import styles from './%name%.scss';
 
 /* The header gets all the same props as a normal passage. */
 class Component extends React.PureComponent<passages.IPassageProps> {
@@ -31,7 +31,7 @@ class Component extends React.PureComponent<passages.IPassageProps> {
 
 const passage: passages.IHeader = {
   /* string: the name of the header. */
-  name: '%NAME%',
+  name: '%name%',
 
   /* ComponentClass<IPassageProps, any> | SFCFactory<IPassageProps>:
    * the content that should be displayed. Should be formatted in JSX style. */

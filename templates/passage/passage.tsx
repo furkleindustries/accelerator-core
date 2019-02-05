@@ -8,7 +8,7 @@ import * as passages from '../../src/passages/passagesBundle';
 import * as tags from '../../src/passages/tagsBundle';
 
 import builtInStyles from '../../src/passages/styles.scss';
-import styles from './%NAME%.scss';
+import styles from './%name%.scss';
 
 class Component extends React.PureComponent<passages.IPassageProps> {
   public render() {
@@ -33,7 +33,7 @@ class Component extends React.PureComponent<passages.IPassageProps> {
 
 const passage: passages.IPassage = {
   /* string: the story-unique name of the passage. */
-  name: '%NAME%',
+  name: '%name%',
   
   /* string: an optional expanded title for the passage to be printed
    * each time a passage is displayed. */

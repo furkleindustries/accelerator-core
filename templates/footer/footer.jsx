@@ -5,7 +5,7 @@ import * as components from '../../src/passages/componentsBundle';
 import * as tagsBundle from '../../src/passages/tagsBundle';
 import builtInStyles from '../../src/passages/styles.scss';
 
-import _styles from './%NAME%.scss';
+import _styles from './%name%.scss';
 const styles = _styles || {};
 
 /* The footer gets all the same props as a normal passage. */
@@ -22,7 +22,7 @@ class Component extends React.PureComponent {
 
     return (
       <footer
-        className={`${styles['%NAME%']} ${builtInStyles.footer} footer`}
+        className={`${styles['%name%']} ${builtInStyles.footer} footer`}
       >
       </footer>
     );
@@ -31,7 +31,7 @@ class Component extends React.PureComponent {
 
 const footer = {
   /* string: the name of the footer. */
-  name: '%NAME%',
+  name: '%name%',
   
   /* ComponentClass<IPassageProps, any> | SFCFactory<IPassageProps>:
    * the content that should be displayed. Should be formatted in JSX style. */

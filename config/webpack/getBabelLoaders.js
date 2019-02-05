@@ -1,8 +1,11 @@
+const getNodeModulesToTranspile = require('./getNodeModulesToTranspile');
+const path = require('path');
 const paths = require('../paths');
 
 /**
  * @see https://babeljs.io/docs/en/options
  */
+
 module.exports = function getBabelLoaders(mode) {
   return [
     // Process application JS with Babel.
@@ -16,6 +19,9 @@ module.exports = function getBabelLoaders(mode) {
         paths.footersSrc,
         paths.pluginsSrc,
         paths.acceleratorConfig,
+        ...getNodeModulesToTranspile().map((moduleName) => (
+          path.join(paths.appNodeModules, moduleName)
+        )),
       ],
 
       loader: require.resolve('babel-loader'),

@@ -8,7 +8,7 @@ import * as components from '../../src/passages/componentsBundle';
 import * as tagsBundle from '../../src/passages/tagsBundle';
 import builtInStyles from '../../src/passages/styles.scss';
 
-import _styles from './%NAME%.scss';
+import _styles from './%name%.scss';
 const styles = _styles || {};
 
 class Component extends React.PureComponent {
@@ -33,7 +33,7 @@ class Component extends React.PureComponent {
 
 const passage = {
   /* string: the story-unique name of the passage. */
-  name: '%NAME%',
+  name: '%name%',
   
   /* string: an optional expanded title for the passage to be printed
    * each time a passage is displayed. */

@@ -3,7 +3,10 @@
     "outDir": "build-web/",
     "module": "esnext",
     "target": "es5",
-    "lib": ["es6", "dom"],
+    "lib": [
+      "esnext",
+      "dom",
+    ],
     "sourceMap": true,
     "allowJs": true,
     "jsx": "react",
@@ -35,7 +38,6 @@
     "config/",
     "coverage/",
     "scripts/",
-    "node_modules/",
     "templates/",
     "acceptance-tests",
     "**/*.test.*"

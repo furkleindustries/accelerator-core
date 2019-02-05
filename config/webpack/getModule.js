@@ -1,6 +1,5 @@
 const getBabelLoaders = require('./getBabelLoaders');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
-const getFileLoader = require('./getFileLoader');
 const getStyleLoaders = require('./getStyleLoaders');
 const paths = require('../paths');
 
@@ -70,13 +69,14 @@ module.exports = function getModule(mode, publicPath) {
           {
             test: cssRegex,
             use: getStyleLoaders({
-              mode,
-              publicPath,
               cssOptions: {
+                getLocalIdent: getCSSModuleLocalIdent,
                 importLoaders: 1,
                 modules: true,
-                getLocalIdent: getCSSModuleLocalIdent,
-              }
+              },
+
+              mode,
+              publicPath,
             }),
           },
 
@@ -84,19 +84,32 @@ module.exports = function getModule(mode, publicPath) {
           {
             test: sassRegex,
             use: getStyleLoaders({
-              mode,
-              publicPath,
               cssOptions: {
                 importLoaders: 2,
                 modules: true,
                 getLocalIdent: getCSSModuleLocalIdent,
               },
-
+              
+              mode,
+              publicPath,
               preProcessor: 'sass-loader',
             }),
           },
 
-          getFileLoader(),
+          // "file" loader makes sure assets end up in the `build` folder.
+          // When you `import` an asset, you get its filename.
+          // This loader doesn't use a "test" so it will catch all modules
+          // that fall through the other loaders.
+          {
+            loader: require.resolve('file-loader'),
+
+            // Exclude `js` files to keep "css" loader working as it injects
+            // its runtime that would otherwise be processed through "file" loader.
+            // Also exclude `html` and `json` extensions so they get processed
+            // by webpack's internal loaders.
+            exclude: [ /\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/, ],
+            options: { name: 'static/media/[name].[hash:8].[ext]' },
+          },
         ],
       },
 
