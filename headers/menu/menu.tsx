@@ -35,18 +35,17 @@ class Menu extends React.PureComponent<IPassageProps, IMenuState> {
 
   public componentDidMount() {
     const { soundManager } = this.props;
-    const newPanel = soundManager.generateVolumePanelElement();
-    this.setState({ soundPanel: newPanel });
+    this.setState({ soundPanel: soundManager.generateVolumePanelElement() });
   }
 
   public render() {
     const { soundPanelVisible } = this.state;
 
     return (
-      <div
+      <header
         className={`${styles.menu} ${builtInStyles.header} header`}
       >
-        <div className={`${styles.rewind} rewind`}>
+        <div className={`${styles.rewindContainer} rewind`}>
           <RewindButton>
             Rewind
           </RewindButton>
@@ -81,7 +80,7 @@ class Menu extends React.PureComponent<IPassageProps, IMenuState> {
             </div>
           </div>
         </div>
-      </div>
+      </header>
     );
   }
 
