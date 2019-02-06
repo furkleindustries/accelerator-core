@@ -92,8 +92,8 @@ export const strings = {
 
 export class PassageContentsContainer extends React.PureComponent<
   IPassageContentsContainerOwnProps &
-  IPassageContentsContainerDispatchProps &
-  IPassageContentsContainerStateProps
+  IPassageContentsContainerStateProps &
+  IPassageContentsContainerDispatchProps
 >
 {
   public static contextType = context;
@@ -203,9 +203,7 @@ export const mapStateToProps: MapStateToProps<IPassageContentsContainerStateProp
   };
 };
 
-export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDispatchProps, IPassageContentsContainerOwnProps> = (
-  dispatch: Dispatch<IAction>,
-) => ({
+export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDispatchProps, IPassageContentsContainerOwnProps> = (dispatch: Dispatch<IAction>) => ({
   dispatch,
 
   bookmark() {

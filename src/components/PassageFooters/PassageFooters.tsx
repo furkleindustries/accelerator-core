@@ -17,6 +17,9 @@ import {
   IPassageContentsContainerDispatchProps,
 } from '../PassageContentsContainer/IPassageContentsContainerDispatchProps';
 import {
+  IPassageContentsContainerOwnProps,
+} from '../PassageContentsContainer/IPassageContentsContainerOwnProps';
+import {
   IPassageContentsContainerStateProps,
 } from '../PassageContentsContainer/IPassageContentsContainerStateProps';
 import {
@@ -40,12 +43,16 @@ export const strings = {
     'There was no contents property found in the footer with name %NAME%.',
 };
 
-export class PassageFooters extends React.PureComponent<IPassageContentsContainerStateProps & IPassageContentsContainerDispatchProps> {
+export class PassageFooters extends React.PureComponent<
+  IPassageContentsContainerOwnProps &
+  IPassageContentsContainerStateProps &
+  IPassageContentsContainerDispatchProps
+> {
   public static contextType = context;
   
   public render() {
     const {
-      bookmark: bookmark,
+      bookmark,
       dispatch,
       history,
       lastLinkTags,

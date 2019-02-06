@@ -48,11 +48,21 @@ export class PassageContainer extends React.PureComponent<IPassageContainerState
         null :
         <div className={`${styles.passageContainer} passageContainer`}>
           <PassagePluginsWrapperConnected>
-            <PassageHeadersConnected />
+            {
+              /* Weird bug where react-redux is arguing with the types
+               * since the last major version. Remember to file against
+               * https://github.com/reduxjs/react-redux */
+              // @ts-ignore
+              <PassageHeadersConnected />
+            }
 
             <PassageContentsContainerConnected />
 
-            <PassageFootersConnected />
+            {
+              /* See above re: react-redux bug. */
+              // @ts-ignore
+              <PassageFootersConnected />
+            }
           </PassagePluginsWrapperConnected>
         </div>
     );

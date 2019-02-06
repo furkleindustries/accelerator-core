@@ -46,7 +46,11 @@ export const strings = {
     'There was no contents property found in the header with name %NAME%.',
 };
 
-export class PassageHeaders extends React.PureComponent<IPassageContentsContainerOwnProps & IPassageContentsContainerStateProps & IPassageContentsContainerDispatchProps> {
+export class PassageHeaders extends React.PureComponent<
+  IPassageContentsContainerOwnProps &
+  IPassageContentsContainerStateProps &
+  IPassageContentsContainerDispatchProps
+> {
   public static contextType = context;
   
   constructor(props: any) {

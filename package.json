@@ -1,8 +1,8 @@
 {
   "name": "accelerator-core",
   "author": "furkle",
-  "version": "0.9.3",
-  "license": "GPL-3.0",
+  "version": "0.10.0",
+  "license": "GPL-3.0-or-later",
   "homepage": "https://github.com/furkleindustries/accelerator-core#readme",
   "bugs": {
     "url": "https://github.com/furkleindustries/accelerator-core/issues"
@@ -44,7 +44,7 @@
     "@types/node": "^10.12.0",
     "@types/react": "^16.4.18",
     "@types/react-dom": "^16.0.9",
-    "@types/react-redux": "^6.0.9",
+    "@types/react-redux": "^7.0.1",
     "@types/webpack": "^4.4.17",
     "ajv": "^6.8.1",
     "babel-core": "7.0.0-bridge.0",
@@ -113,7 +113,7 @@
     "react": "^16.7.0",
     "react-app-polyfill": "^0.2.0",
     "react-dom": "^16.7.0",
-    "react-redux": "^5.1.1",
+    "react-redux": "^6.0.0",
     "redux": "^4.0.1",
     "redux-undo": "^1.0.0-beta9-9-7",
     "sound-manager": "^0.6.11",
