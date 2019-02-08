@@ -1,6 +1,7 @@
 const getBabelLoaders = require('./getBabelLoaders');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 const getStyleLoaders = require('./getStyleLoaders');
+const getUnlintedAuthoredDirectories = require('../testing/getUnlintedAuthoredDirectories');
 const paths = require('../paths');
 
 // style files regexes
@@ -25,6 +26,9 @@ module.exports = function getModule(mode, publicPath, shouldUseSourceMap) {
       // It's important to do this before Babel processes the JS.
       {
         test: /\.(js|mjs|jsx)$/,
+        exclude: [
+          ...getUnlintedAuthoredDirectories(),
+        ],
         enforce: 'pre',
         use: [
           /**
@@ -33,8 +37,9 @@ module.exports = function getModule(mode, publicPath, shouldUseSourceMap) {
           {
             loader: require.resolve('eslint-loader'),
             options: {
+              configFile: paths.resolve(__dirname, '..', '..', '.eslintrc.js'),
+              eslintPath: require.resolve('eslint'),
               formatter: require.resolve('react-dev-utils/eslintFormatter'),
-              eslintPath: require.resolve('eslint'),   
             },
           },
         ],
