@@ -2,6 +2,7 @@ const getBabelLoaders = require('./getBabelLoaders');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 const getStyleLoaders = require('./getStyleLoaders');
 const getUnlintedAuthoredDirectories = require('../testing/getUnlintedAuthoredDirectories');
+const path = require('path');
 const paths = require('../paths');
 
 // style files regexes
@@ -37,7 +38,7 @@ module.exports = function getModule(mode, publicPath, shouldUseSourceMap) {
           {
             loader: require.resolve('eslint-loader'),
             options: {
-              configFile: paths.resolve(__dirname, '..', '..', '.eslintrc.js'),
+              configFile: path.join(__dirname, '..', '..', '.eslintrc.js'),
               eslintPath: require.resolve('eslint'),
               formatter: require.resolve('react-dev-utils/eslintFormatter'),
             },
