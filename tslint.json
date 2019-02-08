@@ -10,6 +10,10 @@
       "build*/",
       "config/",
       "coverage/**/*",
+      "footers/",
+      "headers/",
+      "passages/",
+      "plugins/",
       "node_modules/",
       "templates/"
     ]

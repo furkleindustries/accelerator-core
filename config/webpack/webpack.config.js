@@ -52,7 +52,7 @@ module.exports = {
   output: getOutput(mode, publicPath),
   resolve: getResolve(useTypeScript),
   resolveLoader: getResolveLoader(),
-  module: getModule(mode, publicPath),
+  module: getModule(mode, publicPath, shouldUseSourceMap),
   plugins: getPlugins({
     mode,
     publicPath,

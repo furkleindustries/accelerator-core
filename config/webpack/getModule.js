@@ -4,10 +4,12 @@ const getStyleLoaders = require('./getStyleLoaders');
 const paths = require('../paths');
 
 // style files regexes
+const cssNoModuleRegex = /\.nomodule\.css$/;
 const cssRegex = /\.css$/;
-const sassRegex = /\.(scss|sass)$/;
+const sassNoModuleRegex = /\.nomodule\.s[ac]ss$/;
+const sassRegex = /\.s[ac]ss$/;
 
-module.exports = function getModule(mode, publicPath) {
+module.exports = function getModule(mode, publicPath, shouldUseSourceMap) {
   return {
     strictExportPresence: true,
     rules: [
@@ -65,6 +67,40 @@ module.exports = function getModule(mode, publicPath) {
 
           ...getBabelLoaders(mode),
 
+          // CSS with no modules
+          {
+            test: cssNoModuleRegex,
+            use: getStyleLoaders({
+              mode,
+              publicPath,
+              cssOptions: {
+                importLoaders: 1,
+                sourceMap: mode !== 'development' && shouldUseSourceMap,
+              },
+            }),
+
+            // Don't consider CSS imports dead code even if the
+            // containing package claims to have no side effects.
+            // Remove this when webpack adds a warning or an error for this.
+            // See https://github.com/webpack/webpack/issues/6571
+            sideEffects: true,
+          },
+
+          // Sass without CSS Modules
+          {
+            test: sassNoModuleRegex,
+            use: getStyleLoaders({              
+              mode,
+              publicPath,
+              cssOptions: {
+                importLoaders: 2,
+                sourceMap: mode !== 'development' && shouldUseSourceMap,
+              },
+
+              preProcessor: 'sass-loader',
+            }),
+          },
+
           // Adds support for CSS Modules (https://github.com/css-modules/css-modules)
           {
             test: cssRegex,
@@ -80,7 +116,7 @@ module.exports = function getModule(mode, publicPath) {
             }),
           },
 
-          // Adds support for CSS Modules, but using SASS
+          // Adds support for CSS Modules with Sass
           {
             test: sassRegex,
             use: getStyleLoaders({
@@ -89,7 +125,7 @@ module.exports = function getModule(mode, publicPath) {
                 modules: true,
                 getLocalIdent: getCSSModuleLocalIdent,
               },
-              
+
               mode,
               publicPath,
               preProcessor: 'sass-loader',
@@ -107,7 +143,7 @@ module.exports = function getModule(mode, publicPath) {
             // its runtime that would otherwise be processed through "file" loader.
             // Also exclude `html` and `json` extensions so they get processed
             // by webpack's internal loaders.
-            exclude: [ /\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/, ],
+            exclude: [ /\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/ ],
             options: { name: 'static/media/[name].[hash:8].[ext]' },
           },
         ],
