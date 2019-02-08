@@ -5,9 +5,6 @@ import {
   BuiltInTags,
 } from '../../tags/BuiltInTags';
 import {
-  context,
-} from '../App/context';
-import {
   getPassagesMap,
 } from '../../passages/getPassagesMap';
 import {
@@ -64,9 +61,6 @@ import {
   rewind,
 } from '../../state/rewind';
 import {
-  IManager,
-} from 'sound-manager';
-import {
   Tag,
 } from '../../tags/Tag';
 import {
@@ -75,6 +69,8 @@ import {
 } from 'ts-assertions';
 
 import * as React from 'react';
+import { IManager } from 'sound-manager';
+import { getSoundManagerContext } from '../../state/getSoundManagerContext';
 
 export const strings = {
   COMPONENT_NOT_FOUND:
@@ -96,7 +92,7 @@ export class PassageContentsContainer extends React.PureComponent<
   IPassageContentsContainerDispatchProps
 >
 {
-  public static contextType = context;
+  public static contextType = getSoundManagerContext();
 
   constructor(props: any) {
     super(props);
@@ -116,9 +112,8 @@ export class PassageContentsContainer extends React.PureComponent<
       passageObject: { contents },
       storyState,
     } = this.props;
-
+    
     const { soundManager }: { soundManager: IManager } = this.context;
-
     const safeContents = assertValid<React.ComponentClass<IPassageProps> | React.SFC<IPassageProps>>(
       contents,
       strings.COMPONENT_NOT_FOUND,
@@ -179,7 +174,12 @@ export class PassageContentsContainer extends React.PureComponent<
   }
 }
 
-export const mapStateToProps: MapStateToProps<IPassageContentsContainerStateProps, IPassageContentsContainerOwnProps, IState> = ({
+export const mapStateToProps: MapStateToProps<
+  IPassageContentsContainerStateProps,
+  IPassageContentsContainerOwnProps,
+  IState
+> =
+({
   history,
   history: {
     present: {

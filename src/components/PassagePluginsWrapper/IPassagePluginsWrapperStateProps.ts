@@ -6,6 +6,6 @@ import {
 } from '../../tags/Tag';
 
 export interface IPassagePluginsWrapperStateProps {
-  currentPassageObject: IPassage;
-  lastLinkTags: Tag[];
+  readonly currentPassageObject: IPassage;
+  readonly lastLinkTags: Tag[];
 }

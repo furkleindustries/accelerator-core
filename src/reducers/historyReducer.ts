@@ -46,7 +46,7 @@ export const historyReducer = undoable(
     currentPassageName: currentPassageNameReducer,
     lastLinkTags: lastLinkTagsReducer,
     midrenderSignalCounter: midrenderSignalCounterReducer,
-    passageTime: passageTimeReducer,
+    passageTimeCounter: passageTimeReducer,
     storyState: storyStateReducer,
   }),
   {

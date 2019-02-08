@@ -1,7 +1,6 @@
 const getBabelLoaders = require('./getBabelLoaders');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 const getStyleLoaders = require('./getStyleLoaders');
-const getUnlintedAuthoredDirectories = require('../testing/getUnlintedAuthoredDirectories');
 const path = require('path');
 const paths = require('../paths');
 
@@ -27,9 +26,6 @@ module.exports = function getModule(mode, publicPath, shouldUseSourceMap) {
       // It's important to do this before Babel processes the JS.
       {
         test: /\.(js|mjs|jsx)$/,
-        exclude: [
-          ...getUnlintedAuthoredDirectories(),
-        ],
         enforce: 'pre',
         use: [
           /**

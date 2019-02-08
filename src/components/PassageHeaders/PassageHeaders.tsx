@@ -1,7 +1,4 @@
 import {
-  context,
-} from '../App/context';
-import {
   getHeadersList,
 } from '../../passages/getHeadersList';
 import {
@@ -10,9 +7,6 @@ import {
 import {
   IHeader,
 } from '../../passages/IHeader';
-import {
-  IManager,
-} from 'sound-manager';
 import {
   IPassageProps,
 } from '../../passages/IPassageProps';
@@ -40,6 +34,8 @@ import {
 } from 'ts-assertions';
 
 import * as React from 'react';
+import { getSoundManagerContext } from '../../state/getSoundManagerContext';
+import { IManager } from 'sound-manager';
 
 export const strings = {
   COMPONENT_CONSTRUCTOR_NOT_FOUND:
@@ -51,8 +47,8 @@ export class PassageHeaders extends React.PureComponent<
   IPassageContentsContainerStateProps &
   IPassageContentsContainerDispatchProps
 > {
-  public static contextType = context;
-  
+  public static contextType = getSoundManagerContext();
+
   constructor(props: any) {
     super(props);
 
@@ -70,7 +66,7 @@ export class PassageHeaders extends React.PureComponent<
       passageObject,
       storyState,
     } = this.props;
-
+    
     const { soundManager }: { soundManager: IManager } = this.context;
 
     const propsPassedDown: IPassageProps = {
@@ -100,7 +96,7 @@ export class PassageHeaders extends React.PureComponent<
       );
 
       return React.createElement(
-        contents as React.ComponentClass<IPassageProps> | React.SFCFactory<IPassageProps>,
+        contents as React.ComponentClass<IPassageProps> | React.SFC<IPassageProps>,
         Object.assign({}, propsPassedDown, { key: index, }),
       );
     });

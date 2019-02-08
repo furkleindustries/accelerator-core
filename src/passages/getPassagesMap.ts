@@ -49,12 +49,11 @@ export const strings = {
 let passagesMap: IPassagesMap | null = null;
 let startPassage: IPassage | null = null;
 
-interface IReturn {
+
+export function getPassagesMap(): {
   passagesMap: IPassagesMap;
   startPassage: IPassage;
-}
-
-export function getPassagesMap(): IReturn {
+} {
   /* Return the memoized results if they exist. */
   if (passagesMap && startPassage) {
     return {

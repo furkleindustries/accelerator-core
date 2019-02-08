@@ -9,7 +9,7 @@ import * as React from 'react';
 
 import styles from './Clicker.scss';
 
-export class Clicker extends React.Component<IClickerOwnProps, IClickerState> {
+export class Clicker extends React.PureComponent<IClickerOwnProps, IClickerState> {
   public state = {
     clicked: false,
   }

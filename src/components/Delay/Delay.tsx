@@ -4,34 +4,32 @@ import {
 import {
   IDelayState,
 } from './IDelayState';
+import {
+  assert,
+} from 'ts-assertions';
 
 import * as React from 'react';
 
 export const strings = {
   TIMEOUT_NOT_GREATER_THAN_OR_EQUAL_TO_ZERO_NUMBER:
     'The timeout argument passed to a Delay component was not a number ' +
-    'greater than or equal to zero.',
+    'greater zero.',
 };
 
-export class Delay extends React.Component<IDelayOwnProps, IDelayState> {
-  public state = {
-    shown: false,
-  }
+export class Delay extends React.PureComponent<IDelayOwnProps, IDelayState> {
+  public state = { shown: false };
 
   public componentDidMount() {
     const {
       timeout,
     } = this.props;
 
-    if (!(timeout >= 0)) {
-      throw new Error(strings.TIMEOUT_NOT_GREATER_THAN_OR_EQUAL_TO_ZERO_NUMBER);
-    }
+    assert(
+      timeout > 0,
+      strings.TIMEOUT_NOT_GREATER_THAN_OR_EQUAL_TO_ZERO_NUMBER,
+    );
 
-    setTimeout(() => {
-      this.setState({
-        shown: true,
-      });
-    }, timeout);
+    setTimeout(() => this.setState({ shown: true }), timeout);
   }
 
   public render() {
@@ -41,9 +39,7 @@ export class Delay extends React.Component<IDelayOwnProps, IDelayState> {
       renderWithZeroOpacity,
     } = this.props;
 
-    const {
-      shown,
-    } = this.state;
+    const { shown } = this.state;
 
     const classNameStr = `delay${className ? ` ${className}` : ''}`;
 
@@ -62,8 +58,8 @@ export class Delay extends React.Component<IDelayOwnProps, IDelayState> {
           {children}
         </div>
       )
-    } else {
-      return null;
     }
+    
+    return null;
   }
 }

@@ -7,7 +7,7 @@ import {
 
 import * as React from 'react';
 
-export class Cycler extends React.Component<ICyclerOwnProps, ICyclerState> {
+export class Cycler extends React.PureComponent<ICyclerOwnProps, ICyclerState> {
   public state = { index: 0 };
 
   constructor(props: any) {

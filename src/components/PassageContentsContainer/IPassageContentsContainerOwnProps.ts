@@ -1,3 +1,4 @@
 // tslint:disable
-export interface IPassageContentsContainerOwnProps {}
+export interface IPassageContentsContainerOwnProps {
+}
 // tslint:enable

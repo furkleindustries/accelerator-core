@@ -50,8 +50,8 @@ export class PassageContainer extends React.PureComponent<IPassageContainerState
           <PassagePluginsWrapperConnected>
             {
               /* Weird bug where react-redux is arguing with the types
-               * since the last major version. Remember to file against
-               * https://github.com/reduxjs/react-redux */
+              * since the last major version. Remember to file against
+              * https://github.com/reduxjs/react-redux */
               // @ts-ignore
               <PassageHeadersConnected />
             }

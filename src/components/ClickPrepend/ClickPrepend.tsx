@@ -7,7 +7,7 @@ import {
 
 import * as React from 'react';
 
-export class ClickPrepend extends React.Component<IClickPrependOwnProps> {
+export class ClickPrepend extends React.PureComponent<IClickPrependOwnProps> {
   public render() {
     const {
       children,
@@ -15,12 +15,10 @@ export class ClickPrepend extends React.Component<IClickPrependOwnProps> {
       toPrepend,
     } = this.props;
 
-    const maybeClassName = className ? { className, } : {};
-
     return (
       <Clicker
-        {...maybeClassName}
         contentAfterClick={[ toPrepend, children, ]}
+        {...(className ? { className } : {})}
       >
         {children}
       </Clicker>

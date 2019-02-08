@@ -23,7 +23,7 @@ export const strings = {
     'The `shuffled` state value '
 };
 
-export class NOf extends React.Component<INOfOwnProps, INOfState> {
+export class NOf extends React.PureComponent<INOfOwnProps, INOfState> {
   public state = {
     index: 0,
     shuffled: undefined,

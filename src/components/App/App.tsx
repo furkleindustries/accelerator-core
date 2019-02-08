@@ -1,6 +1,6 @@
 import {
-  context,
-} from './context';
+  getSoundManagerContext,
+} from '../../state/getSoundManagerContext';
 import {
   PassageContainerConnected,
 } from '../PassageContainer/PassageContainer';
@@ -8,26 +8,25 @@ import {
   hot,
 } from 'react-hot-loader';
 import {
-  Manager,
+  createManager,
 } from 'sound-manager';
 
 import * as React from 'react';
 
 import styles from './App.scss';
 
-export class App extends React.Component {
+export class App extends React.PureComponent {
   public render() {
-    /* No clue why this is working. Something in the Redux typing is failing
-     * in a way that's making it ask for store state props as own props. */
-    // @ts-ignore
-    const passageContainer = <PassageContainerConnected />;
-
+    const soundManagerContext = getSoundManagerContext();
     return (
-      <context.Provider value={{ soundManager: new Manager() }}>
+      <soundManagerContext.Provider value={{ soundManager: createManager() }}>
         <div className={`${styles.app} app`}>
-          {passageContainer}
+          {
+            // @ts-ignore
+            <PassageContainerConnected />
+          }
         </div>
-      </context.Provider>
+      </soundManagerContext.Provider>
     );
   }
 }
