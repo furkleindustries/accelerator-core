@@ -1,5 +1,3 @@
-/** @see https://github.com/furkleindustries/ */
-
 /* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
 import * as React from 'react';
 

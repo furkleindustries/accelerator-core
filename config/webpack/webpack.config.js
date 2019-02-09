@@ -7,10 +7,6 @@ const getOutput = require('./getOutput');
 const getPlugins = require('./getPlugins');
 const getResolve = require('./getResolve');
 const getResolveLoader = require('./getResolveLoader');
-const paths = require('../paths');
-
-// Set the environment variables.
-require('../setBaseEnv')();
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -26,14 +22,11 @@ const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
 
 const devtool = mode === 'development' ?
   'cheap-module-source-map' :
-  shouldUseSourceMap ? 'source-map' : false;
+  (shouldUseSourceMap ? 'source-map' : false);
 
 // Some apps do not need the benefits of saving a web request, so not inlining the chunk
 // makes for a smoother build process.
 const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== 'false';
-
-// Check if TypeScript is setup
-const useTypeScript = fs.existsSync(paths.appTsConfig);
 
 // This is the development configuration.
 // It is focused on developer experience and fast rebuilds.
@@ -45,23 +38,21 @@ module.exports = {
   devtool,
   // Don't attempt to continue in production if there are any errors.
   bail: mode !== 'development',
+  stats: 'verbose',
   // These are the "entry points" to our application.
   // This means they will be the "root" imports that are included in JS bundle.
   entry: getEntry(mode),
-  optimization: getOptimization(mode, shouldUseSourceMap),
-  output: getOutput(mode, publicPath),
-  resolve: getResolve(useTypeScript),
+  resolve: getResolve(),
   resolveLoader: getResolveLoader(),
   module: getModule(mode, publicPath, shouldUseSourceMap),
+  optimization: getOptimization(mode, shouldUseSourceMap),
+  output: getOutput(mode, publicPath),
   plugins: getPlugins({
     mode,
     publicPath,
     shouldInlineRuntimeChunk,
-    useTypeScript,
   }),
 
-  // Some libraries import Node modules but don't use them in the browser.
-  // Tell Webpack to provide empty mocks for them so importing them works.
   node: getEmptyNodeModulesMap(),
   // Turn off performance processing because we utilize
   // our own hints via the FileSizeReporter

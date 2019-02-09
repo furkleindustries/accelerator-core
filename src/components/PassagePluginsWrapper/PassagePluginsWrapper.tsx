@@ -115,7 +115,9 @@ export class PassagePluginsWrapper extends React.PureComponent<IPassagePluginsWr
 
     /* Don't execute the beforeRender plugins, returning the memoized value
      * instead, if the passage time has not increased since the last render. */
-    if (this.__lastPassageTime === passageTimeCounter) {
+    if (this.__lastPluginsBeforeRenderOutput &&
+        this.__lastPassageTime === passageTimeCounter)
+    {
       return this.__lastPluginsBeforeRenderOutput;
     }
 
@@ -169,13 +171,13 @@ export const mapStateToProps: MapStateToProps<IPassagePluginsWrapperStateProps, 
   history: {
     present: {
       lastLinkTags,
-      currentPassageName: name,
+      currentPassageName,
     },
   },
 }) =>
 ({
   lastLinkTags,
-  currentPassageObject: passagesMap[name],
+  currentPassageObject: passagesMap[currentPassageName],
 });
 
 export const PassagePluginsWrapperConnected = connect(

@@ -10,21 +10,21 @@ const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 const { publicUrl } = getAcceleratorConfigJs();
 
 module.exports = {
+  publicUrl,
   moduleFileExtensions: [
-    'web.mjs',
+    'js',
+    'jsx',
     'mjs',
     'web.js',
-    'js',
-    'web.ts',
-    'ts',
-    'web.tsx',
-    'tsx',
-    'json',
+    'web.mjs',
     'web.jsx',
-    'jsx',
+    'ts',
+    'tsx',
+    'web.ts',
+    'web.tsx',
+    'json',
   ],
 
-  publicUrl,
   appPath: resolveApp('.'),
   appBuild: resolveApp('build-web'),
   appPublic: resolveApp('public'),

@@ -11,11 +11,11 @@ const webpack = require('webpack');
 // Get the accelerator config.
 const config = getAcceleratorConfigJs();
 
-module.exports = function getCommonPlugins(mode, useTypeScript) {  
+module.exports = function getCommonPlugins(mode) {  
   return [
     getHtmlWebpackPlugin(mode),
-    // Makes some environment variables and the config variables available in
-    // index.html The public URL is available as %publicUrl% in index.html,
+    // Makes the config variables available in index.html.
+    // The public URL is available as %publicUrl% in index.html,
     // e.g.: <link rel="shortcut icon" href="%publicUrl%/favicon.ico">
     // In development, this will be an empty string.
     new InterpolateHtmlPlugin(HtmlWebpackPlugin, config),
@@ -29,10 +29,10 @@ module.exports = function getCommonPlugins(mode, useTypeScript) {
     // by default due to how Webpack interprets its code. This is a practical
     // solution that requires the user to opt into importing specific locales.
     // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
-    // You can remove this if you don't use Moment.js:
+    // You can remove this if you don't use Moment.js.
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     getManifestPlugin(),
     // TypeScript type checking
-    ...(useTypeScript ? [ getTypeScriptForkChecker() ] : []),
+    getTypeScriptForkChecker(),
   ];
 }

@@ -2,10 +2,10 @@
 // Tell Webpack to provide empty mocks for them so importing them works.
 module.exports = function getEmptyNodeModulesMap() {
   return {
+    child_process: 'empty',
     dgram: 'empty',
     fs: 'empty',
     net: 'empty',
     tls: 'empty',
-    child_process: 'empty',
   };
 };

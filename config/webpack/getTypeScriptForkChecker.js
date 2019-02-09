@@ -1,4 +1,4 @@
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin-alt');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const paths = require('../paths');
 const resolve = require('resolve');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
@@ -10,7 +10,7 @@ module.exports = function getTypeScriptForkChecker() {
     }),
 
     tslint: true,
-    async: false,
+    async: true,
     checkSyntacticErrors: true,
     tsconfig: paths.appTsConfig,
     compilerOptions: {
