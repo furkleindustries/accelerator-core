@@ -57,7 +57,7 @@ export function navigate({
 }): IPassageNavigationAction
 {
   assert(
-    passageName && typeof passageName !== 'string',
+    passageName && typeof passageName === 'string',
     strings.PASSAGE_NAME_INVALID,
   );
 

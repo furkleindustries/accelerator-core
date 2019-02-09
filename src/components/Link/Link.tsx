@@ -29,6 +29,8 @@ export const strings = {
     'the passages map.',
 };
 
+const passagesMap = getPassagesMap();
+
 export class LinkUnconnected extends React.PureComponent<
   ILinkOwnProps & ILinkDispatchProps
 >
@@ -42,13 +44,11 @@ export class LinkUnconnected extends React.PureComponent<
     const {
       children,
       className,
-      passageName,
     } = this.props;
 
     return (
       <button
         className={`link${className ? ` ${className}` : ''}`}
-        passage-name={passageName}
         onClick={this.navigate}
       >
         {children}
@@ -64,7 +64,7 @@ export class LinkUnconnected extends React.PureComponent<
     } = this.props;
 
     assert(
-      getPassagesMap().passagesMap[passageName],
+      passagesMap[passageName],
       strings.PASSAGE_DOES_NOT_EXIST.replace('%NAME%', passageName),
     );
 
@@ -76,8 +76,9 @@ export class LinkUnconnected extends React.PureComponent<
   }
 }
 
-export const mapDispatchToProps: MapDispatchToProps<ILinkDispatchProps, ILinkOwnProps> = (dispatch: Dispatch) => ({
-  dispatch,
-}); 
+export const mapDispatchToProps: MapDispatchToProps<
+  ILinkDispatchProps,
+  ILinkOwnProps
+> = (dispatch: Dispatch) => ({ dispatch }); 
 
 export const Link = connect(null, mapDispatchToProps)(LinkUnconnected);
