@@ -29,6 +29,7 @@ const testFactory = (options?: { [key: string]: any}) => (
     restart={jest.fn()}
     rewind={jest.fn()}
     setStoryState={jest.fn()}
+    soundManager={{} as any}
     storyState={{}}
     {...options}
   />

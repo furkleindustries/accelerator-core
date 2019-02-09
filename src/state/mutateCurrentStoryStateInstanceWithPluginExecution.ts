@@ -2,8 +2,8 @@ import {
   createStoryStateAction,
 } from '../actions/creators/createStoryStateAction';
 import {
-  getPassagesMap,
-} from '../passages/getPassagesMap';
+  getPassagesMapAndStartPassage,
+} from '../passages/getPassagesMapAndStartPassage';
 import {
   getPluginsList,
 } from '../plugins/getPluginsList';
@@ -19,6 +19,12 @@ import {
 import {
   Dispatch,
 } from 'redux';
+
+import passagesManifest from '../../passages/passages-manifest';
+import pluginsManifest from '../../plugins/plugins-manifest';
+
+const { passagesMap } = getPassagesMapAndStartPassage(passagesManifest);
+const pluginsList = getPluginsList(pluginsManifest);
 
 /* Do NOT call this from within a plugin -- there is a very high chance you'll
  * cause an infinite loop, then a stack overflow. */
@@ -48,11 +54,9 @@ export function mutateCurrentStoryStateInstanceWithPluginExecution({
     ...updatedStateProps,
   };
 
-  const {
-    passagesMap: { [currentPassageName]: currentPassageObject },
-  } = getPassagesMap();
+  const { [currentPassageName]: currentPassageObject } = passagesMap;
 
-  getPluginsList().forEach(({ afterStoryStateChange }) => {
+  pluginsList.forEach(({ afterStoryStateChange }) => {
     if (typeof afterStoryStateChange === 'function') {
       afterStoryStateChange({
         currentPassageObject,

@@ -2,11 +2,17 @@ import {
   getHeadersList,
 } from '../../passages/getHeadersList';
 import {
+  getSoundManagerContext,
+} from '../../state/getSoundManagerContext';
+import {
   HistoryFilter,
 } from '../../reducers/IHistoryFilter';
 import {
   IHeader,
 } from '../../passages/IHeader';
+import {
+  IManager,
+} from 'sound-manager';
 import {
   IPassageProps,
 } from '../../passages/IPassageProps';
@@ -30,12 +36,10 @@ import {
   connect,
 } from 'react-redux';
 import {
-  assert,
+  assertValid,
 } from 'ts-assertions';
 
 import * as React from 'react';
-import { getSoundManagerContext } from '../../state/getSoundManagerContext';
-import { IManager } from 'sound-manager';
 
 export const strings = {
   COMPONENT_CONSTRUCTOR_NOT_FOUND:
@@ -90,14 +94,18 @@ export class PassageHeaders extends React.PureComponent<
 
     const headers: IHeader[] = getHeadersList();
     const headerComponents = headers.map(({ contents }, index) => {
-      assert(
+      type temp = React.ComponentClass<IPassageProps> | React.SFC<IPassageProps>;
+
+      const SafeContents = assertValid<temp>(
         contents,
         strings.COMPONENT_CONSTRUCTOR_NOT_FOUND,
       );
 
-      return React.createElement(
-        contents as React.ComponentClass<IPassageProps> | React.SFC<IPassageProps>,
-        Object.assign({}, propsPassedDown, { key: index, }),
+      return (
+        <SafeContents
+          key={index}
+          {...propsPassedDown}
+        />
       );
     });
 

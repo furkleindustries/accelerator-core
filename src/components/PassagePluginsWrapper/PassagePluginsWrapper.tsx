@@ -2,8 +2,8 @@ import {
   createStoryStateAction,
 } from '../../actions/creators/createStoryStateAction';
 import {
-  getPassagesMap,
-} from '../../passages/getPassagesMap';
+  getPassagesMapAndStartPassage,
+} from '../../passages/getPassagesMapAndStartPassage';
 import {
   getPluginsList,
 } from '../../plugins/getPluginsList';
@@ -31,6 +31,9 @@ import {
   Store,
 } from 'redux';
 
+import passagesManifest from '../../../passages/passages-manifest';
+import pluginsManifest from '../../../plugins/plugins-manifest';
+
 import * as React from 'react';
 
 export const strings = {
@@ -38,8 +41,8 @@ export const strings = {
     'No passage could be found in the passages map with the name %NAME%.',
 };
 
-const { passagesMap } = getPassagesMap();
-const pluginsList = getPluginsList();
+const { passagesMap } = getPassagesMapAndStartPassage(passagesManifest);
+const pluginsList = getPluginsList(pluginsManifest);
 
 /* Allows plugin markup to be injected alongside passage content as well
  * as ensuring plugins are only run once per render. */
@@ -76,7 +79,7 @@ export class PassagePluginsWrapper extends React.PureComponent<IPassagePluginsWr
      * browser, and secondly when the story is restarted. This must be
      * performed in the constructor as componentDidMount occurs after render,
      * and we want afterStoryInit to occur before beforeRender. */
-    getPluginsList().forEach(({ afterStoryInit }) => {
+    pluginsList.forEach(({ afterStoryInit }) => {
       if (typeof afterStoryInit === 'function') {
         afterStoryInit({
           currentPassageObject,
@@ -155,7 +158,7 @@ export class PassagePluginsWrapper extends React.PureComponent<IPassagePluginsWr
       store: { getState },
     }: { store: Store<IState, IAction> } = this.context;
 
-    getPluginsList().forEach(({ afterPassageChange }) => {
+    pluginsList.forEach(({ afterPassageChange }) => {
       if (typeof afterPassageChange === 'function') {
         afterPassageChange({
           currentPassageObject,

@@ -5,17 +5,23 @@ import {
   BuiltInTags,
 } from '../../tags/BuiltInTags';
 import {
-  getPassagesMap,
-} from '../../passages/getPassagesMap';
+  getPassagesMapAndStartPassage,
+} from '../../passages/getPassagesMapAndStartPassage';
+import {
+  getSoundManagerContext,
+} from '../../state/getSoundManagerContext';
 import {
   getTag,
 } from '../../tags/getTag';
 import {
+  HistoryFilter,
+} from '../../reducers/IHistoryFilter';
+import {
   IAction,
 } from '../../actions/IAction';
 import {
-  HistoryFilter,
-} from '../../reducers/IHistoryFilter';
+  IManager,
+} from 'sound-manager';
 import {
   IPassage,
 } from '../../passages/IPassage';
@@ -68,9 +74,11 @@ import {
   assertValid,
 } from 'ts-assertions';
 
+import manifest from '../../../passages/passages-manifest';
+
 import * as React from 'react';
-import { IManager } from 'sound-manager';
-import { getSoundManagerContext } from '../../state/getSoundManagerContext';
+
+const { passagesMap } = getPassagesMapAndStartPassage(manifest);
 
 export const strings = {
   COMPONENT_NOT_FOUND:
@@ -114,7 +122,7 @@ export class PassageContentsContainer extends React.PureComponent<
     } = this.props;
     
     const { soundManager }: { soundManager: IManager } = this.context;
-    const safeContents = assertValid<React.ComponentClass<IPassageProps> | React.SFC<IPassageProps>>(
+    const SafeContents = assertValid<React.ComponentClass<IPassageProps> | React.SFC<IPassageProps>>(
       contents,
       strings.COMPONENT_NOT_FOUND,
     );
@@ -144,10 +152,7 @@ export class PassageContentsContainer extends React.PureComponent<
       },
     };
 
-    return React.createElement(
-      safeContents,
-      propsPassedDown,
-    );
+    return <SafeContents {...propsPassedDown} />;
   }
 
   private restart() {
@@ -191,7 +196,7 @@ export const mapStateToProps: MapStateToProps<
 }) =>
 {
   const passageObject = assertValid<IPassage>(
-    getPassagesMap().passagesMap[name],
+    passagesMap[name],
     strings.PASSAGE_NOT_FOUND.replace('%NAME%', name),
   );
 

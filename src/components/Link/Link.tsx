@@ -1,6 +1,6 @@
 import {
-  getPassagesMap,
-} from '../../passages/getPassagesMap';
+  getPassagesMapAndStartPassage,
+} from '../../passages/getPassagesMapAndStartPassage';
 import {
   ILinkDispatchProps,
 } from './ILinkDispatchProps';
@@ -21,6 +21,8 @@ import {
   assert,
 } from 'ts-assertions';
 
+import manifest from '../../../passages/passages-manifest';
+
 import * as React from 'react';
 
 export const strings = {
@@ -29,7 +31,7 @@ export const strings = {
     'the passages map.',
 };
 
-const passagesMap = getPassagesMap();
+const { passagesMap } = getPassagesMapAndStartPassage(manifest);
 
 export class LinkUnconnected extends React.PureComponent<
   ILinkOwnProps & ILinkDispatchProps

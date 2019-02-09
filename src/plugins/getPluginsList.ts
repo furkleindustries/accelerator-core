@@ -11,8 +11,6 @@ import {
   assert,
 } from 'ts-assertions';
 
-import manifest from '../../plugins/plugins-manifest';
-
 export const strings = {
   PLUGINS_MANIFEST_INVALID:
     'The plugins-manifest.json file was not parseable into an array.',
@@ -25,7 +23,10 @@ export const strings = {
 /* Memoize results and return them without computation on repeat calls. */
 let pluginsList: IPlugin[] | null = null;
 
-export function getPluginsList(): IPlugin[] {
+export function getPluginsList(manifest: Array<{
+ filepath: string,
+ pluginExport: IPluginExport,
+}>): IPlugin[] {
   /* Return the memoized list if it exists. */
   if (pluginsList) {
     return pluginsList;
@@ -33,11 +34,13 @@ export function getPluginsList(): IPlugin[] {
 
   assert(Array.isArray(manifest), strings.PLUGINS_MANIFEST_INVALID);
 
-  const pluginsPrecedenceMap: { [key: string]: IPluginExport[] } & { none: IPluginExport[] } = {
-    none: [],
-  };
+  type temp = { [key: string]: IPluginExport[] } & { none: IPluginExport[] };
+  const pluginsPrecedenceMap: temp = { none: [] };
 
-  manifest.forEach(({ filepath, pluginExport, }) => {
+  manifest.forEach(({
+    filepath,
+    pluginExport,
+  }) => {
     const pluginObj = pluginExport;
     try {
       checkPluginExport(pluginObj);
@@ -46,7 +49,7 @@ export function getPluginsList(): IPlugin[] {
         .replace('%FILEPATH%', filepath)
         .replace('%REASON%', err);
   
-      assert(null, errStr);
+      throw new Error(errStr);
     }
 
     if (typeof pluginObj.precedence === 'number' &&
@@ -81,13 +84,13 @@ export function getPluginsList(): IPlugin[] {
     pluginsPrecedenceMap[key]
       .filter(((exp) => exp.contents))
       .sort((aa, bb) => {
-        if (aa.name < bb.name) {
-          return -1;
-        } else if (aa.name === bb.name) {
+        if (aa.name === bb.name) {
           return 0;
+        } else if (aa.name > bb.name) {
+          return 1;
         }
 
-        return 1;
+        return -1;
       })
   )).reduce<IPlugin[]>((prev, curr) => (
     prev.concat(curr.map((aa) => aa.contents!))

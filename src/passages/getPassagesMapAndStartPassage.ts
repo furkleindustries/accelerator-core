@@ -18,8 +18,6 @@ import {
   assertValid,
 } from 'ts-assertions';
 
-import manifest from '../../passages/passages-manifest';
-
 export const strings = {
   MULTIPLE_DEFAULT_PASSAGES:
     'At least two passages had the tag "start". Only one tag is allowed. ' +
@@ -42,18 +40,21 @@ export const strings = {
 
   PASSAGE_OBJECT_INVALID:
     'One of the passage objects, found at %FILEPATH%, was invalid. ' +
-    '%REASON%.',
+    '%REASON%',
 };
 
 /* Memoize results and return them without computation on repeat calls. */
 let passagesMap: IPassagesMap | null = null;
 let startPassage: IPassage | null = null;
 
-
-export function getPassagesMap(): {
+export function getPassagesMapAndStartPassage(manifest: Array<{
+  filepath: string,
+  passageObject: IPassage,
+}>): {
   passagesMap: IPassagesMap;
   startPassage: IPassage;
 } {
+  
   /* Return the memoized results if they exist. */
   if (passagesMap && startPassage) {
     return {
@@ -61,18 +62,20 @@ export function getPassagesMap(): {
       startPassage,
     };
   }
-
+  
   assert(Array.isArray(manifest), strings.PASSAGES_MANIFEST_INVALID);
   assert(manifest.length, strings.PASSAGES_MANIFEST_EMPTY);
 
   passagesMap = {};
-  manifest.forEach((passageFileObj) => {
-    const { passageObject } = passageFileObj;
+  manifest.forEach(({
+    filepath,
+    passageObject,
+  }) => {
     try {
       checkPassageObject(passageObject);
     } catch (err) {
       const errStr = strings.PASSAGE_OBJECT_INVALID
-        .replace('%FILEPATH%', passageFileObj.filepath)
+        .replace('%FILEPATH%', filepath)
         .replace('%REASON%', err);
 
       throw new Error(errStr);
@@ -83,20 +86,20 @@ export function getPassagesMap(): {
       tags,
     } = passageObject;
 
-    if (name in passagesMap!) {
-      const errStr = strings.PASSAGE_OBJECT_INVALID
-        .replace('%NAME%', passageObject.name);
-
-      throw new Error(errStr);
-    }
+    assert(
+      !(name in passagesMap!),
+      strings.PASSAGE_OBJECT_INVALID
+        .replace('%NAME%', passageObject.name),
+    );
 
     if (getTag(tags, BuiltInTags.Start)) {
+      /* Throw if a passage with a duplicate name is found. */
       if (startPassage) {
-        const errStr = strings.MULTIPLE_DEFAULT_PASSAGES
-          .replace('%1%', startPassage.name)
-          .replace('%2%', passageObject.name);
-
-        throw new Error(errStr);
+        throw new Error(
+          strings.MULTIPLE_DEFAULT_PASSAGES
+            .replace('%1%', startPassage!.name)
+            .replace('%2%', passageObject.name)
+        );
       }
 
       startPassage = passageObject;

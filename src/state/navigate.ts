@@ -8,8 +8,8 @@ import {
   createPassageTimeAction,
 } from '../actions/creators/createPassageTimeAction';
 import {
-  getPassagesMap,
-} from '../passages/getPassagesMap';
+  getPassagesMapAndStartPassage,
+} from '../passages/getPassagesMapAndStartPassage';
 import {
   getTag,
 } from '../tags/getTag';
@@ -33,6 +33,8 @@ import {
   assertValid,
 } from 'ts-assertions';
 
+import manifest from '../../passages/passages-manifest';
+
 export const strings = {
   NO_NAVIGATING_TO_NO_RENDER_PASSAGES:
     'You cannot link to a passage tagged noRender.',
@@ -45,6 +47,8 @@ export const strings = {
     'The passageName argument was not passed to navigate, was not a string, ' +
     'or was empty.',
 };
+
+const { passagesMap } = getPassagesMapAndStartPassage(manifest);
 
 export function navigate({
   dispatch,
@@ -60,10 +64,6 @@ export function navigate({
     passageName && typeof passageName === 'string',
     strings.PASSAGE_NAME_INVALID,
   );
-
-  const {
-    passagesMap,
-  } = getPassagesMap();
 
   const passage = assertValid<IPassage>(
     passagesMap[passageName],

@@ -2,8 +2,8 @@ import {
   ActionTypes,
 } from '../actions/ActionTypes';
 import {
-  getPassagesMap,
-} from '../passages/getPassagesMap';
+  getPassagesMapAndStartPassage,
+} from '../passages/getPassagesMapAndStartPassage';
 import {
   ICurrentPassageNameAction,
 } from '../actions/ICurrentPassageNameAction';
@@ -11,9 +11,9 @@ import {
   IStoryResetAction,
 } from '../actions/IStoryResetAction';
 
-const {
-  startPassage: { name },
-} = getPassagesMap();
+import manifest from '../../passages/passages-manifest';
+
+const { startPassage: { name } } = getPassagesMapAndStartPassage(manifest);
 
 export function currentPassageNameReducer(
   previousState: string = name,

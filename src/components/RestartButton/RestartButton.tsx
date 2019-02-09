@@ -1,6 +1,6 @@
 import {
-  getPassagesMap,
-} from '../../passages/getPassagesMap';
+  getPassagesMapAndStartPassage,
+} from '../../passages/getPassagesMapAndStartPassage';
 import {
   IRestartButtonDispatchProps,
 } from './IRestartButtonDispatchProps';
@@ -22,7 +22,11 @@ import {
   reset,
 } from '../../state/reset';
 
+import manifest from '../../../passages/passages-manifest';
+
 import * as React from 'react';
+
+const { passagesMap } = getPassagesMapAndStartPassage(manifest);
 
 export class RestartButtonUnconnected extends React.PureComponent<
   IRestartButtonOwnProps & IRestartButtonStateProps & IRestartButtonDispatchProps
@@ -76,7 +80,7 @@ export const mapStateToProps: MapStateToProps<IRestartButtonStateProps, IRestart
   },
 }) =>
 ({
-  currentPassageObject: getPassagesMap().passagesMap[name],
+  currentPassageObject: passagesMap[name],
   currentStoryState,
   lastLinkTags,
 });

@@ -4,17 +4,25 @@ import {
 import {
   IHeader,
 } from './IHeader';
+import {
+  precedenceSort,
+} from './precedenceSort';
+import {
+  assert,
+} from 'ts-assertions';
 
 import manifest from '../../headers/headers-manifest';
 
 export const strings = {
   HEADERS_MANIFEST_INVALID:
-    'The Headers-manifest.json file was not parseable into an array.',
-
+  'The Headers-manifest.json file was not parseable into an array.',
+  
   HEADER_OBJECT_INVALID:
-    'One of the Header objects, found at %FILEPATH%, was invalid. ' +
-    '%REASON%.',
+  'One of the Header objects, found at %FILEPATH%, was invalid. ' +
+  '%REASON%.',
 };
+
+assert(Array.isArray(manifest), strings.HEADERS_MANIFEST_INVALID);
 
 /* Memoize results and return them without computation on repeat calls. */
 let headersList: IHeader[] | null = null;
@@ -24,22 +32,20 @@ export const getHeadersList = (): IHeader[] => {
     return headersList;
   }
 
-  if (!Array.isArray(manifest)) {
-    throw new Error(strings.HEADERS_MANIFEST_INVALID);
-  }
+  type temp = { [key: string]: IHeader[] } & { none: IHeader[] };
+  const headersPrecedenceMap: temp = { none: [] };
 
-  const headersPrecedenceMap: { [key: string]: IHeader[], } & { none: IHeader[], } = {
-    none: [],
-  };
-
-  manifest.forEach((headerFileObj) => {
-    const headerObj = headerFileObj.headerObject;
-
-    const checkFailMsg = checkHeaderObject(headerFileObj.headerObject);
-    if (checkFailMsg) {
+  manifest.forEach(({
+    filepath,
+    headerObject,
+  }) => {
+    const headerObj = headerObject;
+    try {
+      checkHeaderObject(headerObject);
+    } catch (err) {
       const errStr = strings.HEADER_OBJECT_INVALID
-        .replace('%FILEPATH%', headerFileObj.filepath)
-        .replace('%REASON%', checkFailMsg);
+        .replace('%FILEPATH%', filepath)
+        .replace('%REASON%', err);
 
       throw new Error(errStr);
     }
@@ -56,39 +62,7 @@ export const getHeadersList = (): IHeader[] => {
     }
   });
 
-  /* Sort precedence in descending lexicographic order. In practice, this means
-     4, 3, 2, 1, and then 'none' is always appended. */
-  const keys = Object.keys(headersPrecedenceMap).sort((aa, bb) => {
-    if (aa === 'none') {
-      return 1;
-    } else if (bb === 'none') {
-      return -1;
-    }
+  headersList = precedenceSort(headersPrecedenceMap);
 
-    if (aa > bb) {
-      return -1;
-    } else if (aa === bb) {
-      return 0;
-    } else {
-      return 1;
-    }
-  });
-
-  headersList = keys.map<IHeader[]>((key) => (
-    /* Sort the headers in each precedence in ascending lexicographic
-     * order. */
-    headersPrecedenceMap[key].sort((aa, bb) => {
-      if (aa.name < bb.name) {
-        return -1;
-      } else if (aa.name === bb.name) {
-        return 0;
-      } else {
-        return 1;
-      }
-    })
-  )).reduce<IHeader[]>((prev, cur) => {
-    return prev.concat(cur);
-  }, []);
-  
   return headersList;
 };
