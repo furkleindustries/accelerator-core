@@ -8,9 +8,6 @@ import {
   IPassage,
 } from '../../passages/IPassage';
 import {
-  IPassagesMap,
-} from '../../passages/IPassagesMap';
-import {
   IPassagePluginsWrapperOwnProps,
 } from './IPassagePluginsWrapperOwnProps';
 import {
@@ -111,16 +108,18 @@ export class PassagePluginsWrapper extends React.PureComponent<IPassagePluginsWr
       children,
       lastLinkTags,
       passageName,
+      passagesMap,
       plugins,
     } = this.props;
 
+    const passageObject = assertValid<IPassage>(
+      passagesMap[passageName],
+      strings.PASSAGE_NOT_FOUND,
+    );
+
     const {
-      passagesMap: { [passageName]: safePassageObject },
       store: { getState },
-    }: {
-      passagesMap: IPassagesMap,
-      store: Store<IState, IAction>,
-    } = this.context;
+    }: { store: Store<IState, IAction> } = this.context;
 
     const {
       history: {
@@ -146,8 +145,8 @@ export class PassagePluginsWrapper extends React.PureComponent<IPassagePluginsWr
         finalChildren = beforeRender({
           children,
           lastLinkTags,
+          passageObject,
           storyState,
-          passageObject: safePassageObject,
         }) ||
         /* If for some reason the plugin is non-conformant and outputs
          * something falsy, use the last good children value. */
@@ -167,16 +166,18 @@ export class PassagePluginsWrapper extends React.PureComponent<IPassagePluginsWr
     const {
       lastLinkTags,
       passageName,
+      passagesMap,
       plugins,
     } = this.props;
 
+    const passageObject = assertValid<IPassage>(
+      passagesMap[passageName],
+      strings.PASSAGE_NOT_FOUND,
+    );
+
     const {
-      passagesMap: { [passageName]: passageObject },
       store: { getState },
-    }: {
-      passagesMap: IPassagesMap,
-      store: Store<IState, IAction>,
-    } = this.context;
+    }: { store: Store<IState, IAction> } = this.context;
 
     const {
       history: {
@@ -209,5 +210,6 @@ export const mapStateToProps: MapStateToProps<IPassagePluginsWrapperStateProps, 
   passageName,
 });
 
-export const PassagePluginsWrapperConnected = connect(mapStateToProps,
+export const PassagePluginsWrapperConnected = connect(
+  mapStateToProps,
 )(PassagePluginsWrapper);

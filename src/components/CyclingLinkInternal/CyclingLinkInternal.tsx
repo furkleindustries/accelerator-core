@@ -50,6 +50,13 @@ export class CyclingLinkInternal extends React.PureComponent<
   ICyclingLinkInternalStateProps &
   ICyclingLinkInternalDispatchProps
 > {
+  constructor(props: any) {
+    super(props);
+
+    this.doCallback = this.doCallback.bind(this);
+    this.setStoryState = this.setStoryState.bind(this);
+  }
+
   public componentDidMount() {
     const {
       callback,
@@ -59,7 +66,7 @@ export class CyclingLinkInternal extends React.PureComponent<
       dontSetVariableOnMount,
       variableToSet,
     } = this.props;
-  
+
     const firstState = assertValid<string>(
       children[0],
       strings.FIRST_STATE_EMPTY,
@@ -82,10 +89,16 @@ export class CyclingLinkInternal extends React.PureComponent<
   }
 
   public render() {
-    const { children } = this.props;
+    const {
+      children,
+      className,
+    } = this.props;
 
     return (
-      <Cycler callback={this.doCallback}>
+      <Cycler
+        callback={this.doCallback}
+        className={className}
+      >
         {children}
       </Cycler>
     )

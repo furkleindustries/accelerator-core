@@ -39,7 +39,9 @@ export class AppContextProviderWrapper extends React.PureComponent {
     return (
       <FootersContextProvider value={{ footers }}>
         <HeadersContextProvider value={{ headers }}>
-          <PassagesMapAndStartPassageNameProvider value={passagesMapAndStartPassageName}>
+          <PassagesMapAndStartPassageNameProvider
+            value={passagesMapAndStartPassageName}
+          >
             <PluginsContextProvider value={{ plugins }}>
               <SoundManagerProvider value={{ soundManager }}>
                 {children}

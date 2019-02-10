@@ -44,6 +44,7 @@ export class CyclingLink extends React.PureComponent<
       className,
       dontCallbackOnMount,
       dontSetVariableOnMount,
+      variableToSet,
     } = this.props;
 
     return (
@@ -58,6 +59,7 @@ export class CyclingLink extends React.PureComponent<
                 dontSetVariableOnMount={dontSetVariableOnMount}
                 passagesMap={passagesMap}
                 plugins={plugins}
+                variableToSet={variableToSet}
               >
                 {children}
               </CyclingLinkInternalConnected>
