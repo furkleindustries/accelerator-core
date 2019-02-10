@@ -3,7 +3,7 @@ export * from './getFootersList';
 import { getHeadersList as temp1 } from './getHeadersList';
 export const getHeadersList = temp1;
 
-import { getPassagesMapAndStartPassage as temp2 } from './getPassagesMapAndStartPassage';
+import { getPassagesMapAndStartPassageName as temp2 } from './getPassagesMapAndStartPassageName';
 export const getPassagesMapAndStartPassage = temp2;
 
 export * from './IFooter';

@@ -15,20 +15,20 @@ import styles from './DebugPlugin.scss';
 export class DebugPlugin implements IPlugin {
   public afterStoryInit(args: IPluginMethodBaseArgs & IPluginMethodStateMutationArgs) {
     const {
-      currentPassageObject,
+      passageObject,
       lastLinkTags,
     } = args;
 
     console.log('---- afterStoryInit ----');
     console.log('The story is initializing.');
-    console.log(`Current passage is: ${currentPassageObject.name}`);
+    console.log(`Current passage is: ${passageObject.name}`);
     console.log('The previous link tags after story initialization were:\n' +
                 JSON.stringify(lastLinkTags, null, 2));
   }
 
   public beforePassageChange(args: IPluginMethodBaseArgs) {
     const {
-      currentPassageObject: { name },
+      passageObject: { name },
     } = args;
 
     console.log('---- beforePassageChange ----');
@@ -38,7 +38,7 @@ export class DebugPlugin implements IPlugin {
   public beforeRender(args: IPluginMethodBaseArgs & IPluginMethodChildArgs) {
     const {
       children,
-      currentPassageObject: {
+      passageObject: {
         name,
         tags,
       },
@@ -73,7 +73,7 @@ export class DebugPlugin implements IPlugin {
   }
 
   public afterPassageChange({
-    currentPassageObject: { name },
+    passageObject: { name },
   }: IPluginMethodBaseArgs)
   {
     console.log('---- afterRender ----');
@@ -100,7 +100,7 @@ export class DebugPlugin implements IPlugin {
 
   public beforeRestart({
     storyState,
-    currentPassageObject: { name },
+    passageObject: { name },
   }: IPluginMethodBaseArgs)
   {
     console.log('---- beforeRestart ----');

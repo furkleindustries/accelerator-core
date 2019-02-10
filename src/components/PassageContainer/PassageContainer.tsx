@@ -2,6 +2,12 @@ import {
   createStoryRequiresFullRerenderAction,
 } from '../../actions/creators/createStoryRequiresFullRerenderAction';
 import {
+  getPassagesMapAndStartPassageNameContext,
+} from '../context/getPassagesMapAndStartPassageNameContext';
+import {
+  getPluginsContext,
+} from '../context/getPluginsContext';
+import {
   IPassageContainerDispatchProps,
 } from './IPassageContainerDispatchProps';
 import {
@@ -11,14 +17,8 @@ import {
   IState,
 } from '../../state/IState';
 import {
-  PassageContentsContainerConnected,
-} from '../PassageContentsContainer/PassageContentsContainer';
-import {
-  PassageFootersConnected,
-} from '../PassageFooters/PassageFooters';
-import {
-  PassageHeadersConnected,
-} from '../PassageHeaders/PassageHeaders';
+  PassageContextWrapperConnected,
+} from '../PassageContextWrapper/PassageContextWrapper';
 import {
   PassagePluginsWrapperConnected,
 } from '../PassagePluginsWrapper/PassagePluginsWrapper';
@@ -32,39 +32,40 @@ import * as React from 'react';
 
 import styles from './PassageContainer.scss';
 
+const {
+  Consumer: PassagesMapAndStartPassageNameContextConsumer,
+} = getPassagesMapAndStartPassageNameContext();
+const { Consumer: PluginsContextConsumer } = getPluginsContext();
+
 export class PassageContainer extends React.PureComponent<IPassageContainerStateProps & IPassageContainerDispatchProps> {
   public render() {
-    const {
-      storyRequiresFullRerender,
-    } = this.props;
+    const { storyRequiresFullRerender } = this.props;
 
     return (
-      /* This is very evil! But right now it's the only way I've found that is
-       * guaranteed to work, so evil it is. If it's not clear, this and the
-       * logic in componentDidUpdate forces an unmount of everything in the
-       * story, then immediately resets the storyRequiresFullRerender prop and
-       * rerenders the whole passage tree. */
-      storyRequiresFullRerender ?
-        null :
-        <div className={`${styles.passageContainer} passageContainer`}>
-          <PassagePluginsWrapperConnected>
-            {
-              /* Weird bug where react-redux is arguing with the types
-              * since the last major version. Remember to file against
-              * https://github.com/reduxjs/react-redux */
-              // @ts-ignore
-              <PassageHeadersConnected />
-            }
-
-            <PassageContentsContainerConnected />
-
-            {
-              /* See above re: react-redux bug. */
-              // @ts-ignore
-              <PassageFootersConnected />
-            }
-          </PassagePluginsWrapperConnected>
-        </div>
+      <PassagesMapAndStartPassageNameContextConsumer>
+        {({ passagesMap }) => (
+          <PluginsContextConsumer>
+            {({ plugins }) => (
+              /* This is very evil! But right now it's the only way I've found
+               * that is guaranteed to work, so evil it is. If it's not clear,
+               * this and the logic in componentDidUpdate forces an unmount of
+               * everything in the story, then immediately resets the
+               * storyRequiresFullRerender prop and rerenders the whole passage
+               * tree. */
+              storyRequiresFullRerender ?
+                null :
+                <div className={`${styles.passageContainer} passageContainer`}>
+                  <PassagePluginsWrapperConnected
+                    passagesMap={passagesMap}
+                    plugins={plugins}
+                  >
+                    <PassageContextWrapperConnected />
+                  </PassagePluginsWrapperConnected>
+                </div>
+            )}
+          </PluginsContextConsumer>
+        )}
+      </PassagesMapAndStartPassageNameContextConsumer>
     );
   }
 
@@ -87,7 +88,7 @@ export class PassageContainer extends React.PureComponent<IPassageContainerState
   }
 }
 
-export const mapStateToProps: MapStateToProps<IPassageContainerStateProps, null, IState> = ({
+export const mapStateToProps: MapStateToProps<IPassageContainerStateProps, {}, IState> = ({
   storyRequiresFullRerender,
 }) => ({ storyRequiresFullRerender });
 

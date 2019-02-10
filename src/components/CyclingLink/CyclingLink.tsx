@@ -1,141 +1,70 @@
 import {
-  createMidrenderSignalAction,
-} from '../../actions/creators/createMidrenderSignalAction';
+  CyclingLinkInternalConnected,
+} from '../CyclingLinkInternal/CyclingLinkInternal';
 import {
-  Cycler,
-} from '../Cycler/Cycler';
+  getPassagesMapAndStartPassageNameContext,
+} from '../context/getPassagesMapAndStartPassageNameContext';
 import {
-  IAction,
-} from '../../actions/IAction';
+  getPluginsContext,
+} from '../context/getPluginsContext';
 import {
-  ICyclingLinkDispatchProps,
-} from './ICyclingLinkDispatchProps';
+  ICyclingLinkInternalDispatchProps,
+} from '../CyclingLinkInternal/ICyclingLinkInternalDispatchProps';
 import {
   ICyclingLinkOwnProps,
 } from './ICyclingLinkOwnProps';
 import {
-  ICyclingLinkStateProps,
-} from './ICyclingLinkStateProps';
-import {
-  IState,
-} from '../../state/IState';
-import {
-  mutateCurrentStoryStateInstanceWithPluginExecution,
-} from '../../state/mutateCurrentStoryStateInstanceWithPluginExecution';
-import {
-  object as ObjectProp,
-} from 'prop-types';
-import {
-  connect,
-  MapDispatchToProps,
-  MapStateToProps,
-} from 'react-redux';
-import {
-  Dispatch,
-} from 'redux';
-import {
-  assertValid,
-} from 'ts-assertions';
+  ICyclingLinkInternalStateProps,
+} from '../CyclingLinkInternal/ICyclingLinkInternalStateProps';
 
 import * as React from 'react';
 
-export class CyclingLinkUnconnected extends React.PureComponent<
-  ICyclingLinkOwnProps & ICyclingLinkStateProps & ICyclingLinkDispatchProps
+export const strings = {
+  FIRST_STATE_EMPTY:
+    'The first state was not provided to the CyclingLink component, or it ' +
+    'was an empty string.',
+};
+
+const {
+  Consumer: PassagesMapAndStartPassageNameContextConsumer,
+} = getPassagesMapAndStartPassageNameContext();
+
+const { Consumer: PluginContextConsumer } = getPluginsContext();
+
+export class CyclingLink extends React.PureComponent<
+  ICyclingLinkOwnProps &
+  ICyclingLinkInternalStateProps &
+  ICyclingLinkInternalDispatchProps
 >
 {
-  public static contextTypes = {
-    context: ObjectProp,
-  };
-
-  constructor(props: any) {
-    super(props);
-    this.callback = this.callback.bind(this);
-  }
-
-  public componentDidMount() {
+  public render() {
     const {
       callback,
       children,
-      dispatch,
+      className,
       dontCallbackOnMount,
       dontSetVariableOnMount,
-      history,
-      setStoryState,
-      variableToSet,
-    } = this.props;
-
-    const firstState = assertValid<string>(
-      children[0],
-    );
-
-    if (!dontSetVariableOnMount &&
-        variableToSet &&
-        typeof variableToSet === 'string')
-    {
-      setStoryState({ [variableToSet]: firstState }, history);
-
-      /* Issue a midrender signal action to prevent rewinding over state
-       * assigned during the rendering process. */
-      dispatch(createMidrenderSignalAction());
-
-      if (!dontCallbackOnMount && typeof callback === 'function') {
-        callback(firstState);
-      }
-    }
-  }
-
-  public render() {
-    const {
-      children,
-      className,
     } = this.props;
 
     return (
-      <Cycler
-        callback={this.callback}
-        className={`cyclingLink${className ? ` ${className}` : ''}`}
-      >
-        {children}
-      </Cycler>
+      <PassagesMapAndStartPassageNameContextConsumer>
+        {({ passagesMap }) => (
+          <PluginContextConsumer>
+            {({ plugins }) => (
+              <CyclingLinkInternalConnected
+                callback={callback}
+                className={className}
+                dontCallbackOnMount={dontCallbackOnMount}
+                dontSetVariableOnMount={dontSetVariableOnMount}
+                passagesMap={passagesMap}
+                plugins={plugins}
+              >
+                {children}
+              </CyclingLinkInternalConnected>
+            )}
+          </PluginContextConsumer>
+        )}
+      </PassagesMapAndStartPassageNameContextConsumer>
     );
   }
-
-  private callback(current: string) {
-    const {
-      callback,
-      history,
-      setStoryState,
-      variableToSet,
-    } = this.props;
-
-    if (variableToSet && typeof variableToSet === 'string') {
-      setStoryState({ [variableToSet]: current }, history);
-    }
-
-    if (typeof callback === 'function') {
-      callback(current);
-    }
-  }
 }
-
-export const mapStateToProps: MapStateToProps<
-  ICyclingLinkStateProps,
-  ICyclingLinkOwnProps,
-  IState
-> = ({ history }) => ({ history });
-
-export const mapDispatchToProps: MapDispatchToProps<ICyclingLinkDispatchProps, ICyclingLinkOwnProps> = (dispatch: Dispatch<IAction>) => ({
-  dispatch,
-  setStoryState(updatedStateProps, history) {
-    mutateCurrentStoryStateInstanceWithPluginExecution({
-      dispatch,
-      history,
-      updatedStateProps,
-    });
-  },
-});
-
-export const CyclingLink = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(CyclingLinkUnconnected);

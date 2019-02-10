@@ -8,15 +8,14 @@ import {
   getTag,
 } from './tagsBundle';
 import {
-  IPassage,
-} from './IPassage';
-import {
   IPassagesMap,
 } from './IPassagesMap';
 import {
   assert,
   assertValid,
 } from 'ts-assertions';
+
+import manifest from '../../passages/passages-manifest';
 
 export const strings = {
   MULTIPLE_DEFAULT_PASSAGES:
@@ -43,30 +42,29 @@ export const strings = {
     '%REASON%',
 };
 
+assert(Array.isArray(manifest), strings.PASSAGES_MANIFEST_INVALID);
+assert(manifest.length, strings.PASSAGES_MANIFEST_EMPTY);
+
 /* Memoize results and return them without computation on repeat calls. */
 let passagesMap: IPassagesMap | null = null;
-let startPassage: IPassage | null = null;
+let startPassageName: string | null = null;
 
-export function getPassagesMapAndStartPassage(manifest: Array<{
-  filepath: string,
-  passageObject: IPassage,
-}>): {
+export function getPassagesMapAndStartPassageName(): {
   passagesMap: IPassagesMap;
-  startPassage: IPassage;
+  startPassageName: string;
 } {
   
   /* Return the memoized results if they exist. */
-  if (passagesMap && startPassage) {
+  if (passagesMap && startPassageName) {
     return {
       passagesMap,
-      startPassage,
+      startPassageName,
     };
   }
   
-  assert(Array.isArray(manifest), strings.PASSAGES_MANIFEST_INVALID);
-  assert(manifest.length, strings.PASSAGES_MANIFEST_EMPTY);
 
   passagesMap = {};
+
   manifest.forEach(({
     filepath,
     passageObject,
@@ -94,30 +92,30 @@ export function getPassagesMapAndStartPassage(manifest: Array<{
 
     if (getTag(tags, BuiltInTags.Start)) {
       /* Throw if a passage with a duplicate name is found. */
-      if (startPassage) {
+      if (startPassageName) {
         throw new Error(
           strings.MULTIPLE_DEFAULT_PASSAGES
-            .replace('%1%', startPassage!.name)
+            .replace('%1%', startPassageName)
             .replace('%2%', passageObject.name)
         );
       }
 
-      startPassage = passageObject;
-    } else if (getTag(passageObject.tags, BuiltInTags.NoRender)) {
-      /* Do not place NoRender passages in the passage map. */
-      return;
+      startPassageName = passageObject.name;
     }
 
-    passagesMap![name] = passageObject;
+    if (!getTag(passageObject.tags, BuiltInTags.NoRender)) {
+      /* Do not place NoRender passages in the passage map. */
+      passagesMap![name] = passageObject;
+    }
   });
 
-  const safeStartPassage = assertValid<IPassage>(
-    startPassage,
+  const safeStartPassageName = assertValid<string>(
+    startPassageName,
     strings.NO_START_PASSAGE,
   );
 
   return {
     passagesMap,
-    startPassage: safeStartPassage,
+    startPassageName: safeStartPassageName,
   };
 }

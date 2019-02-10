@@ -23,7 +23,6 @@ import {
 export interface IPassageContentsContainerDispatchProps {
   readonly dispatch: Dispatch<IAction>;
   bookmark(): void;
-  navigateTo(passageName: string, tags?: Readonly<Tag[]>): void;
   restart(
     currentPassageObject: IPassage,
     currentStoryState: IStoryStateFrame,

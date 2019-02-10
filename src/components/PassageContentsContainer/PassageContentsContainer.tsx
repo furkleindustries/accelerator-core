@@ -5,12 +5,6 @@ import {
   BuiltInTags,
 } from '../../tags/BuiltInTags';
 import {
-  getPassagesMapAndStartPassage,
-} from '../../passages/getPassagesMapAndStartPassage';
-import {
-  getSoundManagerContext,
-} from '../../state/getSoundManagerContext';
-import {
   getTag,
 } from '../../tags/getTag';
 import {
@@ -19,9 +13,6 @@ import {
 import {
   IAction,
 } from '../../actions/IAction';
-import {
-  IManager,
-} from 'sound-manager';
 import {
   IPassage,
 } from '../../passages/IPassage';
@@ -50,9 +41,6 @@ import {
   mutateCurrentStoryStateInstanceWithPluginExecution,
 } from '../../state/mutateCurrentStoryStateInstanceWithPluginExecution';
 import {
-  navigate,
-} from '../../state/navigate';
-import {
   connect,
   MapDispatchToProps,
   MapStateToProps,
@@ -74,11 +62,7 @@ import {
   assertValid,
 } from 'ts-assertions';
 
-import manifest from '../../../passages/passages-manifest';
-
 import * as React from 'react';
-
-const { passagesMap } = getPassagesMapAndStartPassage(manifest);
 
 export const strings = {
   COMPONENT_NOT_FOUND:
@@ -89,7 +73,7 @@ export const strings = {
     'A passage with the tag "noRender" was passed to PassageContainer. ' +
     'These passages cannot be rendered and should be used solely for ' +
     'exporting reusable content.',
-  
+
   PASSAGE_NOT_FOUND:
     'No passage could be found in the passages map with the name %NAME%.',
 };
@@ -100,8 +84,6 @@ export class PassageContentsContainer extends React.PureComponent<
   IPassageContentsContainerDispatchProps
 >
 {
-  public static contextType = getSoundManagerContext();
-
   constructor(props: any) {
     super(props);
 
@@ -115,13 +97,14 @@ export class PassageContentsContainer extends React.PureComponent<
       dispatch,
       history,
       lastLinkTags,
-      navigateTo,
       passageObject,
       passageObject: { contents },
+      plugins,
+      navigateTo,
+      soundManager,
       storyState,
     } = this.props;
-    
-    const { soundManager }: { soundManager: IManager } = this.context;
+ 
     const SafeContents = assertValid<React.ComponentClass<IPassageProps> | React.SFC<IPassageProps>>(
       contents,
       strings.COMPONENT_NOT_FOUND,
@@ -147,6 +130,8 @@ export class PassageContentsContainer extends React.PureComponent<
         mutateCurrentStoryStateInstanceWithPluginExecution({
           dispatch,
           history,
+          passageObject,
+          plugins,
           updatedStateProps,
         });
       },
@@ -188,18 +173,14 @@ export const mapStateToProps: MapStateToProps<
   history,
   history: {
     present: {
-      currentPassageName: name,
+      currentPassageName,
       storyState,
       lastLinkTags,
     },
   },
-}) =>
+}, { passagesMap: { [currentPassageName]: passageObject } }) =>
 {
-  const passageObject = assertValid<IPassage>(
-    passagesMap[name],
-    strings.PASSAGE_NOT_FOUND.replace('%NAME%', name),
-  );
-
+  assert(passageObject, strings.PASSAGE_NOT_FOUND.replace('%NAME%', name));
   return {
     history,
     lastLinkTags,
@@ -208,31 +189,30 @@ export const mapStateToProps: MapStateToProps<
   };
 };
 
-export const mapDispatchToProps: MapDispatchToProps<IPassageContentsContainerDispatchProps, IPassageContentsContainerOwnProps> = (dispatch: Dispatch<IAction>) => ({
+export const mapDispatchToProps: MapDispatchToProps<
+  IPassageContentsContainerDispatchProps,
+  IPassageContentsContainerOwnProps
+> = (
+  dispatch: Dispatch<IAction>,
+  { plugins },
+) => ({
   dispatch,
 
   bookmark() {
     doBookmark(dispatch);
   },
 
-  navigateTo(passageName, tags?) {
-    navigate({
-      dispatch,
-      passageName,
-      tags: tags || [],
-    });
-  },
-
   restart(
-    currentPassageObject: IPassage,
-    currentStoryState: IStoryStateFrame,
+    passageObject: IPassage,
+    storyState: IStoryStateFrame,
     lastLinkTags: Tag[],
   ) {
     reset({
-      currentPassageObject,
       dispatch,
       lastLinkTags,
-      storyState: currentStoryState,
+      passageObject,
+      plugins,
+      storyState,
     });
   },
 

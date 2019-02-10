@@ -1,6 +1,12 @@
 import {
-  getPassagesMapAndStartPassage,
-} from '../../passages/getPassagesMapAndStartPassage';
+  getPassagesMapAndStartPassageNameContext,
+} from '../context/getPassagesMapAndStartPassageNameContext';
+import {
+  getPluginsContext,
+} from '../context/getPluginsContext';
+import {
+  IPassagesMap,
+} from '../../passages/IPassagesMap';
 import {
   IRestartButtonDispatchProps,
 } from './IRestartButtonDispatchProps';
@@ -21,12 +27,24 @@ import {
 import {
   reset,
 } from '../../state/reset';
-
-import manifest from '../../../passages/passages-manifest';
+import {
+  assert,
+} from 'ts-assertions';
 
 import * as React from 'react';
+import { IPlugin } from '../../plugins/IPlugin';
 
-const { passagesMap } = getPassagesMapAndStartPassage(manifest);
+export const strings = {
+  PASSAGE_INVALID:
+    'The passage name provided to RestartButton did not match a passage ' +
+    'name in the passages map.',
+};
+
+const {
+  Consumer: PassagesMapAndStartPassageNameContextConsumer,
+} = getPassagesMapAndStartPassageNameContext();
+
+const { Consumer: PluginsContextConsumer } = getPluginsContext();
 
 export class RestartButtonUnconnected extends React.PureComponent<
   IRestartButtonOwnProps & IRestartButtonStateProps & IRestartButtonDispatchProps
@@ -43,29 +61,51 @@ export class RestartButtonUnconnected extends React.PureComponent<
       className,
     } = this.props;
 
+    
     return (
-      <button
-        className={`resetButton navigationButton${className ? ` ${className}` : ''}`}
-        onClick={this.restart}
-      >
-        {children}
-      </button>
+      <PassagesMapAndStartPassageNameContextConsumer>
+        {({ passagesMap }) => (
+          <PluginsContextConsumer>
+            {({ plugins }) => {
+              const boundRestart = this.restart.bind(
+                this,
+                passagesMap,
+                plugins,
+              );
+
+              return (
+                <button
+                  className={`resetButton navigationButton${className ? ` ${className}` : ''}`}
+                  onClick={boundRestart}
+                >
+                  {children}
+                </button>
+              )
+            }}
+          </PluginsContextConsumer>
+        )}
+      </PassagesMapAndStartPassageNameContextConsumer>
     );
   }
 
-  private restart() {
+  private restart(passagesMap: IPassagesMap, plugins: IPlugin[]) {
     const {
-      currentPassageObject,
-      currentStoryState,
+      passageName,
+      storyState,
       dispatch,
       lastLinkTags,
     } = this.props;
 
+    const { [passageName]: passageObject } = passagesMap;
+
+    assert(passageObject, strings.PASSAGE_INVALID);
+
     reset({
-      currentPassageObject,
-      storyState: currentStoryState,
       dispatch,
       lastLinkTags,
+      passageObject,
+      plugins,
+      storyState,
     });
   }
 }
@@ -73,15 +113,15 @@ export class RestartButtonUnconnected extends React.PureComponent<
 export const mapStateToProps: MapStateToProps<IRestartButtonStateProps, IRestartButtonOwnProps, IState> = ({
   history: {
     present: {
-      currentPassageName: name,
+      currentPassageName: passageName,
       lastLinkTags,
-      storyState: currentStoryState,
+      storyState,
     },
   },
 }) =>
 ({
-  currentPassageObject: passagesMap[name],
-  currentStoryState,
+  passageName,
+  storyState,
   lastLinkTags,
 });
 

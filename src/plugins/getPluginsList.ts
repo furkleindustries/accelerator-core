@@ -11,6 +11,8 @@ import {
   assert,
 } from 'ts-assertions';
 
+import manifest from '../../plugins/plugins-manifest';
+
 export const strings = {
   PLUGINS_MANIFEST_INVALID:
     'The plugins-manifest.json file was not parseable into an array.',
@@ -20,19 +22,16 @@ export const strings = {
     '%REASON%.',
 };
 
+assert(Array.isArray(manifest), strings.PLUGINS_MANIFEST_INVALID);
+
 /* Memoize results and return them without computation on repeat calls. */
 let pluginsList: IPlugin[] | null = null;
 
-export function getPluginsList(manifest: Array<{
- filepath: string,
- pluginExport: IPluginExport,
-}>): IPlugin[] {
+export function getPluginsList(): IPlugin[] {
   /* Return the memoized list if it exists. */
   if (pluginsList) {
     return pluginsList;
   }
-
-  assert(Array.isArray(manifest), strings.PLUGINS_MANIFEST_INVALID);
 
   type temp = { [key: string]: IPluginExport[] } & { none: IPluginExport[] };
   const pluginsPrecedenceMap: temp = { none: [] };

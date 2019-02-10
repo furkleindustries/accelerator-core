@@ -2,6 +2,6 @@ import {
   IHistory,
 } from '../../state/IHistory';
 
-export interface ICyclingLinkStateProps {
+export interface ICyclingLinkInternalStateProps {
   readonly history: IHistory;
 }

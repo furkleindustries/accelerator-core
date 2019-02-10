@@ -1,9 +1,9 @@
 import {
-  getFootersList,
-} from '../../passages/getFootersList';
-import {
   HistoryFilter,
 } from '../../reducers/IHistoryFilter';
+import {
+  IFooter,
+} from '../../passages/IFooter';
 import {
   IPassageProps,
 } from '../../passages/IPassageProps';
@@ -31,8 +31,6 @@ import {
 } from 'ts-assertions';
 
 import * as React from 'react';
-import { IManager } from 'sound-manager';
-import { getSoundManagerContext } from '../../state/getSoundManagerContext';
 
 export const strings = {
   COMPONENT_CONSTRUCTOR_NOT_FOUND:
@@ -40,24 +38,25 @@ export const strings = {
 };
 
 export class PassageFooters extends React.PureComponent<
+  { footers: IFooter[] } &
   IPassageContentsContainerOwnProps &
   IPassageContentsContainerStateProps &
   IPassageContentsContainerDispatchProps
 > {
-  public static contextType = getSoundManagerContext();
-
   public render() {
     const {
       bookmark,
       dispatch,
+      footers,
       history,
       lastLinkTags,
-      passageObject,
-      storyState,
       navigateTo,
+      passageObject,
+      plugins,
+      soundManager,
+      storyState,
     } = this.props;
 
-    const { soundManager }: { soundManager: IManager } = this.context;
     const propsPassedDown: IPassageProps = {
       bookmark,
       dispatch,
@@ -72,14 +71,16 @@ export class PassageFooters extends React.PureComponent<
         mutateCurrentStoryStateInstanceWithPluginExecution({
           dispatch,
           history,
+          passageObject,
+          plugins,
           updatedStateProps,
         });
       },
     };
 
-    const footerComponents = getFootersList().map(({ contents }, index) => {
-      type temp = React.ComponentClass<IPassageProps> | React.SFC<IPassageProps>;
+    type temp = React.ComponentClass<IPassageProps> | React.SFC<IPassageProps>;
 
+    const footerComponents = footers.map(({ contents }, index) => {
       const SafeContents = assertValid<temp>(
         contents,
         strings.COMPONENT_CONSTRUCTOR_NOT_FOUND,

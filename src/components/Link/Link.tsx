@@ -1,6 +1,6 @@
 import {
-  getPassagesMapAndStartPassage,
-} from '../../passages/getPassagesMapAndStartPassage';
+  getPassagesMapAndStartPassageNameContext,
+} from '../context/getPassagesMapAndStartPassageNameContext';
 import {
   ILinkDispatchProps,
 } from './ILinkDispatchProps';
@@ -21,8 +21,6 @@ import {
   assert,
 } from 'ts-assertions';
 
-import manifest from '../../../passages/passages-manifest';
-
 import * as React from 'react';
 
 export const strings = {
@@ -31,15 +29,15 @@ export const strings = {
     'the passages map.',
 };
 
-const { passagesMap } = getPassagesMapAndStartPassage(manifest);
-
 export class LinkUnconnected extends React.PureComponent<
   ILinkOwnProps & ILinkDispatchProps
 >
 {
+  public static contextType = getPassagesMapAndStartPassageNameContext();
+
   constructor(props: any) {
     super(props);
-    this.navigate = this.navigate.bind(this);
+    this.doNavigation = this.doNavigation.bind(this);
   }
 
   public render() {
@@ -51,29 +49,33 @@ export class LinkUnconnected extends React.PureComponent<
     return (
       <button
         className={`link${className ? ` ${className}` : ''}`}
-        onClick={this.navigate}
+        onClick={this.doNavigation}
       >
         {children}
       </button>
     );
   }
 
-  private navigate() {
+  private doNavigation() {
     const {
       dispatch,
       passageName,
-      tags,
+      tags: linkTags,
     } = this.props;
 
+    const {
+      passagesMap: { [passageName]: passage },
+    } = this.context;
+
     assert(
-      passagesMap[passageName],
+      passage,
       strings.PASSAGE_DOES_NOT_EXIST.replace('%NAME%', passageName),
     );
 
     navigate({
       dispatch,
-      passageName,
-      tags,
+      passage,
+      linkTags,
     });
   }
 }

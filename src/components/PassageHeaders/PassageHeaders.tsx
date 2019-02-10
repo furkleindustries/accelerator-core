@@ -1,18 +1,12 @@
 import {
-  getHeadersList,
-} from '../../passages/getHeadersList';
-import {
   getSoundManagerContext,
-} from '../../state/getSoundManagerContext';
+} from '../context/getSoundManagerContext';
 import {
   HistoryFilter,
 } from '../../reducers/IHistoryFilter';
 import {
   IHeader,
 } from '../../passages/IHeader';
-import {
-  IManager,
-} from 'sound-manager';
 import {
   IPassageProps,
 } from '../../passages/IPassageProps';
@@ -47,6 +41,7 @@ export const strings = {
 };
 
 export class PassageHeaders extends React.PureComponent<
+  { headers: IHeader[] } &
   IPassageContentsContainerOwnProps &
   IPassageContentsContainerStateProps &
   IPassageContentsContainerDispatchProps
@@ -62,17 +57,18 @@ export class PassageHeaders extends React.PureComponent<
   
   public render() {
     const {
-      bookmark: bookmark,
+      bookmark,
       dispatch,
+      headers,
       history,
       lastLinkTags,
       navigateTo,
       passageObject,
+      plugins,
+      soundManager,
       storyState,
     } = this.props;
     
-    const { soundManager }: { soundManager: IManager } = this.context;
-
     const propsPassedDown: IPassageProps = {
       bookmark,
       dispatch,
@@ -87,12 +83,13 @@ export class PassageHeaders extends React.PureComponent<
         mutateCurrentStoryStateInstanceWithPluginExecution({
           dispatch,
           history,
+          passageObject,
+          plugins,
           updatedStateProps,
         });
       },
     };
 
-    const headers: IHeader[] = getHeadersList();
     const headerComponents = headers.map(({ contents }, index) => {
       type temp = React.ComponentClass<IPassageProps> | React.SFC<IPassageProps>;
 

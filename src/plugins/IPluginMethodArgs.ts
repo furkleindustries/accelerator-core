@@ -21,7 +21,7 @@ import {
 } from 'redux';
 
 export interface IPluginMethodBaseArgs {
-  readonly currentPassageObject: IPassage;
+  readonly passageObject: IPassage;
   readonly storyState: IStoryStateFrame;
   readonly lastLinkTags: Readonly<Tag[]>;
 }

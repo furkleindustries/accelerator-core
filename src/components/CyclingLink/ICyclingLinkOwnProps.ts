@@ -1,8 +1,8 @@
 export interface ICyclingLinkOwnProps {
-  children: string[];
-  className?: string;
-  dontCallbackOnMount?: boolean;
-  dontSetVariableOnMount?: boolean;
-  variableToSet?: string;
+  readonly children: string[];
+  readonly className?: string;
+  readonly dontCallbackOnMount?: boolean;
+  readonly dontSetVariableOnMount?: boolean;
+  readonly variableToSet?: string;
   callback?(current?: string): void;
 }
