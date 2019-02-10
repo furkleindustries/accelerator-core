@@ -10,10 +10,19 @@ import {
 import {
   IStoryResetAction,
 } from '../actions/IStoryResetAction';
+import {
+  assert,
+} from 'ts-assertions';
+
+export const strings = {
+  NO_START_PASSAGE_NAME:
+    'There was no start passage name when currentPassageNameReducer was'
+};
 
 const { startPassageName } = getPassagesMapAndStartPassageName();
+assert(startPassageName, strings.NO_START_PASSAGE_NAME);
 
-export function currentPassageNameReducer(
+export function passageNameReducer(
   previousState: string = startPassageName,
   action: ICurrentPassageNameAction | IStoryResetAction,
 ): string
@@ -21,7 +30,7 @@ export function currentPassageNameReducer(
   if (action.type === ActionTypes.CurrentPassageName) {
     return action.value;
   } else if (action.type === ActionTypes.StoryReset) {
-    return name;
+    return startPassageName;
   }
 
   return previousState;

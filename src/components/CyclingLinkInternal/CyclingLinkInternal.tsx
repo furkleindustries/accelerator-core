@@ -124,7 +124,7 @@ export class CyclingLinkInternal extends React.PureComponent<
       dispatch,
       history,
       history: {
-        present: { currentPassageName },
+        present: { passageName },
       },
 
       passagesMap,
@@ -132,8 +132,8 @@ export class CyclingLinkInternal extends React.PureComponent<
     } = this.props;
 
     const passageObject = assertValid<IPassage>(
-      passagesMap[currentPassageName],
-      strings.PASSAGE_NOT_FOUND.replace('%NAME%', currentPassageName),
+      passagesMap[passageName],
+      strings.PASSAGE_NOT_FOUND.replace('%NAME%', passageName),
     );
 
     mutateCurrentStoryStateInstanceWithPluginExecution({

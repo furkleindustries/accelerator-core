@@ -173,12 +173,12 @@ export const mapStateToProps: MapStateToProps<
   history,
   history: {
     present: {
-      currentPassageName,
+      passageName,
       storyState,
       lastLinkTags,
     },
   },
-}, { passagesMap: { [currentPassageName]: passageObject } }) =>
+}, { passagesMap: { [passageName]: passageObject } }) =>
 {
   assert(passageObject, strings.PASSAGE_NOT_FOUND.replace('%NAME%', name));
   return {

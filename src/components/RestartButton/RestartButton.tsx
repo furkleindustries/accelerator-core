@@ -8,6 +8,9 @@ import {
   IPassagesMap,
 } from '../../passages/IPassagesMap';
 import {
+  IPlugin,
+} from '../../plugins/IPlugin';
+import {
   IRestartButtonDispatchProps,
 } from './IRestartButtonDispatchProps';
 import {
@@ -32,7 +35,6 @@ import {
 } from 'ts-assertions';
 
 import * as React from 'react';
-import { IPlugin } from '../../plugins/IPlugin';
 
 export const strings = {
   PASSAGE_INVALID:
@@ -113,7 +115,7 @@ export class RestartButtonUnconnected extends React.PureComponent<
 export const mapStateToProps: MapStateToProps<IRestartButtonStateProps, IRestartButtonOwnProps, IState> = ({
   history: {
     present: {
-      currentPassageName: passageName,
+      passageName: passageName,
       lastLinkTags,
       storyState,
     },

@@ -32,7 +32,6 @@ export function mutateCurrentStoryStateInstanceWithPluginExecution({
   dispatch,
   history: {
     present: {
-      currentPassageName,
       lastLinkTags,
       storyState: preupdateStoryState,
     },

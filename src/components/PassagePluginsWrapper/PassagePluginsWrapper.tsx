@@ -201,7 +201,7 @@ export const mapStateToProps: MapStateToProps<IPassagePluginsWrapperStateProps, 
   history: {
     present: {
       lastLinkTags,
-      currentPassageName: passageName,
+      passageName: passageName,
     },
   },
 }) =>

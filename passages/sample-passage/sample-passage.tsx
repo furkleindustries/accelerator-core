@@ -18,12 +18,39 @@ import builtInStyles from '../../src/passages/styles.scss';
  * the file in the public/ directory. */
 import logo from '../../public/logo.svg';
 
-class Component extends React.PureComponent<passages.IPassageProps> {
+class Component extends React.PureComponent<
+  passages.IPassageProps,
+  {
+    soundPlaying: boolean,
+    soundLoaded: boolean,
+  }
+> {
+  public state = {
+    soundPlaying: false,
+    soundLoaded: false,
+  };
+
+  private soundName: 'sample' = 'sample';
+
   constructor(props: any) {
     super(props);
 
     /* Bind the function so we can properly access this.props. */
     this.clickIncrementor = this.clickIncrementor.bind(this);
+    this.toggleSampleSound = this.toggleSampleSound.bind(this);
+
+    const { soundManager } = this.props;
+    if (soundManager.collection.hasSound(this.soundName)) {
+      this.state.soundLoaded = true;
+    } else {
+      soundManager.collection.addSound(
+        this.soundName,
+        'https://s3.amazonaws.com/furkleindustries-accelerator/Zymbel_The_Real_Horst-1113884951.mp3',
+      ).then(
+        () => this.setState({ soundLoaded: true }),
+        (err) => { throw err; },
+      );
+    }
   }
 
   public render() {
@@ -35,6 +62,11 @@ class Component extends React.PureComponent<passages.IPassageProps> {
         cycleVar,
       },
     } = this.props;
+
+    const {
+      soundLoaded,
+      soundPlaying,
+    } = this.state;
 
     return (
       /* The title will appear above here as an <h1> if you've set it. */
@@ -85,20 +117,18 @@ class Component extends React.PureComponent<passages.IPassageProps> {
            * the cycling link. */
           variableToSet="cycleVar"
           className={builtInStyles.link}
-        >{
+        >{[
           /* Children should be an array of strings. */
-          [
-            'This is a cycling link.',
+          'This is a cycling link.',
 
-            'You can click it to change a value between several blocks of ' +
-              'text.',
+          'You can click it to change a value between several blocks of ' +
+            'text.',
 
-            'Each time the link changes, it updates the `cycleVar` variable ' +
-              'to reflect the current value of the link.',
+          'Each time the link changes, it updates the `cycleVar` variable ' +
+            'to reflect the current value of the link.',
 
-            'You can set any variable through the variableToSet property.',
-          ]
-        }</components.CyclingLink>
+          'You can set any variable through the variableToSet property.',
+        ]}</components.CyclingLink>
 
         <p className={styles.paragraph}>
           {/* This value updates automatically to match the cycling link
@@ -116,6 +146,23 @@ class Component extends React.PureComponent<passages.IPassageProps> {
             If you click this, it sets a bookmark.
           </button>
         </p>
+
+        <p className={styles.paragraph}>
+          <button
+            className={builtInStyles.link}
+            onClick={this.toggleSampleSound}
+            {
+              /* Disable the button until the sound is loaded. */
+              ...(soundLoaded ? {} : { disabled: true })
+            }
+          >
+            {
+              soundPlaying ?
+                'Pause sound' :
+                'Play sound'
+            }
+          </button>
+        </p>
       </article>
     );
   }
@@ -128,6 +175,24 @@ class Component extends React.PureComponent<passages.IPassageProps> {
 
     const newVal = (counter || 0) + 1;
     setStoryState({ counter: newVal });
+  }
+
+  private toggleSampleSound() {
+    const {
+      soundManager: { collection },
+    } = this.props;
+
+    const sound = collection.getSound('sample');
+    if (sound.isPlaying()) {
+      sound.pause();
+      this.setState({ soundPlaying: false });
+    } else {
+      sound.play().then(() => {
+        this.setState({ soundPlaying: false });
+      });
+
+      this.setState({ soundPlaying: true });
+    }
   }
 }
 
@@ -148,7 +213,7 @@ const passage: passages.IPassage = {
     },
   ],
 
-  /* ComponentClass | SFC: the content that should be displayed. */
+  /* React.ComponentClass | React.SFC: the content that should be displayed. */
   contents: Component,
 };
 

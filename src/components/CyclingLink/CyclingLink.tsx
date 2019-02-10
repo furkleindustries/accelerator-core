@@ -8,14 +8,8 @@ import {
   getPluginsContext,
 } from '../context/getPluginsContext';
 import {
-  ICyclingLinkInternalDispatchProps,
-} from '../CyclingLinkInternal/ICyclingLinkInternalDispatchProps';
-import {
   ICyclingLinkOwnProps,
 } from './ICyclingLinkOwnProps';
-import {
-  ICyclingLinkInternalStateProps,
-} from '../CyclingLinkInternal/ICyclingLinkInternalStateProps';
 
 import * as React from 'react';
 
@@ -31,12 +25,7 @@ const {
 
 const { Consumer: PluginContextConsumer } = getPluginsContext();
 
-export class CyclingLink extends React.PureComponent<
-  ICyclingLinkOwnProps &
-  ICyclingLinkInternalStateProps &
-  ICyclingLinkInternalDispatchProps
->
-{
+export class CyclingLink extends React.PureComponent<ICyclingLinkOwnProps> {
   public render() {
     const {
       callback,
