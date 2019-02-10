@@ -2,7 +2,7 @@
   "name": "accelerator-core",
   "author": "furkle",
   "version": "0.10.7",
-  "license": "GPL-3.0-or-later",
+  "license": "GPL-3.0-only",
   "homepage": "https://github.com/furkleindustries/accelerator-core#readme",
   "bugs": {
     "url": "https://github.com/furkleindustries/accelerator-core/issues"
