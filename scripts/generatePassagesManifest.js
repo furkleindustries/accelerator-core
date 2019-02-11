@@ -10,7 +10,9 @@ const authoredPassagesDir = path.join(__dirname, '..', 'passages');
 
 (async () => {
   try {
-    const files = await scrapeAssets(authoredPassagesDir);
+    /* Do not include the init file as a passage. */
+    const files = (await scrapeAssets(authoredPassagesDir))
+      .filter((aa) => !aa.endsWith('_initialization.tsx'));
 
     const {
       importPaths,

@@ -8,6 +8,9 @@ import {
   configureStore,
 } from './state/configureStore';
 import {
+  initialize,
+} from './passages/initialize';
+import {
   isNode,
 } from './functions/isNode';
 import {
@@ -53,6 +56,10 @@ if (!state) {
   state = store.getState();
   window.REDUX_STATE = JSON.stringify(state);
 }
+
+
+/* Execute the logic in the initialization passage. */
+(async () => await initialize())(); 
 
 const renderFunc = () => render(
   <Provider store={store}>

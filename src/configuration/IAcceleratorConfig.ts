@@ -9,6 +9,7 @@ export interface IAcceleratorConfig {
   readonly historySaveTypes: ActionTypes | ActionTypes[] | string | string[];
   readonly historySynchronizeUnrewindableStateWithPresent: boolean;
   readonly publicUrl: string;
+  readonly showLoadingScreen: boolean;
   readonly storyDescription: string;
   readonly storyTitle: string;
 }

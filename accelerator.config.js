@@ -1,4 +1,4 @@
-/** @see https://github.com/furkleindustries/ */
+/** @see accelerator.config.d.ts */
 
 // @ts-ignore
 const { ActionTypes } = require('./src/actions/ActionTypes');
@@ -26,6 +26,13 @@ module.exports = {
    * the story when it is built for production.
    */
   debug: true,
+
+  /**
+   * @property {boolean}
+   * This determines whether the loading screen is shown when the story is
+   * first opened.
+   */
+  showLoadingScreen: true,
 
   /**
    * @property {string}
