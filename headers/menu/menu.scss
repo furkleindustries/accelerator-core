@@ -20,15 +20,15 @@
   z-index: 1;
 }
 
-.soundPanel {
+.soundPanelContentsContainer {
+  position: static;
+}
+
+.soundManagerAudioPanel {
   position: fixed;
   left: 0;
   top: 0;
   width: 100%;
   background: rgba(255, 255, 255, 0.975);
   box-sizing: border-box;
-}
-
-.soundPanelContentsContainer {
-  position: static;
 }

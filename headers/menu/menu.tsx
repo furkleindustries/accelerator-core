@@ -13,8 +13,8 @@ import {
   IPassageProps,
 } from '../../src/passages/passagesBundle';
 import {
-  assertValid,
-} from 'ts-assertions';
+  SoundManagerAudioPanel,
+} from '../../src/components/SoundManagerAudioPanel/SoundManagerAudioPanel';
 
 import builtInStyles from '../../src/passages/styles.scss';
 import styles from './menu.scss';
@@ -22,16 +22,10 @@ import styles from './menu.scss';
 /* The header gets all the same props as a normal passage. */
 class Menu extends React.PureComponent<IPassageProps, IMenuState> {
   public readonly state: IMenuState = { soundPanelVisible: false };
-  private readonly soundPanelRef: React.RefObject<HTMLDivElement> = React.createRef();
 
   constructor(props: any) {
     super(props);
     this.toggleSoundPanelVisibility = this.toggleSoundPanelVisibility.bind(this);
-  }
-
-  public componentDidMount() {
-    const { soundManager } = this.props;
-    this.setState({ soundPanel: soundManager.generateVolumePanelElement() });
   }
 
   public render() {
@@ -62,18 +56,16 @@ class Menu extends React.PureComponent<IPassageProps, IMenuState> {
             Audio options
           </button>
 
-          <div className={`${styles.soundPanelContentsContainer} soundPanelContentsContainer`}>
+          <div
+            className={`${styles.soundPanelContentsContainer} soundPanelContentsContainer`}
+            {...(soundPanelVisible ? {} : { hidden: true })}
+          >
             <button
               className={`${styles.soundPanelCloseButton} soundPanelCloseButton`}
               onClick={this.toggleSoundPanelVisibility}
-              {...(soundPanelVisible ? {} : { hidden: true })}
             >X</button>
 
-            <div
-              className={`${styles.soundPanel} soundPanel`}
-              ref={this.soundPanelRef}
-            >
-            </div>
+            <SoundManagerAudioPanel className={styles.soundManagerAudioPanel} />
           </div>
         </div>
       </header>
@@ -82,28 +74,11 @@ class Menu extends React.PureComponent<IPassageProps, IMenuState> {
 
   private toggleSoundPanelVisibility() {
     const {
-      soundPanel,
       soundPanelVisible,
     } = this.state;
 
     const newVal = !soundPanelVisible;
     this.setState({ soundPanelVisible: newVal });
-
-    /* All of this must be done through refs as sound-manager does not export
-     * React components at present. */
-    const safeContainer = assertValid<HTMLDivElement>(
-      this.soundPanelRef.current,
-    );
-
-    const safeSoundPanel = assertValid<HTMLElement>(
-      soundPanel,
-    );
-
-    if (newVal) {
-      safeContainer.appendChild(safeSoundPanel);
-    } else {
-      safeContainer.removeChild(safeSoundPanel);
-    }
   }
 }
 
@@ -111,8 +86,8 @@ const passage: IHeader = {
   /* string: the name of the header. */
   name: 'menu',
 
-  /* ComponentClass<IPassageProps, any> | SFC<IPassageProps>:
-   * the content that should be displayed. Should be formatted in JSX style. */
+  /* React.ComponentType<IPassageProps>: the content that should be displayed.
+   * Should be formatted in JSX style. */
   contents: Menu,
 };
 

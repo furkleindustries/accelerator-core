@@ -91,9 +91,7 @@ export class PassageHeaders extends React.PureComponent<
     };
 
     const headerComponents = headers.map(({ contents }, index) => {
-      type temp = React.ComponentClass<IPassageProps> | React.SFC<IPassageProps>;
-
-      const SafeContents = assertValid<temp>(
+      const SafeContents = assertValid<React.ComponentType<IPassageProps>>(
         contents,
         strings.COMPONENT_CONSTRUCTOR_NOT_FOUND,
       );

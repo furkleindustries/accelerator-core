@@ -1,10 +1,9 @@
 import {
-  ComponentClass,
-  SFCFactory,
+  ComponentType,
 } from 'react';
 
 export interface IFooter {
-  contents: ComponentClass | SFCFactory<any>;
-  name: string;
-  precedence?: number;
+  readonly contents: ComponentType;
+  readonly name: string;
+  readonly precedence?: number;
 }

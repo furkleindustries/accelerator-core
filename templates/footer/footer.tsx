@@ -34,8 +34,8 @@ const footer: passages.IFooter = {
   /* string: the name of the footer. */
   name: '%name%',
   
-  /* ComponentClass<IPassageProps, any> | SFCFactory<IPassageProps>:
-   * the content that should be displayed. Should be formatted in JSX style. */
+  /* React.ComponentType<IPassageProps>: the content that should be displayed.
+   * Should be formatted in JSX style. */
   contents: Component,
 };
 

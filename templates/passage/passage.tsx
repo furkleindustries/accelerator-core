@@ -15,7 +15,6 @@ class Component extends React.PureComponent<passages.IPassageProps> {
     const {
       lastLinkTags,
       passageObject,
-      passageObject: { name },
       navigateTo,
       restart,
       setStoryState,
@@ -24,7 +23,7 @@ class Component extends React.PureComponent<passages.IPassageProps> {
 
     return (
       <div
-        className={`${styles[name]} ${builtInStyles.passage} passage`}
+        className={`${styles.%name%} ${builtInStyles.passage} passage`}
       >
       </div>
     );
@@ -43,10 +42,9 @@ const passage: passages.IPassage = {
    * { key: string, value: string, } objects. */
   tags: [],
 
-  /* ComponentClass<IPassageProps, any> | SFCFactory<IPassageProps>:
-   * the content that should be displayed, or, in the case of noRender
-   * passages, a component that can be imported. Should be formatted in JSX
-   * style. */
+  /* React.ComponentType<IPassageProps>: the content that should be displayed,
+   * or, in the case of noRender passages, a component that can be imported.
+   * Should be formatted in JSX style. */
   contents: Component,
 };
 

@@ -35,6 +35,37 @@ module.exports = {
   showLoadingScreen: true,
 
   /**
+   * @property {Array<string | { family: string, styles: string[], weights: number[], }>}
+   * Each of the items in this list is passed to the FontFaceObserver class and
+   * loaded at runtime. If you add an item to this list, make sure you add the
+   * corresponding @font-face rule to `passages/_global-styles/fonts.scss`.
+   */
+  fontsToLoad: [
+    {
+      family: 'Roboto',
+      styles: [
+        'normal',
+        'italic',
+      ],
+
+      weights: [
+        100,
+        300,
+        400,
+        500,
+        700,
+        900,
+      ],
+    },
+  ],
+
+  /**
+   * @property {string}
+   * Allows a temporary subset of the font to be loaded almost immediately.
+   */
+  // subsetFont: 'Roboto Subset',
+
+  /**
    * @property {string}
    * The path that should be prepended to static resource paths like the favicon
    * and js/css bundles. This will work fine for all cases except if you need to
@@ -46,8 +77,8 @@ module.exports = {
    * @property {string}
    * The Interactive Fiction ID of the story.
    */
+  ifid: '%ifid%',
 
-   ifid: '%ifid%',
   /**
    * @property {number}
    * Determines how many undo states will be saved. Any point in history further

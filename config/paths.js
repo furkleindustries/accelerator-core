@@ -15,13 +15,8 @@ module.exports = {
     'js',
     'jsx',
     'mjs',
-    'web.js',
-    'web.mjs',
-    'web.jsx',
     'ts',
     'tsx',
-    'web.ts',
-    'web.tsx',
     'json',
   ],
 

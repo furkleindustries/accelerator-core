@@ -21,7 +21,7 @@ class Component extends React.PureComponent {
 
     return (
       <div
-        className={`${styles['%name%']} ${builtInStyles.header} header`}
+        className={`${styles.%name%} ${builtInStyles.header} header`}
       >
       </div>
     );
@@ -32,8 +32,8 @@ const passage = {
   /* string: the name of the header. */
   name: '%name%',
 
-  /* ComponentClass<IPassageProps, any> | SFCFactory<IPassageProps>:
-   * the content that should be displayed. Should be formatted in JSX style. */
+  /* React.ComponentType<IPassageProps>: the content that should be displayed.
+   * Should be formatted in JSX style. */
   contents: Component,
 };
 

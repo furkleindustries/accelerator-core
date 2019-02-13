@@ -105,7 +105,7 @@ export class PassageContentsContainer extends React.PureComponent<
       storyState,
     } = this.props;
  
-    const SafeContents = assertValid<React.ComponentClass<IPassageProps> | React.SFC<IPassageProps>>(
+    const SafeContents = assertValid<React.ComponentType<IPassageProps>>(
       contents,
       strings.COMPONENT_NOT_FOUND,
     );

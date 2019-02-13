@@ -2,12 +2,11 @@ import {
   IPassageProps,
 } from './IPassageProps';
 import {
-  ComponentClass,
-  SFC,
+  ComponentType,
 } from 'react';
 
 export interface IHeader {
-  contents: ComponentClass<IPassageProps> | SFC<IPassageProps>;
-  name: string;
-  precedence?: number;
+  readonly contents: ComponentType<IPassageProps>;
+  readonly name: string;
+  readonly precedence?: number;
 }

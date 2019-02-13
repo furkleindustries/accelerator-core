@@ -78,10 +78,8 @@ export class PassageFooters extends React.PureComponent<
       },
     };
 
-    type temp = React.ComponentClass<IPassageProps> | React.SFC<IPassageProps>;
-
     const footerComponents = footers.map(({ contents }, index) => {
-      const SafeContents = assertValid<temp>(
+      const SafeContents = assertValid<React.ComponentType<IPassageProps>>(
         contents,
         strings.COMPONENT_CONSTRUCTOR_NOT_FOUND,
       );

@@ -213,7 +213,8 @@ const passage: passages.IPassage = {
     },
   ],
 
-  /* React.ComponentClass | React.SFC: the content that should be displayed. */
+  /* React.ComponentType<IPassageProps>: the content that should be
+   * displayed. */
   contents: Component,
 };
 

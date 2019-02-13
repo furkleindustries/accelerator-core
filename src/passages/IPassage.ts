@@ -5,12 +5,11 @@ import {
   IPassageProps,
 } from './IPassageProps';
 import {
-  ComponentClass,
-  SFC,
+  ComponentType,
 } from 'react';
 
 export interface IPassage {
-  readonly contents: ComponentClass<IPassageProps> | SFC<IPassageProps>;
+  readonly contents: ComponentType<IPassageProps>;
   readonly name: string;
   readonly title?: string;
   readonly tags?: Tag[];

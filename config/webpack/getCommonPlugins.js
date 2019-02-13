@@ -18,12 +18,21 @@ module.exports = function getCommonPlugins(mode) {
     // The public URL is available as %publicUrl% in index.html,
     // e.g.: <link rel="shortcut icon" href="%publicUrl%/favicon.ico">
     // In development, this will be an empty string.
-    new InterpolateHtmlPlugin(HtmlWebpackPlugin, config),
+    new InterpolateHtmlPlugin(HtmlWebpackPlugin, Object.keys(config).reduce((ret, key) => {
+      if (typeof config[key] === 'object') {
+        ret[key] = JSON.stringify(config[key]);
+      } else {
+        ret[key] = config[key];
+      }
+
+      return ret;
+    }, {})),
+
     // This gives some necessary context to module not found errors, such as
     // the requesting resource.
     new ModuleNotFoundPlugin(paths.appPath),
-    // Makes some environment variables available to the JS code, for example:
-    // if (process.env.NODE_ENV === 'development') { ... }. See `./setBaseEnv.js`.
+    // Makes NODE_ENV available to the JS code, for example:
+    // if (process.env.NODE_ENV === 'development') { ... }..
     new webpack.DefinePlugin({ NODE_ENV: process.env.NODE_ENV }),
     // Moment.js is an extremely popular library that bundles large locale files
     // by default due to how Webpack interprets its code. This is a practical

@@ -17,17 +17,11 @@ module.exports = function getResolve() {
     // We also include JSX as a common component filename extension to support
     // some tools, although we do not recommend using it, see:
     // https://github.com/facebook/create-react-app/issues/290
-    // `web` extension prefixes have been added for better support
-    // for React Native Web.
     extensions: paths.moduleFileExtensions.map((ext) => `.${ext}`),
 
-    alias: {
+    alias: {      
       // Allow simple usage of TypeScript files without the directory suffix.
       'sound-manager': 'sound-manager/src',
-
-      // Support React Native Web
-      // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
-      'react-native': 'react-native-web',
     },
 
     plugins: [
