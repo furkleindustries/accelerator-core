@@ -62,6 +62,15 @@ Promise.all(fontsToLoad.map(downloadFontHelper)).then(
       process.exit(0);
     }
 
+    const fontFacePath = path.join(downloadDirectory, 'fontface-autogen.css');
+    try {
+      await fs.writeFile(fontFacePath, fontFaceRules);
+    } catch (err) {
+      warn('Encountered an error while writing the @font-face file.');
+      printWarning(err);
+      process.exit(0);
+    }
+
     log('Downloaded fonts successfully.');
     log('Fonts downloaded:\n  ' +
         `${fontFiles.map((name) => chalk.bold(name)).join(',\n  ')}.`);

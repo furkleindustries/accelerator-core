@@ -5,7 +5,7 @@ import {
   FontStyles,
 } from './FontStyles';
 
-export function getFontFilePath({
+export function getFontFilepath({
   directory,
   family,
   range,

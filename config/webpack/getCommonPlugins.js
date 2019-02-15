@@ -11,22 +11,10 @@ const webpack = require('webpack');
 // Get the accelerator config.
 const config = getAcceleratorConfigJs();
 
-module.exports = function getCommonPlugins(mode) {  
+module.exports = function getCommonPlugins(mode, config) {  
   return [
     getHtmlWebpackPlugin(mode),
-    // Makes the config variables available in index.html.
-    // The public URL is available as %publicUrl% in index.html,
-    // e.g.: <link rel="shortcut icon" href="%publicUrl%/favicon.ico">
-    // In development, this will be an empty string.
-    new InterpolateHtmlPlugin(HtmlWebpackPlugin, Object.keys(config).reduce((ret, key) => {
-      if (typeof config[key] === 'object') {
-        ret[key] = JSON.stringify(config[key]);
-      } else {
-        ret[key] = config[key];
-      }
-
-      return ret;
-    }, {})),
+    getInterpolateHtmlPlugin(config),
 
     // This gives some necessary context to module not found errors, such as
     // the requesting resource.

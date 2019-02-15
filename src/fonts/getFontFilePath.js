@@ -4,7 +4,7 @@ const {
 const path = require('path');
 
 module.exports = {};
-module.exports.getFontFilePath = ({
+module.exports.getFontFilepath = ({
   directory,
   family,
   format,

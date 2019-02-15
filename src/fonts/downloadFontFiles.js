@@ -4,7 +4,7 @@ const {
 } = require('./getFontApiUrl');
 const {
   getFontFilePath,
-} = require('./getFontFilePath');
+} = require('./getFontFilepath');
 const {
   getHelperVariant,
 } = require('./getHelperVariant');
@@ -59,7 +59,7 @@ module.exports.downloadFontFiles = function (
         const writeStream = fs.createWriteStream(filepath);
         req.pipe(writeStream);
 
-        arr.push(new Promise((resolve, reject) => {
+        arr.push(new Promise((resolve, reject) => (
           Promise.all([
             new Promise((resolve, reject) => (
               req.on('response', resolve).on('error', reject)
@@ -69,7 +69,7 @@ module.exports.downloadFontFiles = function (
               writeStream.on('close', resolve).on('error', reject)
             )),
           ]).then(() => resolve(filepath), reject)
-        }));
+        )));
 
         return arr;
       }, []));

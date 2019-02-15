@@ -10,12 +10,13 @@ const webpack = require('webpack');
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 
 module.exports = function getPlugins({
+  config,
   mode,
   publicUrl,
   shouldInlineRuntimeChunk,
 })
 {
-  const base = getCommonPlugins(mode);
+  const base = getCommonPlugins(mode, config);
   if (mode === 'development') {
     return [
       ...base,
@@ -75,7 +76,7 @@ module.exports = function getPlugins({
 
       importWorkboxFrom: 'cdn',
       navigateFallback: `${publicUrl}/index.html`,
-       navigateFallbackBlacklist: [
+      navigateFallbackBlacklist: [
         // Exclude URLs starting with /_, as they're likely an API call
         new RegExp('^/_'),
         // Exclude URLs containing a dot, as they're likely a resource in

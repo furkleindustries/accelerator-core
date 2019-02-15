@@ -48,6 +48,7 @@ module.exports = {
   optimization: getOptimization(mode, shouldUseSourceMap),
   output: getOutput(mode, publicPath),
   plugins: getPlugins({
+    config,
     mode,
     publicPath,
     shouldInlineRuntimeChunk,
