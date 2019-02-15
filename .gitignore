@@ -11,6 +11,9 @@
 /build*/
 /.zips/
 
+# fonts
+public/fonts/
+
 # footers
 footers/*-manifest.ts
 

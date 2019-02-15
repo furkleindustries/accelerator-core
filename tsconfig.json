@@ -34,7 +34,7 @@
     ]
   },
   "exclude": [
-    "build*",
+    "build*/",
     "config/",
     "coverage/",
     "scripts/",

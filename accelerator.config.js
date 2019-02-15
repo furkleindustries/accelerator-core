@@ -1,7 +1,9 @@
-/** @see accelerator.config.d.ts */
+/** @see {@link https://github.com/furkleindustries/accelerator-core/tree/master/accelerator.config.d.ts */
 
-// @ts-ignore
 const { ActionTypes } = require('./src/actions/ActionTypes');
+const { FontFormats } = require('./src/fonts/FontFormats');
+const { FontRanges } = require('./src/fonts/FontRanges');
+const { FontStyles } = require('./src/fonts/FontStyles');
 
 module.exports = {
   /**
@@ -35,17 +37,27 @@ module.exports = {
   showLoadingScreen: true,
 
   /**
-   * @property {Array<string | { family: string, styles: string[], weights: number[], }>}
-   * Each of the items in this list is passed to the FontFaceObserver class and
-   * loaded at runtime. If you add an item to this list, make sure you add the
-   * corresponding @font-face rule to `passages/_global-styles/fonts.scss`.
+   * @property {Array<string | IFontLoadingDetails>}
+   * @see {@link https://github.com/furkleindustries/accelerator-core/tree/master/src/fonts/IFontLoadingDetails.ts}
+   * Each of the items in this list is constructed into a @font-face rule and
+   * passed to the FontFaceObserver class and loaded, as-needed, at runtime.
    */
   fontsToLoad: [
     {
       family: 'Roboto',
+      formats: [
+        FontFormats.WOFF,
+        FontFormats.WOFF2,
+      ],
+
       styles: [
-        'normal',
-        'italic',
+        FontStyles.Normal,
+        FontStyles.Italic,
+      ],
+
+      ranges: [
+        FontRanges.Latin,
+        FontRanges.LatinExtended,
       ],
 
       weights: [
@@ -60,10 +72,20 @@ module.exports = {
   ],
 
   /**
-   * @property {string}
+   * @property {IFontSubsettingDetails}
+   * @see {@link https://github.com/furkleindustries/accelerator-core/tree/master/src/fonts/IFontSubsettingDetails.ts}
    * Allows a temporary subset of the font to be loaded almost immediately.
    */
-  // subsetFont: 'Roboto Subset',
+  subsetFont: {
+    name: 'Roboto Subset',
+    formats: [
+      FontFormats.WOFF,
+      FontFormats.WOFF2,
+    ],
+
+    fromFont: 'Roboto Regular',
+    subsetRange: 'US_ASCII',
+  },
 
   /**
    * @property {string}
@@ -89,6 +111,7 @@ module.exports = {
 
   /**
    * @property {ActionTypes | ActionTypes[]}
+   * @see {@link https://github.com/furkleindustries/accelerator-core/blob/master/src/actions/ActionTypes.d.ts}
    * Determines which Redux actions will be saved in the history, and therefore
    * which are usable as rewind points. Important to consider
    * historyStackLimit when changing this. Do not change this unless
@@ -103,7 +126,7 @@ module.exports = {
 
   /**
    * @property {boolean}
-   * 
+   * Passed directly to redux-undo's undoable syncFilter option.
    */
   historySynchronizeUnrewindableStateWithPresent: true,
 };
