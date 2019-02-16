@@ -1,5 +1,3 @@
-module.exports = function getNodeModulesToTranspile() {
-  return [
-    'sound-manager',
-  ];
-};
+export function getNodeModulesToTranspile() {
+  return [ 'sound-manager' ];
+}

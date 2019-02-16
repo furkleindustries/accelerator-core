@@ -1,4 +1,3 @@
-module.exports = {};
-module.exports.normalizeFontName = (string) => (
-  string.replace(/\s/g, '-').toLowerCase()
-);
+export function normalizeFontName (string) {
+  return string.replace(/\s/g, '-').toLowerCase();
+}

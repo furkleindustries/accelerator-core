@@ -9,11 +9,12 @@ import {
   assertValid,
 } from 'ts-assertions';
 
+declare function arrayShuffle(arr: any[]): any[];
+// @ts-ignore 
+import * as arrayShuffle from 'array-shuffle';
+
 import * as React from 'react';
 
-// tslint:disable
-const arrayShuffle: (arr: any[]) => any[] = require('array-shuffle');
-// tslint:enable
 
 export const strings = {
   N_NOT_POSITIVE_INTEGER:

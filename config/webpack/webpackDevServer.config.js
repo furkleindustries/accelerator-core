@@ -1,13 +1,15 @@
-const errorOverlayMiddleware = require('react-dev-utils/errorOverlayMiddleware');
-const noopServiceWorkerMiddleware = require('react-dev-utils/noopServiceWorkerMiddleware');
-const ignoredFiles = require('react-dev-utils/ignoredFiles');
-const config = require('./webpack.config');
-const paths = require('../paths');
+import * as errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware';
+import * as noopServiceWorkerMiddleware from 'react-dev-utils/noopServiceWorkerMiddleware';
+import * as ignoredFiles from 'react-dev-utils/ignoredFiles';
+import config from './webpack.config';
+import {
+  paths,
+} from '../paths';
 
 const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
 const host = process.env.HOST || '0.0.0.0';
 
-module.exports = function(proxy, allowedHost) {
+export default function(proxy, allowedHost) {
   return {
     // WebpackDevServer 2.4.3 introduced a security fix that prevents remote
     // websites from potentially accessing local content through DNS rebinding:
@@ -90,4 +92,4 @@ module.exports = function(proxy, allowedHost) {
       app.use(noopServiceWorkerMiddleware());
     },
   };
-};
+}

@@ -1,5 +1,10 @@
 import {
   IFontLoadingDetails,
 } from './IFontLoadingDetails';
+import {
+  IFontLoadingDetailsNormalized,
+} from './IFontLoadingDetailsNormalized';
 
-export function normalizeFont<T extends string | IFontLoadingDetails>(font: T): T;
+export function normalizeFont(
+  font: IFontLoadingDetails | string,
+): IFontLoadingDetailsNormalized;

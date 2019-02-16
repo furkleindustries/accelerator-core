@@ -1,12 +1,32 @@
-const fs = require('fs-extra');
-const getEmptyNodeModulesMap = require('./getEmptyNodeModulesMap');
-const getEntry = require('./getEntry');
-const getModule = require('./getModule');
-const getOptimization = require('./getOptimization');
-const getOutput = require('./getOutput');
-const getPlugins = require('./getPlugins');
-const getResolve = require('./getResolve');
-const getResolveLoader = require('./getResolveLoader');
+import {
+  getEmptyNodeModulesMap,
+} from './getEmptyNodeModulesMap';
+import {
+  getEntry,
+} from './getEntry';
+import {
+  getModule,
+} from './getModule';
+import {
+  getNormalizedAcceleratorConfig,
+} from '../../src/configuration/getNormalizedAcceleratorConfig';
+import {
+  getOptimization,
+} from './getOptimization';
+import {
+  getOutput,
+} from './getOutput';
+import {
+  getPlugins,
+} from './getPlugins';
+import {
+  getResolve,
+} from './getResolve';
+import {
+  getResolveLoader,
+} from './getResolveLoader';
+
+const config = getNormalizedAcceleratorConfig();
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -28,10 +48,7 @@ const devtool = mode === 'development' ?
 // makes for a smoother build process.
 const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== 'false';
 
-// This is the development configuration.
-// It is focused on developer experience and fast rebuilds.
-// The production configuration is different and lives in a separate file.
-module.exports = {
+export default {
   mode,
   // You may want 'eval' instead if you prefer to see the compiled output in DevTools.
   // See the discussion in https://github.com/facebook/create-react-app/issues/343

@@ -1,4 +1,7 @@
 import {
+  log,
+} from 'colorful-logging';
+import {
   IPlugin,
 } from './IPlugin';
 import {
@@ -19,11 +22,11 @@ export class DebugPlugin implements IPlugin {
       lastLinkTags,
     } = args;
 
-    console.log('---- afterStoryInit ----');
-    console.log('The story is initializing.');
-    console.log(`Current passage is: ${passageObject.name}`);
-    console.log('The previous link tags after story initialization were:\n' +
-                JSON.stringify(lastLinkTags, null, 2));
+    log('---- afterStoryInit ----');
+    log('The story is initializing.');
+    log(`Current passage is: ${passageObject.name}`);
+    log('The previous link tags after story initialization were:\n' +
+        JSON.stringify(lastLinkTags, null, 2));
   }
 
   public beforePassageChange(args: IPluginMethodBaseArgs) {
@@ -31,8 +34,8 @@ export class DebugPlugin implements IPlugin {
       passageObject: { name },
     } = args;
 
-    console.log('---- beforePassageChange ----');
-    console.log(`PassageContainer will render the passage named ${name}.`);
+    log('---- beforePassageChange ----');
+    log(`PassageContainer will render the passage named ${name}.`);
   }
 
   public beforeRender(args: IPluginMethodBaseArgs & IPluginMethodChildArgs) {
@@ -46,12 +49,12 @@ export class DebugPlugin implements IPlugin {
       storyState: currentStoryState,
     } = args;
 
-    console.log('---- beforeRender ----');
-    console.log(`PassageContainer is rendering the passage named ${name}.`);
-    console.log('The passage\'s tags are:');
-    console.log(JSON.stringify(tags, null, 2));
-    console.log('The story state before render is:');
-    console.log(JSON.stringify(currentStoryState, null, 2));
+    log('---- beforeRender ----');
+    log(`PassageContainer is rendering the passage named ${name}.`);
+    log('The passage\'s tags are:');
+    log(JSON.stringify(tags, null, 2));
+    log('The story state before render is:');
+    log(JSON.stringify(currentStoryState, null, 2));
 
     const debugChildren = [
       <div className={`${styles.debugContainer} debugContainer`} key={0}>
@@ -76,17 +79,17 @@ export class DebugPlugin implements IPlugin {
     passageObject: { name },
   }: IPluginMethodBaseArgs)
   {
-    console.log('---- afterRender ----');
-    console.log(`PassageContainer has rendered the passage named ${name}.`);
+    log('---- afterRender ----');
+    log(`PassageContainer has rendered the passage named ${name}.`);
   }
 
   public afterStoryStateChange({
     storyState,
     updatedStateProps,
   }: IPluginMethodBaseArgs & IPluginMethodStateChangingArgs) {
-    console.log('---- afterStoryStateChange ----');
-    console.log('The following modifications to the story state are being made:');
-    console.log(JSON.stringify(updatedStateProps));
+    log('---- afterStoryStateChange ----');
+    log('The following modifications to the story state are being made:');
+    log(JSON.stringify(updatedStateProps));
 
     if (document &&
         typeof document.querySelector === 'function')
@@ -103,11 +106,11 @@ export class DebugPlugin implements IPlugin {
     passageObject: { name },
   }: IPluginMethodBaseArgs)
   {
-    console.log('---- beforeRestart ----');
-    console.log('The story is restarting.');
-    console.log(`The passage on which the user restarted was named ${name}.`);
-    console.log('The story state at restart was:');
-    console.log(JSON.stringify(storyState, null, 2));
+    log('---- beforeRestart ----');
+    log('The story is restarting.');
+    log(`The passage on which the user restarted was named ${name}.`);
+    log('The story state at restart was:');
+    log(JSON.stringify(storyState, null, 2));
 
     if (document &&
         typeof document.querySelector === 'function')

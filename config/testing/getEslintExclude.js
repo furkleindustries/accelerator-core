@@ -1,4 +1,4 @@
-module.exports = function getUnlintedAuthoredDirectories(path) {
+export function getUnlintedAuthoredDirectories() {
   return [
     /* accelerator-build-include-src */
     'footers/',
@@ -6,4 +6,4 @@ module.exports = function getUnlintedAuthoredDirectories(path) {
     'passages/',
     'plugins/',
   ];
-};
+}

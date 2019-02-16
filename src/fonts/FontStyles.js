@@ -1,6 +1,4 @@
-module.exports = {
-  FontStyles: {
-    Italic: 'italic',
-    Normal: 'normal',
-  },
+export const FontStyles = {
+  Italic: 'italic',
+  Normal: 'normal',
 };

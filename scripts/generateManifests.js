@@ -1,4 +1,6 @@
-require('./generateFootersManifest');
-require('./generateHeadersManifest');
-require('./generatePassagesManifest');
-require('./generatePluginsManifest');
+import './functions/setUnhandledRejectionEvent';
+
+import('./generateFootersManifest');
+import('./generateHeadersManifest');
+import('./generatePassagesManifest');
+import('./generatePluginsManifest');

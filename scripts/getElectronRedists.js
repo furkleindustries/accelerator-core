@@ -1,76 +1,69 @@
-const {
-  join,
-} = require('path');
+import {
+  log,
+  warn,
+} from 'colorful-logging';
+import decompress from 'decompress';
+import download from 'electron-download';
+import * as fs from 'fs-extra';
+import * as path from 'path';
+import {
+  setUnhandledRejectionEvent,
+} from './functions/setUnhandledRejectionEvent';
 
-const fs = require('fs-extra');
-const decompress = require('decompress');
-const download = require('electron-download');
+setUnhandledRejectionEvent();
 
-const appDir = join(__dirname, '..');
-const electronDir = join(appDir, 'build-desktop');
+const appDir = path.join(__dirname, '..');
+const electronDir = path.join(appDir, 'build-desktop');
 
-const linuxDir = join(electronDir, 'linux');
-const macOSDir = join(electronDir, 'macOS');
-const windowsDir = join(electronDir, 'windows');
+const linuxDir = path.join(electronDir, 'linux');
+const macOSDir = path.join(electronDir, 'macOS');
+const windowsDir = path.join(electronDir, 'windows');
 
 const skipMacOS =
   process.argv.indexOf('--force-mac-build-on-windows') === -1 &&
   process.platform === 'win32';
+
 if (skipMacOS) {
-  console.log('Due to issues in the way Windows handles symlinks in zip ' +
-              'archives, it is not possible to make macOS electron ' +
-              'packages. You may override this by passing the ' +
-              '--force-mac-build-on-windows to the getElectronRedists script ' +
-              'or the get-electron-redists npm task, but it will likely ' +
-              'fail, and even if it does not, you should test to be ' +
-              'absolutely sure it works.\n');
+  warn('Due to issues in the way Windows handles symlinks in zip ' +
+       'archives, it is not possible to make macOS electron ' +
+       'packages. You may override this by passing the ' +
+       '--force-mac-build-on-windows to the getElectronRedists script ' +
+       'or the get-electron-redists npm task, but it will likely ' +
+       'fail, and even if it does not, you should test to be ' +
+       'absolutely sure it works.\n');
 }
 
-fs.exists(electronDir).then((dirExists) => {  
-  Promise.all([
+(async () => {
+  const electronDirExists = await fs.exists(electronDir);  
+  const data = await Promise.all([
     fs.exists(linuxDir),
     /* Pretend the directory already exists if skipMacOS is true. */
     skipMacOS ? true : fs.exists(macOSDir),
     fs.exists(windowsDir),
     dirExists ? null : fs.mkdir(electronDir),
-  ]).then((data) => {
-    const {
-      promise: downloadPromise,
-      descriptors,
-    } = doDownload(data[0], data[1], data[2]);
+  ]);
 
-    if (descriptors.length) {
-      downloadPromise.then((zipPaths) => {
-        console.log('Finished downloading redists.');
-        unzip(zipPaths, descriptors).then(() => {
-          console.log('All redists unzipped!');
-        }, (err) => {
-          console.error(err.toString());
-          throw err;
-        });
-      }, (err) => {
-        console.error(err.toString());
-        throw err;
-      });
-    } else {
-      console.log('Folders exist for all Electron redists. If they are ' +
-                  'empty or broken, delete the folders.');
-    }
-  }, (err) => {
-    console.error(err.toString());
-    throw err;
-  });
-}, (err) => {
-  console.error(err.toString());
-  throw err;
-});
+  const {
+    promise: downloadPromise,
+    descriptors,
+  } = doDownload(data[0], data[1], data[2]);
+
+  if (descriptors.length) {
+    const zipPaths = await downloadPromise;
+    log('Finished downloading redists.');
+    await unzip(zipPaths, descriptors)
+  } else {
+    warn('Folders exist for all Electron redists. If they are ' +
+         'empty or broken, delete the folders.');
+  }
+})();
 
 function doDownload(foundLinux, foundMac, foundWin) {
   const promises = [];
   const descriptors = [];
 
   if (!foundLinux) {
-    console.log('Downloading electron redist for Linux.');
+    log('Downloading electron redist for Linux.');
 
     descriptors.push('linux');
 
@@ -79,7 +72,7 @@ function doDownload(foundLinux, foundMac, foundWin) {
         version: '3.0.4',
         arch: 'x64',
         platform: 'linux',
-        cache: join(appDir, '.zips'),
+        cache: path.join(appDir, '.zips'),
       }, (err, zipPath) => {
         if (err) {
           reject(err);
@@ -97,7 +90,7 @@ function doDownload(foundLinux, foundMac, foundWin) {
   }
 
   if (!foundMac) {
-    console.log('Downloading electron redist for MacOS.');
+    log('Downloading electron redist for MacOS.');
 
     descriptors.push('macOS');
 
@@ -106,7 +99,7 @@ function doDownload(foundLinux, foundMac, foundWin) {
         version: '3.0.4',
         arch: 'x64',
         platform: 'darwin',
-        cache: join(appDir, '.zips'),
+        cache: path.join(appDir, '.zips'),
       }, (err, zipPath) => {
         if (err) {
           reject(err);
@@ -124,7 +117,7 @@ function doDownload(foundLinux, foundMac, foundWin) {
   }
 
   if (!foundWin) {
-    console.log('Downloading electron redist for Windows.');
+    log('Downloading electron redist for Windows.');
 
     descriptors.push('windows');
 
@@ -133,7 +126,7 @@ function doDownload(foundLinux, foundMac, foundWin) {
         version: '3.0.4',
         arch: 'x64',
         platform: 'win32',
-        cache: join(appDir, '.zips'),
+        cache: path.join(appDir, '.zips'),
       }, (err, zipPath) => {
         if (err) {
           return reject(err);
@@ -168,7 +161,7 @@ function unzip(zipPaths, descriptors) {
       outPath = windowsDir;
     }
 
-    console.log(`Unzipping from ${zipPaths[index]} to ${outPath}`);
+    log(`Unzipping from ${zipPaths[index]} to ${outPath}`);
     zipPromises.push(decompress(zipPaths[index], outPath));
   });
 

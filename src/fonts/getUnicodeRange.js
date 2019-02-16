@@ -1,9 +1,8 @@
-const {
+import {
   FontRanges,
-} = require('./FontRanges');
+} from './FontRanges';
 
-module.exports = {};
-module.exports.getUnicodeRange = (range) => {
+export function getUnicodeRange(range) {
   if (range === FontRanges.Cyrillic) {
     return 'U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116';
   } else if (range === FontRanges.CyrillicExtended) {
@@ -21,4 +20,4 @@ module.exports.getUnicodeRange = (range) => {
   }
 
   throw new Error('Unicode range not found.');
-};
+}

@@ -1,8 +1,14 @@
-const getBabelLoaders = require('./getBabelLoaders');
-const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
-const getStyleLoaders = require('./getStyleLoaders');
-const path = require('path');
-const paths = require('../paths');
+import {
+  getBabelLoaders,
+} from './getBabelLoaders';
+import * as getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
+import {
+  getStyleLoaders,
+} from './getStyleLoaders';
+import * as path from 'path';
+import {
+  paths,
+ } from '../paths';
 
 // style files regexes
 const cssNoModuleRegex = /\.nomodule\.css$/;
@@ -10,7 +16,7 @@ const cssRegex = /\.css$/;
 const sassNoModuleRegex = /\.nomodule\.s[ac]ss$/;
 const sassRegex = /\.s[ac]ss$/;
 
-module.exports = function getModule(mode, publicPath, shouldUseSourceMap) {
+export function getModule(mode, publicPath, shouldUseSourceMap) {
   return {
     strictExportPresence: true,
     rules: [

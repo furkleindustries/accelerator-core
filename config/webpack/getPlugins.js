@@ -1,15 +1,19 @@
-const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-const getCommonPlugins = require('./getCommonPlugins');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const path = require('path');
-const paths = require('../paths');
-const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
-const webpack = require('webpack');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
+import * as CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
+import {
+  getCommonPlugins,
+} from './getCommonPlugins';
+import * as HtmlWebpackPlugin from 'html-webpack-plugin';
+import * as InlineChunkHtmlPlugin from 'react-dev-utils/InlineChunkHtmlPlugin';
+import * as MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import * as path from 'path';
+import {
+  paths,
+} from '../paths';
+import * as WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
+import * as webpack from 'webpack';
+import * as WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 
-module.exports = function getPlugins({
+export function getPlugins({
   config,
   mode,
   publicUrl,
@@ -85,4 +89,4 @@ module.exports = function getPlugins({
       ],
     }),
   ];
-};
+}

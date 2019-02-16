@@ -1,6 +1,6 @@
-const TerserPlugin = require('terser-webpack-plugin');
+import * as TerserPlugin from 'terser-webpack-plugin';
 
-module.exports = function getJavaScriptMinimizer(shouldUseSourceMap) {
+export function getJavaScriptMinimizer(shouldUseSourceMap) {
   return new TerserPlugin({
     terserOptions: {
       parse: {
@@ -37,4 +37,4 @@ module.exports = function getJavaScriptMinimizer(shouldUseSourceMap) {
     cache: true,
     sourceMap: shouldUseSourceMap,
   });
-};
+}

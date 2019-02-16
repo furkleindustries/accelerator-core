@@ -1,17 +1,22 @@
-const getAcceleratorConfigJs = require('../getAcceleratorConfigJs');
-const getHtmlWebpackPlugin = require('./getHtmlWebpackPlugin');
-const getManifestPlugin = require('./getManifestPlugin');
-const getTypeScriptForkChecker = require('./getTypeScriptForkChecker');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
-const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
-const paths = require('../paths');
-const webpack = require('webpack');
+import {
+  getHtmlWebpackPlugin,
+} from './getHtmlWebpackPlugin';
+import {
+  getInterpolateHtmlPlugin,
+} from './getInterpolateHtmlPlugin';
+import {
+  getManifestPlugin,
+} from './getManifestPlugin';
+import {
+  getTypeScriptForkChecker,
+} from './getTypeScriptForkChecker';
+import * as ModuleNotFoundPlugin from 'react-dev-utils/ModuleNotFoundPlugin';
+import {
+  paths,
+} from '../paths';
+import * as webpack from 'webpack';
 
-// Get the accelerator config.
-const config = getAcceleratorConfigJs();
-
-module.exports = function getCommonPlugins(mode, config) {  
+export function getCommonPlugins(mode, config) {  
   return [
     getHtmlWebpackPlugin(mode),
     getInterpolateHtmlPlugin(config),

@@ -1,7 +1,7 @@
-const path = require('path');
-const slash = require('slash');
+import * as path from 'path';
+import slash from 'slash';
 
-module.exports = function getFileImports(files) {
+export function getFileImports(files) {
   const importPaths = [];
   return {
     importPaths,
@@ -14,4 +14,4 @@ module.exports = function getFileImports(files) {
       return `import import_${index} from '${importPath}';`;
     }),
   };
-};
+}

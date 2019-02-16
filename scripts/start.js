@@ -1,29 +1,38 @@
-// Makes the script crash on unhandled rejections instead of silently
-// ignoring them. In the future, promise rejections that are not handled will
-// terminate the Node.js process with a non-zero exit code.
-process.on('unhandledRejection', err => {
-  throw err;
-});
-
-// Ensure environment variables are read.
-require('../config/setBaseEnv')('development');
-
-const { checkBrowsers } = require('react-dev-utils/browsersHelper');
-const chalk = require('chalk');
-const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
-//const clearConsole = require('react-dev-utils/clearConsole');
-const config = require('../config/webpack/webpack.config');
-const createDevServerConfig = require('../config/webpack/webpackDevServer.config');
-const openBrowser = require('react-dev-utils/openBrowser');
-const paths = require('../config/paths');
-const webpack = require('webpack');
-const WebpackDevServer = require('webpack-dev-server');
-const {
+import {
+  checkBrowsers,
+} from 'react-dev-utils/browsersHelper';
+import chalk from 'chalk';
+import * as checkRequiredFiles from 'react-dev-utils/checkRequiredFiles';
+//import * as clearConsole from 'react-dev-utils/clearConsole');
+import {
+  error,
+  log,
+} from 'colorful-logging';
+import config from '../config/webpack/webpack.config';
+import {
+  createDevServerConfig,
+} from '../config/webpack/webpackDevServer.config';
+import openBrowser from 'react-dev-utils/openBrowser';
+import {
+  paths,
+} from '../config/paths';
+import {
+  setBaseEnv,
+} from '../config/setBaseEnv';
+import {
+  setUnhandledRejectionEvent,
+} from './functions/setUnhandledRejectionEvent';
+import webpack from 'webpack';
+import * as WebpackDevServer from 'webpack-dev-server';
+import {
   choosePort,
   createCompiler,
   prepareProxy,
   prepareUrls,
-} = require('react-dev-utils/WebpackDevServerUtils');
+} from 'react-dev-utils/WebpackDevServerUtils';
+
+setUnhandledRejectionEvent();
+setBaseEnv('development');
 
 const packageJson = require(paths.appPackageJson);
 
@@ -48,20 +57,18 @@ const defaultPort = parseInt(PORT, 10) || 3000;
 const host = HOST || '0.0.0.0';
 
 if (HOST) {
-  console.log(
-    chalk.cyan(
-      `Attempting to bind to HOST environment variable: ${chalk.yellow(
-        chalk.bold(host)
-      )}`
-    )
+  log(
+    `Attempting to bind to HOST environment variable: ${chalk.yellow(
+      chalk.bold(host)
+    )}`
   );
 
-  console.log(
+  log(
     `If this was unintentional, check that you haven't mistakenly set it in your shell.`
   );
 
-  console.log(
-    `Learn more here: ${chalk.yellow('http://bit.ly/CRA-advanced-config')}\n`
+  log(
+    `Learn more here: ${chalk.bold('http://bit.ly/CRA-advanced-config')}\n`
   );
 }
 
@@ -97,30 +104,33 @@ checkBrowsers(paths.appPath, isInteractive)
         lanUrlForConfig,
     );
 
-    const devServer = new WebpackDevServer(compiler, serverConfig);
+    const {
+      listen,
+      close,
+    } = new WebpackDevServer(compiler, serverConfig);
     // Launch WebpackDevServer.
-    devServer.listen(port, host, err => {
-      if (err && err.stack) {
-        console.error(chalk.red(err.stack));
+    listen(port, host, err => {
+      if (err) {
+        error(err.stack || err.message || err);
         return;
       } else if (isInteractive) {
         //clearConsole();
       }
 
-      console.log(chalk.cyan('Starting the development server...\n'));
+      log(chalk.cyan('Starting the development server...\n'));
       openBrowser(localUrlForBrowser);
     });
 
-    [ 'SIGINT', 'SIGTERM', ].forEach((sig) => {
+    [
+      'SIGINT',
+      'SIGTERM',
+    ].forEach((sig) => {
       process.on(sig, () => {
-        devServer.close();
-        exit();
+        close();
+        exit(0);
       });
     });
   }).catch((err) => {
-    if (err && err.stack) {
-      console.error(chalk.red(err.stack));
-    }
-
+    error(err.stack || err.message || err);
     exit(1);
   });

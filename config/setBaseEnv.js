@@ -1,8 +1,10 @@
-const fs = require('fs-extra');
-const path = require('path');
-const { assert } = require('ts-assertions');
+import * as fs from 'fs-extra';
+import * as path from 'path';
+import {
+  assert,
+} from 'ts-assertions';
 
-module.exports = function setBaseEnv(mode) {
+export function setBaseEnv(mode) {
   const {
     env: {
       BABEL_ENV,
@@ -36,4 +38,4 @@ module.exports = function setBaseEnv(mode) {
     .filter((folder) => folder && !path.isAbsolute(folder))
     .map((folder) => path.resolve(appDirectory, folder))
     .join(path.delimiter);
-};
+}

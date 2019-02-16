@@ -1,4 +1,4 @@
-module.exports.ActionTypes = {
+export const ActionTypes = {
   Bookmark: 'Bookmark',
   CurrentPassageName: 'CurrentPassageName',
   MidrenderSignal: 'MidrenderSignal',

@@ -1,11 +1,11 @@
-/** @see {@link https://github.com/furkleindustries/accelerator-core/tree/master/accelerator.config.d.ts */
+/** @see {@link https://github.com/furkleindustries/accelerator-core/tree/master/accelerator.config.d.ts} */
 
-const { ActionTypes } = require('./src/actions/ActionTypes');
-const { FontFormats } = require('./src/fonts/FontFormats');
-const { FontRanges } = require('./src/fonts/FontRanges');
-const { FontStyles } = require('./src/fonts/FontStyles');
+import { ActionTypes } from './src/actions/ActionTypes';
+import { FontFormats } from './src/fonts/FontFormats';
+import { FontRanges } from './src/fonts/FontRanges';
+import { FontStyles } from './src/fonts/FontStyles';
 
-module.exports = {
+export default {
   /**
    * @property {string}
    * The page title which will be displayed in the browser.
@@ -84,6 +84,7 @@ module.exports = {
     ],
 
     fromFont: 'Roboto Regular',
+    loadingStrategy: 'preload',
     subsetRange: 'US_ASCII',
   },
 
@@ -129,4 +130,4 @@ module.exports = {
    * Passed directly to redux-undo's undoable syncFilter option.
    */
   historySynchronizeUnrewindableStateWithPresent: true,
-};
+}

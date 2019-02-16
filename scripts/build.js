@@ -1,25 +1,37 @@
-// Makes the script crash on unhandled rejections instead of silently
-// ignoring them. In the future, promise rejections that are not handled will
-// terminate the Node.js process with a non-zero exit code.
-process.on('unhandledRejection', (err) => {
-  throw err;
-});
+import * as bfj from 'bfj';
+import chalk from 'chalk';
+import {
+  checkBrowsers,
+} from 'react-dev-utils/browsersHelper';
+import * as checkRequiredFiles from 'react-dev-utils/checkRequiredFiles';
+import {
+  error,
+  log,
+  warn,
+} from 'colorful-logging';
+import * as FileSizeReporter from 'react-dev-utils/FileSizeReporter';
+import * as formatWebpackMessages from 'react-dev-utils/formatWebpackMessages';
+import * as fs from 'fs-extra';
+import config from '../config/webpack/webpack.config';
+import * as path from 'path';
+import {
+  paths,
+} from '../config/paths';
+import * as printHostingInstructions from 'react-dev-utils/printHostingInstructions';
+import * as printBuildError from 'react-dev-utils/printBuildError';
+import {
+  setBaseEnv,
+} from '../config/setBaseEnv';
+import {
+  setUnhandledRejectionEvent,
+} from './functions/setUnhandledRejectionEvent';
+import * as webpack from 'webpack';
 
+setUnhandledRejectionEvent();
 // Ensure environment variables are read.
-require('../config/setBaseEnv')('production');
+setBaseEnv('production');
 
-const path = require('path');
-const chalk = require('chalk');
-const fs = require('fs-extra');
-const webpack = require('webpack');
-const bfj = require('bfj');
-const config = require('../config/webpack/webpack.config');
-const paths = require('../config/paths');
-const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
-const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
-const printHostingInstructions = require('react-dev-utils/printHostingInstructions');
-const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
-const printBuildError = require('react-dev-utils/printBuildError');
+const appPackage = require(paths.appPackageJson);
 
 const measureFileSizesBeforeBuild =
   FileSizeReporter.measureFileSizesBeforeBuild;
@@ -30,7 +42,9 @@ const useYarn = fs.existsSync(paths.yarnLockFile);
 const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024;
 const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024;
 
-const isInteractive = process.stdout.isTTY;
+const {
+  stdout: { isTTY: isInteractive },
+} = process;
 
 // Warn and crash if required files are missing
 if (!checkRequiredFiles([ paths.appHtml, paths.appIndex, ])) {
@@ -43,7 +57,6 @@ const writeStatsJson = argv.indexOf('--stats') !== -1;
 
 // We require that you explicitly set browsers and do not fall back to
 // browserslist defaults.
-const { checkBrowsers } = require('react-dev-utils/browsersHelper');
 checkBrowsers(paths.appPath, isInteractive)
   .then(() => {
     // First, read the current file sizes in build directory.
@@ -60,23 +73,23 @@ checkBrowsers(paths.appPath, isInteractive)
   }).then(
     ({ stats, previousFileSizes, warnings }) => {
       if (warnings.length) {
-        console.log(chalk.yellow('Compiled with warnings.\n'));
-        console.log(warnings.join('\n\n'));
-        console.log(
+        warn('Compiled with warnings.\n');
+        warn(warnings.join('\n\n'));
+        warn(
           '\nSearch for the ' +
             chalk.underline(chalk.yellow('keywords')) +
             ' to learn more about each warning.'
         );
-        console.log(
+        warn(
           'To ignore, add ' +
             chalk.cyan('// eslint-disable-next-line') +
             ' to the line before.\n'
         );
       } else {
-        console.log(chalk.green('Compiled successfully.\n'));
+        log('Compiled successfully.\n');
       }
 
-      console.log('File sizes after gzip:\n');
+      log('File sizes after gzip:\n');
       printFileSizesAfterBuild(
         stats,
         previousFileSizes,
@@ -84,9 +97,9 @@ checkBrowsers(paths.appPath, isInteractive)
         WARN_AFTER_BUNDLE_GZIP_SIZE,
         WARN_AFTER_CHUNK_GZIP_SIZE
       );
-      console.log();
 
-      const appPackage = require(paths.appPackageJson);
+      log();
+
       const publicUrl = paths.publicUrl;
       const publicPath = config.output.publicPath;
       const buildFolder = path.relative(process.cwd(), paths.appBuild);
@@ -99,13 +112,13 @@ checkBrowsers(paths.appPath, isInteractive)
       );
     },
     (err) => {
-      console.log(chalk.red('Failed to compile.\n'));
+      error('Failed to compile.\n');
       printBuildError(err);
       process.exit(1);
     },
   ).catch((err) => {
     if (err && err.message) {
-      console.log(err.message);
+      error(err ? err.stack || err.message : err);
     }
 
     process.exit(1);
@@ -113,7 +126,7 @@ checkBrowsers(paths.appPath, isInteractive)
 
 // Create the production build and print the deployment instructions.
 function build(previousFileSizes) {
-  console.log('Creating an optimized production build...');
+  log('Creating an optimized production build...');
 
   let compiler = webpack(config);
   return new Promise((resolve, reject) => {
@@ -123,6 +136,7 @@ function build(previousFileSizes) {
         if (!err.message) {
           return reject(err);
         }
+
         messages = formatWebpackMessages({
           errors: [ err.message ],
           warnings: [],
@@ -146,20 +160,20 @@ function build(previousFileSizes) {
           process.env.CI.toLowerCase() !== 'false') &&
         messages.warnings.length
       ) {
-        console.log(
-          chalk.yellow(
-            '\nTreating warnings as errors because process.env.CI = true.\n' +
-              'Most CI servers set it automatically.\n'
-          )
+        warn(
+          '\nTreating warnings as errors because process.env.CI = true.\n' +
+            'Most CI servers set it automatically.\n'
         );
+
         return reject(new Error(messages.warnings.join('\n\n')));
       }
 
       const resolveArgs = {
-        stats,
         previousFileSizes,
+        stats,
         warnings: messages.warnings,
       };
+
       if (writeStatsJson) {
         return bfj
           .write(paths.appBuild + '/bundle-stats.json', stats.toJson())

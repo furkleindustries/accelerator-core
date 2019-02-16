@@ -1,12 +1,16 @@
-const getNodeModulesToTranspile = require('./getNodeModulesToTranspile');
-const path = require('path');
-const paths = require('../paths');
+import {
+  getNodeModulesToTranspile,
+} from './getNodeModulesToTranspile';
+import * as path from 'path';
+import {
+  paths,
+} from '../paths';
 
 /**
  * @see https://babeljs.io/docs/en/options
  */
 
-module.exports = function getBabelLoaders(mode) {
+export function getBabelLoaders(mode) {
   return [
     // Process application JS with Babel.
     // The preset includes JSX, Flow, and some ESnext features.
@@ -92,4 +96,4 @@ module.exports = function getBabelLoaders(mode) {
       },
     }
   ];
-};
+}

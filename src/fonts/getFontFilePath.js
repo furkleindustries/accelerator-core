@@ -1,13 +1,14 @@
-const {
+import {
   FontRanges,
-} = require('./FontRanges');
-const path = require('path');
+} from './FontRanges';
+import * as path from 'path';
 
-module.exports = {};
-module.exports.getFontFilepath = ({
+export function getFontFilepath ({
   directory,
   family,
   format,
   style,
   weight,
-}) => path.join(directory, `${family}-${style}-${weight}.${format}`);
+}) {
+  return path.join(directory, `${family}-${style}-${weight}.${format}`);
+}

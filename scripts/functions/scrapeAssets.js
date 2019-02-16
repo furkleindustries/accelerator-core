@@ -1,8 +1,8 @@
-const glob = require('glob');
-const path = require('path');
+import glob from 'glob';
+import * as path from 'path';
 
 /* Collect all files within the specified directory ending in .jsx, or .tsx. */
-module.exports = function scrapeAssets(directory) {
+export function scrapeAssets(directory) {
   return new Promise((resolve, reject) => (
     glob(path.join(directory, '**/!(*.test).[jt]sx'), (err, files) => {
       if (err) {

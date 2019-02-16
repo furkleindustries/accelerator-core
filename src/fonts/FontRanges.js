@@ -1,7 +1,5 @@
-module.exports = {
-  FontRanges: {
-    Latin: 'latin',
-    LatinExtended: 'latin-ext',
-    UsAscii: 'us-ascii',
-  },
-}
+export const FontRanges = {
+  Latin: 'latin',
+  LatinExtended: 'latin-ext',
+  UsAscii: 'us-ascii',
+};

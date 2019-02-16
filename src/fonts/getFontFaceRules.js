@@ -1,12 +1,11 @@
-const {
+import {
   getHelperVariant,
-} = require('./getHelperVariant');
-const {
+} from './getHelperVariant';
+import {
   getUnicodeRange,
-} = require('./getUnicodeRange');
+} from './getUnicodeRange';
 
-module.exports = {};
-module.exports.getFontFaceRules = function (
+export function getFontFaceRules(
   {
     styles,
     ranges,
@@ -44,4 +43,4 @@ module.exports.getFontFaceRules = function (
       }, []))
     ), []))
   }, []).join();
-};
+}

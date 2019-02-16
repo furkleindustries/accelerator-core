@@ -1,3 +1,3 @@
-module.exports.getFrozenObject = (...sources) => (
-  Object.freeze(Object.assign({}, ...sources))
-);
+export function getFrozenObject(...sources) {
+  return Object.freeze(Object.assign({}, ...sources));
+}

@@ -1,6 +1,6 @@
-const PnpWebpackPlugin = require('pnp-webpack-plugin');
+import * as PnpWebpackPlugin from 'pnp-webpack-plugin';
 
-module.exports = function getResolveLoader() {
+export function getResolveLoader() {
   return {
     plugins: [
       // Also related to Plug'n'Play, but this time it tells Webpack to load its loaders
@@ -8,4 +8,4 @@ module.exports = function getResolveLoader() {
       PnpWebpackPlugin.moduleLoader(module),
     ],
   };
-};
+}

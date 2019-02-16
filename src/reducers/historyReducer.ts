@@ -24,8 +24,8 @@ import {
   Reducer,
 } from 'redux';
 import {
-  getAcceleratorConfig,
-} from '../configuration/getAcceleratorConfig';
+  getNormalizedAcceleratorConfig,
+} from '../configuration/getNormalizedAcceleratorConfig';
 import {
   IHistory,
 } from '../state/IHistory';
@@ -38,7 +38,7 @@ const {
   historySaveTypes,
   historyStackLimit: limit,
   historySynchronizeUnrewindableStateWithPresent: syncFilter,
-} = getAcceleratorConfig();
+} = getNormalizedAcceleratorConfig();
 
 export const historyReducer: Reducer<IHistory, IAction> = undoable(
   combineReducers({

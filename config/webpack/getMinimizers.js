@@ -1,9 +1,13 @@
-const getCssMinimizer = require('./getCssMinimizer');
-const getJavaScriptMinimizer = require('./getJavaScriptMinimizer');
+import {
+  getCssMinimizer,
+} from './getCssMinimizer';
+import {
+  getJavaScriptMinimizer,
+} from './getJavaScriptMinimizer';
 
-module.exports = function getMinimizers(shouldUseSourceMap) {
+export function getMinimizers(shouldUseSourceMap) {
   return [
     getCssMinimizer(shouldUseSourceMap),
     getJavaScriptMinimizer(shouldUseSourceMap),
   ];
-};
+}

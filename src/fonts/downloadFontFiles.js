@@ -1,23 +1,22 @@
-const fs = require('fs-extra');
-const {
+import * as fs from 'fs-extra';
+import {
   getFontApiUrl,
-} = require('./getFontApiUrl');
-const {
-  getFontFilePath,
-} = require('./getFontFilepath');
-const {
+} from './getFontApiUrl';
+import {
+  getFontFilepath,
+} from './getFontFilepath';
+import {
   getHelperVariant,
-} = require('./getHelperVariant');
-const request = require('request');
-const {
+} from './getHelperVariant';
+import request from 'request';
+import {
   assert,
   assertValid,
-} = require('ts-assertions')
+} from 'ts-assertions';
 
 const apiUrl = getFontApiUrl();
 
-module.exports = {};
-module.exports.downloadFontFiles = function (
+export function downloadFontFiles(
   {
     formats,
     styles,
@@ -44,7 +43,7 @@ module.exports.downloadFontFiles = function (
 
         assert(url);
 
-        const filepath = getFontFilePath({
+        const filepath = getFontFilepath({
           family,
           format,
           style,
@@ -75,4 +74,4 @@ module.exports.downloadFontFiles = function (
       }, []));
     }, []));
   }, []));
-};
+}

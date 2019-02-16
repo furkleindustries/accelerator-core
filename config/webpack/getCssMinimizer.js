@@ -1,7 +1,7 @@
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const safePostCssParser = require('postcss-safe-parser');
+import * as OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
+import * as safePostCssParser from 'postcss-safe-parser';
 
-module.exports = function getCssMinimizer(shouldUseSourceMap) {
+export function getCssMinimizer(shouldUseSourceMap) {
   return new OptimizeCSSAssetsPlugin({
     cssProcessorOptions: {
       parser: safePostCssParser,
@@ -19,4 +19,4 @@ module.exports = function getCssMinimizer(shouldUseSourceMap) {
       ),
     },
   });
-};
+}

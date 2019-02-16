@@ -1,8 +1,10 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const paths = require('../paths');
+import * as HtmlWebpackPlugin from 'html-webpack-plugin';
+import {
+  paths,
+} from '../paths';
 
 // Generates an `index.html` file with the <script> injected.
-module.exports = function getHtmlWebpackPlugin(mode) {
+export function getHtmlWebpackPlugin(mode) {
   const base = {
     inject: true,
     template: paths.appHtml,

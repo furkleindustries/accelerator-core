@@ -66,15 +66,6 @@
       function (err) { console.error(err) },
     );
   };
-  
-  var subset = new FontFaceObserver('%subsetFont%');
-  
-  // Load full fonts even if the subset fails. Do not allow longer than 500ms.
-  subset.load(null, 500).then(
-    function () { loadFullFonts(true); },
-    function (err) {
-      console.error('Subset loading encountered an error:', err);
-      loadFullFonts(false);
-    },
-  );
+
+  %subsetFontConditionalStatement%
 })();

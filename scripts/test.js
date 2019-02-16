@@ -1,17 +1,18 @@
+import {
+  exec,
+} from 'child_process';
+import * as jest from 'jest';
+import {
+  setBaseEnv,
+} from '../config/setBaseEnv';
+import {
+  setUnhandledRejectionEvent,
+} from './functions/setUnhandledRejectionEvent';
+
+setUnhandledRejectionEvent();
+
 process.env.PUBLIC_URL = '';
-
-// Makes the script crash on unhandled rejections instead of silently
-// ignoring them. In the future, promise rejections that are not handled will
-// terminate the Node.js process with a non-zero exit code.
-process.on('unhandledRejection', err => {
-  throw err;
-});
-
-const { exec } = require('child_process');
-const jest = require('jest');
-
-// Ensure environment variables are read.
-require('../config/setBaseEnv')('test');
+setBaseEnv('test');
 
 let argv = process.argv.slice(2);
 

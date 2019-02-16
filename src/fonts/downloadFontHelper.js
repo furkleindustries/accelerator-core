@@ -1,31 +1,26 @@
-const {
+import {
   warn,
-} = require('colorful-logging');
-const {
+} from 'colorful-logging';
+import {
   getFontApiUrl,
-} = require('./getFontApiUrl');
-const {
+} from './getFontApiUrl';
+import {
   normalizeFont,
-} = require('./normalizeFont');
-const request = require('request');
+} from './normalizeFont';
+import request from 'request';
 
-module.exports = {};
-module.exports.downloadFontHelper = (fontLoaderObj) => {
+export function downloadFontHelper(fontLoaderObj) {
   let url = `${getFontApiUrl()}/`;
-  if (typeof font === 'string') {
-    url += normalizeFont(fontLoaderObj);
-  } else {
-    const {
-      family,
-      ranges,
-    } = normalizeFont(fontLoaderObj);
+  const {
+    family,
+    ranges,
+  } = normalizeFont(fontLoaderObj);
 
-    url += `${family}?subsets=`;
-    if (ranges === 'string') {
-      url += ranges;
-    } else {
-      url += ranges.join(',');
-    }
+  url += `${family}?subsets=`;
+  if (ranges === 'string') {
+    url += ranges;
+  } else {
+    url += ranges.join(',');
   }
 
   return new Promise((resolve, reject) => request(
@@ -52,10 +47,9 @@ module.exports.downloadFontHelper = (fontLoaderObj) => {
           weights,
         } = fontLoaderObj;
 
-        const fontName = normalizeFont(family || fontLoaderObj);
         return reject(
           'The statusCode of one of the font helper requests (for ' +
-            `${fontName[0].toUpperCase()}${fontName.slice(1)} ` +
+            `${family[0].toUpperCase()}${family.slice(1)} ` +
             `${weights ? `with weights ${weights.join(', ')}` : ''}) was ` +
             `${statusCode}.`
         );
@@ -71,4 +65,4 @@ module.exports.downloadFontHelper = (fontLoaderObj) => {
       return resolve(parsed);
     },
   ));
-};
+}

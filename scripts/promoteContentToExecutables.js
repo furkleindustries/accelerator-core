@@ -1,10 +1,22 @@
-const path = require('path');
-const fs = require('fs-extra');
-const getAcceleratorConfig = require('../config/getAcceleratorConfigJs');
+import {
+  log,
+  warn,
+} from 'colorful-logging';
+import {
+  setUnhandledRejectionEvent,
+} from './functions/setUnhandledRejectionEvent';
+import * as fs from 'fs-extra';
+import {
+  getNormalizedAcceleratorConfig,
+} from '../configuration/getNormalizedAcceleratorConfig';
+import * as path from 'path';
+
+setUnhandledRejectionEvent();
 
 const projectDir = path.join(__dirname, '..');
 const appDir = path.join(projectDir, 'build-web');
 const distDir = path.join(projectDir, 'build-desktop');
+const publicDir = path.join(projectDir, 'public');
 
 const windowsDir = path.join(distDir, 'windows', 'resources', 'app');
 const macOSDir = path.join(distDir, 'macOS', 'Electron.app', 'Contents', 'Resources', 'app');
@@ -47,7 +59,7 @@ const mainStr =
 const {
   storyTitle,
   storyVersion,
-} = getAcceleratorConfig();
+} = getNormalizedAcceleratorConfig();
 
 const packageStr = JSON.stringify({
   name: storyTitle || 'Untitled Accelerator Story',
@@ -58,15 +70,16 @@ const packageStr = JSON.stringify({
 const skipMacOS =
   process.argv.indexOf('--force-mac-build-on-windows') === -1 &&
   process.platform === 'win32';
+
 if (skipMacOS) {
-  console.log('Due to issues in the way Windows handles symlinks in zip ' +
-              'archives, it is not possible to make macOS electron ' +
-              'packages. You may override this by passing the ' +
-              '--force-mac-build-on-windows to the ' +
-              'promoteContentToExecutables script or the ' +
-              'promote-content-to-executables npm task, but it will likely ' +
-              'fail, and even if it does not, you should test to be ' +
-              'absolutely sure it works.\n');
+  warn('Due to issues in the way Windows handles symlinks in zip ' +
+       'archives, it is not possible to make macOS electron ' +
+       'packages. You may override this by passing the ' +
+       '--force-mac-build-on-windows to the ' +
+       'promoteContentToExecutables script or the ' +
+       'promote-content-to-executables npm task, but it will likely ' +
+       'fail, and even if it does not, you should test to be ' +
+       'absolutely sure it works.\n');
 }
 
 (async function () {
@@ -78,8 +91,11 @@ if (skipMacOS) {
 
   await Promise.all([
     fs.copy(appDir, windowsDir),
+    fs.copy(publicDir, windowsDir),
     skipMacOS ? null : fs.copy(appDir, macOSDir),
+    skipMacOS ? null : fs.copy(publicDir, macOSDir),
     fs.copy(appDir, linuxDir),
+    fs.copy(publicDir, linuxDir),
   ]);
 
   await Promise.all([
@@ -91,5 +107,5 @@ if (skipMacOS) {
     fs.outputFile(path.join(windowsDir, 'main.js'), mainStr),
   ]);
 
-  console.log('Electron bundles are ready.');
+  log('Electron bundles are ready.');
 })();

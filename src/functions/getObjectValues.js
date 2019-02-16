@@ -1,4 +1,3 @@
-module.exports = {};
-module.exports.getObjectValues = (obj) => (
-  Object.keys(obj).map((aa) => obj[aa])
-);
+export function getObjectValues(obj) {
+  return Object.keys(obj).map((aa) => obj[aa]);
+}

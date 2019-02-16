@@ -1,6 +1,6 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+import * as MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
-module.exports = function getStyleLoaders({
+export function getStyleLoaders({
   mode,
   cssOptions,
   preProcessor,
@@ -71,4 +71,4 @@ module.exports = function getStyleLoaders({
   }
 
   return loaders;
-};
+}

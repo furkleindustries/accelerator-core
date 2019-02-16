@@ -1,6 +1,13 @@
-const { ActionTypes } = require('../actions/ActionTypes');
+import {
+  ActionTypes,
+} from '../actions/ActionTypes';
 
-module.exports.defaults = {
+export const defaults = {
+  storyTitle: '%name%',
+  storyDescription:
+    'A story created with the Accelerator hypertext fiction framework ' +
+    '(https://github.com/furkleindustries/accelerator-core).',
+
   debug: false,
   historySaveTypes: [
     ActionTypes.Bookmark,
@@ -13,11 +20,4 @@ module.exports.defaults = {
   historySynchronizeUnrewindableStateWithPresent: true,
 
   publicUrl: '.',
-
-  storyDescription:
-    'An untitled story written with Accelerator ' +
-    '(https://github.com/furkleindustries/accelerator-core)',
-
-  storyTitle:
-    'Untitled Accelerator Story',
 };

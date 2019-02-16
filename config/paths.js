@@ -1,15 +1,17 @@
-const fs = require('fs-extra');
-const getAcceleratorConfigJs = require('./getAcceleratorConfigJs');
-const path = require('path');
+import * as fs from 'fs-extra';
+import {
+  getNormalizedAcceleratorConfig,
+} from '../src/configuration/getNormalizedAcceleratorConfig';
+import * as path from 'path';
 
 // Make sure any symlinks in the project folder are resolved:
 // https://github.com/facebook/create-react-app/issues/637
 const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
-const { publicUrl } = getAcceleratorConfigJs();
+const { publicUrl } = getNormalizedAcceleratorConfig();
 
-module.exports = {
+export const paths = {
   publicUrl,
   moduleFileExtensions: [
     'js',
