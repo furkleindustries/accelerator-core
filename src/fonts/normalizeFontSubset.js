@@ -8,6 +8,9 @@ import {
   getObjectValues,
 } from '../functions/getObjectValues';
 import {
+  normalizeFontName,
+} from './normalizeFontName';
+import {
   assert,
 } from 'ts-assertions';
 
@@ -15,14 +18,14 @@ export function normalizeFontSubset(subsetArg) {
   let subset = subsetArg;
   if (typeof subset === 'string') {
     subset = {
-      fromFont: subset,
+      fromFamily: subset,
       name: `${subset} Subset`,
     };
   }
   
   const {
     formats,
-    fromFont,
+    fromFamily,
     loadingStrategy,
     name,
     subsetRange,
@@ -35,14 +38,16 @@ export function normalizeFontSubset(subsetArg) {
   } = getFontSubsetDefaults();
 
   subset = {
-    fromFont,
+    fromFamily,
     name,
     formats: formats || defaultFormats,
     loadingStrategy: loadingStrategy || defaultLoadingStrategy,
     subsetRange: subsetRange || defaultSubsetRange,
   };
 
-  assert(subset.fromFont && subset.fromFont.length);
+  assert(subset.fromFamily && subset.fromFamily.length);
+  subset.fromFamily = normalizeFontName(subset.fromFamily);
+
   assert(subset.formats && subset.formats.length);
   
   if (typeof subset.formats === 'string') {

@@ -83,7 +83,7 @@ export default {
       FontFormats.WOFF2,
     ],
 
-    fromFont: 'Roboto Regular',
+    fromFamily: 'Roboto',
     loadingStrategy: 'preload',
     subsetRange: 'US_ASCII',
   },

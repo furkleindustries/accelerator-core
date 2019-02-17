@@ -7,7 +7,7 @@ import {
 
 export function getFontSubsetDefaults() {
   return {
-    fromFont: undefined,
+    fromFamily: undefined,
     formats: [
       FontFormats.WOFF,
       FontFormats.WOFF2,

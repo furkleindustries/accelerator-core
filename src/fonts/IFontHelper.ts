@@ -9,6 +9,7 @@ import {
 } from './IFontHelperVariant';
 
 export interface IFontHelper {
+  readonly category: string;
   readonly defSubset: FontRanges;
   readonly defVariant: FontStyles;
   readonly family: string;

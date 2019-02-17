@@ -18,12 +18,21 @@ import {
   getFontFaceRules,
 } from '../src/fonts/getFontFaceRules';
 import {
+  getFontFilepath,
+} from '../src/fonts/getFontFilepath';
+import {
   getNormalizedAcceleratorConfig,
 } from '../src/configuration/getNormalizedAcceleratorConfig';
 import * as path from 'path';
 import {
   setUnhandledRejectionEvent,
 } from './functions/setUnhandledRejectionEvent';
+import {
+  assert,
+} from 'ts-assertions';
+import { FontRanges } from '../src/fonts/FontRanges';
+import { FontStyles } from '../src/fonts/FontStyles';
+import { FontFormats } from '../src/fonts/FontFormats';
 
 setUnhandledRejectionEvent();
 
@@ -112,9 +121,9 @@ let fontFiles;
 
   log('Subsetting font.');
 
-  let glyphhanger;
+  let GlyphHanger;
   try {
-    glyphhanger = require('glyphhanger');
+    GlyphHanger = require('glyphhanger');
   } catch (err) {
     if (err.code !== 'MODULE_NOT_FOUND') {
       warn(err);
@@ -123,7 +132,7 @@ let fontFiles;
   }
 
   await new Promise((resolve) => {
-    if (glyphhanger) {
+    if (GlyphHanger) {
       return resolve();
     }
 
@@ -136,56 +145,78 @@ let fontFiles;
 
       return resolve();
     });
-  });
+  })
+  
+  const { fromFamily } = subsetFont;
+
+  const fontLoadingObj = fontsToLoad.find(({
+    family,
+  }) => family === fromFamily);
+
+  assert(fontLoadingObj);
 
   const subsetPath = path.join(
     downloadDirectory,
-    subsetFont.subsetFrom,
+    `${fromFamily} Subset`,
   );
 
-  /* TODO: broken */
-  const subsetHelper = fontHelpers.find(({
+  const {
+    formats,
     family,
-    fontWeight,
-    defVariant,
-  }) => (
-    family === subset.subsetFrom &&
-      fontWeight === 400 &&
-      defVariant === FontStyles.Normal
-  ));
+    ranges,
+    weights,
+  } = fontLoadingObj;
 
-  let rangeSegment;
-  if (/^us[_-]ascii$/i.test(subsetRange)) {
-    rangeSegment = '--US_ASCII';
-  } else if (/^latin$/i.test(subsetRange)) {
-    rangeSegment = '--LATIN';
+  const format = formats.indexOf(FontFormats.WOFF2) === -1 ?
+    ranges[0] :
+    FontFormats.WOFF2;
+
+  const weight = weights.indexOf(400) === -1 ? weights[0] : 400;
+
+  const pathOfFontToSubset = getFontFilepath({
+    family,
+    format,
+    weight,
+    directory: downloadDirectory,
+    style: FontStyles.Normal,
+  });
+
+  const formatSegment = `--formats=${formats.join(',')}`;
+
+  const range = formats.indexOf(FontRanges.Latin) === -1 ?
+    ranges[0] :
+    FontRanges.Latin;
+
+  const GlyphHangerFontFace = require('glyphhanger/src/GlyphHangerFontFace');
+  const ghff = new GlyphHangerFontFace();
+  ghff.setCSSOutput(true);
+  ghff.setSubset(pathOfFontToSubset);
+
+  const GlyphHangerSubset = require('glyphhanger/src/GlyphHangerSubset');
+  const ghs = new GlyphHangerSubset();
+  ghs.setOutputDirectory(downloadDirectory);
+  ghs.setFormats(formats);
+  
+  const GlyphHangerWhitelist = require('glyphhanger/src/GlyphhangerWhitelist');
+  let ghw;
+  if (/^latin$/i.test(range)) {
+    ghw = new GlyphHangerWhitelist(null, { LATIN: true });
+  } else if (/^us[_-]ascii$/i.test(range)) {
+    ghw = new GlyphHangerWhitelist(null, { US_ASCII: true });
   } else {
-    rangeSegment = `--whitelist=${subsetRange}`;
+    ghw = new GlyphHangerWhitelist(range);
   }
 
-  let formatSegment = '--formats=';
-  if (Array.isArray(subsetFormat)) {
-    formatSegment += subsetFormat.join('');
-  } else {
-    formatSegment += subsetFormat;
-  }
+  ghff.setUnicodeRange(range);
 
-  const cmd =
-    'glyphhanger ' +
-      `--subset=${fontPath} ` +
-      `${rangeSegment} ` +
-      `${formatSegment} `;
+  const gh = new GlyphHanger();
+  gh.setSubset(pathOfFontToSubset);
+  gh.setWhitelist(ghw);  
+  gh.output();
 
-  exec(
-    cmd,
-    null,
-    (err) => {
-      if (err) {
-        error(`exec error: ${err}`);
-        return;
-      }
+  ghs.subsetAll(ghw.getWhitelistAsUnicodes());
 
-      log('Completed subsetting font.');
-    },
-  ); 
+  ghff.setUnicodeRange(whitelist.getWhitelistAsUnicodes());
+  ghff.writeCSSFiles();
+  ghff.output();
 })();

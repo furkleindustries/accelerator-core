@@ -113,7 +113,7 @@
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "array-shuffle": "1.0.1",
-    "colorful-logging": "^1.0.3",
+    "colorful-logging": "^1.0.5",
     "detect-node": "2.0.4",
     "glyphhanger": "^3.2.0",
     "object-assign": "4.1.1",

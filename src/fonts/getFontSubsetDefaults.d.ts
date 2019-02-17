@@ -9,7 +9,7 @@ import {
 } from './IFontSubsettingDetailsNormalized';
 
 export function getFontSubsetDefaults(): {
-  readonly formats: FontFormats[],
-  readonly loadingStrategy: FontLoadingStrategies.Preload,
+  readonly formats: FontFormats[];
+  readonly loadingStrategy: FontLoadingStrategies;
   readonly subsetRange: 'US_ASCII';
 };
