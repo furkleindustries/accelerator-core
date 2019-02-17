@@ -115,6 +115,7 @@
     "array-shuffle": "1.0.1",
     "colorful-logging": "^1.0.3",
     "detect-node": "2.0.4",
+    "glyphhanger": "^3.2.0",
     "object-assign": "4.1.1",
     "promise": "8.0.2",
     "raf": "3.4.1",

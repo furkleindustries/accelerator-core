@@ -35,7 +35,6 @@ export const paths = {
   footersSrc: resolveApp('footers/'),
   pluginsSrc: resolveApp('plugins/'),
   appTsConfig: resolveApp('tsconfig.json'),
-  yarnLockFile: resolveApp('yarn.lock'),
   testsSetup: resolveApp('src/setupTests.ts'),
   proxySetup: resolveApp('src/setupProxy.ts'),
   appNodeModules: resolveApp('node_modules/'),

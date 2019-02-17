@@ -36,7 +36,6 @@ const appPackage = require(paths.appPackageJson);
 const measureFileSizesBeforeBuild =
   FileSizeReporter.measureFileSizesBeforeBuild;
 const printFileSizesAfterBuild = FileSizeReporter.printFileSizesAfterBuild;
-const useYarn = fs.existsSync(paths.yarnLockFile);
 
 // These sizes are pretty large. We'll warn for bundles exceeding them.
 const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024;
@@ -95,7 +94,7 @@ checkBrowsers(paths.appPath, isInteractive)
         previousFileSizes,
         paths.appBuild,
         WARN_AFTER_BUNDLE_GZIP_SIZE,
-        WARN_AFTER_CHUNK_GZIP_SIZE
+        WARN_AFTER_CHUNK_GZIP_SIZE,
       );
 
       log();
@@ -108,7 +107,6 @@ checkBrowsers(paths.appPath, isInteractive)
         publicUrl,
         publicPath,
         buildFolder,
-        useYarn
       );
     },
     (err) => {
@@ -146,15 +144,16 @@ function build(previousFileSizes) {
           stats.toJson({ all: false, warnings: true, errors: true })
         );
       }
+
       if (messages.errors.length) {
         // Only keep the first error. Others are often indicative
         // of the same problem, but confuse the reader with noise.
         if (messages.errors.length > 1) {
           messages.errors.length = 1;
         }
+
         return reject(new Error(messages.errors.join('\n\n')));
-      }
-      if (
+      } else if (
         process.env.CI &&
         (typeof process.env.CI !== 'string' ||
           process.env.CI.toLowerCase() !== 'false') &&
@@ -176,7 +175,7 @@ function build(previousFileSizes) {
 
       if (writeStatsJson) {
         return bfj
-          .write(paths.appBuild + '/bundle-stats.json', stats.toJson())
+          .write(`${paths.appBuild}/bundle-stats.json`, stats.toJson())
           .then(() => resolve(resolveArgs))
           .catch(error => reject(new Error(error)));
       }
@@ -189,6 +188,6 @@ function build(previousFileSizes) {
 function copyPublicFolder() {
   fs.copySync(paths.appPublic, paths.appBuild, {
     dereference: true,
-    filter: file => file !== paths.appHtml,
+    filter: (file) => file !== paths.appHtml,
   });
 }

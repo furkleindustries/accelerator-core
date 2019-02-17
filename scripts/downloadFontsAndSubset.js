@@ -29,16 +29,10 @@ setUnhandledRejectionEvent();
 
 const {
   fontsToLoad,
-  subsetFont: {
-    formats,
-    fromFont,
-    loadingStrategy,
-    name: subsetName,
-    subsetRange,
-  },
+  subsetFont: maybeSubsetFont,
 } = getNormalizedAcceleratorConfig();
 
-throw new Error('FINISH/FIX SUBSETTING IDIOT');
+const subsetFont = maybeSubsetFont || null;
 
 /* Don't do anything if the user doesn't indicate any fonts to load. */
 if (!fontsToLoad) {
@@ -107,6 +101,15 @@ let fontFiles;
   log('Fonts downloaded:\n  ' +
       `${fontFiles.map((name) => chalk.bold(name)).join(',\n  ')}.`);
 
+  if (!subsetFont) {
+    log(
+      'No subsetFont property was present in accelerator.config.js, and no ' +
+      'subset will be created.'
+    );
+
+    process.exit(0);
+  }
+
   log('Subsetting font.');
 
   let glyphhanger;
@@ -124,7 +127,7 @@ let fontFiles;
       return resolve();
     }
 
-    log('Installing glyphhanger dependency.');
+    log('Installing glyphhanger dependency for font subsetting.');
     exec('npm install glyphhanger', null, (err) => {
       if (err) {
         warn(`Error installing glyphhanger: ${err}`);
@@ -137,15 +140,16 @@ let fontFiles;
 
   const subsetPath = path.join(
     downloadDirectory,
-    subsetFrom,
+    subsetFont.subsetFrom,
   );
 
+  /* TODO: broken */
   const subsetHelper = fontHelpers.find(({
     family,
     fontWeight,
     defVariant,
   }) => (
-    family === subsetFrom &&
+    family === subset.subsetFrom &&
       fontWeight === 400 &&
       defVariant === FontStyles.Normal
   ));

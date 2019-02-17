@@ -1,4 +1,4 @@
-import * as config from '../../accelerator.config';
+import config from '../../accelerator.config';
 import {
   defaults,
 } from './defaults';
@@ -31,4 +31,4 @@ export function getNormalizedAcceleratorConfig() {
   memoized = Object.freeze(memoized);
 
   return memoized;
-};
+}
