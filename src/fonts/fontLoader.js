@@ -27,11 +27,7 @@
     }
 
     var promises = %fontsToLoad%.reduce(function (arr, font) {
-      if (typeof font === 'string') {
-        return arr.concat([ loadSingleFont(new FontFaceObserver(font)) ]);
-      }
-
-      if (font || !font.family) {
+      if (!font.family) {
         throw new Error(
           'No font or font family provided in accelerator.config.js ' +
             'fonts entry.',
@@ -46,8 +42,8 @@
         return arr.concat(weights.reduce(function (arr, weight) {
           return arr.concat([
             loadSingleFont(new FontFaceObserver(family, {
-              style: (style || 'normal').toLowerCase(),
-              weight: (weight || 'normal').toLowerCase(),
+              style: String(style || 'normal').toLowerCase(),
+              weight: String(weight || 'normal').toLowerCase(),
             })),
           ]);
         }, []));

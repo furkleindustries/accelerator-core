@@ -1,14 +1,14 @@
 import {
   getBabelLoaders,
 } from './getBabelLoaders';
-import * as getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
+import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
 import {
   getStyleLoaders,
 } from './getStyleLoaders';
 import * as path from 'path';
 import {
   paths,
- } from '../paths';
+} from '../paths';
 
 // style files regexes
 const cssNoModuleRegex = /\.nomodule\.css$/;

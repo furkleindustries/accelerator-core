@@ -1,29 +1,24 @@
+import './functions/setUnhandledRejectionEvent';
+import '../config/setDevelopmentEnv';
+
 import {
   checkBrowsers,
 } from 'react-dev-utils/browsersHelper';
 import chalk from 'chalk';
-import * as checkRequiredFiles from 'react-dev-utils/checkRequiredFiles';
-//import * as clearConsole from 'react-dev-utils/clearConsole');
+import checkRequiredFiles from 'react-dev-utils/checkRequiredFiles';
+//import clearConsole from 'react-dev-utils/clearConsole');
 import {
   error,
   log,
 } from 'colorful-logging';
 import config from '../config/webpack/webpack.config';
-import {
-  createDevServerConfig,
-} from '../config/webpack/webpackDevServer.config';
+import createDevServerConfig from '../config/webpack/webpackDevServer.config';
 import openBrowser from 'react-dev-utils/openBrowser';
 import {
   paths,
 } from '../config/paths';
-import {
-  setBaseEnv,
-} from '../config/setBaseEnv';
-import {
-  setUnhandledRejectionEvent,
-} from './functions/setUnhandledRejectionEvent';
 import webpack from 'webpack';
-import * as WebpackDevServer from 'webpack-dev-server';
+import WebpackDevServer from 'webpack-dev-server';
 import {
   choosePort,
   createCompiler,
@@ -31,8 +26,6 @@ import {
   prepareUrls,
 } from 'react-dev-utils/WebpackDevServerUtils';
 
-setUnhandledRejectionEvent();
-setBaseEnv('development');
 
 const packageJson = require(paths.appPackageJson);
 
@@ -104,12 +97,9 @@ checkBrowsers(paths.appPath, isInteractive)
         lanUrlForConfig,
     );
 
-    const {
-      listen,
-      close,
-    } = new WebpackDevServer(compiler, serverConfig);
+    const devServer = new WebpackDevServer(compiler, serverConfig);
     // Launch WebpackDevServer.
-    listen(port, host, err => {
+    devServer.listen(port, host, err => {
       if (err) {
         error(err.stack || err.message || err);
         return;
@@ -126,7 +116,7 @@ checkBrowsers(paths.appPath, isInteractive)
       'SIGTERM',
     ].forEach((sig) => {
       process.on(sig, () => {
-        close();
+        devServer.close();
         exit(0);
       });
     });

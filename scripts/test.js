@@ -1,18 +1,11 @@
+import './functions/setUnhandledRejectionEvent';
+import '../config/setTestEnv';
+
 import {
   exec,
 } from 'child_process';
-import * as jest from 'jest';
-import {
-  setBaseEnv,
-} from '../config/setBaseEnv';
-import {
-  setUnhandledRejectionEvent,
-} from './functions/setUnhandledRejectionEvent';
+import jest from 'jest';
 
-setUnhandledRejectionEvent();
-
-process.env.PUBLIC_URL = '';
-setBaseEnv('test');
 
 let argv = process.argv.slice(2);
 

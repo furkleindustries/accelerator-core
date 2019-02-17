@@ -1,6 +1,6 @@
-import * as errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware';
-import * as noopServiceWorkerMiddleware from 'react-dev-utils/noopServiceWorkerMiddleware';
-import * as ignoredFiles from 'react-dev-utils/ignoredFiles';
+import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware';
+import noopServiceWorkerMiddleware from 'react-dev-utils/noopServiceWorkerMiddleware';
+import ignoredFiles from 'react-dev-utils/ignoredFiles';
 import config from './webpack.config';
 import {
   paths,

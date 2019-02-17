@@ -1,17 +1,16 @@
-import * as CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
+import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import {
   getCommonPlugins,
 } from './getCommonPlugins';
-import * as HtmlWebpackPlugin from 'html-webpack-plugin';
-import * as InlineChunkHtmlPlugin from 'react-dev-utils/InlineChunkHtmlPlugin';
-import * as MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import * as path from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import InlineChunkHtmlPlugin from 'react-dev-utils/InlineChunkHtmlPlugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import {
   paths,
 } from '../paths';
-import * as WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
-import * as webpack from 'webpack';
-import * as WorkboxWebpackPlugin from 'workbox-webpack-plugin';
+import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
+import webpack from 'webpack';
+import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 
 export function getPlugins({
   config,

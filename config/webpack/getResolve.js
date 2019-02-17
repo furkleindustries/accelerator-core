@@ -2,7 +2,7 @@ import * as path from 'path';
 import {
   paths,
 } from '../paths';
-import * as PnpWebpackPlugin from 'pnp-webpack-plugin';
+import PnpWebpackPlugin from 'pnp-webpack-plugin';
 
 export function getResolve() {
   return {
@@ -12,7 +12,7 @@ export function getResolve() {
     // https://github.com/facebook/create-react-app/issues/253
     modules: [ 'node_modules' ].concat(
       // It is guaranteed to exist because we tweak it in `../setBaseEnv.js`
-      process.env.NODE_PATH.split(path.delimiter).filter(Boolean)
+      process.env.NODE_PATH.split(path.delimiter).filter(Boolean),
     ),
 
     // These are the reasonable defaults supported by the Node ecosystem.

@@ -1,4 +1,4 @@
-import * as TerserPlugin from 'terser-webpack-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
 
 export function getJavaScriptMinimizer(shouldUseSourceMap) {
   return new TerserPlugin({

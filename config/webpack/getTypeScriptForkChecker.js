@@ -1,9 +1,9 @@
-import * as ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import {
   paths,
 } from '../paths';
 import resolve from 'resolve';
-import * as typescriptFormatter from 'react-dev-utils/typescriptFormatter';
+import typescriptFormatter from 'react-dev-utils/typescriptFormatter';
 
 export function getTypeScriptForkChecker() {
   return new ForkTsCheckerWebpackPlugin({

@@ -10,11 +10,11 @@ import {
 import {
   getTypeScriptForkChecker,
 } from './getTypeScriptForkChecker';
-import * as ModuleNotFoundPlugin from 'react-dev-utils/ModuleNotFoundPlugin';
+import ModuleNotFoundPlugin from 'react-dev-utils/ModuleNotFoundPlugin';
 import {
   paths,
 } from '../paths';
-import * as webpack from 'webpack';
+import webpack from 'webpack';
 
 export function getCommonPlugins(mode, config) {  
   return [

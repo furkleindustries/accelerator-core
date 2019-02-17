@@ -181,8 +181,6 @@ let fontFiles;
     style: FontStyles.Normal,
   });
 
-  const formatSegment = `--formats=${formats.join(',')}`;
-
   const range = formats.indexOf(FontRanges.Latin) === -1 ?
     ranges[0] :
     FontRanges.Latin;
@@ -190,13 +188,15 @@ let fontFiles;
   const GlyphHangerFontFace = require('glyphhanger/src/GlyphHangerFontFace');
   const ghff = new GlyphHangerFontFace();
   ghff.setCSSOutput(true);
-  ghff.setSubset(pathOfFontToSubset);
-
+  
   const GlyphHangerSubset = require('glyphhanger/src/GlyphHangerSubset');
   const ghs = new GlyphHangerSubset();
   ghs.setOutputDirectory(downloadDirectory);
-  ghs.setFormats(formats);
+  ghs.setFormats(formats.join(','));
+  ghs.setFontFilesGlob(pathOfFontToSubset);
   
+  ghff.setSubset(ghs);
+
   const GlyphHangerWhitelist = require('glyphhanger/src/GlyphhangerWhitelist');
   let ghw;
   if (/^latin$/i.test(range)) {
@@ -216,7 +216,7 @@ let fontFiles;
 
   ghs.subsetAll(ghw.getWhitelistAsUnicodes());
 
-  ghff.setUnicodeRange(whitelist.getWhitelistAsUnicodes());
+  ghff.setUnicodeRange(ghw.getWhitelistAsUnicodes());
   ghff.writeCSSFiles();
   ghff.output();
 })();

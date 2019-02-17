@@ -1,6 +1,6 @@
 import * as fs from 'fs-extra';
-import * as HtmlWebpackPlugin from 'html-webpack-plugin';
-import * as InterpolateHtmlPlugin from 'react-dev-utils/InterpolateHtmlPlugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import InterpolateHtmlPlugin from 'react-dev-utils/InterpolateHtmlPlugin';
 import * as path from 'path';
 
 const appDirPath = path.join(__dirname, '..', '..');

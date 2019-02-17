@@ -1,4 +1,4 @@
-import * as PnpWebpackPlugin from 'pnp-webpack-plugin';
+import PnpWebpackPlugin from 'pnp-webpack-plugin';
 
 export function getResolveLoader() {
   return {

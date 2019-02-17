@@ -1,7 +1,9 @@
-import * as config from '../../accelerator.config';
 import {
   getFrozenObject,
 } from '../functions/getFrozenObject';
+import {
+  getNormalizedAcceleratorConfig,
+} from '../configuration/getNormalizedAcceleratorConfig';
 import {
   IBeginLoadOptions,
 } from './IBeginLoadOptions';
@@ -26,6 +28,8 @@ import * as React from 'react';
 
 import logo from '../../public/logo.svg';
 
+const { storyTitle } = getNormalizedAcceleratorConfig();
+
 export class InitializationHandler {
   public readonly selector = '#load';
 
@@ -43,9 +47,9 @@ export class InitializationHandler {
       descriptions = [],
       doneCallback,
       logoPath = logo,
-      progressMax = 0,
-      progressStart = 0,
-      title = config.storyTitle,
+      progressMax,
+      progressStart,
+      title = storyTitle,
     } = opts;
 
     if (typeof doneCallback === 'function') {
@@ -62,14 +66,14 @@ export class InitializationHandler {
 
     const updateTicks = (ticks: number) => this.updateProgressTicks(ticks);
 
-    const LoadComponent = component ? component : LoadingScreen;
+    const LoadComponent = component || LoadingScreen;
     this.component = <LoadComponent
       bodyText={bodyText || ''}
       descriptions={descriptions}
       progressMax={this.progressMax}
       progressStart={this.progressStart}
       logoPath={logoPath || logo}
-      title={title || config.storyTitle}
+      title={title || storyTitle}
       updateTicks={updateTicks}
     />;
 

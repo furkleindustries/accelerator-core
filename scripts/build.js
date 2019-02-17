@@ -1,35 +1,28 @@
-import * as bfj from 'bfj';
+import './functions/setUnhandledRejectionEvent';
+import '../config/setProductionEnv';
+
+import bfj from 'bfj';
 import chalk from 'chalk';
 import {
   checkBrowsers,
 } from 'react-dev-utils/browsersHelper';
-import * as checkRequiredFiles from 'react-dev-utils/checkRequiredFiles';
+import checkRequiredFiles from 'react-dev-utils/checkRequiredFiles';
 import {
   error,
   log,
   warn,
 } from 'colorful-logging';
-import * as FileSizeReporter from 'react-dev-utils/FileSizeReporter';
-import * as formatWebpackMessages from 'react-dev-utils/formatWebpackMessages';
+import FileSizeReporter from 'react-dev-utils/FileSizeReporter';
+import formatWebpackMessages from 'react-dev-utils/formatWebpackMessages';
 import * as fs from 'fs-extra';
 import config from '../config/webpack/webpack.config';
 import * as path from 'path';
 import {
   paths,
 } from '../config/paths';
-import * as printHostingInstructions from 'react-dev-utils/printHostingInstructions';
-import * as printBuildError from 'react-dev-utils/printBuildError';
-import {
-  setBaseEnv,
-} from '../config/setBaseEnv';
-import {
-  setUnhandledRejectionEvent,
-} from './functions/setUnhandledRejectionEvent';
-import * as webpack from 'webpack';
-
-setUnhandledRejectionEvent();
-// Ensure environment variables are read.
-setBaseEnv('production');
+import printHostingInstructions from 'react-dev-utils/printHostingInstructions';
+import printBuildError from 'react-dev-utils/printBuildError';
+import webpack from 'webpack';
 
 const appPackage = require(paths.appPackageJson);
 

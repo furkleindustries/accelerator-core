@@ -1,5 +1,5 @@
-import * as OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
-import * as safePostCssParser from 'postcss-safe-parser';
+import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
+import safePostCssParser from 'postcss-safe-parser';
 
 export function getCssMinimizer(shouldUseSourceMap) {
   return new OptimizeCSSAssetsPlugin({
