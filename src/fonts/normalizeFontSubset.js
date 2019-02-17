@@ -27,7 +27,6 @@ export function normalizeFontSubset(subsetArg) {
     formats,
     fromFamily,
     loadingStrategy,
-    name,
     subsetRange,
   } = subset;
 
@@ -39,7 +38,6 @@ export function normalizeFontSubset(subsetArg) {
 
   subset = {
     fromFamily,
-    name,
     formats: formats || defaultFormats,
     loadingStrategy: loadingStrategy || defaultLoadingStrategy,
     subsetRange: subsetRange || defaultSubsetRange,
@@ -57,7 +55,6 @@ export function normalizeFontSubset(subsetArg) {
   const fls = getObjectValues(FontLoadingStrategies);
   assert(fls.indexOf(subset.loadingStrategy) !== -1);
 
-  assert(subset.name && subset.name.length);
   assert(subset.subsetRange && subsetRange.length);
 
   if (Array.isArray(subset.subsetRange)) {

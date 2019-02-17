@@ -49,7 +49,7 @@ export function downloadFontHelper(fontLoaderObj) {
 
         return reject(
           'The statusCode of one of the font helper requests (for ' +
-            `${family[0].toUpperCase()}${family.slice(1)} ` +
+            `${family} ` +
             `${weights ? `with weights ${weights.join(', ')}` : ''}) was ` +
             `${statusCode}.`
         );

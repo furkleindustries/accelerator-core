@@ -2,10 +2,11 @@ import {
   IFontHelper,
 } from './IFontHelper';
 import {
-  IFontLoadingDetails,
-} from './IFontLoadingDetails';
+  IFontLoadingDetailsNormalized,
+} from './IFontLoadingDetailsNormalized';
 
 export function getFontFaceRules(
-  fontLoadingObj: IFontLoadingDetails,
+  directory: string,
+  fontLoadingObj: IFontLoadingDetailsNormalized,
   fontHelper: IFontHelper,
 ): string[];

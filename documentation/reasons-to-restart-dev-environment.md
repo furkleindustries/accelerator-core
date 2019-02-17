@@ -4,6 +4,7 @@ Some changes made to author-facing content will update automatically. Others wil
 
 * Changed a font or font subset setting.
 * Added, renamed, or removed a passage, header, footer, or plugin.
+* Altered a template file (in `/templates/`).
 * Altered any of the configuration or scripting in `/config/`.
 * Updated a package.
 

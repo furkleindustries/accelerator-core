@@ -46,8 +46,8 @@ export default {
     {
       family: 'Roboto',
       formats: [
-        FontFormats.WOFF,
         FontFormats.WOFF2,
+        FontFormats.WOFF,
       ],
 
       styles: [
@@ -77,10 +77,9 @@ export default {
    * Allows a temporary subset of the font to be loaded almost immediately.
    */
   subsetFont: {
-    name: 'Roboto Subset',
     formats: [
-      FontFormats.WOFF,
       FontFormats.WOFF2,
+      FontFormats.WOFF,
     ],
 
     fromFamily: 'Roboto',

@@ -2,13 +2,13 @@ import {
   IAcceleratorConfig,
 } from './IAcceleratorConfig';
 import {
-  IFontLoadingDetails,
-} from '../fonts/IFontLoadingDetails';
+  IFontLoadingDetailsNormalized,
+} from '../fonts/IFontLoadingDetailsNormalized';
 import {
-  IFontSubsettingDetails,
-} from '../fonts/IFontSubsettingDetails';
+  IFontSubsettingDetailsNormalized,
+} from '../fonts/IFontSubsettingDetailsNormalized';
 
 export interface IAcceleratorConfigNormalized extends IAcceleratorConfig {
-  readonly fontsToLoad?: Array<IFontLoadingDetails>;
-  readonly subsetFont?: IFontSubsettingDetails;
+  readonly fontsToLoad?: IFontLoadingDetailsNormalized[];
+  readonly subsetFont?: IFontSubsettingDetailsNormalized;
 }

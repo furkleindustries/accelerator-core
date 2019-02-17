@@ -9,7 +9,7 @@ const fontSrcDir = path.join(appDirPath, 'src', 'fonts');
 const observerPath = path.join(fontSrcDir, 'fontFaceObserver.js');
 const loaderPath = path.join(fontSrcDir, 'fontLoader.js');
 const fontDirPath = path.join(publicDirPath, 'fonts');
-const fontFaceStylePath = path.join(fontDirPath, 'fontface-autogen.css');
+const fontLoaderStylePath = path.join(fontDirPath, 'fontface-autogen.css');
 
 // Makes the config variables available in index.html.
 // The public URL is available as %publicUrl% in index.html,
@@ -32,7 +32,7 @@ export function getInterpolateHtmlPlugin(config) {
 
     if (subsetFont) {
       subsetFontConditionalStatement =
-        `  var subset = new FontFaceObserver('%subsetFont%');\n` +
+        `  var subset = new FontFaceObserver('${subsetFont.fromFamily} Subset');\n` +
         `  /* Load full fonts even if the subset fails. Do not allow longer than 500ms. */\n` +
         `  subset.load(null, 500).then(\n` +
         `  function () { loadFullFonts(true); },\n` +
@@ -48,10 +48,10 @@ export function getInterpolateHtmlPlugin(config) {
       .replace(
         '%subsetFontConditionalStatement%',
         subsetFontConditionalStatement,
-      );
+      ).replace('%subsetFont');
   }
 
-  const fontFaceStyle = fs.readFileSync(fontFaceStylePath, 'utf8');
+  const fontLoaderStyle = fs.readFileSync(fontLoaderStylePath, 'utf8');
 
   return new InterpolateHtmlPlugin(HtmlWebpackPlugin, {
     ...Object.keys(config).reduce((ret, key) => {
@@ -64,7 +64,7 @@ export function getInterpolateHtmlPlugin(config) {
       return ret;
     }, {}),
     fontFaceObserver,
-    fontFaceStyle,
     fontLoader,
+    fontLoaderStyle,
   });
 }

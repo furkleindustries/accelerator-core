@@ -13,9 +13,7 @@
   function loadSingleFont(fontLoader) {
     return fontLoader.load().then(
       function () {},
-      function (err) {
-        console.error('Font loading encountered an error:', err);
-      },
+      function (err) { console.error('Font loading encountered an error:', err); },
     );
   }
 
@@ -40,9 +38,11 @@
 
       return arr.concat(styles.reduce(function (arr, style) {
         return arr.concat(weights.reduce(function (arr, weight) {
+          let realStyle = String(style || 'normal').toLowerCase();
+          realStyle = `${realStyle[0].toUpperCase()}${realStyle.slice(1)}`;
           return arr.concat([
             loadSingleFont(new FontFaceObserver(family, {
-              style: String(style || 'normal').toLowerCase(),
+              style: realStyle,
               weight: String(weight || 'normal').toLowerCase(),
             })),
           ]);
