@@ -30,8 +30,6 @@ export function getForkTsChecker() {
       '!**/*.json',
       '!**/__tests__/**',
       '!**/?(*.)(spec|test).*',
-      '!src/fonts/fontFaceObserver.js',
-      '!src/fonts/fontLoader.js',
       '!src/setupProxy.js',
       '!src/setupTests.*',
     ],

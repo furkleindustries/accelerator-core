@@ -52,7 +52,7 @@ export function getFontFaceRules(
           });
 
           return `url('` +
-            `${paths.publicUrl}/${path.basename(directory)}/${path.parse(filepath).name}.${format}` +
+            `${directory}/${path.parse(filepath).name}.${format}` +
           `') format('${format}')`;
         }).join(', ');
 

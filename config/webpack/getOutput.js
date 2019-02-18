@@ -4,7 +4,7 @@ import {
 } from '../paths';
 
 export function getOutput(mode, publicUrl) {
-  const base = { publicPath: `${publicUrl}/` };
+  const base = { publicPath: publicUrl === '.' ? `/` : publicUrl };
   if (mode === 'development') {
     return {
       ...base,

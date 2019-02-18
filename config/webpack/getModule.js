@@ -151,13 +151,8 @@ export function getModule(mode, publicUrl, shouldUseSourceMap) {
             // its runtime that would otherwise be processed through "file" loader.
             // Also exclude `html` and `json` extensions so they get processed
             // by webpack's internal loaders.
-            exclude: [ /\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/ ],
+            exclude: [ /\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.hbs$/, /\.json$/ ],
             options: { name: 'static/media/[name].[hash:8].[ext]' },
-          },
-
-          {
-            test: /\.hbs$/,
-            loader: 'handlebars-loader',
           },
         ],
       },

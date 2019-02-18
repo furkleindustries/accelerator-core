@@ -27,4 +27,4 @@ export function getHtmlPlugin(mode) {
   };
 
   return new HtmlWebpackPlugin(opts);
-};
+}

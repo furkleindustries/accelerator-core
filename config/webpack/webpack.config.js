@@ -60,9 +60,9 @@ export default {
   entry: getEntry(mode),
   resolve: getResolve(),
   resolveLoader: getResolveLoader(),
-  module: getModule(mode, paths.publicUrl, shouldUseSourceMap),
+  module: getModule(mode, '/', shouldUseSourceMap),
   optimization: getOptimization(mode, shouldUseSourceMap),
-  output: getOutput(mode, paths.publicUrl),
+  output: getOutput(mode, '/'),
   plugins: getPlugins({
     config,
     mode,

@@ -25,7 +25,7 @@
       docElem.className += docElem.className ? classesWithSpace : classes;
     }
 
-    var promises = {{fontsToLoad}}.reduce(function (arr, font) {
+    var promises = {{{fontsToLoad}}}.reduce(function (arr, font) {
       if (!font.family) {
         throw new Error(
           'No font or font family provided in accelerator.config.js ' +
@@ -66,6 +66,6 @@
     );
   };
 
-  {{subsetFontConditionalStatement}}
+  {{{subsetFontConditionalStatement}}}
 })();
 </script>

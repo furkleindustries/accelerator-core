@@ -1,6 +1,6 @@
 import {
-  getHandlebarsPlugin,
-} from './getHandlebarsPlugin';
+  HandlebarsPlugin,
+} from './HandlebarsPlugin';
 import {
   getHtmlPlugin,
 } from './getHtmlPlugin';
@@ -21,7 +21,7 @@ export function getCommonPlugins(mode, config) {
   return [
     getHtmlPlugin(mode),
     /* Handlebars plugin *must* come after HTML plugin. */
-    //getHandlebarsPlugin(config, HtmlWebpackPlugin),
+    new HandlebarsPlugin(config, HtmlWebpackPlugin),
 
     // This gives some necessary context to module not found errors, such as
     // the requesting resource.
