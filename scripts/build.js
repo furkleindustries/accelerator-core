@@ -39,7 +39,7 @@ const {
 } = process;
 
 // Warn and crash if required files are missing
-if (!checkRequiredFiles([ paths.appHtml, paths.appIndex, ])) {
+if (!checkRequiredFiles([ paths.fontLoaderTemplate, paths.appIndex, ])) {
   process.exit(1);
 }
 
@@ -181,6 +181,6 @@ function build(previousFileSizes) {
 function copyPublicFolder() {
   fs.copySync(paths.appPublic, paths.appBuild, {
     dereference: true,
-    filter: (file) => file !== paths.appHtml,
+    filter: (file) => file !== paths.fontLoaderTemplate,
   });
 }

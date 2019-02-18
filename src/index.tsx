@@ -14,6 +14,10 @@ import {
   isNode,
 } from './functions/isNode';
 import {
+  hydrate,
+  render,
+} from 'react-dom';
+import {
   Provider,
 } from 'react-redux';
 import {
@@ -21,9 +25,6 @@ import {
 } from './registerServiceWorker';
 
 import * as React from 'react';
-
-// @ts-ignore
-import { render } from 'react-snapshot';
 
 import './index.scss';
 
@@ -48,13 +49,20 @@ if (!prerenderedState) {
 }
 
 /* Execute the logic in the initialization script. */
-initialize(); 
+initialize();
 
-render(
+const component = (
   <Provider store={store}>
     <App />
-  </Provider>,
-  document.querySelector(selector),
+  </Provider>
 );
+
+const rootElement = document.querySelector(selector);
+
+if (rootElement!.hasChildNodes()) {
+  hydrate(component, rootElement);
+} else {
+  render(component, rootElement);
+}
 
 registerServiceWorker();

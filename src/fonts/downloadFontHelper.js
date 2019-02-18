@@ -14,9 +14,11 @@ export function downloadFontHelper(fontLoaderObj) {
   const {
     family,
     ranges,
+    weights,
   } = normalizeFont(fontLoaderObj);
 
-  url += `${family}?subsets=`;
+  /* Font looks are case-sensitive on the helper API. */
+  url += `${family.toLowerCase()}?subsets=`;
   if (ranges === 'string') {
     url += ranges;
   } else {
@@ -40,12 +42,12 @@ export function downloadFontHelper(fontLoaderObj) {
       } = toJSON;
 
       if (String(statusCode)[0] !== '2') {
-        warn(`${body.slice(0, 105)}...`);
-
-        const {
-          family,
-          weights,
-        } = fontLoaderObj;
+        warn(
+          `The fonts helper API returned the following error message:\n` +
+          (body.slice(0, 105).length > 105 ?
+            `${body.slice(0, 105)}...` :
+            body),
+        );
 
         return reject(
           'The statusCode of one of the font helper requests (for ' +

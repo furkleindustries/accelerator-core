@@ -126,7 +126,7 @@ export default {
 
   /**
    * @property {boolean}
-   * Passed directly to redux-undo's undoable syncFilter option.
+   * Passed directly to redux-undo's undoable() syncFilter option.
    */
   historySynchronizeUnrewindableStateWithPresent: true,
-}
+};

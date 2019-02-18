@@ -1,15 +1,16 @@
 import {
-  getHtmlWebpackPlugin,
-} from './getHtmlWebpackPlugin';
+  getHandlebarsPlugin,
+} from './getHandlebarsPlugin';
 import {
-  getInterpolateHtmlPlugin,
-} from './getInterpolateHtmlPlugin';
+  getHtmlPlugin,
+} from './getHtmlPlugin';
 import {
   getManifestPlugin,
 } from './getManifestPlugin';
 import {
-  getTypeScriptForkChecker,
-} from './getTypeScriptForkChecker';
+  getForkTsChecker,
+} from './getForkTsChecker';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ModuleNotFoundPlugin from 'react-dev-utils/ModuleNotFoundPlugin';
 import {
   paths,
@@ -18,8 +19,9 @@ import webpack from 'webpack';
 
 export function getCommonPlugins(mode, config) {  
   return [
-    getHtmlWebpackPlugin(mode),
-    getInterpolateHtmlPlugin(config),
+    getHtmlPlugin(mode),
+    /* Handlebars plugin *must* come after HTML plugin. */
+    //getHandlebarsPlugin(config, HtmlWebpackPlugin),
 
     // This gives some necessary context to module not found errors, such as
     // the requesting resource.
@@ -35,6 +37,6 @@ export function getCommonPlugins(mode, config) {
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     getManifestPlugin(),
     // TypeScript type checking
-    getTypeScriptForkChecker(),
+    getForkTsChecker(),
   ];
 }

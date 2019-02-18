@@ -25,16 +25,15 @@ import {
 import {
   getResolveLoader,
 } from './getResolveLoader';
+import {
+  paths,
+} from '../paths';
 
 const mode = process.env.NODE_ENV === 'development' ?
   'development' :
   'production';
 
 const config = getNormalizedAcceleratorConfig();
-
-// Webpack uses `publicPath` to determine where the app is being served from.
-// In development, we always serve from the root. This makes config easier.
-const publicPath = '/';
 
 // Source maps are resource heavy and can cause out of memory issue for large
 // source files.
@@ -61,13 +60,12 @@ export default {
   entry: getEntry(mode),
   resolve: getResolve(),
   resolveLoader: getResolveLoader(),
-  module: getModule(mode, publicPath, shouldUseSourceMap),
+  module: getModule(mode, paths.publicUrl, shouldUseSourceMap),
   optimization: getOptimization(mode, shouldUseSourceMap),
-  output: getOutput(mode, publicPath),
+  output: getOutput(mode, paths.publicUrl),
   plugins: getPlugins({
     config,
     mode,
-    publicPath,
     shouldInlineRuntimeChunk,
   }),
 

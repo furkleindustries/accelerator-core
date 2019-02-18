@@ -47,10 +47,10 @@ export class PassagePluginsWrapper extends React.PureComponent<IPassagePluginsWr
 
   /* Stores the last seen passage time, allowing the component to discern
    * whether a passage navigation has occurred. */
-  private __lastPassageTime: number;
+  private lastPassageTime: number;
   /* Memoizes the output of the plugins, allowing them to be called once per
    * passage change. */
-  private __lastPluginsBeforeRenderOutput: React.ReactNode;
+  private lastPluginsBeforeRenderOutput: React.ReactNode;
 
   constructor(props: IPassagePluginsWrapperOwnProps & IPassagePluginsWrapperStateProps, context: any) {
     super(props);
@@ -132,10 +132,10 @@ export class PassagePluginsWrapper extends React.PureComponent<IPassagePluginsWr
 
     /* Don't execute the beforeRender plugins, returning the memoized value
      * instead, if the passage time has not increased since the last render. */
-    if (this.__lastPluginsBeforeRenderOutput &&
-        this.__lastPassageTime === passageTimeCounter)
+    if (this.lastPluginsBeforeRenderOutput &&
+        this.lastPassageTime === passageTimeCounter)
     {
-      return this.__lastPluginsBeforeRenderOutput;
+      return this.lastPluginsBeforeRenderOutput;
     }
 
     let finalChildren = children;
@@ -155,9 +155,9 @@ export class PassagePluginsWrapper extends React.PureComponent<IPassagePluginsWr
     });
 
     /* Store a reference to the current passage time. */
-    this.__lastPassageTime = passageTimeCounter;
+    this.lastPassageTime = passageTimeCounter;
     /* Memoize the plugin output. */
-    this.__lastPluginsBeforeRenderOutput = finalChildren;
+    this.lastPluginsBeforeRenderOutput = finalChildren;
     
     return finalChildren;
   }

@@ -11,8 +11,9 @@ import {
   getUnicodeRange,
 } from './getUnicodeRange';
 import * as path from 'path';
-
-const { publicUrl } = getNormalizedAcceleratorConfig();
+import {
+  paths,
+} from '../../config/paths';
 
 const fontsDir = path.join(__dirname, '..', '..', 'public', 'fonts');
 
@@ -30,11 +31,12 @@ export function getFontFaceRules(
   },
 ) {
   const flatRanges = Array.isArray(ranges) ? ranges : [ ranges ];
-  return flatRanges.reduce((arr, range) => {
+  return flatRanges.reduce((rangesArr, range) => {
     const flatStyles = Array.isArray(styles) ? styles : [ styles ];
-    return arr.concat(flatStyles.reduce((arr, style) => (
-      arr.concat(weights.reduce((arr, weight) => {
+    return rangesArr.concat(flatStyles.reduce((stylesArr, style) => {
+      return stylesArr.concat(weights.reduce((weightsArr, weight) => {
         const { local } = getHelperVariant({
+          family,
           style,
           variants,
           weight,
@@ -50,11 +52,11 @@ export function getFontFaceRules(
           });
 
           return `url('` +
-            `${publicUrl}/${path.basename(directory)}/${path.parse(filepath).name}.${format}` +
+            `${paths.publicUrl}/${path.basename(directory)}/${path.parse(filepath).name}.${format}` +
           `') format('${format}')`;
         }).join(', ');
 
-        arr.push(
+        weightsArr.push(
           `/* ${range} */\n` +
           `@font-face {\n` +
           `  font-family: ${family};\n` +
@@ -65,8 +67,8 @@ export function getFontFaceRules(
           `}`
         );
 
-        return arr;
+        return weightsArr;
       }, []))
-    ), []));
+    }, []));
   }, []);
 }

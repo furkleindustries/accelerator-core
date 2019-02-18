@@ -40,7 +40,7 @@ if (skipMacOS) {
     /* Pretend the directory already exists if skipMacOS is true. */
     skipMacOS ? true : fs.exists(macOSDir),
     fs.exists(windowsDir),
-    dirExists ? null : fs.mkdir(electronDir),
+    dirExists ? null : fs.mkdirp(electronDir),
   ]);
 
   const {
@@ -77,7 +77,7 @@ function doDownload(foundLinux, foundMac, foundWin) {
         if (err) {
           reject(err);
         } else {
-          fs.mkdir(linuxDir, (err) => {
+          fs.mkdirp(linuxDir, (err) => {
             if (err && err.code !== 'EEXIST') {
               return reject(err);
             } else {
@@ -104,7 +104,7 @@ function doDownload(foundLinux, foundMac, foundWin) {
         if (err) {
           reject(err);
         } else {
-          fs.mkdir(macOSDir, (err) => {
+          fs.mkdirp(macOSDir, (err) => {
             if (err && err.code !== 'EEXIST') {
               return reject(err);
             } else {
@@ -131,7 +131,7 @@ function doDownload(foundLinux, foundMac, foundWin) {
         if (err) {
           return reject(err);
         } else {
-          fs.mkdir(windowsDir, (err) => {
+          fs.mkdirp(windowsDir, (err) => {
             if (err && err.code !== 'EEXIST') {
               reject(err);
             } else {

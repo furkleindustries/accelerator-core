@@ -5,7 +5,7 @@ import {
 import resolve from 'resolve';
 import typescriptFormatter from 'react-dev-utils/typescriptFormatter';
 
-export function getTypeScriptForkChecker() {
+export function getForkTsChecker() {
   return new ForkTsCheckerWebpackPlugin({
     typescript: resolve.sync('typescript', {
       basedir: paths.appNodeModules,
@@ -23,16 +23,19 @@ export function getTypeScriptForkChecker() {
       noEmit: true,
       jsx: 'preserve',
     },
-  
+
     reportFiles: [
       '**',
+      '!node_modules/**',
       '!**/*.json',
       '!**/__tests__/**',
       '!**/?(*.)(spec|test).*',
+      '!src/fonts/fontFaceObserver.js',
+      '!src/fonts/fontLoader.js',
       '!src/setupProxy.js',
       '!src/setupTests.*',
     ],
-  
+
     watch: [
       paths.appSrc,
       paths.passagesSrc,

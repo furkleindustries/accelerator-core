@@ -15,16 +15,22 @@ export function getResolve() {
       process.env.NODE_PATH.split(path.delimiter).filter(Boolean),
     ),
 
+    // This allows esnext, ES module files to be consumed from the `esnext`
+    // field in package.json by default, if the field is set.
+    mainFields: [
+      'esnext',
+      'module',
+      'browser',
+      'main',
+    ],
+
     // These are the reasonable defaults supported by the Node ecosystem.
     // We also include JSX as a common component filename extension to support
     // some tools, although we do not recommend using it, see:
     // https://github.com/facebook/create-react-app/issues/290
     extensions: paths.moduleFileExtensions.map((ext) => `.${ext}`),
 
-    alias: {      
-      // Allow simple usage of TypeScript files without the directory suffix.
-      'sound-manager': 'sound-manager/src',
-    },
+    alias: {},
 
     plugins: [
       // Adds support for installing with Plug'n'Play, leading to faster installs and adding

@@ -39,7 +39,7 @@ class Component extends React.PureComponent<
     this.clickIncrementor = this.clickIncrementor.bind(this);
     this.toggleSampleSound = this.toggleSampleSound.bind(this);
 
-    const { soundManager } = this.props;
+    const { soundManager } = props;
     if (soundManager.collection.hasSound(this.soundName)) {
       this.state.soundLoaded = true;
     } else {
@@ -48,7 +48,7 @@ class Component extends React.PureComponent<
         'https://s3.amazonaws.com/furkleindustries-accelerator/Zymbel_The_Real_Horst-1113884951.mp3',
       ).then(
         () => this.setState({ soundLoaded: true }),
-        (err) => { throw err; },
+        (err: Error) => { throw err; },
       );
     }
   }

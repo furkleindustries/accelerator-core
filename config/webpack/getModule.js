@@ -16,7 +16,7 @@ const cssRegex = /\.css$/;
 const sassNoModuleRegex = /\.nomodule\.s[ac]ss$/;
 const sassRegex = /\.s[ac]ss$/;
 
-export function getModule(mode, publicPath, shouldUseSourceMap) {
+export function getModule(mode, publicUrl, shouldUseSourceMap) {
   return {
     strictExportPresence: true,
     rules: [
@@ -80,7 +80,7 @@ export function getModule(mode, publicPath, shouldUseSourceMap) {
             test: cssNoModuleRegex,
             use: getStyleLoaders({
               mode,
-              publicPath,
+              publicPath: publicUrl,
               cssOptions: {
                 importLoaders: 1,
                 sourceMap: mode !== 'development' && shouldUseSourceMap,
@@ -99,7 +99,7 @@ export function getModule(mode, publicPath, shouldUseSourceMap) {
             test: sassNoModuleRegex,
             use: getStyleLoaders({              
               mode,
-              publicPath,
+              publicPath: publicUrl,
               cssOptions: {
                 importLoaders: 2,
                 sourceMap: mode !== 'development' && shouldUseSourceMap,
@@ -120,7 +120,7 @@ export function getModule(mode, publicPath, shouldUseSourceMap) {
               },
 
               mode,
-              publicPath,
+              publicPath: publicUrl,
             }),
           },
 
@@ -135,7 +135,7 @@ export function getModule(mode, publicPath, shouldUseSourceMap) {
               },
 
               mode,
-              publicPath,
+              publicPath: publicUrl,
               preProcessor: 'sass-loader',
             }),
           },
@@ -153,6 +153,11 @@ export function getModule(mode, publicPath, shouldUseSourceMap) {
             // by webpack's internal loaders.
             exclude: [ /\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/ ],
             options: { name: 'static/media/[name].[hash:8].[ext]' },
+          },
+
+          {
+            test: /\.hbs$/,
+            loader: 'handlebars-loader',
           },
         ],
       },

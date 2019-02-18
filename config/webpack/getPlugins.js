@@ -5,6 +5,7 @@ import {
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import InlineChunkHtmlPlugin from 'react-dev-utils/InlineChunkHtmlPlugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import * as path from 'path';
 import {
   paths,
 } from '../paths';
@@ -15,7 +16,6 @@ import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 export function getPlugins({
   config,
   mode,
-  publicUrl,
   shouldInlineRuntimeChunk,
 })
 {
@@ -78,7 +78,7 @@ export function getPlugins({
       ],
 
       importWorkboxFrom: 'cdn',
-      navigateFallback: `${publicUrl}/index.html`,
+      navigateFallback: `${paths.publicUrl}/index.html`,
       navigateFallbackBlacklist: [
         // Exclude URLs starting with /_, as they're likely an API call
         new RegExp('^/_'),

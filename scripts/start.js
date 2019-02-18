@@ -26,7 +26,6 @@ import {
   prepareUrls,
 } from 'react-dev-utils/WebpackDevServerUtils';
 
-
 const packageJson = require(paths.appPackageJson);
 
 const {
@@ -41,7 +40,7 @@ const {
 } = process;
 
 // Warn and crash if required files are missing
-if (!checkRequiredFiles([ paths.appHtml, paths.appIndex, paths.appPackageJson ])) {
+if (!checkRequiredFiles([ paths.fontLoaderTemplate, paths.appIndex, paths.appPackageJson ])) {
   exit(1);
 }
 

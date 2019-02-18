@@ -3,7 +3,7 @@ import {
 } from '../actions/ActionTypes';
 
 export const defaults = {
-  storyTitle: '%name%',
+  storyTitle: 'Untitled Accelerator Story',
   storyDescription:
     'A story created with the Accelerator hypertext fiction framework ' +
     '(https://github.com/furkleindustries/accelerator-core).',
@@ -16,8 +16,6 @@ export const defaults = {
   ],
 
   historyStackLimit: 500,
-
   historySynchronizeUnrewindableStateWithPresent: true,
-
   publicUrl: '.',
 };

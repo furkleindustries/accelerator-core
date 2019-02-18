@@ -90,8 +90,6 @@ export class InitializationHandler {
       (ticks: any) => ticks >= 1 && ticks % 1 === 0,
     );
 
-    this.component
-
     if (this.ticks > this.progressMax) {
       this.completeLoad();
     }

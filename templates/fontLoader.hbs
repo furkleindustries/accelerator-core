@@ -1,10 +1,11 @@
+<script id="fontLoader">
 (function () {
   var docElem = document.documentElement;
   var classes = 'fonts-stage-1 fonts-stage-2';
   var classesWithSpace = ' ' + classes;
 
   // Optimization for Repeat Views
-  if (sessionStorage && sessionStorage.criticalFoftDataUriFontsLoaded) {
+  if (typeof sessionStorage !== 'undefined' && sessionStorage.criticalFoftDataUriFontsLoaded) {
     console.log('Fonts already loaded.');
     docElem.className += docElem.className ? classesWithSpace : classes;
     return;
@@ -24,7 +25,7 @@
       docElem.className += docElem.className ? classesWithSpace : classes;
     }
 
-    var promises = %fontsToLoad%.reduce(function (arr, font) {
+    var promises = {{fontsToLoad}}.reduce(function (arr, font) {
       if (!font.family) {
         throw new Error(
           'No font or font family provided in accelerator.config.js ' +
@@ -57,11 +58,14 @@
           'fonts-stage-2';
 
         // Optimization for Repeat Views
-        sessionStorage.criticalFoftDataUriFontsLoaded = true;
+        if (typeof sessionStorage !== 'undefined') {
+          sessionStorage.criticalFoftDataUriFontsLoaded = true;
+        }
       },
       function (err) { console.error(err) },
     );
   };
 
-  %subsetFontConditionalStatement%
+  {{subsetFontConditionalStatement}}
 })();
+</script>

@@ -33,7 +33,7 @@ const plugins = getPluginsList();
 const soundManager = createManager();
 
 export class AppContextProviderWrapper extends React.PureComponent {
-  render() {
+  public render() {
     const { children } = this.props;
     
     return (

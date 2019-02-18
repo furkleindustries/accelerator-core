@@ -3,40 +3,38 @@
   <head>
     <meta charset="utf-8">
 
-    <title>%storyTitle%</title>
+    <title>{{storyTitle}}</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="theme-color" content="#000000">
-    <meta name="description" content="%storyDescription%">
+    <meta name="description" content="{{storyDescription}}">
 
     <!--
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
-    <link rel="manifest" href="%publicUrl%/manifest.json">
-    <link rel="shortcut icon" href="%publicUrl%/favicon.ico">
+    <link rel="manifest" href="{{publicUrl}}/manifest.json">
+    <link rel="shortcut icon" href="{{publicUrl}}/favicon.ico">
     <!--
-      Notice the use of %publicUrl% in the tags above.
+      Notice the use of { { publicUrl } } (without spaces) in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
 
-      Unlike "/favicon.ico" or "favicon.ico", "%publicUrl%/favicon.ico" will
+      Unlike "/favicon.ico" or "favicon.ico", "{ { publicUrl } } %/favicon.ico" will
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
 
       accelerator-core uses no routing by default so the value of %publicUrl%
-      is typically "."
+      is typically "".
     -->
 
     <style id="fontLoaderStyle">
-    %fontLoaderStyle%
+    {{fontLoaderStyle}}
     </style>
   </head>
 
   <body>
-    <noscript>
-      You need to enable JavaScript to run this story.
-    </noscript>
+    <noscript>You need to enable JavaScript to run this story.</noscript>
 
     <div
       id="root"
@@ -47,8 +45,8 @@
     <div id="load"></div>
 
     <script id="fontLoaderScript">
-    %fontFaceObserver%
-    %fontLoader%
+    {{> fontFaceObserver}}
+    {{> fontLoader}}
     </script>
 
     <!--

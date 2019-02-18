@@ -29,12 +29,13 @@ export function downloadFontFiles(
   downloadDirectory,
 ) {
   const flatFormats = Array.isArray(formats) ? formats : [ formats ];
-  return Promise.all(flatFormats.reduce((arr, format) => {
+  return Promise.all(flatFormats.reduce((formatsArr, format) => {
     const flatStyles = Array.isArray(styles) ? styles : [ styles ];
-    return arr.concat(flatStyles.reduce((arr, style) => {
-      return arr.concat(weights.reduce((arr, weight) => {
+    return formatsArr.concat(flatStyles.reduce((stylesArr, style) => {
+      return stylesArr.concat(weights.reduce((weightsArr, weight) => {
         const { [format]: url } = assertValid(
           getHelperVariant({
+            family,
             style,
             variants,
             weight,
@@ -58,19 +59,25 @@ export function downloadFontFiles(
         const writeStream = fs.createWriteStream(filepath);
         req.pipe(writeStream);
 
-        arr.push(new Promise((resolve, reject) => (
-          Promise.all([
-            new Promise((resolve, reject) => (
-              req.on('response', resolve).on('error', reject)
-            )),
+        weightsArr.push(new Promise(async (allResolve, allReject) => {
+          try {
+            await Promise.all([
+              new Promise((resolve, reject) => (
+                req.on('response', resolve).on('error', reject)
+              )),
+  
+              new Promise((resolve, reject) => (
+                writeStream.on('close', resolve).on('error', reject)
+              )),
+            ]);
+          } catch (err) {
+            allReject(err);
+          }
+          
+          allResolve(filepath);
+        }));
 
-            new Promise((resolve, reject) => (
-              writeStream.on('close', resolve).on('error', reject)
-            )),
-          ]).then(() => resolve(filepath), reject)
-        )));
-
-        return arr;
+        return weightsArr;
       }, []));
     }, []));
   }, []));

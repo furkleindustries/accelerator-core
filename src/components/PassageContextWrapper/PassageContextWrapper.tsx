@@ -66,7 +66,7 @@ export class PassageContextWrapper extends React.PureComponent<
     this.navigateTo = this.navigateTo.bind(this);
   }
 
-  render() {
+  public render() {
     return (
       <FootersContextConsumer>
         {({ footers }) => (
