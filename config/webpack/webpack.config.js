@@ -47,6 +47,9 @@ const devtool = mode === 'development' ?
 // makes for a smoother build process.
 const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== 'false';
 
+const publicUrl = mode === 'development' ? '' : config.publicUrl;
+const publicPath = `/${publicUrl}`;
+
 export default {
   mode,
   // You may want 'eval' instead if you prefer to see the compiled output in DevTools.
@@ -60,9 +63,9 @@ export default {
   entry: getEntry(mode),
   resolve: getResolve(),
   resolveLoader: getResolveLoader(),
-  module: getModule(mode, '/', shouldUseSourceMap),
+  module: getModule(mode, publicPath, shouldUseSourceMap),
   optimization: getOptimization(mode, shouldUseSourceMap),
-  output: getOutput(mode, '/'),
+  output: getOutput(mode, publicPath),
   plugins: getPlugins({
     config,
     mode,

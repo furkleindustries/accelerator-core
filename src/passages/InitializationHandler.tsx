@@ -1,24 +1,23 @@
 import {
+  clearLoadingScreen,
+} from './clearLoadingScreen';
+import {
   getFrozenObject,
 } from '../functions/getFrozenObject';
 import {
-  getNormalizedAcceleratorConfig,
-} from '../configuration/getNormalizedAcceleratorConfig';
+  IAcceleratorConfigNormalized,
+} from '../configuration/IAcceleratorConfigNormalized';
 import {
   IBeginLoadOptions,
 } from './IBeginLoadOptions';
 import {
-  ILoadingScreenOwnProps,
-} from '../components/LoadingScreen/ILoadingScreenOwnProps';
+  InitializationHandlerOptions,
+} from './InitializationHandlerOptions';
 import {
   LoadingScreen,
 } from '../components/LoadingScreen/LoadingScreen';
 import {
-  ReactElement,
-} from 'react';
-import {
   render,
-  unmountComponentAtNode,
 } from 'react-dom';
 import {
   assertValid,
@@ -28,95 +27,126 @@ import * as React from 'react';
 
 import logo from '../../public/logo.svg';
 
-const { storyTitle } = getNormalizedAcceleratorConfig();
-
 export class InitializationHandler {
-  public readonly selector = '#load';
+  public readonly appSelector: string;
+  public readonly loadSelector: string;
+  public readonly config: IAcceleratorConfigNormalized;
 
-  private component: ReactElement<ILoadingScreenOwnProps>;
-  private ticks = 0;
   private progressMax: number;
   private progressStart: number = 0;
+  private ticks = 0;
   private doneCallback: () => void;
+
+  constructor({
+    appSelector,
+    config,
+    loadSelector,
+  }: InitializationHandlerOptions) {
+    this.appSelector = assertValid(appSelector);
+    this.config = assertValid(config);
+    this.loadSelector = assertValid(loadSelector);
+  }
 
   public beginLoad = (options?: IBeginLoadOptions) => {
     const opts = getFrozenObject(options! || {});
     const {
-      bodyText = '',
-      component = LoadingScreen,
-      descriptions = [],
+      descriptions,
       doneCallback,
-      logoPath = logo,
       progressMax,
       progressStart,
-      title = storyTitle,
     } = opts;
 
     if (typeof doneCallback === 'function') {
       this.doneCallback = doneCallback;
     }
 
-    this.progressMax = progressMax || 0;
+    this.setProgressMax(progressMax || 0);
+    this.setProgressStart(progressStart || 0);
+
+    if (Array.isArray(descriptions) && descriptions.length) {
+      if (!this.progressMax) {
+        this.setProgressMax(descriptions.length);
+      }
+    }
+
     if (!this.progressMax) {
       this.completeLoad();
       return;
     }
 
-    this.progressStart = progressStart || 0;
-
-    const updateTicks = (ticks: number) => this.updateProgressTicks(ticks);
-
-    const LoadComponent = component || LoadingScreen;
-    this.component = <LoadComponent
-      bodyText={bodyText || ''}
-      descriptions={descriptions}
-      progressMax={this.progressMax}
-      progressStart={this.progressStart}
-      logoPath={logoPath || logo}
-      title={title || storyTitle}
-      updateTicks={updateTicks}
-    />;
-
-    render(
-      this.component,
-      document.querySelector(this.selector),
-    );
+    this.renderComponent(opts);
   }
 
   public updateProgressTicks = (total: number) => {
     this.ticks = assertValid<number>(
       total,
       null,
-      (ticks: any) => ticks >= 1 && ticks % 1 === 0,
+      (total) => total !== -1 && this.validator(total),
     );
 
     if (this.ticks > this.progressMax) {
       this.completeLoad();
     }
-  }
+  };
 
-  private completeLoad = () => {
+  public completeLoad = () => {
     if (typeof this.doneCallback === 'function') {
       this.doneCallback();
     }
 
-    unmountComponentAtNode(document.querySelector(this.selector)!);
-    document.querySelector('#root')!.setAttribute('aria-busy', 'false');
-  }
+    clearLoadingScreen(this.appSelector, this.loadSelector);
+  };
 
-  public setProgressMax = (max: number) => (
+  private setProgressMax = (max: number) => {
     this.progressMax = assertValid<number>(
       max,
       null,
-      (max: any) => max >= 1 && max % 1 === 0,
-    )
-  );
+      this.validator,
+    );
 
-  public setProgressStart = (start: number) => (
+    if (this.progressMax === -1 || this.progressStart > this.progressMax) {
+      this.progressStart = this.progressMax;
+    }
+  };
+
+  private setProgressStart = (start: number) => {
     this.progressStart = assertValid<number>(
       start,
       null,
-      (start: any) => start >= 0 && start % 1 === 0,
-    )
+      this.validator,
+    );
+
+    if (this.progressStart === -1 || this.progressMax < this.progressStart) {
+      this.progressMax = this.progressStart;
+    }
+  };
+
+  private validator = (value: number) => (
+    value === -1 || (value >= 0 && value % 1 === 0)
   );
+
+  private renderComponent = (options?: IBeginLoadOptions) => {
+    const opts = getFrozenObject(options! || {});
+    const {
+      bodyText,
+      component,
+      descriptions,
+      logoPath,
+      title,
+    } = opts;
+
+    const LoadComponent = component || LoadingScreen;
+    render(
+      <LoadComponent
+        bodyText={bodyText || ''}
+        descriptions={descriptions || []}
+        progressMax={this.progressMax}
+        progressStart={this.progressStart}
+        logoPath={logoPath || logo}
+        title={title || `Loading ${this.config.storyTitle}...`}
+        updateTicks={this.updateProgressTicks}
+      />,
+      document.querySelector(this.loadSelector),
+    );
+  }
 }

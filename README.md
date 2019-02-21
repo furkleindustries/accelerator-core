@@ -70,7 +70,7 @@ To write a new passage, either use `accelerator-tool new passage %YOUR_PASSAGE_N
 
 The exported object must be the passage object, and it must be the default export. You can use any valid JSX, including functional and class-based components. You may use any named export for whatever you please. You may also feel free to organize your files however you please, as Accelerator will search any number of folders deep within the `passages` folder.
 
-Note that passage files *must* end in `.jsx` or `.tsx`. This is convenient because it fits VS Code's syntax highlighting for files containing JSX elements, and also because it reserves all `.js` or `.ts` files for you to use and import as you see fit.
+Note that passage files *must* end in `.jsx` or `.tsx`. This is convenient because it fits VS Code's syntax highlighting for files containing JSX elements, and also because it reserves all `.js` or `.ts` files for you to use and import as you see fit. Additionally, no files or folders in the base directory beginning with `_` will be processed as passages.
 
 If you are using TypeScript (allowing for the full value of Accelerator's built-in functionalities), you should indicate the type of the passage object by replacing `const passage =` with `const passage: passagesBundle.IPassage =`, and setting the props type of the React component to `passagesBundle.IPassageProps`, importing these interfaces from `..//src/passages/passagesBundle`. This will allow full type-checking of your story passages. (You can also just destructure the bundle, or the passages property, so that you can refer directly to `IPassage` and `IPassageProps`.)
 

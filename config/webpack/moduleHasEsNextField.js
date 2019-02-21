@@ -41,7 +41,6 @@ export function moduleHasEsNextField(filepath) {
   const hasProp = pkg.hasOwnProperty('esnext');
   if (hasProp) {
     /* Memoize the package.json. */
-    console.log(pkg.name);
     memoizedPackageJsonsWithEsNextFields[packageJsonPath] = pkg;
     return true;
   }

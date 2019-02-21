@@ -7,7 +7,7 @@ import {
 // terminate the Node.js process with a non-zero exit code.
 export function setUnhandledRejectionEvent() {
   process.on('unhandledRejection', (err) => {
-    error(err.stack || err.message || err);
+    error(err);
     process.exit(1);
   });
 }

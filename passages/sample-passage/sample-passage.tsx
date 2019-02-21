@@ -18,12 +18,14 @@ import builtInStyles from '../../src/passages/styles.scss';
  * the file in the public/ directory. */
 import logo from '../../public/logo.svg';
 
+interface SampleComponentState {
+  readonly soundPlaying: boolean,
+  readonly soundLoaded: boolean,
+}
+
 class Component extends React.PureComponent<
   passages.IPassageProps,
-  {
-    soundPlaying: boolean,
-    soundLoaded: boolean,
-  }
+  SampleComponentState 
 > {
   public state = {
     soundPlaying: false,
@@ -32,14 +34,10 @@ class Component extends React.PureComponent<
 
   private soundName: 'sample' = 'sample';
 
-  constructor(props: any) {
+  constructor(props: passages.IPassageProps) {
     super(props);
 
-    /* Bind the function so we can properly access this.props. */
-    this.clickIncrementor = this.clickIncrementor.bind(this);
-    this.toggleSampleSound = this.toggleSampleSound.bind(this);
-
-    const { soundManager } = props;
+    const { soundManager }: passages.IPassageProps = props;
     if (soundManager.collection.hasSound(this.soundName)) {
       this.state.soundLoaded = true;
     } else {
@@ -48,12 +46,13 @@ class Component extends React.PureComponent<
         'https://s3.amazonaws.com/furkleindustries-accelerator/Zymbel_The_Real_Horst-1113884951.mp3',
       ).then(
         () => this.setState({ soundLoaded: true }),
-        (err: Error) => { throw err; },
+        (err) => { throw err; },
       );
     }
   }
 
-  public render() {
+  /* Use arrow functions so the methods autobind. */
+  public render = () => {
     const {
       bookmark,
       passageObject,
@@ -98,9 +97,7 @@ class Component extends React.PureComponent<
         <button
           className={`${styles.button} ${styles.counter}`}
           /* Set the click handler of the element to execute the component's
-           * clickIncrementor method. If the .bind() call in the constructor
-           * is not performed, `this` will be undefined when the click handler
-           * executes. */
+           * clickIncrementor method. */
           onClick={this.clickIncrementor}
         >
           Clicking this button will update the counter below.
@@ -155,19 +152,16 @@ class Component extends React.PureComponent<
               /* Disable the button until the sound is loaded. */
               ...(soundLoaded ? {} : { disabled: true })
             }
-          >
-            {
-              soundPlaying ?
-                'Pause sound' :
-                'Play sound'
-            }
-          </button>
+          >{soundPlaying ?
+            'Pause sound' :
+            'Play sound'
+          }</button>
         </p>
       </article>
     );
-  }
+  };
 
-  private clickIncrementor() {
+  private clickIncrementor = () => {
     const {
       setStoryState,
       storyState: { counter },
@@ -175,9 +169,9 @@ class Component extends React.PureComponent<
 
     const newVal = (counter || 0) + 1;
     setStoryState({ counter: newVal });
-  }
+  };
 
-  private toggleSampleSound() {
+  private toggleSampleSound = () => {
     const {
       soundManager: { collection },
     } = this.props;
@@ -187,13 +181,10 @@ class Component extends React.PureComponent<
       sound.pause();
       this.setState({ soundPlaying: false });
     } else {
-      sound.play().then(() => {
-        this.setState({ soundPlaying: false });
-      });
-
+      sound.play().then(() => this.setState({ soundPlaying: false }));
       this.setState({ soundPlaying: true });
     }
-  }
+  };
 }
 
 const passage: passages.IPassage = {

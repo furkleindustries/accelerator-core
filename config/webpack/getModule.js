@@ -16,7 +16,7 @@ const cssRegex = /\.css$/;
 const sassNoModuleRegex = /\.nomodule\.s[ac]ss$/;
 const sassRegex = /\.s[ac]ss$/;
 
-export function getModule(mode, publicUrl, shouldUseSourceMap) {
+export function getModule(mode, publicPath, shouldUseSourceMap) {
   return {
     strictExportPresence: true,
     rules: [
@@ -80,7 +80,7 @@ export function getModule(mode, publicUrl, shouldUseSourceMap) {
             test: cssNoModuleRegex,
             use: getStyleLoaders({
               mode,
-              publicPath: publicUrl,
+              publicPath,
               cssOptions: {
                 importLoaders: 1,
                 sourceMap: mode !== 'development' && shouldUseSourceMap,
@@ -99,7 +99,7 @@ export function getModule(mode, publicUrl, shouldUseSourceMap) {
             test: sassNoModuleRegex,
             use: getStyleLoaders({              
               mode,
-              publicPath: publicUrl,
+              publicPath,
               cssOptions: {
                 importLoaders: 2,
                 sourceMap: mode !== 'development' && shouldUseSourceMap,
@@ -120,7 +120,7 @@ export function getModule(mode, publicUrl, shouldUseSourceMap) {
               },
 
               mode,
-              publicPath: publicUrl,
+              publicPath: publicPath,
             }),
           },
 
@@ -135,7 +135,7 @@ export function getModule(mode, publicUrl, shouldUseSourceMap) {
               },
 
               mode,
-              publicPath: publicUrl,
+              publicPath,
               preProcessor: 'sass-loader',
             }),
           },

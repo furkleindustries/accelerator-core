@@ -3,8 +3,8 @@ import {
   paths,
 } from '../paths';
 
-export function getOutput(mode, publicUrl) {
-  const base = { publicPath: publicUrl === '.' ? `/` : publicUrl };
+export function getOutput(mode, publicPath) {
+  const base = { publicPath };
   if (mode === 'development') {
     return {
       ...base,
