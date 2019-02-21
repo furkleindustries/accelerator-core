@@ -1,4 +1,7 @@
 import {
+  Button,
+} from '../Button/Button';
+import {
   ICyclerOwnProps,
 } from './ICyclerOwnProps';
 import {
@@ -24,12 +27,12 @@ export class Cycler extends React.PureComponent<ICyclerOwnProps, ICyclerState> {
     const { index } = this.state;
 
     return (
-      <button 
+      <Button 
         className={`cycler${className ? ` ${className}` : ''}`}
         onClick={this.advance}
       >
         {React.Children.toArray(children)[index]}
-      </button>
+      </Button>
     );
   }
 

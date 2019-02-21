@@ -7,10 +7,10 @@ import * as components from '../../src/passages/componentsBundle';
 import * as passages from '../../src/passages/passagesBundle';
 import * as tags from '../../src/passages/tagsBundle';
 
-import builtInStyles from '../../src/passages/styles.scss';
+import builtInStyles from '../../passages/_global-styles/built-ins.scss';
 import styles from './%name%.scss';
 
-class Component extends React.PureComponent<passages.IPassageProps> {
+class Passage extends React.PureComponent<passages.IPassageProps> {
   public render() {
     const {
       lastLinkTags,
@@ -45,7 +45,7 @@ const passage: passages.IPassage = {
   /* React.ComponentType<IPassageProps>: the content that should be displayed,
    * or, in the case of noRender passages, a component that can be imported.
    * Should be formatted in JSX style. */
-  contents: Component,
+  contents: Passage,
 };
 
 /* Always make the passage object a default export. */

@@ -12,7 +12,7 @@ import styles from './sample-passage.scss';
 
 /* Import the built-in styles. These are bare-minimum defaults that are meant
  * to be overridden by authors. */
-import builtInStyles from '../../src/passages/styles.scss';
+import builtInStyles from '../../passages/_global-styles/built-ins.scss';
 
 /* Images (see images.d.ts for allowed types) are imported as URLs to
  * the file in the public/ directory. */
@@ -94,14 +94,14 @@ class Component extends React.PureComponent<
           and clicking on the link.
         </components.Link>
 
-        <button
+        <components.Button
           className={`${styles.button} ${styles.counter}`}
           /* Set the click handler of the element to execute the component's
            * clickIncrementor method. */
           onClick={this.clickIncrementor}
         >
           Clicking this button will update the counter below.
-        </button>
+        </components.Button>
 
         {/* This will update reactively, without the need for any rendering
           * logic on your part. */}
@@ -136,16 +136,16 @@ class Component extends React.PureComponent<
         </p>
 
         <p className={styles.paragraph}>
-          <button
+          <components.Button
             className={builtInStyles.link}
             onClick={bookmark}
           >
             If you click this, it sets a bookmark.
-          </button>
+          </components.Button>
         </p>
 
         <p className={styles.paragraph}>
-          <button
+          <components.Button
             className={builtInStyles.link}
             onClick={this.toggleSampleSound}
             {
@@ -155,7 +155,7 @@ class Component extends React.PureComponent<
           >{soundPlaying ?
             'Pause sound' :
             'Play sound'
-          }</button>
+          }</components.Button>
         </p>
       </article>
     );

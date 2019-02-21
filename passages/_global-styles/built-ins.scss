@@ -1,4 +1,6 @@
-$hover-color: rgb(255, 50, 50);
+/* You may change these however you want, but if you decide to delete any rules
+ * some built-in components may stop working, and if you delete the file, the
+ * build will very likely break. */
 
 @mixin passage {
   position: relative;
@@ -18,15 +20,18 @@ $hover-color: rgb(255, 50, 50);
   @include header;
 }
 
+$hover-color: rgb(255, 50, 50);
+$hover-duration: 0.3s;
+
 @mixin link {
   padding: 0;
   border: 0;
   margin: 0;
   text-decoration: none;
-  font-weight: 700;
+  font-weight: 500;
   font-size: inherit;
   background: none;
-  transition: color 0.3s;
+  transition: color $hover-duration;
 
   &:not([disabled]) {
     cursor: pointer;

@@ -1,9 +1,15 @@
 import {
+  Button,
+} from '../Button/Button';
+import {
   getPassagesMapAndStartPassageNameContext,
 } from '../context/getPassagesMapAndStartPassageNameContext';
 import {
   getPluginsContext,
 } from '../context/getPluginsContext';
+import {
+  IButtonOwnProps,
+} from '../Button/IButtonOwnProps';
 import {
   IPassagesMap,
 } from '../../passages/IPassagesMap';
@@ -76,12 +82,12 @@ export class RestartButtonUnconnected extends React.PureComponent<
               );
 
               return (
-                <button
+                <Button
                   className={`resetButton navigationButton${className ? ` ${className}` : ''}`}
                   onClick={boundRestart}
                 >
                   {children}
-                </button>
+                </Button>
               )
             }}
           </PluginsContextConsumer>

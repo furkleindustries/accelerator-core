@@ -2,6 +2,7 @@
 import * as React from 'react';
 
 import {
+  Button,
   RestartButton,
   RewindButton,
 } from '../../src/passages/componentsBundle';
@@ -16,7 +17,7 @@ import {
   SoundManagerAudioPanel,
 } from '../../src/components/SoundManagerAudioPanel/SoundManagerAudioPanel';
 
-import builtInStyles from '../../src/passages/styles.scss';
+import builtInStyles from '../../passages/_global-styles/built-ins.scss';
 import styles from './menu.scss';
 
 /* The header gets all the same props as a normal passage. */
@@ -48,22 +49,22 @@ class Menu extends React.PureComponent<IPassageProps, IMenuState> {
         </div>
 
         <div className={`${styles.soundPanelContainer} soundPanelContainer`}>
-          <button
+          <Button
             className={`${styles.soundPanelButton} ${builtInStyles.link} soundPanelButton`}
             onClick={this.toggleSoundPanelVisibility}
             {...(soundPanelVisible ? { hidden: true } : {})}
           >
             Audio options
-          </button>
+          </Button>
 
           <div
             className={`${styles.soundPanelContentsContainer} soundPanelContentsContainer`}
             {...(soundPanelVisible ? {} : { hidden: true })}
           >
-            <button
+            <Button
               className={`${styles.soundPanelCloseButton} soundPanelCloseButton`}
               onClick={this.toggleSoundPanelVisibility}
-            >X</button>
+            >X</Button>
 
             <SoundManagerAudioPanel className={styles.soundManagerAudioPanel} />
           </div>

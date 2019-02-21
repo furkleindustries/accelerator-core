@@ -11,7 +11,7 @@ import {
 
 import * as React from 'react';
 
-import builtInStyles from '../../passages/styles.scss';
+import builtInStyles from '../../../passages/_global-styles/built-ins.scss';
 
 export class LoadingScreen extends React.PureComponent<
   ILoadingScreenOwnProps,

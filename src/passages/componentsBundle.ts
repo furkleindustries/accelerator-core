@@ -1,4 +1,7 @@
 export {
+  Button,
+} from '../components/Button/Button';
+export {
   ClickAppend,
 } from '../components/ClickAppend/ClickAppend';
 export {

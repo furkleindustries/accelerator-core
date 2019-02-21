@@ -1,13 +1,11 @@
 import {
-  ReactNode,
-} from 'react';
+  IButtonProps,
+} from '../Button/IButtonProps';
 import {
   Tag,
 } from '../../tags/Tag';
 
-export interface ILinkOwnProps {
-  children: ReactNode;
-  className?: string;
-  passageName: string;
-  tags?: Tag[];
+export interface ILinkOwnProps extends IButtonProps {
+  readonly passageName: string;
+  readonly tags?: Tag[];
 }

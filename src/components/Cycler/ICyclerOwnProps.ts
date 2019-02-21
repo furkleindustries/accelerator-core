@@ -1,9 +1,11 @@
 import {
+  IButtonProps,
+} from '../Button/IButtonProps';
+import {
   ReactNode,
 } from 'react';
 
-export interface ICyclerOwnProps {
+export interface ICyclerOwnProps extends IButtonProps {
   children: ReactNode[];
-  className?: string;
   callback?(current: ReactNode, index?: number): void;
 }

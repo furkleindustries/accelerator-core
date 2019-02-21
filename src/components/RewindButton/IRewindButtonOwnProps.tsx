@@ -1,12 +1,10 @@
 import {
-  ReactNode,
-} from 'react';
-import {
   HistoryFilter,
 } from '../../reducers/IHistoryFilter';
+import {
+  IButtonProps,
+} from '../Button/IButtonProps';
 
-export interface IRewindButtonOwnProps {
-  children: ReactNode;
-  className?: string;
+export interface IRewindButtonOwnProps extends IButtonProps {
   filter?: HistoryFilter;
 }

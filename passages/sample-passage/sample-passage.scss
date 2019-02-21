@@ -7,19 +7,23 @@
  */
 
 /**
- * Accelerator is configured to use CSS Modules. Ordinarily, a CSS class you
- * define (e.g. .foo) will affect every element with that class
- * (e.g. <a class="foo"></a>). With CSS Modules, variables are local to the
- * file in which they are imported, unless the author indicates otherwise.
- * The .rewindButton class below has an example of this. 
- * @see https://github.com/css-modules/css-modules
- */
+  * @see https://github.com/css-modules/css-modules
+  * Accelerator is configured to use CSS Modules. Ordinarily, a CSS class you
+  * define (e.g. .foo) will affect every element with that class
+  * (e.g. <a class="foo"></a>). With CSS Modules, variables are local to the
+  * file in which they are imported, unless the author indicates otherwise.
+  * The .rewindButton class below has an example of this.
+  *
+  * If you'd like to opt out of CSS Modules functionality, give your style
+  * files the suffix `.nomodule.css`, e.g. `passage.nomodule.css`, or change
+  * the build configuration so that modularization is off by default.
+  */
 
 /**
+ * @see passages/_global-styles/built-ins.scss
  * Reuse the link style from the built in styles for the example.
- * @see /src/passages/builtInStyles.scss
  */
-@import '../../src/passages/styles.scss';
+@import '../_global-styles/built-ins.scss';
 
 /* Variables can be defined (and shared through imports elsewhere) as any
  * CSS value. */

@@ -1,4 +1,7 @@
 import {
+  Button,
+} from '../Button/Button';
+import {
   getUnfilteredRewindIndex,
 } from '../../state/getUnfilteredRewindIndex';
 import {
@@ -45,12 +48,12 @@ export class RewindButtonUnconnected extends React.PureComponent<
       { disabled: true };
 
     return (
-      <button
+      <Button
         className={`rewindButton navigationButton${className ? ` ${className}` : ''}`}
         {...statefulProps}
       >
         {children}
-      </button>
+      </Button>
     );
   }
 

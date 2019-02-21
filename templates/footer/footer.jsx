@@ -3,12 +3,12 @@ import * as React from 'react';
 
 import * as components from '../../src/passages/componentsBundle';
 import * as tagsBundle from '../../src/passages/tagsBundle';
-import builtInStyles from '../../src/passages/styles.scss';
+import builtInStyles from '../../../passages/_global-styles/built-ins.scss';
 
 import styles from './%name%.scss';
 
 /* The footer gets all the same props as a normal passage. */
-class Component extends React.PureComponent {
+class Footer extends React.PureComponent {
   render() {
     const {
       lastLinkTags,
@@ -28,14 +28,12 @@ class Component extends React.PureComponent {
   }
 }
 
-const footer = {
+/* Always make the passage object a default export. */
+export default {
   /* string: the name of the footer. */
   name: '%name%',
   
   /* React.ComponentType<IPassageProps>: the content that should be displayed.
    * Should be formatted in JSX style. */
-  contents: Component,
+  contents: Footer,
 };
-
-/* Always make the passage object a default export. */
-export default footer;

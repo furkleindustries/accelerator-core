@@ -6,8 +6,8 @@ import * as plugins from '../../src/passages/pluginsBundle';
 class Plugin implements plugins.IPlugin {
   public afterStoryInit(args: plugins.IPluginMethodBaseArgs & plugins.IPluginMethodStateMutationArgs) {
     const {
-      currentPassageObject,
       lastLinkTags,
+      passageObject,
       setStoryState,
       store,
       storyState,
@@ -16,8 +16,8 @@ class Plugin implements plugins.IPlugin {
 
   public beforePassageChange(args: plugins.IPluginMethodBaseArgs & plugins.IPluginMethodStateMutationArgs) {
     const {
-      currentPassageObject,
       lastLinkTags,
+      passageObject,
       setStoryState,
       store,
       storyState,
@@ -29,9 +29,9 @@ class Plugin implements plugins.IPlugin {
    * returns this same element after any modification. */
   public beforeRender(args: plugins.IPluginMethodBaseArgs & plugins.IPluginMethodChildArgs) {
     const {
-      currentPassageObject,
       children,
       lastLinkTags,
+      passageObject,
       storyState,
     } = args;
     
@@ -40,8 +40,8 @@ class Plugin implements plugins.IPlugin {
 
   public afterPassageChange(args: plugins.IPluginMethodBaseArgs & plugins.IPluginMethodStateMutationArgs) {
     const {
-      currentPassageObject,
       lastLinkTags,
+      passageObject,
       setStoryState,
       store,
       storyState,
@@ -50,8 +50,8 @@ class Plugin implements plugins.IPlugin {
 
   public afterStoryStateChange(args: plugins.IPluginMethodBaseArgs & plugins.IPluginMethodStateChangingArgs) {
     const {
-      currentPassageObject,
       lastLinkTags,
+      passageObject,
       updatedStateProps,
       storyState,
     } = args;
@@ -59,8 +59,8 @@ class Plugin implements plugins.IPlugin {
 
   public beforeRestart(args: plugins.IPluginMethodBaseArgs) {
     const {
-      currentPassageObject,
       lastLinkTags,
+      passageObject,
       storyState,
     } = args;
   }

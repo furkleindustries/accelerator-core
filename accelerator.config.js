@@ -12,7 +12,8 @@ export default {
    */
   storyTitle: '%name%',
 
-  /** @property {string} 
+  /**
+   * @property {string} 
    * The description of the story. This should be short and illustrative, and
    * below 160 characters. Bear in mind this will appear in search results and
    * good descriptions drive traffic and positive SEO.
@@ -61,12 +62,9 @@ export default {
       ],
 
       weights: [
-        100,
         300,
         400,
         500,
-        700,
-        900,
       ],
     },
   ],
