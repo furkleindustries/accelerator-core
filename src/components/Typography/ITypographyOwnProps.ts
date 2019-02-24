@@ -7,5 +7,4 @@ import {
 
 export interface ITypographyOwnProps extends TypographyProps {
   readonly children: ReactNode;
-  readonly className?: string;
 }

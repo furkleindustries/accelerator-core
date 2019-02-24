@@ -7,5 +7,4 @@ import {
 
 export interface ICheckboxOwnProps extends CheckboxProps {
   readonly children: ReactNode;
-  readonly className?: string;
 }

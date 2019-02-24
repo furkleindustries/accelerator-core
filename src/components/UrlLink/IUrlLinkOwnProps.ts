@@ -7,5 +7,4 @@ import {
 
 export interface IUrlLinkOwnProps extends LinkProps {
   readonly children: ReactNode;
-  readonly className?: string;
 }

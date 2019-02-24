@@ -7,5 +7,4 @@ import {
 
 export interface ICircularProgressOwnProps extends CircularProgressProps {
   readonly children: ReactNode;
-  readonly className?: string;
 }

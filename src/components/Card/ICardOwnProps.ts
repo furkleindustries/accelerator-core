@@ -7,5 +7,4 @@ import {
 
 export interface ICardOwnProps extends CardProps {
   readonly children: ReactNode;
-  readonly className?: string;
 }

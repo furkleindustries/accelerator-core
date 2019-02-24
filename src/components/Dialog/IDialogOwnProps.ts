@@ -10,7 +10,6 @@ import {
 
 export interface IDialogOwnProps extends DialogProps {
   readonly children: ReactNode;
-  readonly className?: string;
   readonly dialogActions?: ReactNode;
   readonly includeTitle?: string | DialogTitleProps;
 }

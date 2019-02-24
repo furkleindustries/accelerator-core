@@ -7,5 +7,4 @@ import {
 
 export interface IToolbarOwnProps extends ToolbarProps {
   readonly children: ReactNode;
-  readonly className?: string;
 }

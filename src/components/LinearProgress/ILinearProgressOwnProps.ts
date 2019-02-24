@@ -7,5 +7,4 @@ import {
 
 export interface ILinearProgressOwnProps extends LinearProgressProps {
   readonly children: ReactNode;
-  readonly className?: string;
 }

@@ -7,5 +7,4 @@ import {
 
 export interface IChipOwnProps extends ChipProps {
   readonly children: ReactNode;
-  readonly className?: string;
 }
