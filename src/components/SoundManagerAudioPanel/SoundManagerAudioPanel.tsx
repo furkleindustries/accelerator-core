@@ -1,4 +1,7 @@
 import {
+  classNameSafeAppend,
+} from '../../functions/classNameSafeAppend';
+import {
   getSoundManagerContext,
 } from '../context/getSoundManagerContext';
 import {
@@ -20,7 +23,7 @@ export class SoundManagerAudioPanel extends React.PureComponent<ISoundManagerAud
 
   private ref: React.RefObject<HTMLDivElement>;
 
-  public render() {
+  public render = () => {
     const {
       className,
       ref,
@@ -40,7 +43,7 @@ export class SoundManagerAudioPanel extends React.PureComponent<ISoundManagerAud
     );
   }
 
-  public componentDidMount() {
+  public componentDidMount = () => {
     /* All of this must be done through refs as sound-manager does not export
      * React components at present. */
     const { soundManager }: { soundManager: IManager } = this.context;
@@ -59,7 +62,7 @@ export const SoundManagerAudioPanelRefForwarded = React.forwardRef((
   ref: React.RefObject<HTMLDivElement>,
 ) => (
   <div
-    className={`${className ? ` ${className}` : ''}soundPanel`}
+    className={classNameSafeAppend(className, 'soundManagerAudioPanel')}
     ref={ref}
   >
   </div>

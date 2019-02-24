@@ -2,8 +2,8 @@ import {
   ILoadingScreenOwnProps,
 } from './ILoadingScreenOwnProps';
 import {
-  ILoadingScreenState,
-} from './ILoadingScreenState';
+  ILoadingScreenStateProps,
+} from './ILoadingScreenStateProps';
 /*import {
   CircularProgress,
   LinearProgress,
@@ -13,57 +13,33 @@ import * as React from 'react';
 
 import builtInStyles from '../../../passages/_global-styles/built-ins.scss';
 
-export class LoadingScreen extends React.PureComponent<
-  ILoadingScreenOwnProps,
-  ILoadingScreenState
-> {
-  public readonly state = {
-    description: '',
-    ticks: 0,
-  };
+export const LoadingScreen: React.FunctionComponent<
+  ILoadingScreenOwnProps & ILoadingScreenStateProps
+> = ({
+  bodyText,
+  descriptions,
+  ticks,
+  title,
+}) => (
+  <article className={`${builtInStyles.loadingScreen} loadingScreen`}>
+    <h2
+      className={`${builtInStyles.loadingScreenTitle} loadingScreenTitle`}
+    >
+      {title}
+    </h2>
 
-  public render() {
-    const {
-      bodyText,
-      descriptions,
-      title,
-    } = this.props;
+    <p
+      className={`${builtInStyles.loadingScreenBodyText} loadingScreenBodyText`}
+    >
+      {bodyText || 'The story is loading. Thank you for your patience.'}
+    </p>
 
-    const { ticks } = this.state;
-
-    const description = Array.isArray(descriptions) && descriptions[ticks] ?
-      descriptions[ticks] :
-      '';
-
-    return (
-      <article className={`${builtInStyles.loadingScreen} loadingScreen`}>
-        <h2
-          className={`${builtInStyles.loadingScreenTitle} loadingScreenTitle`}
-        >
-          {title}
-        </h2>
-
-        <p
-          className={`${builtInStyles.loadingScreenBodyText} loadingScreenBodyText`}
-        >
-          {bodyText || 'The story is loading. Thank you for your patience.'}
-        </p>
-
-        {
-          description ?
-            <p
-              className={`${builtInStyles.loadingScreenDescription} loadingScreenDescription`}
-            >
-              {description}
-            </p> :
-            null
-        }
-      </article>
-    );
-  }
-
-  public addTicks(ticks: number) {
-    const { ticks: current } = this.state;
-    this.setState({ ticks: current + ticks })
-  }
-}
+    <p
+      className={`${builtInStyles.loadingScreenDescription} loadingScreenDescription`}
+    >
+      {Array.isArray(descriptions) && descriptions[ticks] ?
+        descriptions[ticks] :
+        ''}
+    </p>
+  </article>
+);

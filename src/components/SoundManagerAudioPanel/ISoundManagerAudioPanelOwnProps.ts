@@ -3,6 +3,6 @@ import {
 } from 'react';
 
 export interface ISoundManagerAudioPanelOwnProps {
-  className?: string;
-  ref?: RefObject<HTMLDivElement>;
+  readonly className?: string;
+  readonly ref?: RefObject<HTMLDivElement>;
 }

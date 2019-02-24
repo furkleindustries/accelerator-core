@@ -1,7 +1,7 @@
 import {
   DebugPlugin,
   IPluginExport,
-} from '../../src/passages/pluginsBundle';
+} from '../../bundles/pluginsBundle';
 import {
   getNormalizedAcceleratorConfig,
 } from '../../src/configuration/getNormalizedAcceleratorConfig';

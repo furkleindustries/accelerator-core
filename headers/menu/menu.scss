@@ -1,34 +1,13 @@
 .menu {
-  display: flex;
+  button {
+    color: white;
+  }
+}
+
+.toolbar {
   justify-content: center;
-  padding-top: 15px;
 }
 
 .restartContainer, .rewindContainer, .soundPanelContainer {
   margin: 0 10px;
-}
-
-.soundPanelButton {
-  position: relative;
-}
-
-.soundPanelCloseButton {
-  position: absolute;
-  right: 5px;
-  top: 5px;
-  background: none;
-  z-index: 1;
-}
-
-.soundPanelContentsContainer {
-  position: static;
-}
-
-.soundManagerAudioPanel {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  background: rgba(255, 255, 255, 0.975);
-  box-sizing: border-box;
 }

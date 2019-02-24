@@ -6,7 +6,7 @@ import {
 } from './checkPassageObject';
 import {
   getTag,
-} from './tagsBundle';
+} from '../tags/getTag';
 import {
   IPassagesMap,
 } from './IPassagesMap';

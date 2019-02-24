@@ -21,14 +21,14 @@ export async function initialize({
     if (err.code !== 'MODULE_NOT_FOUND') {
       throw err;
     } else {
-      warn('The initialization passage could not be found.');
+      warn('The initialization function could not be found.');
       clearLoadingScreen(appSelector, loadSelector);
       return;
     }
   }
 
   if (typeof init! !== 'function') {
-    warn('The initialization passage was not ');
+    warn('The initialization default export was not a function.');
     clearLoadingScreen(appSelector, loadSelector);
     return;
   }

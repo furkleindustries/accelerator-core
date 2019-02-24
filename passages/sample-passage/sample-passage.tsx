@@ -3,9 +3,9 @@ import * as React from 'react';
 
 /* Accelerator components, interfaces, functions, etc. Feel free to destructure
  * these as you see fit. */
-import * as components from '../../src/passages/componentsBundle'; 
-import * as passages from '../../src/passages/passagesBundle';
-import * as tags from '../../src/passages/tagsBundle';
+import * as components from '../../bundles/componentsBundle'; 
+import * as passages from '../../bundles/passagesBundle';
+import * as tags from '../../bundles/tagsBundle';
 
 /* Import the passage style. See css-modules.d.ts for types. */
 import styles from './sample-passage.scss';
@@ -105,7 +105,7 @@ class Component extends React.PureComponent<
 
         {/* This will update reactively, without the need for any rendering
           * logic on your part. */}
-        <p className={styles.paragraph}>
+        <p>
           <em>{counter || 0}</em>
         </p>
 
@@ -127,7 +127,7 @@ class Component extends React.PureComponent<
           'You can set any variable through the variableToSet property.',
         ]}</components.CyclingLink>
 
-        <p className={styles.paragraph}>
+        <p>
           {/* This value updates automatically to match the cycling link
             * choice. */}
           <em className={styles.cycleVar}>
@@ -135,7 +135,7 @@ class Component extends React.PureComponent<
           </em>
         </p>
 
-        <p className={styles.paragraph}>
+        <p>
           <components.Button
             className={builtInStyles.link}
             onClick={bookmark}
@@ -144,7 +144,7 @@ class Component extends React.PureComponent<
           </components.Button>
         </p>
 
-        <p className={styles.paragraph}>
+        <p>
           <components.Button
             className={builtInStyles.link}
             onClick={this.toggleSampleSound}
@@ -198,6 +198,7 @@ const passage: passages.IPassage = {
      * started. */
     tags.BuiltInTags.Start,
 
+    /* Tags can also be added as key-value pairs. */
     {
       key: 'anotherTag',
       value: 'anotherTagValue',

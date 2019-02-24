@@ -5,5 +5,5 @@ export interface ILoadingScreenOwnProps {
   readonly progressStart: number;
   readonly logoPath: string;
   readonly title: string;
-  updateTicks(ticks: number): void;
+  readonly className?: string;
 }

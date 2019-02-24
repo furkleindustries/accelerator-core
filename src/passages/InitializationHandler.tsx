@@ -11,6 +11,9 @@ import {
   IBeginLoadOptions,
 } from './IBeginLoadOptions';
 import {
+  ILoadingScreenOwnProps,
+} from '../components/LoadingScreen/ILoadingScreenOwnProps';
+import {
   InitializationHandlerOptions,
 } from './InitializationHandlerOptions';
 import {
@@ -19,6 +22,15 @@ import {
 import {
   render,
 } from 'react-dom';
+import {
+  connect,
+  MapStateToProps,
+  Provider,
+} from 'react-redux';
+import {
+  createStore,
+  Store,
+} from 'redux';
 import {
   assertValid,
 } from 'ts-assertions';
@@ -34,6 +46,7 @@ export class InitializationHandler {
 
   private progressMax: number;
   private progressStart: number = 0;
+  private store: Store<number>;
   private ticks = 0;
   private doneCallback: () => void;
 
@@ -84,8 +97,10 @@ export class InitializationHandler {
       (total) => total !== -1 && this.validator(total),
     );
 
-    if (this.ticks > this.progressMax) {
+    if (this.ticks >= this.progressMax) {
       this.completeLoad();
+    } else {
+      this.store.dispatch({ type: 'loadingTicksUpdate', value: this.ticks });
     }
   };
 
@@ -135,17 +150,34 @@ export class InitializationHandler {
       title,
     } = opts;
 
+    const props = {
+      bodyText: bodyText || '',
+      descriptions: descriptions || [],
+      progressMax: this.progressMax,
+      progressStart: this.progressStart,
+      logoPath: logoPath || logo,
+      title: title || `Loading ${this.config.storyTitle}...`,
+    };
+
+    this.store = createStore(
+      (previousState = 0, { value }: { type: string, value: number }) => (
+        value || previousState
+      ),
+    );
+
     const LoadComponent = component || LoadingScreen;
+
+    const mapStateToProps: MapStateToProps<{ ticks: number }, ILoadingScreenOwnProps, number> = (ticks: number, ownProps: ILoadingScreenOwnProps) => ({
+      ...ownProps,
+      ticks,
+    });
+
+    const Connected = connect(mapStateToProps)(LoadComponent);
+
     render(
-      <LoadComponent
-        bodyText={bodyText || ''}
-        descriptions={descriptions || []}
-        progressMax={this.progressMax}
-        progressStart={this.progressStart}
-        logoPath={logoPath || logo}
-        title={title || `Loading ${this.config.storyTitle}...`}
-        updateTicks={this.updateProgressTicks}
-      />,
+      <Provider store={this.store}>
+        <Connected {...props} />
+      </Provider>,
       document.querySelector(this.loadSelector),
     );
   }

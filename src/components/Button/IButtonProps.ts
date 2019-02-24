@@ -7,4 +7,5 @@ import {
 
 export interface IButtonProps extends ButtonProps {
   readonly children: ReactNode;
+  readonly className?: string;
 }

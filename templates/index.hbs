@@ -31,6 +31,13 @@
     <style id="fontLoaderStyle">
     {{{fontLoaderStyle}}}
     </style>
+
+    <!--
+      This is here to ensure that `@material-ui`'s generated and
+      injected styles are placed before the webpack-injected authored styles,
+      and thus given a lower priority.
+    --> 
+    <noscript id="jss-insertion-point"></noscript>
   </head>
 
   <body>

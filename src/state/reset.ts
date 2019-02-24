@@ -6,8 +6,10 @@ import {
 } from '../actions/IAction';
 import {
   IPlugin,
+} from '../plugins/IPlugin';
+import {
   IPluginMethodBaseArgs,
-} from '../passages/pluginsBundle';
+} from '../plugins/IPluginMethodArgs';
 import {
   Dispatch,
 } from 'redux';

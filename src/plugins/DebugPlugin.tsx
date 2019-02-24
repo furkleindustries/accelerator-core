@@ -89,7 +89,7 @@ export class DebugPlugin implements IPlugin {
   }: IPluginMethodBaseArgs & IPluginMethodStateChangingArgs) {
     log('---- afterStoryStateChange ----');
     log('The following modifications to the story state are being made:');
-    log(JSON.stringify(updatedStateProps));
+    log(JSON.stringify(updatedStateProps, null, 2));
 
     if (document &&
         typeof document.querySelector === 'function')

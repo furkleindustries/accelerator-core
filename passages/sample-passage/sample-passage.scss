@@ -7,23 +7,17 @@
  */
 
 /**
-  * @see https://github.com/css-modules/css-modules
-  * Accelerator is configured to use CSS Modules. Ordinarily, a CSS class you
-  * define (e.g. .foo) will affect every element with that class
-  * (e.g. <a class="foo"></a>). With CSS Modules, variables are local to the
-  * file in which they are imported, unless the author indicates otherwise.
-  * The .rewindButton class below has an example of this.
-  *
-  * If you'd like to opt out of CSS Modules functionality, give your style
-  * files the suffix `.nomodule.css`, e.g. `passage.nomodule.css`, or change
-  * the build configuration so that modularization is off by default.
-  */
-
-/**
- * @see passages/_global-styles/built-ins.scss
- * Reuse the link style from the built in styles for the example.
+ * @see https://github.com/css-modules/css-modules
+ * Accelerator is configured to use CSS Modules. Ordinarily, a CSS class you
+ * define (e.g. .foo) will affect every element with that class
+ * (e.g. <a class="foo"></a>). With CSS Modules, variables are local to the
+ * file in which they are imported, unless the author indicates otherwise.
+ * The .rewindButton class below has an example of this.
+ *
+ * If you'd like to opt out of CSS Modules functionality, give your style
+ * files the suffix `.nomodule.css`, e.g. `passage.nomodule.css`, or change
+ * the build configuration so that modularization is off by default.
  */
-@import '../_global-styles/built-ins.scss';
 
 /* Variables can be defined (and shared through imports elsewhere) as any
  * CSS value. */
@@ -39,7 +33,7 @@ $max-image-width: 80%;
   padding: $space-med;
 }
 
-.link {
+:global(.link) {
   display: block;
   margin: 0 auto $space-lg auto;
 }
@@ -53,11 +47,6 @@ $max-image-width: 80%;
 
 .button {
   margin: 0 auto $space-med auto;
-  background: #fff;
-  padding: $space-sm;
-  border: 2px outset #bbb;
-  font: inherit;
-  color: #000;
 
   /* This class is nested, and will compile to .button .counter. */
   .counter {
@@ -65,17 +54,7 @@ $max-image-width: 80%;
   }
 }
 
-.paragraph {
-  margin: 0 0 $space-lg 0;
-}
-
 .cycleVar {
   display: block;
   margin-top: $space-med;
-}
-
-/* Use the globally defined classes of the navigation buttons and one of the
- * built-in style mixins. */
-:global(.navigationButton) {
-  @include link;
 }

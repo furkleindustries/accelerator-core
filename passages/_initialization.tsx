@@ -1,7 +1,7 @@
 import { IBeginLoadOptions } from '../src/passages/IBeginLoadOptions';
 import { InitializationHandler } from '../src/passages/InitializationHandler';
 
-import logo from '../public/logo.svg';
+//import logo from '../public/logo.svg';
 
 /* This file is used for any logic which must execute before the story begins
  * every time it is loaded. This includes loading story saves. Do not use this
@@ -19,7 +19,7 @@ export default async function initialization<T extends InitializationHandler>({
    * other functions will be disregarded after beginLoad is called. */
   
   const opts: IBeginLoadOptions = {
-    bodyText: 'This is a sample loading screen.',
+    /*bodyText: 'This is a sample loading screen.',
     // component: MyLoadingScreen,
     descriptions: [
       'Gathering Particle Sources',
@@ -38,7 +38,7 @@ export default async function initialization<T extends InitializationHandler>({
     logoPath: logo,
     // progressMax: 15,
     // progressStart: 2,
-    // title: 'Custom title',
+    // title: 'Custom title',*/
   };
 
   /* beginLoad *must* be called, otherwise the story will never load. Do not
@@ -48,13 +48,12 @@ export default async function initialization<T extends InitializationHandler>({
 
   /* Call loading and initialization actions here, update the progress ticks
    * (if maxProgress is not -1), etc. */
-  let counter = 0;
+  /*let counter = 0;
   const interval = setInterval(() => {
+    updateProgressTicks(counter);
+    counter += 1;
     if (counter > opts.descriptions!.length) {
       clearInterval(interval);
     }
-
-    updateProgressTicks(counter);
-    counter += 1;
-  }, 2000);
+  }, 1000);*/
 }

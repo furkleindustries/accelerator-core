@@ -1,86 +1,87 @@
-/* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
-import * as React from 'react';
-
 import {
+  AppBar,
   Button,
+  Dialog,
   RestartButton,
   RewindButton,
-} from '../../src/passages/componentsBundle';
+  Toolbar,
+} from '../../bundles/componentsBundle';
 import {
   IMenuState,
 } from './IMenuState';
 import {
   IHeader,
   IPassageProps,
-} from '../../src/passages/passagesBundle';
+} from '../../bundles/passagesBundle';
 import {
   SoundManagerAudioPanel,
 } from '../../src/components/SoundManagerAudioPanel/SoundManagerAudioPanel';
 
+import * as React from 'react';
+
 import builtInStyles from '../../passages/_global-styles/built-ins.scss';
 import styles from './menu.scss';
 
-/* The header gets all the same props as a normal passage. */
 class Menu extends React.PureComponent<IPassageProps, IMenuState> {
   public readonly state: IMenuState = { soundPanelVisible: false };
 
-  constructor(props: any) {
-    super(props);
-    this.toggleSoundPanelVisibility = this.toggleSoundPanelVisibility.bind(this);
-  }
-
-  public render() {
+  public render = () => {
     const { soundPanelVisible } = this.state;
 
     return (
-      <header
+      <AppBar
         className={`${styles.menu} ${builtInStyles.header} header`}
+        position="relative"
       >
-        <div className={`${styles.rewindContainer} rewind`}>
-          <RewindButton>
-            Rewind
-          </RewindButton>
-        </div>
-
-        <div className={`${styles.restartContainer} restartContainer`}>
-          <RestartButton>
-            Restart
-          </RestartButton>
-        </div>
-
-        <div className={`${styles.soundPanelContainer} soundPanelContainer`}>
-          <Button
-            className={`${styles.soundPanelButton} ${builtInStyles.link} soundPanelButton`}
-            onClick={this.toggleSoundPanelVisibility}
-            {...(soundPanelVisible ? { hidden: true } : {})}
-          >
-            Audio options
-          </Button>
-
-          <div
-            className={`${styles.soundPanelContentsContainer} soundPanelContentsContainer`}
-            {...(soundPanelVisible ? {} : { hidden: true })}
-          >
-            <Button
-              className={`${styles.soundPanelCloseButton} soundPanelCloseButton`}
-              onClick={this.toggleSoundPanelVisibility}
-            >X</Button>
-
-            <SoundManagerAudioPanel className={styles.soundManagerAudioPanel} />
+        <Toolbar className={`${styles.toolbar} toolbar`}>
+          <div className={`${styles.rewindContainer} rewind`}>
+            <RewindButton>
+              Rewind
+            </RewindButton>
           </div>
-        </div>
-      </header>
+
+          <div className={`${styles.restartContainer} restartContainer`}>
+            <RestartButton>
+              Restart
+            </RestartButton>
+          </div>
+
+          <div className={`${styles.soundPanelContainer} soundPanelContainer`}>
+            <Button
+              className={`soundPanelButton`}
+              onClick={this.toggleSoundPanelVisibility}
+              {...(soundPanelVisible ? { hidden: true } : {})}
+            >
+              Audio options
+            </Button>
+
+            <div className={`soundPanelContentsContainer`}>
+              <Dialog
+                dialogActions={[
+                  <Button
+                    className={`soundPanelCloseButton`}
+                    key={0}
+                    onClick={this.toggleSoundPanelVisibility}
+                  >
+                    Close
+                  </Button>,
+                ]}
+                includeTitle="Audio Options"
+                open={soundPanelVisible}
+              >
+                <SoundManagerAudioPanel className={styles.soundManagerAudioPanel} />
+              </Dialog>
+            </div>
+          </div>
+        </Toolbar>
+      </AppBar>
     );
-  }
+  };
 
-  private toggleSoundPanelVisibility() {
-    const {
-      soundPanelVisible,
-    } = this.state;
-
-    const newVal = !soundPanelVisible;
-    this.setState({ soundPanelVisible: newVal });
-  }
+  private toggleSoundPanelVisibility = () => {
+    const { soundPanelVisible } = this.state;
+    this.setState({ soundPanelVisible: !soundPanelVisible });
+  };
 }
 
 const passage: IHeader = {

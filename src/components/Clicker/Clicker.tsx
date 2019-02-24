@@ -1,4 +1,7 @@
 import {
+  Button,
+} from '../Button/Button';
+import {
   IClickerOwnProps,
 } from './IClickerOwnProps';
 import {
@@ -12,12 +15,7 @@ import styles from './Clicker.scss';
 export class Clicker extends React.PureComponent<IClickerOwnProps, IClickerState> {
   public state = { clicked: false };
 
-  constructor(props: any) {
-    super(props);
-    this.click = this.click.bind(this); 
-  }
-  
-  public render() {
+  public render = () => {
     const {
       children,
       className,
@@ -26,19 +24,15 @@ export class Clicker extends React.PureComponent<IClickerOwnProps, IClickerState
 
     const { clicked } = this.state;
 
-    const maybeOnClick = clicked ? {} : { onClick: this.click };
-
     return (
-      <div
+      <Button
         className={`${styles.clicker} clicker${className ? ` ${className}` : ''}`}
-        {...maybeOnClick}  
+        {...(clicked ? {} : { onClick: this.click })}
       >
         {clicked ? contentAfterClick : children}
-      </div>
+      </Button>
     );
-  }
+  };
 
-  private click() {
-    this.setState({ clicked: true });
-  }
+  private click = () => this.setState({ clicked: true });
 }

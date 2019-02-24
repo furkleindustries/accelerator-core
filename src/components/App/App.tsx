@@ -2,8 +2,8 @@ import {
   AppContextProviderWrapper,
 } from '../AppContextProviderWrapper/AppContextProviderWrapper';
 import {
-  CssBaseline,
-} from '@material-ui/core';
+  AppJssProvider,
+} from '../AppJssProvider/AppJssProvider';
 import {
   PassageContainerConnected,
 } from '../PassageContainer/PassageContainer';
@@ -13,17 +13,16 @@ import {
 
 import * as React from 'react';
 
-import styles from './App.scss';
-
 export class App extends React.PureComponent {
   public render() {
     return (
-      <div className={`${styles.app} app`}>
-        <CssBaseline />
-        <AppContextProviderWrapper>
-          <PassageContainerConnected />
-        </AppContextProviderWrapper>
-      </div>
+      <>
+        <AppJssProvider>
+          <AppContextProviderWrapper>
+            <PassageContainerConnected />
+          </AppContextProviderWrapper>
+        </AppJssProvider>
+      </>
     );
   }
 }
