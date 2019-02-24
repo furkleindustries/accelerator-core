@@ -17,14 +17,8 @@ import {
   IPassageContextWrapperDispatchProps,
 } from './IPassageContextWrapperDispatchProps';
 import {
-  PassageContentsContainerConnected,
-} from '../PassageContentsContainer/PassageContentsContainer';
-import {
-  PassageHeadersConnected,
-} from '../PassageHeaders/PassageHeaders';
-import {
-  PassageFootersConnected,
-} from '../PassageFooters/PassageFooters';
+  Passage,
+} from '../Passage/Passage';
 import {
   navigate,
 } from '../../state/navigate';
@@ -61,12 +55,7 @@ const { Consumer: SoundManagerContextConsumer } = getSoundManagerContext();
 export class PassageContextWrapper extends React.PureComponent<
   IPassageContextWrapperDispatchProps
 > {
-  constructor(props: any) {
-    super(props);
-    this.navigateTo = this.navigateTo.bind(this);
-  }
-
-  public render() {
+  public render = () => {
     return (
       <FootersContextConsumer>
         {({ footers }) => (
@@ -84,32 +73,14 @@ export class PassageContextWrapper extends React.PureComponent<
                             navigateTo: this.navigateTo,
                           };
 
-                          return <>
-                            {
-                              /* Weird bug where react-redux is arguing with the types
-                              * since the last major version. Remember to file against
-                              * https://github.com/reduxjs/react-redux */
-                              // @ts-ignore
-                              <PassageHeadersConnected
-                                headers={headers}
-                                {...passageProps}
-                              />
-                            }
-
-                            <PassageContentsContainerConnected
+                          return (
+                            <Passage
+                              footers={footers}
+                              headers={headers}
                               plugins={plugins}
                               {...passageProps}
                             />
-
-                            {
-                              /* See above re: react-redux bug. */
-                              // @ts-ignore
-                              <PassageFootersConnected
-                                footers={footers}
-                                {...passageProps}
-                              />
-                            }
-                          </>;
+                          );
                         }}
                       </SoundManagerContextConsumer>
                     )}
@@ -121,9 +92,9 @@ export class PassageContextWrapper extends React.PureComponent<
         )}
       </FootersContextConsumer>
     )
-  }
+  };
 
-  private navigateTo(passageName: string, tags?: Tag[]) {
+  private navigateTo = (passageName: string, tags?: Tag[]) => {
     const { dispatch } = this.props;
 
     const {
@@ -140,7 +111,7 @@ export class PassageContextWrapper extends React.PureComponent<
       passage,
       linkTags: tags || [],
     });
-  }
+  };
 }
 
 export const mapDispatchToProps: MapDispatchToProps<
