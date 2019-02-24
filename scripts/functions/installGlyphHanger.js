@@ -31,5 +31,5 @@ export function installGlyphHanger() {
 
     install.stdout.on('data', log);
     install.stderr.on('data', error);
-});
+  });
 }

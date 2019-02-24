@@ -18,5 +18,6 @@ export function getFontFilepath ({
   assert(format);
   assert(style);
   assert(weight);
+
   return path.join(directory, `${family}-${style}-${weight}.${format}`);
 }

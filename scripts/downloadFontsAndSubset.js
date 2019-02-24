@@ -105,6 +105,8 @@ const printWarning = (err) => {
 
     log('Subsetting font.');
     let retObj;
+    const exit = process.exit;
+    process.exit = () => {};
     try {
       retObj = subsetFont({
         fontsToLoad,
@@ -116,6 +118,8 @@ const printWarning = (err) => {
       warn(err);
       warn(genericWarning);
     }
+
+    process.exit = exit;
 
     if (retObj && retObj.fontFaceRule && retObj.subsetName) {
       fontFaceRules.push(retObj.fontFaceRule);

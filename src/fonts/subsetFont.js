@@ -63,7 +63,7 @@ export function subsetFont({
 
   ghff.setSubset(ghs);
 
-  const GlyphHangerWhitelist = require('glyphhanger/src/GlyphhangerWhitelist');
+  const GlyphHangerWhitelist = require('glyphhanger/src/GlyphHangerWhitelist');
   let ghw;
   if (/^latin$/i.test(subsetRange)) {
     ghw = new GlyphHangerWhitelist(null, { LATIN: true });
@@ -77,6 +77,7 @@ export function subsetFont({
   ghff.setUnicodeRange(unicodes);
 
   const gh = new (require('glyphhanger'))();
+
   gh.setSubset(pathOfFontToSubset);
   gh.setWhitelist(ghw);  
   gh.output();
