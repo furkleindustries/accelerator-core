@@ -2,9 +2,9 @@ import {
   CheckboxProps,
 } from '@material-ui/core/Checkbox';
 import {
-  ReactNode,
-} from 'react';
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export interface ICheckboxOwnProps extends CheckboxProps {
-  readonly children: ReactNode;
+  readonly children: ReactNodeWithoutNullOrUndefined;
 }

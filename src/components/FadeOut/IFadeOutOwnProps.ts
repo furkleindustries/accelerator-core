@@ -1,9 +1,9 @@
 import {
-  ReactNode,
-} from 'react';
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export interface IFadeOutOwnProps {
-  children: ReactNode;
-  className?: string;
-  duration: number;
+  readonly children: ReactNodeWithoutNullOrUndefined;
+  readonly duration: number;
+  readonly className?: string;
 }

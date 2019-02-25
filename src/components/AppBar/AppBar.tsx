@@ -1,6 +1,4 @@
-import {
-  classNameSafeAppend,
-} from '../../functions/classNameSafeAppend';
+import classnames from 'classnames';
 import {
   IAppBarOwnProps,
 } from './IAppBarOwnProps';
@@ -13,9 +11,10 @@ import styles from './AppBar.scss';
 export const AppBar: React.FunctionComponent<IAppBarOwnProps> = (props) => (
   <MuiAppBar {...{
     ...props,
-    className: classNameSafeAppend(
+    className: classnames(
+      'appBar',
+      styles.appBar,
       props.className,
-      `${styles.appBar} appBar`,
     ),
   }} />
 );

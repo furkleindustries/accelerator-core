@@ -1,6 +1,4 @@
-import {
-  classNameSafeAppend,
-} from '../../functions/classNameSafeAppend';
+import classnames from 'classnames';
 import {
   IUrlLinkOwnProps,
 } from './IUrlLinkOwnProps';
@@ -13,9 +11,10 @@ import styles from './UrlLink.scss';
 export const UrlLink: React.FunctionComponent<IUrlLinkOwnProps> = (props) => (
   <MuiLink {...{
     ...props,
-    className: classNameSafeAppend(
+    className: classnames(
+      'urlLink',
+      styles.urlLink,
       props.className,
-      `${styles.urlLink} urlLink`,
     ),
   }} />
 );

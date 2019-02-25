@@ -1,6 +1,4 @@
-import {
-  classNameSafeAppend,
-} from '../../functions/classNameSafeAppend';
+import classnames from 'classnames';
 import {
   ICheckboxOwnProps,
 } from './ICheckboxOwnProps';
@@ -13,9 +11,10 @@ import styles from './Checkbox.scss';
 export const Checkbox: React.FunctionComponent<ICheckboxOwnProps> = (props) => (
   <MuiCheckbox {...{
     ...props,
-    className: classNameSafeAppend(
+    className: classnames(
+      'checkbox',
+      styles.checkbox,
       props.className,
-      `${styles.checkbox} checkbox`,
     ),
   }} />
 );

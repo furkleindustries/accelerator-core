@@ -2,9 +2,9 @@ import {
   CardProps,
 } from '@material-ui/core/Card';
 import {
-  ReactNode,
-} from 'react';
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export interface ICardOwnProps extends CardProps {
-  readonly children: ReactNode;
+  readonly children: ReactNodeWithoutNullOrUndefined;
 }

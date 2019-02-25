@@ -1,6 +1,4 @@
-import {
-  classNameSafeAppend,
-} from '../../functions/classNameSafeAppend';
+import classnames from 'classnames';
 import {
   IButtonProps,
 } from './IButtonProps';
@@ -15,9 +13,10 @@ import styles from './Button.scss';
 export const Button: React.FunctionComponent<IButtonProps> = (props) => (
   <MuiButton {...{
     ...props,
-    className: classNameSafeAppend(
+    className: classnames(
+      'button',
+      styles.button,
       props.className,
-      `${styles.button} button`,
     ),
   }} />
 );

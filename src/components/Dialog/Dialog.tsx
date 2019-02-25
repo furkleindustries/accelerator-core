@@ -1,6 +1,4 @@
-import {
-  classNameSafeAppend,
-} from '../../functions/classNameSafeAppend';
+import classnames from 'classnames';
 import {
   IDialogOwnProps,
 } from './IDialogOwnProps';
@@ -44,9 +42,10 @@ export const Dialog: React.FunctionComponent<IDialogOwnProps> = (props) => {
     'includeTitle',
   ].forEach((key) => delete copiedProps[key]);
 
-  const className = classNameSafeAppend(
+  const className = classnames(
+    'dialog',
+    styles.dialog,
     propClassName,
-    `${styles.dialog} dialog`,
   );
 
   return (

@@ -1,0 +1,11 @@
+.skipToContentLink {
+  color: black;
+  position: absolute;
+  left: 0;
+  opacity: 0.01;
+  z-index: 1;
+
+  &:focus {
+    opacity: initial;
+  }
+}

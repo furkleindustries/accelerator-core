@@ -2,10 +2,10 @@ import {
   IButtonProps,
 } from '../Button/IButtonProps';
 import {
-  ReactNode,
-} from 'react';
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export interface ICyclerOwnProps extends IButtonProps {
-  children: ReactNode[];
-  callback?(current: ReactNode, index?: number): void;
+  children: ReactNodeWithoutNullOrUndefined[];
+  callback?(current: ReactNodeWithoutNullOrUndefined, index?: number): void;
 }

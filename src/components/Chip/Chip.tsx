@@ -1,6 +1,4 @@
-import {
-  classNameSafeAppend,
-} from '../../functions/classNameSafeAppend';
+import classnames from 'classnames';
 import {
   IChipOwnProps,
 } from './IChipOwnProps';
@@ -13,9 +11,10 @@ import styles from './Chip.scss';
 export const Chip: React.FunctionComponent<IChipOwnProps> = (props) => (
   <MuiChip {...{
     ...props,
-    className: classNameSafeAppend(
+    className: classnames(
+      'chip',
+      styles.chip,
       props.className,
-      `${styles.chip} chip`,
     ),
   }} />
 );

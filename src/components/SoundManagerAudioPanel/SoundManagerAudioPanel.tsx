@@ -1,6 +1,4 @@
-import {
-  classNameSafeAppend,
-} from '../../functions/classNameSafeAppend';
+import classnames from 'classnames';
 import {
   getSoundManagerContext,
 } from '../context/getSoundManagerContext';
@@ -62,7 +60,7 @@ export const SoundManagerAudioPanelRefForwarded = React.forwardRef((
   ref: React.RefObject<HTMLDivElement>,
 ) => (
   <div
-    className={classNameSafeAppend(className, 'soundManagerAudioPanel')}
+    className={classnames('soundManagerAudioPanel', className)}
     ref={ref}
   >
   </div>

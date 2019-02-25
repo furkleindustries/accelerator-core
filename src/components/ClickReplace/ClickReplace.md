@@ -16,6 +16,6 @@ A component that, when clicked, replaces the initial piece of content with anoth
 
 ## Property arguments
 
-* `children (ReactNode)`: The content that will appear at render-time.
-* `replaceWith (ReactNode)`: The content which, after the user clicks the component, will replace the original content.
+* `children (ReactNodeWithoutNullOrUndefined)`: The content that will appear at render-time.
+* `replaceWith (ReactNodeWithoutNullOrUndefined)`: The content which, after the user clicks the component, will replace the original content.
 * `className (string, optional)`: An optional, extra class that will be passed on to the rendered container element.

@@ -16,6 +16,6 @@ A component that, when clicked, disappears. Note that while the content will not
 
 ## Property arguments
 
-* `children (ReactNode)`: The content that will initially appear at full opacity.
+* `children (ReactNodeWithoutNullOrUndefined)`: The content that will initially appear at full opacity.
 * `fadeOutDuration (number)`: The number of milliseconds the fade-out will take to complete.
 * `className (string, optional)`: An optional, extra class that will be passed on to the rendered container element.

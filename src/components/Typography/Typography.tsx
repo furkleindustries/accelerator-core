@@ -1,6 +1,4 @@
-import {
-  classNameSafeAppend,
-} from '../../functions/classNameSafeAppend';
+import classnames from 'classnames';
 import {
   ITypographyOwnProps,
 } from './ITypographyOwnProps';
@@ -13,9 +11,10 @@ import styles from './Typography.scss';
 export const Typography: React.FunctionComponent<ITypographyOwnProps> = (props) => (
   <MuiTypography {...{
     ...props,
-    className: classNameSafeAppend(
+    className: classnames(
+      'typography',
+      styles.typography,
       props.className,
-      `${styles.typography} typography`,
     ),
   }} />
 );

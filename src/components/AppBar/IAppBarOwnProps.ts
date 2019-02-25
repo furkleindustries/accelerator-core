@@ -2,9 +2,9 @@ import {
   AppBarProps,
 } from '@material-ui/core/AppBar';
 import {
-  ReactNode,
-} from 'react';
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export interface IAppBarOwnProps extends AppBarProps {
-  readonly children: ReactNode;
+  readonly children: ReactNodeWithoutNullOrUndefined;
 }

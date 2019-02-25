@@ -1,6 +1,4 @@
-import {
-  classNameSafeAppend,
-} from '../../functions/classNameSafeAppend';
+import classnames from 'classnames';
 import {
   ILinearProgressOwnProps,
 } from './ILinearProgressOwnProps';
@@ -13,9 +11,10 @@ import styles from './LinearProgress.scss';
 export const LinearProgress: React.FunctionComponent<ILinearProgressOwnProps> = (props) => (
   <MuiLinearProgress {...{
     ...props,
-    className: classNameSafeAppend(
+    className: classnames(
+      'linearProgress',
+      styles.linearProgress,
       props.className,
-      `${styles.linearProgress} linearProgress`,
     ),
   }} />
 );

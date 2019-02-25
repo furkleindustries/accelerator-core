@@ -5,11 +5,11 @@ import {
   IPlugin,
 } from '../../plugins/IPlugin';
 import {
-  ReactNode,
-} from 'react';
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export interface IPassagePluginsWrapperOwnProps {
-  readonly children: ReactNode;
+  readonly children: ReactNodeWithoutNullOrUndefined;
   readonly passagesMap: IPassagesMap;
   readonly plugins: IPlugin[];
 }

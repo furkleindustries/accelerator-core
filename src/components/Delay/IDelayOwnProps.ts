@@ -1,10 +1,10 @@
 import {
-  ReactNode,
-} from 'react';
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export interface IDelayOwnProps {
-  children: ReactNode;
-  className?: string;
-  renderWithZeroOpacity?: boolean;
-  timeout: number;
+  readonly children: ReactNodeWithoutNullOrUndefined;
+  readonly timeout: number;
+  readonly className?: string;
+  readonly renderWithZeroOpacity?: boolean;
 }

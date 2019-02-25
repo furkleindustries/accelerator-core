@@ -35,6 +35,8 @@ import {
 
 import * as React from 'react';
 
+import styles from './PassageHeaders.scss';
+
 export const strings = {
   COMPONENT_CONSTRUCTOR_NOT_FOUND:
     'There was no contents property found in the header with name %NAME%.',
@@ -48,14 +50,7 @@ export class PassageHeaders extends React.PureComponent<
 > {
   public static contextType = getSoundManagerContext();
 
-  constructor(props: any) {
-    super(props);
-
-    this.restart = this.restart.bind(this);
-    this.rewind = this.rewind.bind(this);
-  }
-  
-  public render() {
+  public render = () => {
     const {
       bookmark,
       dispatch,
@@ -68,7 +63,7 @@ export class PassageHeaders extends React.PureComponent<
       soundManager,
       storyState,
     } = this.props;
-    
+
     const propsPassedDown: IPassageProps = {
       bookmark,
       dispatch,
@@ -105,13 +100,13 @@ export class PassageHeaders extends React.PureComponent<
     });
 
     return (
-      <div className="passageHeaders">
+      <div className={styles.passageHeaders}>
         {headerComponents}
       </div>
     );
-  }
+  };
 
-  private restart() {
+  private restart = () => {
     const {
       lastLinkTags,
       restart,
@@ -120,9 +115,9 @@ export class PassageHeaders extends React.PureComponent<
     } = this.props;
 
     restart(currentPassageObject, currentStoryState, lastLinkTags);
-  }
+  };
 
-  private rewind(filter?: HistoryFilter) {
+  private rewind = (filter?: HistoryFilter) => {
     const {
       rewind,
       history: {
@@ -132,7 +127,7 @@ export class PassageHeaders extends React.PureComponent<
     } = this.props;
 
     rewind(present, past, filter);
-  }
+  };
 }
 
 export const PassageHeadersConnected = connect(

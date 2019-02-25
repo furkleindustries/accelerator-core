@@ -1,6 +1,4 @@
-import {
-  classNameSafeAppend,
-} from '../../functions/classNameSafeAppend';
+import classnames from 'classnames';;
 import {
   ICardOwnProps,
 } from './ICardOwnProps';
@@ -13,9 +11,10 @@ import styles from './Card.scss';
 export const Card: React.FunctionComponent<ICardOwnProps> = (props) => (
   <MuiCard {...{
     ...props,
-    className: classNameSafeAppend(
+    className: classnames(
+      'card',
+      styles.card,
       props.className,
-      `${styles.card} card`,
     ),
   }} />
 );

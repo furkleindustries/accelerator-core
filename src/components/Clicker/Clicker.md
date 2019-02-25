@@ -16,6 +16,6 @@ A lower-level component which allows any piece of content to be replaced with an
 
 ## Property arguments
 
-* `children (ReactNode)`: The content that will appear at render-time.
-* `contentAfterClick (ReactNode)`: The content that will appear after the user clicks the component.
+* `children (ReactNodeWithoutNullOrUndefined)`: The content that will appear at render-time.
+* `contentAfterClick (ReactNodeWithoutNullOrUndefined)`: The content that will appear after the user clicks the component.
 * `className (string, optional)`: An optional, extra class that will be passed on to the rendered container element.

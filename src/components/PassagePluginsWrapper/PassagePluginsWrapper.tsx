@@ -25,6 +25,9 @@ import {
   ReactReduxContext,
 } from 'react-redux';
 import {
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
+import {
   Store,
 } from 'redux';
 import {
@@ -50,7 +53,7 @@ export class PassagePluginsWrapper extends React.PureComponent<IPassagePluginsWr
   private lastPassageTime: number;
   /* Memoizes the output of the plugins, allowing them to be called once per
    * passage change. */
-  private lastPluginsBeforeRenderOutput: React.ReactNode;
+  private lastPluginsBeforeRenderOutput: ReactNodeWithoutNullOrUndefined;
 
   constructor(props: IPassagePluginsWrapperOwnProps & IPassagePluginsWrapperStateProps, context: any) {
     super(props);
@@ -78,7 +81,7 @@ export class PassagePluginsWrapper extends React.PureComponent<IPassagePluginsWr
 
     const safePassageObject = assertValid<IPassage>(
       passagesMap[passageName],
-      strings.PASSAGE_NOT_FOUND.replace('%NAME%', passageName),
+      strings.PASSAGE_NOT_FOUND.replace(/%name%/gi, passageName),
     );
 
     /* Call the afterStoryInit method on all plugins. In practice, this should
@@ -103,7 +106,7 @@ export class PassagePluginsWrapper extends React.PureComponent<IPassagePluginsWr
     });
   }
 
-  public render() {
+  public render = () => {
     const {
       children,
       lastLinkTags,
@@ -162,7 +165,7 @@ export class PassagePluginsWrapper extends React.PureComponent<IPassagePluginsWr
     return finalChildren;
   }
 
-  public componentDidUpdate() {
+  public componentDidUpdate = () => {
     const {
       lastLinkTags,
       passageName,

@@ -1,7 +1,7 @@
 import {
-  ReactNode,
-} from 'react';
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export interface IOneOfOwnProps {
-  children: ReactNode;
+  readonly children: ReactNodeWithoutNullOrUndefined;
 }

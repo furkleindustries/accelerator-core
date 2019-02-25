@@ -1,6 +1,4 @@
-import {
-  classNameSafeAppend,
-} from '../../functions/classNameSafeAppend';
+import classnames from 'classnames';
 import {
   IToolbarOwnProps,
 } from './IToolbarOwnProps';
@@ -13,9 +11,10 @@ import styles from './Toolbar.scss';
 export const Toolbar: React.FunctionComponent<IToolbarOwnProps> = (props) => (
   <MuiToolbar {...{
     ...props,
-    className: classNameSafeAppend(
+    className: classnames(
+      'toolbar',
+      styles.toolbar,
       props.className,
-      `${styles.toolbar} toolbar`,
     ),
   }} />
 );

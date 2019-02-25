@@ -2,10 +2,10 @@ import {
   IButtonProps,
 } from '../Button/IButtonProps';
 import {
-  ReactNode,
-} from 'react';
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export interface IRestartButtonOwnProps extends IButtonProps {
-  children: ReactNode;
-  className?: string;
+  readonly children: ReactNodeWithoutNullOrUndefined;
+  readonly className?: string;
 }

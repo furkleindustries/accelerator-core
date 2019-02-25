@@ -2,9 +2,9 @@ import {
   TypographyProps,
 } from '@material-ui/core/Typography';
 import {
-  ReactNode,
-} from 'react';
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export interface ITypographyOwnProps extends TypographyProps {
-  readonly children: ReactNode;
+  readonly children: ReactNodeWithoutNullOrUndefined;
 }

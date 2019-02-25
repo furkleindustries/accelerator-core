@@ -10,6 +10,12 @@ import {
 import {
   PassageFootersConnected,
 } from '../PassageFooters/PassageFooters';
+import {
+  SkipToContentLink,
+} from '../SkipToContentLink/SkipToContentLink';
+import {
+  SkipToContentLinkDestination,
+} from '../SkipToContentLinkDestination/SkipToContentLinkDestination';
 
 import * as React from 'react';
 
@@ -20,6 +26,8 @@ export const Passage: React.FunctionComponent<IPassageOwnProps> = ({
   ...passageProps
 }) => (
   <>
+    <SkipToContentLink />
+
     {
       /* Weird bug where react-redux is arguing with the types
         * since the last major version. Remember to file against
@@ -30,6 +38,8 @@ export const Passage: React.FunctionComponent<IPassageOwnProps> = ({
         {...passageProps}
       />
     }
+
+    <SkipToContentLinkDestination />
 
     <PassageContentsContainerConnected
       plugins={plugins}

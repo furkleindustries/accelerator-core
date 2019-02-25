@@ -1,9 +1,9 @@
 import {
-  ReactNode,
-} from 'react';
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export interface IClickerOwnProps {
-  children: ReactNode;
-  className?: string;
-  contentAfterClick: ReactNode;
+  readonly children: ReactNodeWithoutNullOrUndefined;
+  readonly contentAfterClick: ReactNodeWithoutNullOrUndefined;
+  readonly className?: string;
 }

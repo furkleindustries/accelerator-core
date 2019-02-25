@@ -2,9 +2,9 @@ import {
   ToolbarProps,
 } from '@material-ui/core/Toolbar';
 import {
-  ReactNode,
-} from 'react';
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export interface IToolbarOwnProps extends ToolbarProps {
-  readonly children: ReactNode;
+  readonly children: ReactNodeWithoutNullOrUndefined;
 }

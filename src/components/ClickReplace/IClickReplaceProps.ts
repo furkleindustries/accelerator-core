@@ -1,9 +1,9 @@
 import {
-  ReactNode,
-} from 'react';
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export interface IClickReplaceOwnProps {
-  children: ReactNode;
-  className?: string;
-  replaceWith: ReactNode;
+  readonly children: ReactNodeWithoutNullOrUndefined;
+  readonly replaceWith: ReactNodeWithoutNullOrUndefined;
+  readonly className?: string;
 }

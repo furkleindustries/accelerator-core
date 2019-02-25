@@ -6,5 +6,5 @@ import {
 } from 'react';
 
 export interface IUrlLinkOwnProps extends LinkProps {
-  readonly children: ReactNode;
+  readonly children?: ReactNode;
 }

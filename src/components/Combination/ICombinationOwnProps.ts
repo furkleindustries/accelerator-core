@@ -1,8 +1,8 @@
 import {
-  ReactNodeArray,
-} from 'react';
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
-export interface IPermutationOwnProps {
-  children: ReactNodeArray;
+export interface ICombinationOwnProps {
+  children: ReactNodeWithoutNullOrUndefined[];
   pick?: number;
 }

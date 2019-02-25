@@ -40,6 +40,7 @@
   "devDependencies": {
     "@babel/core": "7.2.2",
     "@svgr/webpack": "4.1.0",
+    "@types/classnames": "^2.2.7",
     "@types/deep-equal": "1.0.1",
     "@types/detect-node": "2.0.0",
     "@types/enzyme": "3.1.16",
@@ -120,6 +121,7 @@
     "@material-ui/core": "3.9.2",
     "array-shuffle": "1.0.1",
     "chalk": "2.4.2",
+    "classnames": "^2.2.6",
     "colorful-logging": "1.0.9",
     "detect-node": "2.0.4",
     "glyphhanger": "3.2.0",

@@ -1,6 +1,4 @@
-import {
-  classNameSafeAppend,
-} from '../../functions/classNameSafeAppend';
+import classnames from 'classnames';
 import {
   ICircularProgressOwnProps,
 } from './ICircularProgressOwnProps';
@@ -13,9 +11,10 @@ import styles from './CircularProgress.scss';
 export const CircularProgress: React.FunctionComponent<ICircularProgressOwnProps> = (props) => (
   <MuiCircularProgress {...{
     ...props,
-    className: classNameSafeAppend(
+    className: classnames(
+      'circularProgress',
+      styles.circularProgress,
       props.className,
-      `${styles.circularProgress} circularProgress`,
     ),
   }} />
 );
