@@ -15,7 +15,7 @@ export class ClickAppend extends React.PureComponent<IClickAppendOwnProps> {
       toAppend,
     } = this.props;
 
-    const maybeClassName = className ? { className, } : {};
+    const maybeClassName = className ? { className } : {};
 
     return (
       <Clicker
