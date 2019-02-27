@@ -54,7 +54,7 @@
     "@types/react-redux": "7.0.1",
     "@types/request": "2.48.1",
     "@types/webpack": "4.4.24",
-    "ajv": "6.8.1",
+    "ajv": "^6.8.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "9.0.0",
     "babel-jest": "24.1.0",

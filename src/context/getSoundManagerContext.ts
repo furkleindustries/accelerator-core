@@ -2,10 +2,10 @@ import {
   createContext,
 } from 'react';
 import {
-  IManager,
-} from 'sound-manager';
+  ISoundManagerContext,
+} from './ISoundManagerContext';
 
-let soundManagerContext: React.Context<{ soundManager: IManager }> | null = null;
+let soundManagerContext: React.Context<ISoundManagerContext> | null = null;
 export function getSoundManagerContext() {
   if (!soundManagerContext) {
     soundManagerContext = createContext(undefined as any);

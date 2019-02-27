@@ -7,6 +7,9 @@ import {
 import {
   IFontSubsettingDetails,
 } from '../fonts/IFontSubsettingDetails';
+import {
+  IPassageRenderer,
+} from '../passages/renderers/IPassageRenderer';
 
 export interface IAcceleratorConfig {
   readonly [key: string]: any;
@@ -15,6 +18,7 @@ export interface IAcceleratorConfig {
   readonly historySaveTypes: ActionTypes | ActionTypes[] | string | string[];
   readonly historySynchronizeUnrewindableStateWithPresent: boolean;
   readonly publicUrl: string;
+  readonly renderer: IPassageRenderer;
   readonly showLoadingScreen: boolean;
   readonly storyDescription: string;
   readonly storyTitle: string;

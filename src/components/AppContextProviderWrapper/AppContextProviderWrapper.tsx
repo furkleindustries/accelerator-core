@@ -1,21 +1,35 @@
 import {
+  getFootersContext,
+} from '../../context/getFootersContext';
+import {
+  getFootersList,
+} from '../../passages/getFootersList';
+import {
+  getHeadersContext,
+} from '../../context/getHeadersContext';
+import {
+  getHeadersList,
+} from '../../passages/getHeadersList';
+import {
+  getPluginsContext,
+} from '../../context/getPluginsContext';
+import {
+  getPluginsList,
+} from '../../plugins/getPluginsList';
+import {
+  getPassagesMapAndStartPassageName,
+} from '../../passages/getPassagesMapAndStartPassageName';
+import {
   getPassagesMapAndStartPassageNameContext,
-} from '../context/getPassagesMapAndStartPassageNameContext';
+} from '../../context/getPassagesMapAndStartPassageNameContext';
 import {
   getSoundManagerContext,
-} from '../context/getSoundManagerContext';
+} from '../../context/getSoundManagerContext';
 import {
-  createManager,
-} from 'sound-manager';
+  IAppContextProviderWrapperOwnProps,
+} from './IAppContextProviderWrapperOwnProps';
 
 import * as React from 'react';
-import { getFootersContext } from '../context/getFootersContext';
-import { getHeadersContext } from '../context/getHeadersContext';
-import { getPluginsContext } from '../context/getPluginsContext';
-import { getPassagesMapAndStartPassageName } from '../../passages/getPassagesMapAndStartPassageName';
-import { getFootersList } from '../../passages/getFootersList';
-import { getHeadersList } from '../../passages/getHeadersList';
-import { getPluginsList } from '../../plugins/getPluginsList';
 
 const { Provider: FootersContextProvider } = getFootersContext();
 const { Provider: HeadersContextProvider } = getHeadersContext();
@@ -30,26 +44,22 @@ const footers = getFootersList();
 const headers = getHeadersList();
 const passagesMapAndStartPassageName = getPassagesMapAndStartPassageName();
 const plugins = getPluginsList();
-const soundManager = createManager();
 
-export class AppContextProviderWrapper extends React.PureComponent {
-  public render() {
-    const { children } = this.props;
-    
-    return (
-      <FootersContextProvider value={{ footers }}>
-        <HeadersContextProvider value={{ headers }}>
-          <PassagesMapAndStartPassageNameProvider
-            value={passagesMapAndStartPassageName}
-          >
-            <PluginsContextProvider value={{ plugins }}>
-              <SoundManagerProvider value={{ soundManager }}>
-                {children}
-              </SoundManagerProvider>
-            </PluginsContextProvider>
-          </PassagesMapAndStartPassageNameProvider>
-        </HeadersContextProvider>
-      </FootersContextProvider>
-    );
-  }
-}
+export const AppContextProviderWrapper: React.FunctionComponent<IAppContextProviderWrapperOwnProps> = ({
+  children,
+  soundManager,
+}) => (
+  <FootersContextProvider value={{ footers }}>
+    <HeadersContextProvider value={{ headers }}>
+      <PassagesMapAndStartPassageNameProvider
+        value={passagesMapAndStartPassageName}
+      >
+        <PluginsContextProvider value={{ plugins }}>
+          <SoundManagerProvider value={{ soundManager }}>
+            {children}
+          </SoundManagerProvider>
+        </PluginsContextProvider>
+      </PassagesMapAndStartPassageNameProvider>
+    </HeadersContextProvider>
+  </FootersContextProvider>
+);
