@@ -1,11 +1,11 @@
 import {
-  IHeader,
-} from '../../passages/IHeader';
+  IHeadersContext,
+} from './IHeadersContext';
 import {
   createContext,
 } from 'react';
 
-let headersContext: React.Context<{ headers: IHeader[] }> | null = null;
+let headersContext: React.Context<IHeadersContext> | null = null;
 export function getHeadersContext() {
   if (!headersContext) {
     headersContext = createContext(undefined as any);
