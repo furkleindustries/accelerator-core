@@ -7,23 +7,16 @@ import {
 import {
   IPassageRendererWrapperOwnProps,
 } from './IPassageRendererWrapperOwnProps';
-import {
-  ReactReduxContext,
-} from 'react-redux';
 
 import * as React from 'react';
 
 const {
-  renderer,
+  renderer: { render },
   ...configWithoutRenderer
 } = getNormalizedAcceleratorConfig();
 
 export const PassageRendererWrapper: React.FunctionComponent<IPassageRendererWrapperOwnProps> = () => (
-  <ReactReduxContext.Consumer>
-    {({ storeState }) => (
-      <AppContextConsumerWrapper>
-        {(context) => renderer(configWithoutRenderer, context, storeState)}
-      </AppContextConsumerWrapper>
-    )}
-  </ReactReduxContext.Consumer>
+  <AppContextConsumerWrapper>
+    {(context) => render(configWithoutRenderer, context)}
+  </AppContextConsumerWrapper>
 );

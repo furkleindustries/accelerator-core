@@ -14,6 +14,9 @@ import {
   getPluginsContext,
 } from '../../context/getPluginsContext';
 import {
+  getReactReduxContext,
+} from '../../context/getReactReduxContext';
+import {
   getSoundManagerContext,
 } from '../../context/getSoundManagerContext';
 
@@ -26,36 +29,42 @@ const {
 } = getPassagesMapAndStartPassageNameContext();
 
 const { Consumer: PluginsConsumer } = getPluginsContext();
+const { Consumer: ReactReduxConsumer } = getReactReduxContext();
 const { Consumer: SoundManagerConsumer } = getSoundManagerContext();
 
 export const AppContextConsumerWrapper: React.FunctionComponent<IAppContextConsumerWrapperOwnProps> = ({ children }) => (
-  <FootersConsumer>
-    {({ footers }) => (
-      <HeadersConsumer>
-        {({ headers }) => (
-          <PassagesMapAndStartPassageNameConsumer>
-            {({
-              passagesMap,
-              startPassageName,
-             }) => (
-              <PluginsConsumer>
-                {({ plugins }) => (
-                  <SoundManagerConsumer>
-                    {({ soundManager }) => !children || children({
-                      footers,
-                      headers,
-                      passagesMap,
-                      plugins,
-                      soundManager,
-                      startPassageName,
-                    })}
-                  </SoundManagerConsumer>
+  <ReactReduxConsumer>
+    {({ store }) => (
+      <FootersConsumer>
+        {({ footers }) => (
+          <HeadersConsumer>
+            {({ headers }) => (
+              <PassagesMapAndStartPassageNameConsumer>
+                {({
+                  passagesMap,
+                  startPassageName,
+                }) => (
+                  <PluginsConsumer>
+                    {({ plugins }) => (
+                      <SoundManagerConsumer>
+                        {({ soundManager }) => !children || children({
+                          footers,
+                          headers,
+                          passagesMap,
+                          plugins,
+                          soundManager,
+                          startPassageName,
+                          store,
+                        })}
+                      </SoundManagerConsumer>
+                    )}
+                  </PluginsConsumer>
                 )}
-              </PluginsConsumer>
-             )}
-          </PassagesMapAndStartPassageNameConsumer>
+              </PassagesMapAndStartPassageNameConsumer>
+            )}
+          </HeadersConsumer>
         )}
-      </HeadersConsumer>
+      </FootersConsumer>
     )}
-  </FootersConsumer>
+  </ReactReduxConsumer>
 );

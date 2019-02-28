@@ -13,6 +13,12 @@ import {
 import {
   ISoundManagerContext,
 } from './ISoundManagerContext';
+import {
+  IState,
+} from '../state/IState';
+import {
+  Store,
+} from 'redux';
 
 export interface IContext extends
   IFootersContext,
@@ -20,4 +26,6 @@ export interface IContext extends
   IPassagesMapAndStartPassageNameContext,
   IPluginsContext,
   ISoundManagerContext
-{}
+{
+  readonly store: Store<IState>
+}

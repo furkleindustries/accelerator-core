@@ -1,18 +1,18 @@
 import {
   getFootersContext,
-} from '../context/getFootersContext';
+} from '../../context/getFootersContext';
 import {
   getPassagesMapAndStartPassageNameContext,
-} from '../context/getPassagesMapAndStartPassageNameContext';
+} from '../../context/getPassagesMapAndStartPassageNameContext';
 import {
   getPluginsContext,
-} from '../context/getPluginsContext';
+} from '../../context/getPluginsContext';
 import {
   getSoundManagerContext,
-} from '../context/getSoundManagerContext';
+} from '../../context/getSoundManagerContext';
 import {
   getHeadersContext,
-} from '../context/getHeadersContext';
+} from '../../context/getHeadersContext';
 import {
   IPassageContextWrapperDispatchProps,
 } from './IPassageContextWrapperDispatchProps';
@@ -116,7 +116,7 @@ export class PassageContextWrapper extends React.PureComponent<
 
 export const mapDispatchToProps: MapDispatchToProps<
   IPassageContextWrapperDispatchProps,
-  null
+  {}
 > = (dispatch) => ({ dispatch });
 
 export const PassageContextWrapperConnected = connect(
