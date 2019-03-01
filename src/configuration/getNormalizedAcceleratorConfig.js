@@ -1,7 +1,7 @@
 import config from '../../accelerator.config';
 import {
-  defaults,
-} from './defaults';
+  configurationDefaults,
+} from './configurationDefaults';
 import {
   normalizeFont,
 } from '../fonts/normalizeFont';
@@ -16,7 +16,7 @@ export function getNormalizedAcceleratorConfig() {
   }
 
   memoized = {
-    ...defaults,
+    ...configurationDefaults,
     ...config,
   };
 

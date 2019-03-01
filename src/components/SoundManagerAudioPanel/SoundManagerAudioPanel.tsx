@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import {
   getSoundManagerContext,
-} from '../context/getSoundManagerContext';
+} from '../../context/getSoundManagerContext';
 import {
   ISoundManagerAudioPanelOwnProps,
 } from './ISoundManagerAudioPanelOwnProps';

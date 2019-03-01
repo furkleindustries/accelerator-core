@@ -15,7 +15,7 @@ import {
 } from 'react';
 
 export interface IPassageRenderer {
-  readonly config: Omit<IAcceleratorConfigNormalized, 'renderer'>;
-  readonly context: IContext;
+  readonly config: Omit<IAcceleratorConfigNormalized, 'pathToRenderer'>;
+  readonly context: Omit<IContext, 'renderer'>;
   render(...args: any[]): ReactElement<IPassageProps>;
 }

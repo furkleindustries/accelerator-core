@@ -1,5 +1,8 @@
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import {
+  getAllCompiledCodeDirectories,
+} from './getAllCompiledCodeDirectories';
+import {
   paths,
 } from '../paths';
 import resolve from 'resolve';
@@ -34,14 +37,7 @@ export function getForkTsChecker() {
       '!src/setupTests.*',
     ],
 
-    watch: [
-      paths.appSrc,
-      paths.passagesSrc,
-      paths.headersSrc,
-      paths.footersSrc,
-      paths.pluginsSrc,
-    ],
-  
+    watch: getAllCompiledCodeDirectories(),
     silent: true,
     formatter: typescriptFormatter,
   });

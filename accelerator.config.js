@@ -1,10 +1,10 @@
 /** @see {@link https://github.com/furkleindustries/accelerator-core/tree/master/accelerator.config.d.ts} */
 
 import { ActionTypes } from './src/actions/ActionTypes';
+import { BuiltInRenderers } from './src/renderers/BuiltInRenderers';
 import { FontFormats } from './src/fonts/FontFormats';
 import { FontRanges } from './src/fonts/FontRanges';
 import { FontStyles } from './src/fonts/FontStyles';
-import { SinglePassageRenderer } from './src/renderers/SinglePassageRenderer';
 
 export default {
   /**
@@ -32,21 +32,17 @@ export default {
   debug: true,
 
   /**
-   * @property {boolean}
-   * This determines whether the loading screen is shown when the story is
-   * first opened.
+   * @property {BuiltInRenderers | string}
+   * The filename of the renderer. The corresponding file must be within
+   * renderers/.
+   * 
+   * The renderer transforms context, state, and passage objects into React
+   * elements shown to the user. This property defaults to a simple,
+   * Twine-style single-passage-display rendering style. You may replace this
+   * if you want a story to appear with an Ink or Twine 1 Jonah-style rendering
+   * behavior, or something more exotic. 
    */
-  showLoadingScreen: true,
-
-  /**
-   * @property {IPassageRenderer}
-   * Transforms context, state, and passage objects into React elements shown
-   * to the user. Defaults to a simple, Twine-style single-passage-display
-   * rendering style. This is what you'd want to replace if you wanted to a
-   * story to appear with an Ink or Twine 1 Jonah-style rendering behavior, or
-   * something more exotic.
-   */
-  renderer: SinglePassageRenderer,
+  rendererName: BuiltInRenderers.SinglePassageRenderer,
 
   /**
    * @property {Array<string | IFontLoadingDetails>}

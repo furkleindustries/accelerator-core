@@ -3,10 +3,10 @@ import {
 } from '../CyclingLinkInternal/CyclingLinkInternal';
 import {
   getPassagesMapAndStartPassageNameContext,
-} from '../context/getPassagesMapAndStartPassageNameContext';
+} from '../../context/getPassagesMapAndStartPassageNameContext';
 import {
   getPluginsContext,
-} from '../context/getPluginsContext';
+} from '../../context/getPluginsContext';
 import {
   ICyclingLinkOwnProps,
 } from './ICyclingLinkOwnProps';

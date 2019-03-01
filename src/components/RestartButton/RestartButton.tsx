@@ -3,13 +3,10 @@ import {
 } from '../Button/Button';
 import {
   getPassagesMapAndStartPassageNameContext,
-} from '../context/getPassagesMapAndStartPassageNameContext';
+} from '../../context/getPassagesMapAndStartPassageNameContext';
 import {
   getPluginsContext,
-} from '../context/getPluginsContext';
-import {
-  IButtonOwnProps,
-} from '../Button/IButtonOwnProps';
+} from '../../context/getPluginsContext';
 import {
   IPassagesMap,
 } from '../../passages/IPassagesMap';

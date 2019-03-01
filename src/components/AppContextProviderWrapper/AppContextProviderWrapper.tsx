@@ -1,4 +1,7 @@
 import {
+  createManager,
+} from 'sound-manager';
+import {
   getFootersContext,
 } from '../../context/getFootersContext';
 import {
@@ -10,6 +13,12 @@ import {
 import {
   getHeadersList,
 } from '../../passages/getHeadersList';
+import {
+  getPassageRenderer,
+} from '../../renderers/getPassageRenderer';
+import {
+  getPassageRendererConstructorContext,
+} from '../../context/getPassageRendererConstructorContext';
 import {
   getPluginsContext,
 } from '../../context/getPluginsContext';
@@ -34,6 +43,10 @@ import * as React from 'react';
 const { Provider: FootersContextProvider } = getFootersContext();
 const { Provider: HeadersContextProvider } = getHeadersContext();
 const {
+  Provider: PassageRendererProvider,
+} = getPassageRendererConstructorContext();
+
+const {
   Provider: PassagesMapAndStartPassageNameProvider,
 } = getPassagesMapAndStartPassageNameContext();
 
@@ -42,24 +55,27 @@ const { Provider: SoundManagerProvider } = getSoundManagerContext();
 
 const footers = getFootersList();
 const headers = getHeadersList();
+const PassageRendererConstructor = getPassageRenderer();
 const passagesMapAndStartPassageName = getPassagesMapAndStartPassageName();
 const plugins = getPluginsList();
+const soundManager = createManager();
 
 export const AppContextProviderWrapper: React.FunctionComponent<IAppContextProviderWrapperOwnProps> = ({
   children,
-  soundManager,
 }) => (
   <FootersContextProvider value={{ footers }}>
     <HeadersContextProvider value={{ headers }}>
-      <PassagesMapAndStartPassageNameProvider
-        value={passagesMapAndStartPassageName}
-      >
-        <PluginsContextProvider value={{ plugins }}>
-          <SoundManagerProvider value={{ soundManager }}>
-            {children}
-          </SoundManagerProvider>
-        </PluginsContextProvider>
-      </PassagesMapAndStartPassageNameProvider>
+      <PassageRendererProvider value={{ PassageRendererConstructor }}>
+        <PassagesMapAndStartPassageNameProvider
+          value={passagesMapAndStartPassageName}
+        >
+          <PluginsContextProvider value={{ plugins }}>
+            <SoundManagerProvider value={{ soundManager }}>
+              {children}
+            </SoundManagerProvider>
+          </PluginsContextProvider>
+        </PassagesMapAndStartPassageNameProvider>
+      </PassageRendererProvider>
     </HeadersContextProvider>
   </FootersContextProvider>
 );

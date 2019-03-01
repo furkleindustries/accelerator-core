@@ -11,6 +11,9 @@ import {
   IPluginsContext,
 } from './IPluginsContext';
 import {
+  IPassageRendererConstructorContext,
+} from './IPassageRendererConstructorContext';
+import {
   ISoundManagerContext,
 } from './ISoundManagerContext';
 import {
@@ -23,9 +26,10 @@ import {
 export interface IContext extends
   IFootersContext,
   IHeadersContext,
+  IPassageRendererConstructorContext,
   IPassagesMapAndStartPassageNameContext,
   IPluginsContext,
   ISoundManagerContext
 {
-  readonly store: Store<IState>
+  readonly store: Store<IState>;
 }

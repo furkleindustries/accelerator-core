@@ -1,6 +1,6 @@
 import {
   getSoundManagerContext,
-} from '../context/getSoundManagerContext';
+} from '../../context/getSoundManagerContext';
 import {
   HistoryFilter,
 } from '../../reducers/IHistoryFilter';

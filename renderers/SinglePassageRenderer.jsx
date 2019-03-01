@@ -1,6 +1,20 @@
 import {
+  navigate,
+} from '../src/state/navigate';
+import {
+  Passage,
+} from '../src/components/Passage/Passage';
+import {
+  assert,
   assertValid,
 } from 'ts-assertions';
+
+import * as React from 'react';
+
+export const strings = {
+  PASSAGE_NOT_FOUND:
+    'No passage named %NAME% could be found within the passages map.',
+};
 
 export class SinglePassageRenderer {
   config = null;
@@ -30,7 +44,7 @@ export class SinglePassageRenderer {
 
     assert(
       passage,
-      strings.PASSAGE_NOT_FOUND,
+      strings.PASSAGE_NOT_FOUND.replace(/%name%/gi, passageName),
     );
 
     navigate({

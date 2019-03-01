@@ -21,9 +21,11 @@ import {
 } from '../../context/getSoundManagerContext';
 
 import * as React from 'react';
+import { getPassageRendererConstructorContext } from '../../context/getPassageRendererConstructorContext';
 
 const { Consumer: FootersConsumer } = getFootersContext();
 const { Consumer: HeadersConsumer } = getHeadersContext();
+const { Consumer: PassageRendererConstructorConsumer } = getPassageRendererConstructorContext();
 const {
   Consumer: PassagesMapAndStartPassageNameConsumer,
 } = getPassagesMapAndStartPassageNameContext();
@@ -33,12 +35,12 @@ const { Consumer: ReactReduxConsumer } = getReactReduxContext();
 const { Consumer: SoundManagerConsumer } = getSoundManagerContext();
 
 export const AppContextConsumerWrapper: React.FunctionComponent<IAppContextConsumerWrapperOwnProps> = ({ children }) => (
-  <ReactReduxConsumer>
-    {({ store }) => (
-      <FootersConsumer>
-        {({ footers }) => (
-          <HeadersConsumer>
-            {({ headers }) => (
+  <FootersConsumer>
+    {({ footers }) => (
+      <HeadersConsumer>
+        {({ headers }) => (
+          <PassageRendererConstructorConsumer>
+            {({ PassageRendererConstructor }) => (
               <PassagesMapAndStartPassageNameConsumer>
                 {({
                   passagesMap,
@@ -46,25 +48,30 @@ export const AppContextConsumerWrapper: React.FunctionComponent<IAppContextConsu
                 }) => (
                   <PluginsConsumer>
                     {({ plugins }) => (
-                      <SoundManagerConsumer>
-                        {({ soundManager }) => !children || children({
-                          footers,
-                          headers,
-                          passagesMap,
-                          plugins,
-                          soundManager,
-                          startPassageName,
-                          store,
-                        })}
-                      </SoundManagerConsumer>
+                      <ReactReduxConsumer>
+                        {({ store }) => (
+                          <SoundManagerConsumer>
+                            {({ soundManager }) => !children || children({
+                              footers,
+                              headers,
+                              PassageRendererConstructor,
+                              passagesMap,
+                              plugins,
+                              soundManager,
+                              startPassageName,
+                              store,
+                            })}
+                          </SoundManagerConsumer>
+                        )}
+                      </ReactReduxConsumer>
                     )}
                   </PluginsConsumer>
                 )}
               </PassagesMapAndStartPassageNameConsumer>
             )}
-          </HeadersConsumer>
+          </PassageRendererConstructorConsumer>
         )}
-      </FootersConsumer>
+      </HeadersConsumer>
     )}
-  </ReactReduxConsumer>
+  </FootersConsumer>
 );

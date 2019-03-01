@@ -3,7 +3,7 @@ import {
 } from '../Button/Button';
 import {
   getPassagesMapAndStartPassageNameContext,
-} from '../context/getPassagesMapAndStartPassageNameContext';
+} from '../../context/getPassagesMapAndStartPassageNameContext';
 import {
   ILinkDispatchProps,
 } from './ILinkDispatchProps';

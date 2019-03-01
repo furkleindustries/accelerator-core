@@ -1,4 +1,7 @@
 import {
+  getAllCompiledCodeDirectories,
+} from './getAllCompiledCodeDirectories';
+import {
   getBabelLoaders,
 } from './getBabelLoaders';
 import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
@@ -6,9 +9,6 @@ import {
   getStyleLoaders,
 } from './getStyleLoaders';
 import * as path from 'path';
-import {
-  paths,
-} from '../paths';
 
 // style files regexes
 const cssNoModuleRegex = /\.nomodule\.css$/;
@@ -47,13 +47,7 @@ export function getModule(mode, publicPath, shouldUseSourceMap) {
           },
         ],
 
-        include: [
-          paths.appSrc,
-          paths.passagesSrc,
-          paths.headersSrc,
-          paths.footersSrc,
-          paths.pluginsSrc,
-        ],
+        include: getAllCompiledCodeDirectories(),
       },
 
       {
