@@ -4,6 +4,7 @@ import { ActionTypes } from './src/actions/ActionTypes';
 import { FontFormats } from './src/fonts/FontFormats';
 import { FontRanges } from './src/fonts/FontRanges';
 import { FontStyles } from './src/fonts/FontStyles';
+import { SinglePassageRenderer } from './src/renderers/SinglePassageRenderer';
 
 export default {
   /**
@@ -36,6 +37,16 @@ export default {
    * first opened.
    */
   showLoadingScreen: true,
+
+  /**
+   * @property {IPassageRenderer}
+   * Transforms context, state, and passage objects into React elements shown
+   * to the user. Defaults to a simple, Twine-style single-passage-display
+   * rendering style. This is what you'd want to replace if you wanted to a
+   * story to appear with an Ink or Twine 1 Jonah-style rendering behavior, or
+   * something more exotic.
+   */
+  renderer: SinglePassageRenderer,
 
   /**
    * @property {Array<string | IFontLoadingDetails>}

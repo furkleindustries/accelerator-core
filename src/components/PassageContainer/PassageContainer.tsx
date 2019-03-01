@@ -3,10 +3,10 @@ import {
 } from '../../actions/creators/createStoryRequiresFullRerenderAction';
 import {
   getPassagesMapAndStartPassageNameContext,
-} from '../context/getPassagesMapAndStartPassageNameContext';
+} from '../../context/getPassagesMapAndStartPassageNameContext';
 import {
   getPluginsContext,
-} from '../context/getPluginsContext';
+} from '../../context/getPluginsContext';
 import {
   IPassageContainerDispatchProps,
 } from './IPassageContainerDispatchProps';
@@ -17,11 +17,11 @@ import {
   IState,
 } from '../../state/IState';
 import {
-  PassageContextWrapperConnected,
-} from '../PassageContextWrapper/PassageContextWrapper';
-import {
   PassagePluginsWrapperConnected,
 } from '../PassagePluginsWrapper/PassagePluginsWrapper';
+import {
+  PassageRendererWrapper,
+} from '../PassageRendererWrapper/PassageRendererWrapper';
 import {
   connect,
   MapDispatchToProps,
@@ -33,18 +33,18 @@ import * as React from 'react';
 import styles from './PassageContainer.scss';
 
 const {
-  Consumer: PassagesMapAndStartPassageNameContextConsumer,
+  Consumer: PassagesMapAndStartPassageNameConsumer,
 } = getPassagesMapAndStartPassageNameContext();
-const { Consumer: PluginsContextConsumer } = getPluginsContext();
+const { Consumer: PluginsConsumer } = getPluginsContext();
 
 export class PassageContainer extends React.PureComponent<IPassageContainerStateProps & IPassageContainerDispatchProps> {
   public render() {
     const { storyRequiresFullRerender } = this.props;
 
     return (
-      <PassagesMapAndStartPassageNameContextConsumer>
+      <PassagesMapAndStartPassageNameConsumer>
         {({ passagesMap }) => (
-          <PluginsContextConsumer>
+          <PluginsConsumer>
             {({ plugins }) => (
               /* This is very evil! But right now it's the only way I've found
                * that is guaranteed to work, so evil it is. If it's not clear,
@@ -59,13 +59,13 @@ export class PassageContainer extends React.PureComponent<IPassageContainerState
                     passagesMap={passagesMap}
                     plugins={plugins}
                   >
-                    <PassageContextWrapperConnected />
+                    <PassageRendererWrapper />
                   </PassagePluginsWrapperConnected>
                 </div>
             )}
-          </PluginsContextConsumer>
+          </PluginsConsumer>
         )}
-      </PassagesMapAndStartPassageNameContextConsumer>
+      </PassagesMapAndStartPassageNameConsumer>
     );
   }
 
