@@ -7,6 +7,9 @@ import {
   Toolbar,
 } from '../../bundles/componentsBundle';
 import {
+  getNormalizedAcceleratorConfig,
+} from '../../src/configuration/getNormalizedAcceleratorConfig';
+import {
   IMenuState,
 } from './IMenuState';
 import {
@@ -22,11 +25,26 @@ import * as React from 'react';
 import builtInStyles from '../../passages/_global-styles/built-ins.scss';
 import styles from './menu.scss';
 
+const { showMenu } = getNormalizedAcceleratorConfig();
+
 class Menu extends React.PureComponent<IPassageProps, IMenuState> {
   public readonly state: IMenuState = { soundPanelVisible: false };
 
-  public render = () => {
+  public readonly render = () => {
     const { soundPanelVisible } = this.state;
+
+    if (!showMenu) {
+      return null;
+    } else if (typeof showMenu === 'number' &&
+               showMenu >= 1 &&
+               showMenu % 1 === 0)
+    {
+      if (showMenu === 1 && document.querySelector(styles.menu)) {
+        return null;
+      } else if (document.querySelectorAll(styles.menu).length >= showMenu) {
+        return null;
+      }
+    }
 
     return (
       <AppBar
@@ -69,7 +87,7 @@ class Menu extends React.PureComponent<IPassageProps, IMenuState> {
                 includeTitle="Audio Options"
                 open={soundPanelVisible}
               >
-                <SoundManagerAudioPanel className={styles.soundManagerAudioPanel} />
+                <SoundManagerAudioPanel className={``} />
               </Dialog>
             </div>
           </div>
@@ -78,7 +96,7 @@ class Menu extends React.PureComponent<IPassageProps, IMenuState> {
     );
   };
 
-  private toggleSoundPanelVisibility = () => {
+  private readonly toggleSoundPanelVisibility = () => {
     const { soundPanelVisible } = this.state;
     this.setState({ soundPanelVisible: !soundPanelVisible });
   };
@@ -88,8 +106,8 @@ const passage: IHeader = {
   /* string: the name of the header. */
   name: 'menu',
 
-  /* React.ComponentType<IPassageProps>: the content that should be displayed.
-   * Should be formatted in JSX style. */
+  /* React.ComponentType<IPassageProps>: the content that should be
+   * displayed. */
   contents: Menu,
 };
 

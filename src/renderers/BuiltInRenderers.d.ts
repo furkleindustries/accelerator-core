@@ -1,3 +1,4 @@
 export enum BuiltInRenderers {
-  SinglePassageRenderer = 'SinglePassageRenderer',  
+  SinglePassageRenderer = 'SinglePassageRenderer',
+  ScrollRenderer = 'ScrollRenderer',
 }

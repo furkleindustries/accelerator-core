@@ -42,7 +42,15 @@ export default {
    * if you want a story to appear with an Ink or Twine 1 Jonah-style rendering
    * behavior, or something more exotic. 
    */
-  rendererName: BuiltInRenderers.SinglePassageRenderer,
+  rendererName: BuiltInRenderers.ScrollRenderer,
+
+  /**
+   * @property {boolean | number}
+   * Determines whether the menu is shown, or the max times it should be
+   * rendered to the document. Consider setting this to `false` or `1` if you
+   * use a scroll-style passage renderer.
+   */
+  showMenu: true,
 
   /**
    * @property {Array<string | IFontLoadingDetails>}

@@ -5,6 +5,9 @@ import {
   getNormalizedAcceleratorConfig,
 } from '../../configuration/getNormalizedAcceleratorConfig';
 import {
+  IPassageRenderer,
+} from '../../renderers/IPassageRenderer';
+import {
   IPassageRendererWrapperOwnProps,
 } from './IPassageRendererWrapperOwnProps';
 
@@ -15,16 +18,22 @@ const {
   ...configWithoutRendererName
 } = getNormalizedAcceleratorConfig();
 
+let renderer: IPassageRenderer;
+
 export const PassageRendererWrapper: React.FunctionComponent<IPassageRendererWrapperOwnProps> = () => (
   <AppContextConsumerWrapper>
     {({
       PassageRendererConstructor,
       ...contextWithoutRenderer
-    }) => (
-      new PassageRendererConstructor(
-        configWithoutRendererName,
-        contextWithoutRenderer,
-      ).render()
-    )}
+    }) => {
+      if (!renderer) {
+        renderer = new PassageRendererConstructor(
+          configWithoutRendererName,
+          contextWithoutRenderer,
+        );
+      }
+
+      return renderer.render();
+    }}
   </AppContextConsumerWrapper>
 );

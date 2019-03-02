@@ -1,4 +1,7 @@
 import {
+  IAction,
+} from '../actions/IAction';
+import {
   IFootersContext,
 } from './IFootersContext';
 import {
@@ -31,5 +34,5 @@ export interface IContext extends
   IPluginsContext,
   ISoundManagerContext
 {
-  readonly store: Store<IState>;
+  readonly store: Store<IState, IAction>;
 }

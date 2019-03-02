@@ -19,6 +19,7 @@ export interface IAcceleratorConfig {
   readonly historySynchronizeUnrewindableStateWithPresent: boolean;
   readonly publicUrl: string;
   readonly rendererName: BuiltInRenderers | string;
+  readonly showMenu: boolean | number;
   readonly storyDescription: string;
   readonly storyTitle: string;
   readonly fontsToLoad?: Array<IFontLoadingDetails | string>;

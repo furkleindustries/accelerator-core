@@ -1,3 +1,4 @@
+/* Did you remember to change ./ActionTypes.js? */
 export enum ActionTypes {
   Bookmark = 'Bookmark',
   CurrentPassageName = 'CurrentPassageName',

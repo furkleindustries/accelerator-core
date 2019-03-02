@@ -18,6 +18,7 @@ export const configurationDefaults = Object.freeze({
   /* This path must be relative to the config, not the defaults file. */
   publicUrl: '.',
   rendererName: BuiltInRenderers.SinglePassageRenderer,
+  showMenu: true,
   storyDescription:
     'A story created with the Accelerator hypertext fiction framework ' +
     '(https://github.com/furkleindustries/accelerator-core).',

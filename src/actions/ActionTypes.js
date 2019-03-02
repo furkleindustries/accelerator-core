@@ -1,3 +1,4 @@
+/* Did you remember to change ./ActionTypes.d.ts? */
 export const ActionTypes = {
   Bookmark: 'Bookmark',
   CurrentPassageName: 'CurrentPassageName',
