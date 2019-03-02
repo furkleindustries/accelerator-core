@@ -51,10 +51,14 @@ export class ScrollRenderer implements IPassageRenderer {
       context,
     );
 
+    debugger;
     this.context.store.subscribe(this.subscription);
   }
 
   public readonly render = () => {
+    debugger;
+    const ref = React.createRef<HTMLSpanElement>();
+
     this.elementBuffer.push(
       <Passage
         footers={this.context.footers}
@@ -62,9 +66,12 @@ export class ScrollRenderer implements IPassageRenderer {
         passagesMap={this.context.passagesMap}
         plugins={this.context.plugins}
         navigateTo={this.navigateTo}
+        ref={ref}
         soundManager={this.context.soundManager}
       />,
     );
+
+    ref.current!.scrollTo();
 
     this.elementBuffer = this.maintainBuffer(this.elementBuffer);
     return this.elementBuffer;

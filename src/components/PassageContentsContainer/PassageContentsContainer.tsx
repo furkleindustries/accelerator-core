@@ -178,8 +178,11 @@ export const mapStateToProps: MapStateToProps<
       lastLinkTags,
     },
   },
-}, { passagesMap: { [passageName]: passageObject } }) =>
+}, {
+  passagesMap: { [passageName]: passageObject },
+}) =>
 {
+
   assert(passageObject, strings.PASSAGE_NOT_FOUND.replace('%NAME%', name));
   return {
     history,

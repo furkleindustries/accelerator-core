@@ -11,8 +11,7 @@ export function getResolve() {
     // if there are any conflicts. This matches Node resolution mechanism.
     // https://github.com/facebook/create-react-app/issues/253
     modules: [ 'node_modules' ].concat(
-      // It is guaranteed to exist because we tweak it in `../setBaseEnv.js`
-      process.env.NODE_PATH.split(path.delimiter).filter(Boolean),
+      (process.env.NODE_PATH || '').split(path.delimiter).filter(Boolean),
     ),
 
     // This allows esnext, ES module files to be consumed from the `esnext`

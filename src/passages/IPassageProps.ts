@@ -14,6 +14,9 @@ import {
   IStoryStateFrame,
 } from '../state/IStoryStateFrame';
 import {
+  Ref,
+} from 'react';
+import {
   Dispatch,
 } from 'redux';
 import {
@@ -26,6 +29,7 @@ export interface IPassageProps {
   readonly passageObject: IPassage;
   readonly soundManager: IManager;
   readonly storyState: IStoryStateFrame;
+  readonly ref?: Ref<Element>;
   bookmark(): void;
   navigateTo(passageName: string, tags?: Readonly<Tag[]>): void;
   restart(): void;

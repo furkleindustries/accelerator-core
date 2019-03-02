@@ -63,7 +63,11 @@ checkBrowsers(paths.appPath, isInteractive)
     // Start the webpack build
     return build(previousFileSizes);
   }).then(
-    ({ stats, previousFileSizes, warnings }) => {
+    ({
+      stats,
+      previousFileSizes,
+      warnings,
+    }) => {
       if (warnings.length) {
         warn('Compiled with warnings.\n');
         warn(warnings.join('\n\n'));
@@ -72,6 +76,7 @@ checkBrowsers(paths.appPath, isInteractive)
             chalk.underline(chalk.yellow('keywords')) +
             ' to learn more about each warning.'
         );
+
         warn(
           'To ignore, add ' +
             chalk.cyan('// eslint-disable-next-line') +
@@ -104,7 +109,7 @@ checkBrowsers(paths.appPath, isInteractive)
     },
     (err) => {
       error('Failed to compile.\n');
-      printBuildError(err);
+      printBuildError(err ? err.stack || err.message ||  err : err);
       process.exit(1);
     },
   ).catch((err) => {

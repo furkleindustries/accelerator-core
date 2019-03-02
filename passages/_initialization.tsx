@@ -1,7 +1,7 @@
 import { IBeginLoadOptions } from '../src/passages/IBeginLoadOptions';
 import { InitializationHandler } from '../src/passages/InitializationHandler';
 
-//import logo from '../public/logo.svg';
+// import logo from '../public/logo.svg';
 
 /* This file is used for any logic which must execute before the story begins
  * every time it is loaded. This includes loading story saves. Do not use this

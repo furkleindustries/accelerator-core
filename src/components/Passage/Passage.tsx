@@ -19,12 +19,12 @@ import {
 
 import * as React from 'react';
 
-export const Passage: React.FunctionComponent<IPassageOwnProps> = ({
+export const Passage = React.forwardRef<HTMLSpanElement, IPassageOwnProps>(({
   footers,
   headers,
   plugins,
   ...passageProps
-}) => (
+}, ref) => (
   <>
     <SkipToContentLink />
 
@@ -41,6 +41,7 @@ export const Passage: React.FunctionComponent<IPassageOwnProps> = ({
 
     <SkipToContentLinkDestination />
 
+    <span className="scroll" ref={ref}></span>
     <PassageContentsContainerConnected
       plugins={plugins}
       {...passageProps}
@@ -55,4 +56,4 @@ export const Passage: React.FunctionComponent<IPassageOwnProps> = ({
       />
     }
   </>
-);
+));
