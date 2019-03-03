@@ -7,7 +7,7 @@ import {
 
 export interface IStateFrame {
   readonly bookmarkCounter: number;
-  readonly lastLinkTags: Tag[];
+  readonly lastLinkTags: ReadonlyArray<Tag>;
   readonly midrenderSignalCounter: number;
   readonly passageName: string;
   readonly passageTimeCounter: number;

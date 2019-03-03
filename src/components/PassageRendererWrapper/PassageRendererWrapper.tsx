@@ -112,7 +112,7 @@ export class PassageRendererWrapper extends React.PureComponent<
 
   private readonly bookmark = () => doBookmark(this.context.store.dispatch);
 
-  private navigateTo(passageName: string, tags?: Tag[]) {
+  private navigateTo(passageName: string, tags?: ReadonlyArray<Tag>) {
     const { dispatch } = this.props;
 
     const {

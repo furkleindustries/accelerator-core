@@ -8,5 +8,5 @@ import {
 export interface IRestartButtonStateProps {
   readonly passageName: string;
   readonly storyState: IStoryStateFrame;
-  readonly lastLinkTags: Tag[];
+  readonly lastLinkTags: ReadonlyArray<Tag>;
 }

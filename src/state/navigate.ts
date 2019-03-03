@@ -49,7 +49,7 @@ export function navigate({
 }: {
   dispatch: Dispatch<IAction>,
   passage: IPassage,
-  linkTags?: Tag[],
+  linkTags?: ReadonlyArray<Tag>,
 }): IPassageNavigationAction
 {
   assert(passage, strings.PASSAGE_INVALID);

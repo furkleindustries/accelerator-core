@@ -22,7 +22,6 @@ import * as React from 'react';
 export const Passage = React.forwardRef<HTMLSpanElement, IPassageOwnProps>(({
   footers,
   headers,
-  passagesMap,
   ...passageProps
 }, ref) => (
   <>
@@ -36,10 +35,8 @@ export const Passage = React.forwardRef<HTMLSpanElement, IPassageOwnProps>(({
     <SkipToContentLinkDestination />
 
     <span className="scroll" ref={ref}></span>
-    <PassageContentsContainerConnected
-      passagesMap={passagesMap}
-      {...passageProps}
-    />
+
+    <PassageContentsContainerConnected {...passageProps} />
 
     <PassageFootersConnected
       footers={footers}

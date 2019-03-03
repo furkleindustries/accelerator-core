@@ -33,14 +33,39 @@ export class SinglePassageRenderer extends AbstractPassageRenderer {
     super(config, context, passageFuncs);
   }
 
-  public readonly render = () => (
-    <Passage
-      footers={this.context.footers}
-      headers={this.context.headers}
-      passagesMap={this.context.passagesMap}
-      plugins={this.context.plugins}
-      soundManager={this.context.soundManager}
-      {...this.passageFunctions}
-    />
-  );
+  public readonly render = () => {
+    const {
+      footers,
+      headers,
+      passagesMap,
+      soundManager,
+      store: {
+        dispatch,
+        getState,
+      },
+    } = this.context;
+
+    const {
+      history: {
+        present: {
+          lastLinkTags,
+          passageName,
+          storyState,
+        },
+      },
+    } = getState();
+
+    return (
+      <Passage
+        dispatch={dispatch}
+        footers={footers}
+        headers={headers}
+        lastLinkTags={lastLinkTags}
+        passageObject={passagesMap[passageName]}
+        soundManager={soundManager}
+        storyState={storyState}
+        {...this.passageFunctions}
+      />
+    );
+  };
 };

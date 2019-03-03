@@ -2,8 +2,8 @@ import {
   IAction,
 } from '../actions/IAction';
 import {
-  HistoryFilter,
-} from '../reducers/IHistoryFilter';
+  IPassageFunctions,
+} from './IPassageFunctions';
 import {
   IManager,
 } from 'sound-manager';
@@ -14,25 +14,16 @@ import {
   IStoryStateFrame,
 } from '../state/IStoryStateFrame';
 import {
-  Ref,
-} from 'react';
-import {
   Dispatch,
 } from 'redux';
 import {
   Tag,
 } from '../tags/Tag';
 
-export interface IPassageProps {
+export interface IPassageProps extends IPassageFunctions {
   readonly dispatch: Dispatch<IAction>;
-  readonly lastLinkTags: Readonly<Tag[]>;
+  readonly lastLinkTags: ReadonlyArray<Tag>;
   readonly passageObject: IPassage;
   readonly soundManager: IManager;
   readonly storyState: IStoryStateFrame;
-  readonly ref?: Ref<Element>;
-  bookmark(): void;
-  navigateTo(passageName: string, tags?: Readonly<Tag[]>): void;
-  restart(): void;
-  rewind(filter?: HistoryFilter): void;
-  setStoryState(updatedStateProps: Partial<IStoryStateFrame>): void;
 }

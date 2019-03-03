@@ -47,12 +47,20 @@ export class ScrollRenderer extends AbstractPassageRenderer {
       headers,
       passagesMap,
       soundManager,
-      store: { getState },
+      store: {
+        dispatch,
+        getState,
+      },
     } = this.context;
 
     const {
       history: {
-        present: { passageTimeCounter },
+        present: {
+          lastLinkTags,
+          passageTimeCounter,
+          storyState,
+          passageName,
+        },
       },
     } = getState();
 
@@ -64,17 +72,19 @@ export class ScrollRenderer extends AbstractPassageRenderer {
 
     this.elementBuffer.push(
       <Passage
+        dispatch={dispatch}
         footers={footers}
         headers={headers}
         key={this.elementBuffer.length}
-        passagesMap={passagesMap}
+        lastLinkTags={lastLinkTags}
+        passageObject={passagesMap[passageName]}
         ref={ref}
         soundManager={soundManager}
+        storyState={storyState}
         {...this.passageFunctions}
       />,
     );
 
-    debugger;
     this.elementBuffer = this.maintainBuffer(this.elementBuffer);
 
     this.lastPassageTime = passageTimeCounter;
@@ -101,7 +111,8 @@ export class ScrollRenderer extends AbstractPassageRenderer {
 
   private readonly scrollToNewPassage = (ref: React.RefObject<HTMLSpanElement>) => {
     if (ref.current) {
-      window.scrollTo({ top: ref.current.clientTop });
+      window.scrollTo({ top: ref.current.offsetTop });
+      ref.current.focus();
     } else {
       warn('The ref has not been added and the passage cannot be scrolled.');
     }

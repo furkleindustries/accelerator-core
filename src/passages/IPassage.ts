@@ -12,5 +12,5 @@ export interface IPassage {
   readonly contents: ComponentType<IPassageProps>;
   readonly name: string;
   readonly title?: string;
-  readonly tags?: Tag[];
+  readonly tags?: ReadonlyArray<Tag>;
 }

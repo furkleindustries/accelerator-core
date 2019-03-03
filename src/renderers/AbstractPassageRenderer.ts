@@ -47,5 +47,5 @@ export abstract class AbstractPassageRenderer implements IPassageRenderer {
     );
   }
 
-  abstract render(): ReactElement<IPassageProps> | ReactFragment;
+  abstract render(...args: any[]): ReactElement<IPassageProps> | ReactFragment;
 }

@@ -13,7 +13,7 @@ import {
 
 export function createPassageNavigationAction(
   passage: IPassage,
-  linkTags: Tag[] = [],
+  linkTags: ReadonlyArray<Tag> = [],
 ): IPassageNavigationAction {
   return Object.freeze({
     type: ActionTypes.PassageNavigation,

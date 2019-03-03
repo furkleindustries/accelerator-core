@@ -10,7 +10,7 @@ import {
 
 export interface IPassageFunctions {
   bookmark(): void,
-  navigateTo(passageName: string, linkTags?: Tag[]): void,
+  navigateTo(passageName: string, linkTags?: ReadonlyArray<Tag>): void,
   restart(): void,
   rewind(filter?: HistoryFilter): void,
   setStoryState(updatedStoryState: Partial<IStateFrame>): void,

@@ -3,6 +3,6 @@ import {
 } from '../../tags/Tag';
 
 export interface IPassagePluginsWrapperStateProps {
-  readonly lastLinkTags: Tag[];
+  readonly lastLinkTags: ReadonlyArray<Tag>;
   readonly passageName: string;
 }
