@@ -21,7 +21,7 @@ class Footer extends React.PureComponent {
 
     return (
       <footer
-        className={`${styles.%name%} ${builtInStyles.footer} footer`}
+        className={`${styles['%name%']} ${builtInStyles.footer} footer`}
       >
       </footer>
     );

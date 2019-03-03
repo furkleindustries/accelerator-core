@@ -103,7 +103,6 @@ class Menu extends React.PureComponent<IPassageProps, IMenuState> {
   };
 
   private readonly shouldBeRendered = () => {
-    debugger;
     if (!showMenu) {
       return null;
     } else if (typeof showMenu === 'number' &&

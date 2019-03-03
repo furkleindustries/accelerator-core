@@ -22,7 +22,7 @@ class Header extends React.PureComponent<passages.IPassageProps> {
 
     return (
       <div
-        className={`${styles.%name%} ${builtInStyles.header} header`}
+        className={`${styles['%name%']} ${builtInStyles.header} header`}
       >
       </div>
     );

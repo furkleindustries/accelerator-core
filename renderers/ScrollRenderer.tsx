@@ -1,12 +1,18 @@
 import {
+  AbstractPassageRenderer,
+} from '../src/renderers/AbstractPassageRenderer';
+import {
+  warn,
+} from 'colorful-logging';
+import {
   IAcceleratorConfigNormalized,
 } from '../src/configuration/IAcceleratorConfigNormalized';
 import {
   IContext,
 } from '../src/context/IContext';
 import {
-  IPassageRenderer,
-} from '../src/renderers/IPassageRenderer';
+  IPassageFunctions,
+} from '../src/passages/IPassageFunctions';
 import {
   Passage,
 } from '../src/components/Passage/Passage';
@@ -16,43 +22,20 @@ import {
 import {
   ReactNodeWithoutNullOrUndefined,
 } from '../src/typeAliases/ReactNodeWithoutNullOrUndefined';
-import {
-  Tag,
-} from '../src/tags/Tag';
-import {
-  assertValid,
-} from 'ts-assertions';
 
 import * as React from 'react';
-import { warn } from 'colorful-logging';
 
-export class ScrollRenderer implements IPassageRenderer {
-  public readonly config: Omit<IAcceleratorConfigNormalized, 'rendererName'>;
-  public readonly context: Omit<IContext, 'PassageRendererConstructor'>;
-  public readonly navigateTo: (passageName: string, tags?: Tag[]) => void;
-  public elementBuffer: ReactNodeWithoutNullOrUndefined[] = [];
+export class ScrollRenderer extends AbstractPassageRenderer {
+  private elementBuffer: ReactNodeWithoutNullOrUndefined[] = [];
 
   private lastPassageTime: number;
 
   constructor(
     config: Omit<IAcceleratorConfigNormalized, 'rendererName'>,
     context: Omit<IContext, 'PassageRendererConstructor'>,
-    navigateTo: (passageName: string, tags?: Tag[]) => void,
+    passageFuncs: IPassageFunctions,
   ) {
-    this.config = assertValid(
-      config,
-    );
-
-    this.context = assertValid(
-      context,
-    );
-
-    this.navigateTo = assertValid(
-      navigateTo,
-      '',
-      (func) => typeof func === 'function',
-    );
-
+    super(config, context, passageFuncs);
     this.context.store.subscribe(this.subscription);
   }
 
@@ -63,7 +46,6 @@ export class ScrollRenderer implements IPassageRenderer {
       footers,
       headers,
       passagesMap,
-      plugins,
       soundManager,
       store: { getState },
     } = this.context;
@@ -86,13 +68,13 @@ export class ScrollRenderer implements IPassageRenderer {
         headers={headers}
         key={this.elementBuffer.length}
         passagesMap={passagesMap}
-        plugins={plugins}
-        navigateTo={this.navigateTo}
         ref={ref}
         soundManager={soundManager}
+        {...this.passageFunctions}
       />,
     );
 
+    debugger;
     this.elementBuffer = this.maintainBuffer(this.elementBuffer);
 
     this.lastPassageTime = passageTimeCounter;
@@ -119,9 +101,9 @@ export class ScrollRenderer implements IPassageRenderer {
 
   private readonly scrollToNewPassage = (ref: React.RefObject<HTMLSpanElement>) => {
     if (ref.current) {
-      ref.current.scrollTo();
+      window.scrollTo({ top: ref.current.clientTop });
     } else {
       warn('The ref has not been added and the passage cannot be scrolled.');
     }
-  }
+  };
 }

@@ -38,12 +38,7 @@ export class LinkUnconnected extends React.PureComponent<
 {
   public static contextType = getPassagesMapAndStartPassageNameContext();
 
-  constructor(props: any) {
-    super(props);
-    this.doNavigation = this.doNavigation.bind(this);
-  }
-
-  public render() {
+  public render = () => {
     const {
       children,
       className,
@@ -59,7 +54,7 @@ export class LinkUnconnected extends React.PureComponent<
     );
   }
 
-  private doNavigation() {
+  private doNavigation = () => {
     const {
       dispatch,
       passageName,
@@ -80,7 +75,7 @@ export class LinkUnconnected extends React.PureComponent<
       passage,
       linkTags,
     });
-  }
+  };
 }
 
 export const mapDispatchToProps: MapDispatchToProps<

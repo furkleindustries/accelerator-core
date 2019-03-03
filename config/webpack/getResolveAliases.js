@@ -1,5 +1,5 @@
 export function getResolveAliases() {
   return {
-    'react-dom': '@hot-loader/react-dom',
+    'react-dom': require.resolve('@hot-loader/react-dom'),
   };
 }

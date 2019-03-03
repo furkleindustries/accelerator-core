@@ -23,7 +23,7 @@ class Passage extends React.PureComponent<passages.IPassageProps> {
 
     return (
       <div
-        className={`${styles.%name%} ${builtInStyles.passage} passage`}
+        className={`${styles['%name%']} ${builtInStyles.passage} passage`}
       >
       </div>
     );

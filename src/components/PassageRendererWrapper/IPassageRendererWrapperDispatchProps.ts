@@ -5,6 +5,6 @@ import {
   Dispatch,
 } from 'redux';
 
-export interface IPassageContentsContainerDispatchProps {
+export interface IPassageRendererWrapperDispatchProps {
   readonly dispatch: Dispatch<IAction>;
 }

@@ -21,7 +21,7 @@ class Header extends React.PureComponent {
 
     return (
       <div
-        className={`${styles.%name%} ${builtInStyles.header} header`}
+        className={`${styles['%name%']} ${builtInStyles.header} header`}
       >
       </div>
     );

@@ -52,7 +52,6 @@ export function navigate({
   linkTags?: Tag[],
 }): IPassageNavigationAction
 {
-
   assert(passage, strings.PASSAGE_INVALID);
 
   assert(

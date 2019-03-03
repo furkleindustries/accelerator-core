@@ -1,10 +1,4 @@
 import {
-  getSoundManagerContext,
-} from '../../context/getSoundManagerContext';
-import {
-  HistoryFilter,
-} from '../../reducers/IHistoryFilter';
-import {
   IHeader,
 } from '../../passages/IHeader';
 import {
@@ -17,14 +11,10 @@ import {
   IPassageContentsContainerOwnProps,
 } from '../PassageContentsContainer/IPassageContentsContainerOwnProps';
 import {
-  IPassageContentsContainerStateProps,
-} from '../PassageContentsContainer/IPassageContentsContainerStateProps';
-import {
-  mutateCurrentStoryStateInstanceWithPluginExecution,
-} from '../../state/mutateCurrentStoryStateInstanceWithPluginExecution';
+  Omit,
+} from '../../typeAliases/Omit';
 import {
   mapDispatchToProps,
-  mapStateToProps,
 } from '../PassageContentsContainer/PassageContentsContainer';
 import {
   connect,
@@ -42,50 +32,16 @@ export const strings = {
     'There was no contents property found in the header with name %NAME%.',
 };
 
-export class PassageHeaders extends React.PureComponent<
+export const PassageHeaders: React.FunctionComponent<
   { headers: IHeader[] } &
-  IPassageContentsContainerOwnProps &
-  IPassageContentsContainerStateProps &
+  Omit<IPassageContentsContainerOwnProps, 'passagesMap'> &
   IPassageContentsContainerDispatchProps
-> {
-  public static contextType = getSoundManagerContext();
-
-  public render = () => {
-    const {
-      bookmark,
-      dispatch,
-      headers,
-      history,
-      lastLinkTags,
-      navigateTo,
-      passageObject,
-      plugins,
-      soundManager,
-      storyState,
-    } = this.props;
-
-    const propsPassedDown: IPassageProps = {
-      bookmark,
-      dispatch,
-      lastLinkTags,
-      navigateTo,
-      passageObject,
-      soundManager,
-      storyState,
-      restart: this.restart,
-      rewind: this.rewind,
-      setStoryState(updatedStateProps) {
-        mutateCurrentStoryStateInstanceWithPluginExecution({
-          dispatch,
-          history,
-          passageObject,
-          plugins,
-          updatedStateProps,
-        });
-      },
-    };
-
-    const headerComponents = headers.map(({ contents }, index) => {
+> = ({
+  headers,
+  ...passageProps
+}) => (
+  <div className={styles.passageHeaders}>
+    {headers.map(({ contents }, index) => {
       const SafeContents = assertValid<React.ComponentType<IPassageProps>>(
         contents,
         strings.COMPONENT_CONSTRUCTOR_NOT_FOUND,
@@ -94,43 +50,14 @@ export class PassageHeaders extends React.PureComponent<
       return (
         <SafeContents
           key={index}
-          {...propsPassedDown}
+          {...passageProps}
         />
       );
-    });
-
-    return (
-      <div className={styles.passageHeaders}>
-        {headerComponents}
-      </div>
-    );
-  };
-
-  private restart = () => {
-    const {
-      lastLinkTags,
-      restart,
-      passageObject: currentPassageObject,
-      storyState: currentStoryState,
-    } = this.props;
-
-    restart(currentPassageObject, currentStoryState, lastLinkTags);
-  };
-
-  private rewind = (filter?: HistoryFilter) => {
-    const {
-      rewind,
-      history: {
-        present,
-        past,
-      },
-    } = this.props;
-
-    rewind(present, past, filter);
-  };
-}
+    })}
+  </div>
+);
 
 export const PassageHeadersConnected = connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(PassageHeaders);

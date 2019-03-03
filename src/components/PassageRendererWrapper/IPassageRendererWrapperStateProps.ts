@@ -5,15 +5,15 @@ import {
   IPassage,
 } from '../../passages/IPassage';
 import {
-  IStoryStateFrame,
-} from '../../state/IStoryStateFrame';
+  IStateFrame,
+} from '../../state/IStateFrame';
 import {
   Tag,
 } from '../../tags/Tag';
 
-export interface IPassageContentsContainerStateProps {
-  readonly lastLinkTags: Tag[];
+export interface IPassageRendererWrapperStateProps {
   readonly history: IHistory;
+  readonly lastLinkTags: Tag[];
   readonly passageObject: IPassage;
-  readonly storyState: IStoryStateFrame;
+  readonly storyState: IStateFrame;
 }

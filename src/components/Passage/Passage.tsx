@@ -22,38 +22,28 @@ import * as React from 'react';
 export const Passage = React.forwardRef<HTMLSpanElement, IPassageOwnProps>(({
   footers,
   headers,
-  plugins,
+  passagesMap,
   ...passageProps
 }, ref) => (
   <>
     <SkipToContentLink />
 
-    {
-      /* Weird bug where react-redux is arguing with the types
-        * since the last major version. Remember to file against
-        * https://github.com/reduxjs/react-redux */
-      // @ts-ignore
-      <PassageHeadersConnected
-        headers={headers}
-        {...passageProps}
-      />
-    }
+    <PassageHeadersConnected
+      headers={headers}
+      {...passageProps}
+    />
 
     <SkipToContentLinkDestination />
 
     <span className="scroll" ref={ref}></span>
     <PassageContentsContainerConnected
-      plugins={plugins}
+      passagesMap={passagesMap}
       {...passageProps}
     />
 
-    {
-      /* See above re: react-redux bug. */
-      // @ts-ignore
-      <PassageFootersConnected
-        footers={footers}
-        {...passageProps}
-      />
-    }
+    <PassageFootersConnected
+      footers={footers}
+      {...passageProps}
+    />
   </>
 ));

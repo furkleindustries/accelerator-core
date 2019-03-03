@@ -5,8 +5,8 @@ import {
   getPassagesMapAndStartPassageName,
 } from '../passages/getPassagesMapAndStartPassageName';
 import {
-  ICurrentPassageNameAction,
-} from '../actions/ICurrentPassageNameAction';
+  IPassageNavigationAction,
+} from '../actions/IPassageNavigationAction';
 import {
   IStoryResetAction,
 } from '../actions/IStoryResetAction';
@@ -24,11 +24,11 @@ assert(startPassageName, strings.NO_START_PASSAGE_NAME);
 
 export function passageNameReducer(
   previousState: string = startPassageName,
-  action: ICurrentPassageNameAction | IStoryResetAction,
+  action: IPassageNavigationAction | IStoryResetAction,
 ): string
 {
-  if (action.type === ActionTypes.CurrentPassageName) {
-    return action.value;
+  if (action.type === ActionTypes.PassageNavigation) {
+    return action.value.passage.name;
   } else if (action.type === ActionTypes.StoryReset) {
     return startPassageName;
   }
