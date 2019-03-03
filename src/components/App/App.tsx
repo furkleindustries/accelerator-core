@@ -9,22 +9,16 @@ import {
 } from '../PassageContainer/PassageContainer';
 import {
   hot,
-} from 'react-hot-loader';
+} from 'react-hot-loader/root';
 
 import * as React from 'react';
 
-export class App extends React.PureComponent {
-  public render() {
-    return (
-      <>
-        <AppJssProvider>
-          <AppContextProviderWrapper>
-            <PassageContainerConnected />
-          </AppContextProviderWrapper>
-        </AppJssProvider>
-      </>
-    );
-  }
-}
+export const App: React.FunctionComponent = () => (
+  <AppJssProvider>
+    <AppContextProviderWrapper>
+      <PassageContainerConnected />
+    </AppContextProviderWrapper>
+  </AppJssProvider>
+);
 
-export default hot(module)(App);
+export default hot(App);

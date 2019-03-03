@@ -1,3 +1,6 @@
+import {
+  getResolveAliases,
+} from './getResolveAliases';
 import * as path from 'path';
 import {
   paths,
@@ -29,7 +32,7 @@ export function getResolve() {
     // https://github.com/facebook/create-react-app/issues/290
     extensions: paths.moduleFileExtensions.map((ext) => `.${ext}`),
 
-    alias: {},
+    alias: getResolveAliases(),
 
     plugins: [
       // Adds support for installing with Plug'n'Play, leading to faster installs and adding

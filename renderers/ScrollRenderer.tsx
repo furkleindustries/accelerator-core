@@ -8,9 +8,6 @@ import {
   IPassageRenderer,
 } from '../src/renderers/IPassageRenderer';
 import {
-  navigate,
-} from '../src/state/navigate';
-import {
   Passage,
 } from '../src/components/Passage/Passage';
 import {
@@ -23,25 +20,24 @@ import {
   Tag,
 } from '../src/tags/Tag';
 import {
-  assert,
   assertValid,
 } from 'ts-assertions';
 
 import * as React from 'react';
-
-export const strings = {
-  PASSAGE_NOT_FOUND:
-    'No passage named %NAME% could be found within the passages map.',
-};
+import { warn } from 'colorful-logging';
 
 export class ScrollRenderer implements IPassageRenderer {
   public readonly config: Omit<IAcceleratorConfigNormalized, 'rendererName'>;
   public readonly context: Omit<IContext, 'PassageRendererConstructor'>;
+  public readonly navigateTo: (passageName: string, tags?: Tag[]) => void;
   public elementBuffer: ReactNodeWithoutNullOrUndefined[] = [];
+
+  private lastPassageTime: number;
 
   constructor(
     config: Omit<IAcceleratorConfigNormalized, 'rendererName'>,
     context: Omit<IContext, 'PassageRendererConstructor'>,
+    navigateTo: (passageName: string, tags?: Tag[]) => void,
   ) {
     this.config = assertValid(
       config,
@@ -51,53 +47,65 @@ export class ScrollRenderer implements IPassageRenderer {
       context,
     );
 
-    debugger;
+    this.navigateTo = assertValid(
+      navigateTo,
+      '',
+      (func) => typeof func === 'function',
+    );
+
     this.context.store.subscribe(this.subscription);
   }
 
   public readonly render = () => {
-    debugger;
     const ref = React.createRef<HTMLSpanElement>();
+
+    const {
+      footers,
+      headers,
+      passagesMap,
+      plugins,
+      soundManager,
+      store: { getState },
+    } = this.context;
+
+    const {
+      history: {
+        present: { passageTimeCounter },
+      },
+    } = getState();
+
+    if (this.lastPassageTime === passageTimeCounter) {
+      /* Do not add a new passage to the scroll if the passage time
+       * counter has not progressed since the last render. */
+      return this.elementBuffer;
+    }
 
     this.elementBuffer.push(
       <Passage
-        footers={this.context.footers}
-        headers={this.context.headers}
-        passagesMap={this.context.passagesMap}
-        plugins={this.context.plugins}
+        footers={footers}
+        headers={headers}
+        key={this.elementBuffer.length}
+        passagesMap={passagesMap}
+        plugins={plugins}
         navigateTo={this.navigateTo}
         ref={ref}
-        soundManager={this.context.soundManager}
+        soundManager={soundManager}
       />,
     );
 
-    ref.current!.scrollTo();
-
     this.elementBuffer = this.maintainBuffer(this.elementBuffer);
+
+    this.lastPassageTime = passageTimeCounter;
+
+    /* Don't fire the scroll event until rendering is complete. */
+    setTimeout(() => this.scrollToNewPassage(ref));
+
     return this.elementBuffer;
   };
 
   private readonly maintainBuffer = (
     buffer: ReactNodeWithoutNullOrUndefined[],
   ) => buffer.slice(Math.max(buffer.length - 10, 0), buffer.length);
-
-  private readonly navigateTo = (passageName: string, tags: Tag[]) => {
-    const {
-      passagesMap: { [passageName]: passage },
-      store: { dispatch },
-    } = this.context;
-
-    assert(
-      passage,
-      strings.PASSAGE_NOT_FOUND.replace(/%name%/gi, passageName),
-    );
-
-    navigate({
-      dispatch,
-      passage,
-      linkTags: tags || [],
-    });
-  };
 
   private readonly subscription = () => {
     const {
@@ -108,4 +116,12 @@ export class ScrollRenderer implements IPassageRenderer {
       this.elementBuffer = [];
     }
   };
-};
+
+  private readonly scrollToNewPassage = (ref: React.RefObject<HTMLSpanElement>) => {
+    if (ref.current) {
+      ref.current.scrollTo();
+    } else {
+      warn('The ref has not been added and the passage cannot be scrolled.');
+    }
+  }
+}

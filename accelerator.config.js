@@ -50,7 +50,7 @@ export default {
    * rendered to the document. Consider setting this to `false` or `1` if you
    * use a scroll-style passage renderer.
    */
-  showMenu: true,
+  showMenu: 1,
 
   /**
    * @property {Array<string | IFontLoadingDetails>}

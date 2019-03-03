@@ -20,7 +20,7 @@ import {
   PassagePluginsWrapperConnected,
 } from '../PassagePluginsWrapper/PassagePluginsWrapper';
 import {
-  PassageRendererWrapper,
+  PassageRendererWrapperConnected,
 } from '../PassageRendererWrapper/PassageRendererWrapper';
 import {
   connect,
@@ -59,7 +59,7 @@ export class PassageContainer extends React.PureComponent<IPassageContainerState
                     passagesMap={passagesMap}
                     plugins={plugins}
                   >
-                    <PassageRendererWrapper />
+                    <PassageRendererWrapperConnected />
                   </PassagePluginsWrapperConnected>
                 </div>
             )}

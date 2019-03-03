@@ -20,6 +20,9 @@ import {
   SoundManagerAudioPanel,
 } from '../../src/components/SoundManagerAudioPanel/SoundManagerAudioPanel';
 
+// @ts-ignore
+import * as uuid from 'tiny-uuid';
+
 import * as React from 'react';
 
 import builtInStyles from '../../passages/_global-styles/built-ins.scss';
@@ -29,21 +32,18 @@ const { showMenu } = getNormalizedAcceleratorConfig();
 
 class Menu extends React.PureComponent<IPassageProps, IMenuState> {
   public readonly state: IMenuState = { soundPanelVisible: false };
+  public readonly uuid: string;
+
+  constructor(props: any) {
+    super(props);
+    this.uuid = uuid();
+  }
 
   public readonly render = () => {
     const { soundPanelVisible } = this.state;
 
-    if (!showMenu) {
+    if (!this.shouldBeRendered()) {
       return null;
-    } else if (typeof showMenu === 'number' &&
-               showMenu >= 1 &&
-               showMenu % 1 === 0)
-    {
-      if (showMenu === 1 && document.querySelector(styles.menu)) {
-        return null;
-      } else if (document.querySelectorAll(styles.menu).length >= showMenu) {
-        return null;
-      }
     }
 
     return (
@@ -51,6 +51,7 @@ class Menu extends React.PureComponent<IPassageProps, IMenuState> {
         className={`${styles.menu} ${builtInStyles.header} header`}
         position="relative"
       >
+        <noscript data-menu-uuid={this.uuid}></noscript>
         <Toolbar className={`${styles.toolbar} toolbar`}>
           <div className={`${styles.rewindContainer} rewind`}>
             <RewindButton>
@@ -99,6 +100,36 @@ class Menu extends React.PureComponent<IPassageProps, IMenuState> {
   private readonly toggleSoundPanelVisibility = () => {
     const { soundPanelVisible } = this.state;
     this.setState({ soundPanelVisible: !soundPanelVisible });
+  };
+
+  private readonly shouldBeRendered = () => {
+    debugger;
+    if (!showMenu) {
+      return null;
+    } else if (typeof showMenu === 'number' &&
+               showMenu >= 1 &&
+               showMenu % 1 === 0)
+    {
+      const filterFunc = <T extends Element | null>(elem: T) => (
+        elem &&
+        elem instanceof HTMLElement &&
+        elem.dataset.menuUuid !== this.uuid
+      );
+
+      const selector = `.${styles.menu} noscript[data-menu-uuid]`;
+      if (showMenu === 1 && filterFunc(document.querySelector(selector))) {
+        return null;
+      } else if (
+        showMenu > 1 &&
+        Array.prototype.slice.call(document.querySelectorAll(selector))
+          .filter(filterFunc)
+          .length >= showMenu
+      ) {
+        return null;
+      }
+    }
+
+    return true;
   };
 }
 

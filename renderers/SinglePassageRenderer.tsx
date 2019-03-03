@@ -1,20 +1,26 @@
 import {
-  navigate,
-} from '../src/state/navigate';
+  IAcceleratorConfigNormalized,
+} from '../src/configuration/IAcceleratorConfigNormalized';
+import {
+  IContext,
+} from '../src/context/IContext';
+import {
+  IPassageRenderer,
+} from '../src/renderers/IPassageRenderer';
 import {
   Passage,
 } from '../src/components/Passage/Passage';
 import {
-  assert,
+  Omit,
+} from '../src/typeAliases/Omit';
+import {
+  Tag,
+} from '../src/tags/Tag';
+import {
   assertValid,
 } from 'ts-assertions';
 
 import * as React from 'react';
-import { Omit } from '../src/typeAliases/Omit';
-import { IContext } from '../src/context/IContext';
-import { IAcceleratorConfigNormalized } from '../src/configuration/IAcceleratorConfigNormalized';
-import { Tag } from '../src/tags/Tag';
-import { IPassageRenderer } from '../src/renderers/IPassageRenderer';
 
 export const strings = {
   PASSAGE_NOT_FOUND:
@@ -24,13 +30,20 @@ export const strings = {
 export class SinglePassageRenderer implements IPassageRenderer {
   public readonly config: Omit<IAcceleratorConfigNormalized, 'rendererName'>;
   public readonly context: Omit<IContext, 'PassageRendererConstructor'>;
+  public readonly navigateTo: (passageName: string, tags?: Tag[]) => void;
 
   constructor(
     config: Omit<IAcceleratorConfigNormalized, 'rendererName'>,
     context: Omit<IContext, 'PassageRendererConstructor'>,
+    navigateTo: (passageName: string, tags?: Tag[]) => void,
   ) {
     this.config = assertValid(config);
     this.context = assertValid(context);
+    this.navigateTo = assertValid(
+      navigateTo,
+      '',
+      (func) => typeof func === 'function',
+    );
   }
 
   public readonly render = () => (
@@ -43,22 +56,4 @@ export class SinglePassageRenderer implements IPassageRenderer {
       soundManager={this.context.soundManager}
     />
   );
-
-  public readonly navigateTo = (passageName: string, tags: Tag[]) => {
-    const {
-      passagesMap: { [passageName]: passage },
-      store: { dispatch },
-    } = this.context;
-
-    assert(
-      passage,
-      strings.PASSAGE_NOT_FOUND.replace(/%name%/gi, passageName),
-    );
-
-    navigate({
-      dispatch,
-      passage,
-      linkTags: tags || [],
-    });
-  };
 };
