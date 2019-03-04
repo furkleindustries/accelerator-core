@@ -34,6 +34,7 @@ export const Passage = React.forwardRef<HTMLSpanElement, IPassageOwnProps>(({
 
     <SkipToContentLinkDestination />
 
+    {/* Provide a ref which can be scrolled to externally. */}
     <span className="scroll" ref={ref}></span>
 
     <PassageContentsContainerConnected {...passageProps} />

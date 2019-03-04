@@ -40,27 +40,13 @@ export class ScrollRenderer extends AbstractPassageRenderer {
   }
 
   public readonly render = () => {
-    const ref = React.createRef<HTMLSpanElement>();
-
     const {
-      footers,
-      headers,
-      passagesMap,
-      soundManager,
-      store: {
-        dispatch,
-        getState,
-      },
+      store: { getState },
     } = this.context;
 
     const {
       history: {
-        present: {
-          lastLinkTags,
-          passageTimeCounter,
-          storyState,
-          passageName,
-        },
+        present: { passageTimeCounter },
       },
     } = getState();
 
@@ -70,7 +56,46 @@ export class ScrollRenderer extends AbstractPassageRenderer {
       return this.elementBuffer;
     }
 
-    this.elementBuffer.push(
+    const ref = React.createRef<HTMLSpanElement>();
+
+    this.elementBuffer.push(this.getPassageElement(ref));    
+    this.elementBuffer = this.maintainBuffer(this.elementBuffer);
+    
+    this.lastPassageTime = passageTimeCounter;
+
+    /* Don't scroll if it's the first passage. */
+    if (this.elementBuffer.length > 1) {
+      /* Don't fire the scroll event until rendering is complete. */
+      setTimeout(() => this.scrollToNewPassage(ref));
+    }
+
+    return this.elementBuffer;
+  };
+
+  private readonly getPassageElement = (ref: React.RefObject<HTMLSpanElement>) => {
+    const {
+      footers,
+      headers,
+      passagesMap,
+      store: {
+        dispatch,
+        getState,
+      },
+
+      soundManager,
+    } = this.context;
+
+    const {
+      history: {
+        present: {
+          lastLinkTags,
+          passageName,
+          storyState,
+        },
+      },
+    } = getState();
+
+    return (
       <Passage
         dispatch={dispatch}
         footers={footers}
@@ -82,17 +107,8 @@ export class ScrollRenderer extends AbstractPassageRenderer {
         soundManager={soundManager}
         storyState={storyState}
         {...this.passageFunctions}
-      />,
+      />
     );
-
-    this.elementBuffer = this.maintainBuffer(this.elementBuffer);
-
-    this.lastPassageTime = passageTimeCounter;
-
-    /* Don't fire the scroll event until rendering is complete. */
-    setTimeout(() => this.scrollToNewPassage(ref));
-
-    return this.elementBuffer;
   };
 
   private readonly maintainBuffer = (
@@ -104,8 +120,11 @@ export class ScrollRenderer extends AbstractPassageRenderer {
       store: { getState },
     } = this.context;
 
-    if (getState().storyRequiresFullRerender) {
-      this.elementBuffer = [];
+    const { storyRequiresFullRerender } = getState();
+
+    if (storyRequiresFullRerender) {
+      const ref = React.createRef<HTMLSpanElement>();
+      this.elementBuffer = [ this.getPassageElement(ref) ];
     }
   };
 
