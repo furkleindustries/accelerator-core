@@ -11,8 +11,8 @@ import {
   IPassageFunctions,
 } from '../src/passages/IPassageFunctions';
 import {
-  Passage,
-} from '../src/components/Passage/Passage';
+  PassageContainer,
+} from '../src/components/PassageContainer/PassageContainer';
 import {
   Omit,
 } from '../src/typeAliases/Omit';
@@ -62,7 +62,7 @@ export class SinglePassageRenderer extends AbstractPassageRenderer {
       <>
         <SkipToContentLinkDestination />
 
-        <Passage
+        <PassageContainer
           dispatch={dispatch}
           footers={footers}
           headers={headers}

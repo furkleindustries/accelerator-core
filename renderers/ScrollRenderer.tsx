@@ -14,17 +14,19 @@ import {
   IPassageFunctions,
 } from '../src/passages/IPassageFunctions';
 import {
-  Passage,
-} from '../src/components/Passage/Passage';
+  PassageContainer,
+} from '../src/components/PassageContainer/PassageContainer';
 import {
   Omit,
 } from '../src/typeAliases/Omit';
 import {
   ReactNodeWithoutNullOrUndefined,
 } from '../src/typeAliases/ReactNodeWithoutNullOrUndefined';
+import {
+  SkipToContentLinkDestination,
+} from '../src/components/SkipToContentLinkDestination/SkipToContentLinkDestination';
 
 import * as React from 'react';
-import { SkipToContentLinkDestination } from '../src/components/SkipToContentLinkDestination/SkipToContentLinkDestination';
 
 export class ScrollRenderer extends AbstractPassageRenderer {
   private elementBuffer: ReactNodeWithoutNullOrUndefined[] = [];
@@ -59,7 +61,7 @@ export class ScrollRenderer extends AbstractPassageRenderer {
 
     const ref = React.createRef<HTMLSpanElement>();
 
-    this.elementBuffer.push(this.getPassageElement(ref));    
+    this.elementBuffer.push(this.getPassageContainer(ref));    
     this.elementBuffer = this.maintainBuffer(this.elementBuffer);
 
     this.lastPassageTime = passageTimeCounter;
@@ -85,7 +87,7 @@ export class ScrollRenderer extends AbstractPassageRenderer {
     );
   };
 
-  private readonly getPassageElement = (ref: React.RefObject<HTMLSpanElement>) => {
+  private readonly getPassageContainer = (ref: React.RefObject<HTMLSpanElement>) => {
     const {
       footers,
       headers,
@@ -109,7 +111,7 @@ export class ScrollRenderer extends AbstractPassageRenderer {
     } = getState();
 
     return (
-      <Passage
+      <PassageContainer
         dispatch={dispatch}
         footers={footers}
         headers={headers}
@@ -137,7 +139,7 @@ export class ScrollRenderer extends AbstractPassageRenderer {
 
     if (storyRequiresFullRerender) {
       const ref = React.createRef<HTMLSpanElement>();
-      this.elementBuffer = [ this.getPassageElement(ref) ];
+      this.elementBuffer = [ this.getPassageContainer(ref) ];
     }
   };
 

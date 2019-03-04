@@ -20,8 +20,8 @@ import {
   PassagePluginsWrapperConnected,
 } from '../PassagePluginsWrapper/PassagePluginsWrapper';
 import {
-  PassageContainerConnected,
-} from '../PassageContainer/PassageContainer';
+  PassageRendererWrapperConnected,
+} from '../PassageRendererWrapper/PassageRendererWrapper';
 import {
   connect,
   MapDispatchToProps,
@@ -55,10 +55,10 @@ export class RenderingContainer extends React.PureComponent<IRenderingContainerS
                 /**
                  * This is very evil! But right now it's the only way I've
                  * found that is guaranteed to work, so evil it is. This and
-                 * the logic in componentDidUpdate forces an unmount of
-                 * everything in the story, then immediately resets the
-                 * storyRequiresFullRerender prop and rerenders the whole
-                 * passage tree.
+                 * the logic in componentDidUpdate force an unmount of
+                 * everything in the story, immediately rerendering the whole
+                 * passage tree and resetting the storyRequiresFullRerender
+                 * prop.
                  */
                 storyRequiresFullRerender ?
                   null :
@@ -67,7 +67,7 @@ export class RenderingContainer extends React.PureComponent<IRenderingContainerS
                       passagesMap={passagesMap}
                       plugins={plugins}
                     >
-                      <PassageContainerConnected
+                      <PassageRendererWrapperConnected
                         passagesMap={passagesMap}
                         plugins={plugins}
                       />

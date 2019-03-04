@@ -11,7 +11,7 @@ import {
   Tag,
 } from '../../tags/Tag';
 
-export interface IPassageContainerStateProps {
+export interface IPassageRendererWrapperStateProps {
   readonly history: IHistory;
   readonly lastLinkTags: ReadonlyArray<Tag>;
   readonly passageObject: IPassage;
