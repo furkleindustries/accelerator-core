@@ -45,12 +45,10 @@ export default {
   rendererName: BuiltInRenderers.ScrollRenderer,
 
   /**
-   * @property {boolean | number}
-   * Determines whether the menu is shown, or the max times it should be
-   * rendered to the document. Consider setting this to `false` or `1` if you
-   * use a scroll-style passage renderer.
+   * @property {boolean}
+   * Determines whether the menu is shown.
    */
-  showMenu: 1,
+  showMenu: true,
 
   /**
    * @property {Array<string | IFontLoadingDetails>}

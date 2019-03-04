@@ -98,7 +98,7 @@ export class PassagePluginsWrapper extends React.PureComponent<IPassagePluginsWr
           passageObject: safePassageObject,
           setStoryState(updatedStateProps) {
             /* Do NOT call mutateCurrentStoryStateInstanceWithPluginExecution here,
-            * as it may cause an infinite loop of plugin actions. */
+             * as it may cause an infinite loop of plugin actions. */
             return dispatch(createStoryStateAction(updatedStateProps));
           },
         });
@@ -132,6 +132,8 @@ export class PassagePluginsWrapper extends React.PureComponent<IPassagePluginsWr
         },
       },
     } = getState();
+
+    debugger;
 
     /* Don't execute the beforeRender plugins, returning the memoized value
      * instead, if the passage time has not increased since the last render. */

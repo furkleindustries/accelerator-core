@@ -59,9 +59,6 @@ export function navigate({
     strings.NO_NAVIGATING_TO_NO_RENDER_PASSAGES,
   );
 
-  /* Update the passage time. */
-  dispatch(createPassageTimeAction());
-
   /* Update the current passage. */
   return dispatch(createPassageNavigationAction(passage, linkTags));
 }

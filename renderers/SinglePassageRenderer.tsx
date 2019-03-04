@@ -16,6 +16,9 @@ import {
 import {
   Omit,
 } from '../src/typeAliases/Omit';
+import {
+  SkipToContentLinkDestination,
+} from '../src/components/SkipToContentLinkDestination/SkipToContentLinkDestination';
 
 import * as React from 'react';
 
@@ -56,16 +59,20 @@ export class SinglePassageRenderer extends AbstractPassageRenderer {
     } = getState();
 
     return (
-      <Passage
-        dispatch={dispatch}
-        footers={footers}
-        headers={headers}
-        lastLinkTags={lastLinkTags}
-        passageObject={passagesMap[passageName]}
-        soundManager={soundManager}
-        storyState={storyState}
-        {...this.passageFunctions}
-      />
+      <>
+        <SkipToContentLinkDestination />
+
+        <Passage
+          dispatch={dispatch}
+          footers={footers}
+          headers={headers}
+          lastLinkTags={lastLinkTags}
+          passageObject={passagesMap[passageName]}
+          soundManager={soundManager}
+          storyState={storyState}
+          {...this.passageFunctions}
+        />
+      </>
     );
   };
 };

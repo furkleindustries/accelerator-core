@@ -1,15 +1,27 @@
 import {
-  createStoryRequiresFullRerenderAction,
-} from '../../actions/creators/createStoryRequiresFullRerenderAction';
+  AppContextConsumerWrapper,
+} from '../AppContextConsumerWrapper/AppContextConsumerWrapper';
 import {
-  getPassagesMapAndStartPassageNameContext,
-} from '../../context/getPassagesMapAndStartPassageNameContext';
+  bookmark as doBookmark,
+} from '../../state/bookmark';
 import {
-  getPluginsContext,
-} from '../../context/getPluginsContext';
+  getNormalizedAcceleratorConfig,
+} from '../../configuration/getNormalizedAcceleratorConfig';
+import {
+  HistoryFilter,
+} from '../../reducers/IHistoryFilter';
+import {
+  IAction,
+} from '../../actions/IAction';
+import {
+  IPassageRenderer,
+} from '../../renderers/IPassageRenderer';
 import {
   IPassageContainerDispatchProps,
 } from './IPassageContainerDispatchProps';
+import {
+  IPassageContainerOwnProps,
+} from './IPassageContainerOwnProps';
 import {
   IPassageContainerStateProps,
 } from './IPassageContainerStateProps';
@@ -17,88 +29,162 @@ import {
   IState,
 } from '../../state/IState';
 import {
-  PassagePluginsWrapperConnected,
-} from '../PassagePluginsWrapper/PassagePluginsWrapper';
-import {
-  PassageRendererWrapperConnected,
-} from '../PassageRendererWrapper/PassageRendererWrapper';
+  navigate,
+} from '../../state/navigate';
 import {
   connect,
   MapDispatchToProps,
   MapStateToProps,
 } from 'react-redux';
+import {
+  Dispatch,
+} from 'redux';
+import {
+  reset,
+} from '../../state/reset';
+import {
+  rewind as doRewind,
+} from '../../state/rewind';
+import {
+  Tag,
+} from '../../tags/Tag';
+import {
+  assert,
+} from 'ts-assertions';
 
 import * as React from 'react';
 
-import styles from './PassageContainer.scss';
+export const strings = {
+  PASSAGE_NOT_FOUND:
+    'No passage named %NAME% could be found within the passages map.',
+};
 
 const {
-  Consumer: PassagesMapAndStartPassageNameConsumer,
-} = getPassagesMapAndStartPassageNameContext();
-const { Consumer: PluginsConsumer } = getPluginsContext();
+  rendererName,
+  ...configWithoutRendererName
+} = getNormalizedAcceleratorConfig();
 
-export class PassageContainer extends React.PureComponent<IPassageContainerStateProps & IPassageContainerDispatchProps> {
-  public render() {
-    const { storyRequiresFullRerender } = this.props;
+let renderer: IPassageRenderer;
 
+export class PassageRendererWrapper extends React.PureComponent<
+  IPassageContainerOwnProps &
+  IPassageContainerStateProps &
+  IPassageContainerDispatchProps
+> {
+  public readonly render = () => {
     return (
-      <PassagesMapAndStartPassageNameConsumer>
-        {({ passagesMap }) => (
-          <PluginsConsumer>
-            {({ plugins }) => (
-              /* This is very evil! But right now it's the only way I've found
-               * that is guaranteed to work, so evil it is. If it's not clear,
-               * this and the logic in componentDidUpdate forces an unmount of
-               * everything in the story, then immediately resets the
-               * storyRequiresFullRerender prop and rerenders the whole passage
-               * tree. */
-              storyRequiresFullRerender ?
-                null :
-                <div className={`${styles.passageContainer} passageContainer`}>
-                  <PassagePluginsWrapperConnected
-                    passagesMap={passagesMap}
-                    plugins={plugins}
-                  >
-                    <PassageRendererWrapperConnected />
-                  </PassagePluginsWrapperConnected>
-                </div>
-            )}
-          </PluginsConsumer>
-        )}
-      </PassagesMapAndStartPassageNameConsumer>
-    );
-  }
+      <AppContextConsumerWrapper>
+        {({
+          PassageRendererConstructor,
+          ...contextWithoutRenderer
+        }) => {
+          if (!renderer) {
+            const passageFuncs = {
+              bookmark: this.bookmark,
+              navigateTo: this.navigateTo,
+              rewind: this.rewind,
+              restart: this.restart,
+            };
 
-  public componentDidUpdate() {
-    /* This is also a very, very evil way of doing this and I should endeavor
-     * to find a safer way of accomplishing it rather than changing state in a
-     * rendering lifecycle method. */
+            renderer = new PassageRendererConstructor(
+              configWithoutRendererName,
+              contextWithoutRenderer,
+              passageFuncs,
+            );
+          }
+
+          return (
+            <div className={`passageContainer ${rendererName}`}>
+              {renderer.render()}
+            </div>
+          );
+        }}
+      </AppContextConsumerWrapper>
+    );
+  };
+
+  private readonly bookmark = () => doBookmark(this.context.store.dispatch);
+
+  private navigateTo(passageName: string, tags?: ReadonlyArray<Tag>) {
     const {
-     resetStoryRequiresFullRerender,
-     storyRequiresFullRerender,
+      dispatch,
+      passagesMap: { [passageName]: passage },
     } = this.props;
 
-    if (storyRequiresFullRerender) {
-      /* Reset the value of the property to false immediately. This logic
-       * causes two full walks of the component tree, but I don't think anyone
-       * expects or requires restarting the entire story to be
-       * super-high-efficiency. */
-      resetStoryRequiresFullRerender();
+    assert(
+      passage,
+      strings.PASSAGE_NOT_FOUND.replace(/%name%/gi, passageName),
+    );
+
+    navigate({
+      dispatch,
+      passage,
+      linkTags: tags || [],
+    });
+  };
+
+  private readonly restart = () => {
+    const {
+      dispatch,
+      lastLinkTags,
+      passageObject,
+      plugins,
+      storyState,
+    } = this.props;
+
+    reset({
+      dispatch,
+      lastLinkTags,
+      passageObject,
+      plugins,
+      storyState,
+    });
+  };
+
+  private readonly rewind = (filter?: HistoryFilter) => {
+    const {
+      dispatch,
+      history: {
+        present,
+        past,
+      },
+    } = this.props;
+
+    if (typeof filter === 'function') {
+      doRewind(dispatch, present, past, filter);
+    } else {
+      doRewind(dispatch, present, past);
     }
-  }
+  };
 }
 
-export const mapStateToProps: MapStateToProps<IPassageContainerStateProps, {}, IState> = ({
-  storyRequiresFullRerender,
-}) => ({ storyRequiresFullRerender });
+export const mapStateToProps: MapStateToProps<
+  IPassageContainerStateProps,
+  IPassageContainerOwnProps,
+  IState
+> = ({
+  history,
+  history: {
+    present: {
+      lastLinkTags,
+      passageName,
+      storyState,
+    },
+  }
+}, {
+  passagesMap,
+}) => ({
+  history,
+  lastLinkTags,
+  storyState,
+  passageObject: passagesMap[passageName],
+});
 
-export const mapDispatchToProps: MapDispatchToProps<IPassageContainerDispatchProps, IPassageContainerStateProps> = (dispatch) => ({
-  resetStoryRequiresFullRerender() {
-    return dispatch(createStoryRequiresFullRerenderAction(false));
-  },
+export const mapDispatchToProps: MapDispatchToProps<{ dispatch: Dispatch<IAction> }, {}> = (dispatch) => ({
+  dispatch,
 });
 
 export const PassageContainerConnected = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(PassageContainer);
+)(PassageRendererWrapper);

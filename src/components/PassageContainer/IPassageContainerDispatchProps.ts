@@ -1,7 +1,10 @@
 import {
-  IStoryRequiresFullRerenderAction,
-} from '../../actions/IStoryRequiresFullRerenderAction';
+  IAction,
+} from '../../actions/IAction';
+import {
+  Dispatch,
+} from 'redux';
 
 export interface IPassageContainerDispatchProps {
-  resetStoryRequiresFullRerender(): IStoryRequiresFullRerenderAction;
+  readonly dispatch: Dispatch<IAction>;
 }

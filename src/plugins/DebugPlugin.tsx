@@ -56,23 +56,25 @@ export class DebugPlugin implements IPlugin {
     log('The story state before render is:');
     log(JSON.stringify(currentStoryState, null, 2));
 
-    const debugChildren = [
-      <div className={`${styles.debugContainer} debugContainer`} key={0}>
-        <p className={`${styles.debugStateTitleContainer} debugStateTitle`}>
-          <strong className={styles.debugStateTitle}>
-            Current story state:
-          </strong>
-        </p>
+    return (
+      <>
+        {children}
 
-        <div className={`${styles.debugReadoutContainer} debugReadoutContainer`}>
-          <pre className={`${styles.debugStateReadout} debugStateReadout`}>{
-            JSON.stringify(currentStoryState, null, 2)
-          }</pre>
+        <div className={`${styles.debugContainer} debugContainer`}>
+          <p className={`${styles.debugStateTitleContainer} debugStateTitle`}>
+            <strong className={styles.debugStateTitle}>
+              Current story state:
+            </strong>
+          </p>
+
+          <div className={`${styles.debugReadoutContainer} debugReadoutContainer`}>
+            <pre className={`${styles.debugStateReadout} debugStateReadout`}>{
+              JSON.stringify(currentStoryState, null, 2)
+            }</pre>
+          </div>
         </div>
-      </div>
-    ];
-
-    return React.Children.toArray(children).concat(debugChildren);
+      </>
+    );
   }
 
   public afterPassageChange({

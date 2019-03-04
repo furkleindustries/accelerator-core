@@ -10,6 +10,7 @@ export const configurationDefaults = Object.freeze({
   historySaveTypes: [
     ActionTypes.Bookmark,
     ActionTypes.PassageNavigation,
+    ActionTypes.PassageTime,
     ActionTypes.MidrenderSignal,
   ],
   

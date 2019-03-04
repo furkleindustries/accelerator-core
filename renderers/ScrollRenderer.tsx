@@ -24,6 +24,7 @@ import {
 } from '../src/typeAliases/ReactNodeWithoutNullOrUndefined';
 
 import * as React from 'react';
+import { SkipToContentLinkDestination } from '../src/components/SkipToContentLinkDestination/SkipToContentLinkDestination';
 
 export class ScrollRenderer extends AbstractPassageRenderer {
   private elementBuffer: ReactNodeWithoutNullOrUndefined[] = [];
@@ -69,7 +70,19 @@ export class ScrollRenderer extends AbstractPassageRenderer {
       setTimeout(() => this.scrollToNewPassage(ref));
     }
 
-    return this.elementBuffer;
+    return (
+      <>
+        {this.elementBuffer.length === 1 ?
+          <SkipToContentLinkDestination /> :
+          <>
+            {this.elementBuffer.slice(0, this.elementBuffer.length - 1)}
+
+            <SkipToContentLinkDestination />
+          </>}
+
+        {this.elementBuffer[this.elementBuffer.length - 1]}
+      </>
+    );
   };
 
   private readonly getPassageElement = (ref: React.RefObject<HTMLSpanElement>) => {
@@ -82,7 +95,6 @@ export class ScrollRenderer extends AbstractPassageRenderer {
         getState,
       },
 
-      
       soundManager,
     } = this.context;
 

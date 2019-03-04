@@ -10,29 +10,21 @@ import {
 import {
   PassageFootersConnected,
 } from '../PassageFooters/PassageFooters';
-import {
-  SkipToContentLink,
-} from '../SkipToContentLink/SkipToContentLink';
-import {
-  SkipToContentLinkDestination,
-} from '../SkipToContentLinkDestination/SkipToContentLinkDestination';
 
 import * as React from 'react';
+
+import styles from '../../../passages/_global-styles/built-ins.scss';
 
 export const Passage = React.forwardRef<HTMLSpanElement, IPassageOwnProps>(({
   footers,
   headers,
   ...passageProps
 }, ref) => (
-  <div className={`passage ${passageProps.passageObject.name}`}>
-    <SkipToContentLink />
-
+  <div className={`passage ${passageProps.passageObject.name} ${styles.passage}`}>
     <PassageHeadersConnected
       headers={headers}
       {...passageProps}
     />
-
-    <SkipToContentLinkDestination />
 
     {/* Provide a ref which can be scrolled to externally. */}
     <span className="scroll" ref={ref}></span>
