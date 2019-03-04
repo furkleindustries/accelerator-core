@@ -60,7 +60,7 @@ export class ScrollRenderer extends AbstractPassageRenderer {
 
     this.elementBuffer.push(this.getPassageElement(ref));    
     this.elementBuffer = this.maintainBuffer(this.elementBuffer);
-    
+
     this.lastPassageTime = passageTimeCounter;
 
     /* Don't scroll if it's the first passage. */
@@ -82,6 +82,7 @@ export class ScrollRenderer extends AbstractPassageRenderer {
         getState,
       },
 
+      
       soundManager,
     } = this.context;
 

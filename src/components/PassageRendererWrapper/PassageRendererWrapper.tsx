@@ -104,7 +104,11 @@ export class PassageRendererWrapper extends React.PureComponent<
           }
 
           /* TODO: Diagnose strange typing bug/error here. */
-          return renderer.render() as React.ReactElement<IPassageProps>;
+          return (
+            <div className={`passageRendererWrapper ${rendererName}`}>
+              {renderer.render() as React.ReactElement<IPassageProps>}
+            </div>
+          );
         }}
       </AppContextConsumerWrapper>
     );

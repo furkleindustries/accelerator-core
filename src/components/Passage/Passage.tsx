@@ -24,7 +24,7 @@ export const Passage = React.forwardRef<HTMLSpanElement, IPassageOwnProps>(({
   headers,
   ...passageProps
 }, ref) => (
-  <>
+  <div className={`passage ${passageProps.passageObject.name}`}>
     <SkipToContentLink />
 
     <PassageHeadersConnected
@@ -43,5 +43,5 @@ export const Passage = React.forwardRef<HTMLSpanElement, IPassageOwnProps>(({
       footers={footers}
       {...passageProps}
     />
-  </>
+  </div>
 ));
