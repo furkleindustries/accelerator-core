@@ -38,7 +38,7 @@ export class DebugPlugin implements IPlugin {
     log(`PassageContainer will render the passage named ${name}.`);
   }
 
-  public beforeRender(args: IPluginMethodBaseArgs & IPluginMethodChildArgs) {
+  public beforeRender = (args: IPluginMethodBaseArgs & IPluginMethodChildArgs) => {
     const {
       children,
       passageObject: {
@@ -75,11 +75,11 @@ export class DebugPlugin implements IPlugin {
         </div>
       </>
     );
-  }
+  };
 
-  public afterPassageChange({
+  public afterPassageChange = ({
     passageObject: { name },
-  }: IPluginMethodBaseArgs)
+  }: IPluginMethodBaseArgs) =>
   {
     log('---- afterRender ----');
     log(`PassageContainer has rendered the passage named ${name}.`);
@@ -93,9 +93,7 @@ export class DebugPlugin implements IPlugin {
     log('The following modifications to the story state are being made:');
     log(JSON.stringify(updatedStateProps, null, 2));
 
-    if (document &&
-        typeof document.querySelector === 'function')
-    {
+    if (document && typeof document.querySelector === 'function') {
       const readout = document.querySelector('.debugStateReadout');
       if (readout) {
         readout.textContent = JSON.stringify(storyState, null, 2);
