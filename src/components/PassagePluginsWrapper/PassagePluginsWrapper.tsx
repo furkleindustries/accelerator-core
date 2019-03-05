@@ -133,8 +133,6 @@ export class PassagePluginsWrapper extends React.PureComponent<IPassagePluginsWr
       },
     } = getState();
 
-    debugger;
-
     /* Don't execute the beforeRender plugins, returning the memoized value
      * instead, if the passage time has not increased since the last render. */
     if (this.lastPluginsBeforeRenderOutput &&
@@ -148,10 +146,10 @@ export class PassagePluginsWrapper extends React.PureComponent<IPassagePluginsWr
     plugins.forEach(({ beforeRender }) => {
       if (typeof beforeRender === 'function') {
         finalChildren = beforeRender({
-          children,
           lastLinkTags,
           passageObject,
           storyState,
+          children: finalChildren,
         }) ||
         /* If for some reason the plugin is non-conformant and outputs
          * something falsy, use the last good children value. */
@@ -206,7 +204,7 @@ export const mapStateToProps: MapStateToProps<IPassagePluginsWrapperStateProps, 
   history: {
     present: {
       lastLinkTags,
-      passageName: passageName,
+      passageName,
     },
   },
 }) =>

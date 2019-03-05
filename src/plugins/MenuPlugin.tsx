@@ -11,12 +11,11 @@ import {
 import * as React from 'react';
 
 export class MenuPlugin implements IPlugin {
-  public beforeRender({ children }: IPluginMethodChildArgs) {
-    return (
-      <>
-        <MenuPluginComponent />
-        {children}
-      </>
-    );
-  }
+  public beforeRender = ({ children }: IPluginMethodChildArgs) => (
+    <>
+      <MenuPluginComponent />
+
+      {children}
+    </>
+  );
 }
