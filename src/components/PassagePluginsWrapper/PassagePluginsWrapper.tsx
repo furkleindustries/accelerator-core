@@ -8,6 +8,9 @@ import {
   IPassage,
 } from '../../passages/IPassage';
 import {
+  IPassagePluginsWrapperDispatchProps,
+} from './IPassagePluginsWrapperDispatchProps';
+import {
   IPassagePluginsWrapperOwnProps,
 } from './IPassagePluginsWrapperOwnProps';
 import {
@@ -23,12 +26,13 @@ import {
   connect,
   MapStateToProps,
   ReactReduxContext,
+  MapDispatchToProps,
 } from 'react-redux';
 import {
   ReactNodeWithoutNullOrUndefined,
 } from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 import {
-  Store,
+  Dispatch,
 } from 'redux';
 import {
   assertValid,
@@ -41,9 +45,14 @@ export const strings = {
     'No passage could be found in the passages map with the name %NAME%.',
 };
 
+/* TODO: Investigate effects of hot-reloads on this component. */
+
 /* Allows plugin markup to be injected alongside passage content as well
  * as ensuring plugins are only run once per render. */
-export class PassagePluginsWrapper extends React.PureComponent<IPassagePluginsWrapperOwnProps & IPassagePluginsWrapperStateProps, IPassagePluginsWrapperState> {
+export class PassagePluginsWrapper extends React.PureComponent<
+  IPassagePluginsWrapperOwnProps & IPassagePluginsWrapperStateProps & IPassagePluginsWrapperDispatchProps,
+  IPassagePluginsWrapperState
+> {
   public static readonly contextType = ReactReduxContext;
 
   public readonly state = { shouldCallRenderPlugin: false };
@@ -55,46 +64,37 @@ export class PassagePluginsWrapper extends React.PureComponent<IPassagePluginsWr
    * passage change. */
   private lastPluginsBeforeRenderOutput: ReactNodeWithoutNullOrUndefined;
 
-  constructor(props: IPassagePluginsWrapperOwnProps & IPassagePluginsWrapperStateProps, context: any) {
+  constructor(
+    props: IPassagePluginsWrapperOwnProps & IPassagePluginsWrapperStateProps & IPassagePluginsWrapperDispatchProps
+  ) {
     super(props);
 
     const {
+      dispatch,
       lastLinkTags,
       passageName,
       passagesMap,
       plugins,
     } = props;
 
-    const {
-      store,
-      store: {
-        dispatch,
-        getState,
-      },
-    } = context;
-
-    const {
-      history: {
-        present: { storyState },
-      },
-    } = getState();
+    const { store } = this.context;
 
     const safePassageObject = assertValid<IPassage>(
       passagesMap[passageName],
       strings.PASSAGE_NOT_FOUND.replace(/%name%/gi, passageName),
     );
 
-    /* Call the afterStoryInit method on all plugins. In practice, this should
+    /** Call the afterStoryInit method on all plugins. In practice, this should
      * only happen in two cases: firstly, when the story is first loaded in the
      * browser, and secondly when the story is restarted. This must be
      * performed in the constructor as componentDidMount occurs after render,
-     * and we want afterStoryInit to occur before beforeRender. */
+     * and we want afterStoryInit to occur before beforeRender.
+     */
     plugins.forEach(({ afterStoryInit }) => {
       if (typeof afterStoryInit === 'function') {
         afterStoryInit({
           lastLinkTags,
           store,
-          storyState,
           passageObject: safePassageObject,
           setStoryState(updatedStateProps) {
             /* Do NOT call mutateCurrentStoryStateInstanceWithPluginExecution here,
@@ -112,26 +112,15 @@ export class PassagePluginsWrapper extends React.PureComponent<IPassagePluginsWr
       lastLinkTags,
       passageName,
       passagesMap,
+      passageTimeCounter,
       plugins,
+      storyState,
     } = this.props;
 
     const passageObject = assertValid<IPassage>(
       passagesMap[passageName],
       strings.PASSAGE_NOT_FOUND,
     );
-
-    const {
-      store: { getState },
-    }: { store: Store<IState, IAction> } = this.context;
-
-    const {
-      history: {
-        present: {
-          passageTimeCounter,
-          storyState,
-        },
-      },
-    } = getState();
 
     /* Don't execute the beforeRender plugins, returning the memoized value
      * instead, if the passage time has not increased since the last render. */
@@ -149,6 +138,11 @@ export class PassagePluginsWrapper extends React.PureComponent<IPassagePluginsWr
           lastLinkTags,
           passageObject,
           storyState,
+          /**
+           * If this value is set to the children variable only the
+           * lowest-precedence plugin will render. Please set it to
+           * finalChildren instead.
+           */
           children: finalChildren,
         }) ||
         /* If for some reason the plugin is non-conformant and outputs
@@ -171,22 +165,13 @@ export class PassagePluginsWrapper extends React.PureComponent<IPassagePluginsWr
       passageName,
       passagesMap,
       plugins,
+      storyState,
     } = this.props;
 
     const passageObject = assertValid<IPassage>(
       passagesMap[passageName],
       strings.PASSAGE_NOT_FOUND,
     );
-
-    const {
-      store: { getState },
-    }: { store: Store<IState, IAction> } = this.context;
-
-    const {
-      history: {
-        present: { storyState },
-      },
-    } = getState();
 
     plugins.forEach(({ afterPassageChange }) => {
       if (typeof afterPassageChange === 'function') {
@@ -205,12 +190,20 @@ export const mapStateToProps: MapStateToProps<IPassagePluginsWrapperStateProps, 
     present: {
       lastLinkTags,
       passageName,
+      passageTimeCounter,
+      storyState,
     },
   },
 }) =>
 ({
   lastLinkTags,
   passageName,
+  passageTimeCounter,
+  storyState,
+});
+
+export const mapDispatchToProps: MapDispatchToProps<IPassagePluginsWrapperDispatchProps, {}> = (dispatch: Dispatch<IAction>) => ({
+  dispatch,
 });
 
 export const PassagePluginsWrapperConnected = connect(

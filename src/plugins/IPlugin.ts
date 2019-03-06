@@ -7,9 +7,10 @@ import {
 import {
   ReactNodeWithoutNullOrUndefined,
 } from '../typeAliases/ReactNodeWithoutNullOrUndefined';
+import { Omit } from '../typeAliases/Omit';
 
 export interface IPlugin {
-  afterStoryInit?(args: IPluginMethodBaseArgs & IPluginMethodStateMutationArgs): void;
+  afterStoryInit?(args: Omit<IPluginMethodBaseArgs, 'storyState'> & IPluginMethodStateMutationArgs): void;
   beforePassageChange?(args: IPluginMethodBaseArgs & IPluginMethodStateMutationArgs): void;
   beforeRender?(args: IPluginMethodBaseArgs & IPluginMethodChildArgs): ReactNodeWithoutNullOrUndefined;
   afterPassageChange?(args: IPluginMethodBaseArgs): void;
