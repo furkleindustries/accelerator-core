@@ -185,7 +185,11 @@ export class PassagePluginsWrapper extends React.PureComponent<
   }
 }
 
-export const mapStateToProps: MapStateToProps<IPassagePluginsWrapperStateProps, IPassagePluginsWrapperOwnProps, IState> = ({
+export const mapStateToProps: MapStateToProps<
+  IPassagePluginsWrapperStateProps,
+  IPassagePluginsWrapperOwnProps,
+  IState
+> = ({
   history: {
     present: {
       lastLinkTags,
@@ -202,7 +206,10 @@ export const mapStateToProps: MapStateToProps<IPassagePluginsWrapperStateProps, 
   storyState,
 });
 
-export const mapDispatchToProps: MapDispatchToProps<IPassagePluginsWrapperDispatchProps, {}> = (dispatch: Dispatch<IAction>) => ({
+export const mapDispatchToProps: MapDispatchToProps<
+  IPassagePluginsWrapperDispatchProps,
+  {}
+> = (dispatch: Dispatch<IAction>) => ({
   dispatch,
 });
 
