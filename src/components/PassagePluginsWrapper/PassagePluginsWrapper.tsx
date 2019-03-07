@@ -209,9 +209,7 @@ export const mapStateToProps: MapStateToProps<
 export const mapDispatchToProps: MapDispatchToProps<
   IPassagePluginsWrapperDispatchProps,
   {}
-> = (dispatch: Dispatch<IAction>) => ({
-  dispatch,
-});
+> = (dispatch: Dispatch<IAction>) => ({ dispatch });
 
 export const PassagePluginsWrapperConnected = connect(
   mapStateToProps,
