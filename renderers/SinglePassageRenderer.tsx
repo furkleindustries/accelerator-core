@@ -2,20 +2,8 @@ import {
   AbstractPassageRenderer,
 } from '../src/renderers/AbstractPassageRenderer';
 import {
-  IAcceleratorConfigNormalized,
-} from '../src/configuration/IAcceleratorConfigNormalized';
-import {
-  IContext,
-} from '../src/context/IContext';
-import {
-  IPassageFunctions,
-} from '../src/passages/IPassageFunctions';
-import {
   PassageContainer,
 } from '../src/components/PassageContainer/PassageContainer';
-import {
-  Omit,
-} from '../src/typeAliases/Omit';
 import {
   SkipToContentLinkDestination,
 } from '../src/components/SkipToContentLinkDestination/SkipToContentLinkDestination';
@@ -28,14 +16,6 @@ export const strings = {
 };
 
 export class SinglePassageRenderer extends AbstractPassageRenderer {
-  constructor(
-    config: Omit<IAcceleratorConfigNormalized, 'rendererName'>,
-    context: Omit<IContext, 'PassageRendererConstructor'>,
-    passageFuncs: IPassageFunctions,
-  ) {
-    super(config, context, passageFuncs);
-  }
-
   public readonly render = () => {
     const {
       footers,
