@@ -66,11 +66,11 @@ export function getPassagesMapAndStartPassageName(): {
   passagesMap = {};
 
   manifest.forEach(({
+    asset,
     filepath,
-    passageObject,
   }) => {
     try {
-      checkPassageObject(passageObject);
+      checkPassageObject(asset);
     } catch (err) {
       const errStr = strings.PASSAGE_OBJECT_INVALID
         .replace('%FILEPATH%', filepath)
@@ -82,12 +82,11 @@ export function getPassagesMapAndStartPassageName(): {
     const {
       name,
       tags,
-    } = passageObject;
+    } = asset;
 
     assert(
       !(name in passagesMap!),
-      strings.PASSAGE_OBJECT_INVALID
-        .replace('%NAME%', passageObject.name),
+      strings.PASSAGE_OBJECT_INVALID.replace('%NAME%', name),
     );
 
     if (getTag(tags, BuiltInTags.Start)) {
@@ -96,16 +95,16 @@ export function getPassagesMapAndStartPassageName(): {
         throw new Error(
           strings.MULTIPLE_DEFAULT_PASSAGES
             .replace('%1%', startPassageName)
-            .replace('%2%', passageObject.name)
+            .replace('%2%', name)
         );
       }
 
-      startPassageName = passageObject.name;
+      startPassageName = name;
     }
 
-    if (!getTag(passageObject.tags, BuiltInTags.NoRender)) {
+    if (!getTag(tags, BuiltInTags.NoRender)) {
       /* Do not place NoRender passages in the passage map. */
-      passagesMap![name] = passageObject;
+      passagesMap![name] = asset;
     }
   });
 

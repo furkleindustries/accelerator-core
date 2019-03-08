@@ -4,6 +4,7 @@ export const ActionTypes = {
   MidrenderSignal: 'MidrenderSignal',
   PassageNavigation: 'PassageNavigation',
   PassageTime: 'PassageTime',
+  StoryOptionUpdate: 'StoryOptionUpdate',
   StoryRequiresFullRerender: 'StoryRequiresFullRerender',
   StoryReset: 'StoryReset',
   StoryRewind: 'StoryRewind',

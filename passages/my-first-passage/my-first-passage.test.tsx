@@ -15,17 +15,12 @@ import * as React from 'react';
 const {
   name,
   tags,
-  title,
   contents: Component,
 } = passage;
 
 describe('Tests for the my-first-passage passage.', () => {
   it('Has a non-empty name string.', () => {
     expect(name && typeof name === 'string').toBe(true);
-  });
-
-  it('If it has a title, it is a non-empty string.', () => {
-    expect(!title || typeof title === 'string').toBe(true);
   });
 
   it('If it has tags, they are either non-empty strings or key-value objects.', () => {

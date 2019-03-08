@@ -12,7 +12,7 @@ import styles from './sample-passage.scss';
 
 /* Import the built-in styles. These are bare-minimum defaults that are meant
  * to be overridden by authors. */
-import builtInStyles from '../../passages/_global-styles/built-ins.scss';
+import builtInStyles from '../_global-styles/built-ins.scss';
 
 /* Images (see images.d.ts for allowed types) are imported as URLs to
  * the file in the public/ directory. */
@@ -68,7 +68,6 @@ class Component extends React.PureComponent<
     } = this.state;
 
     return (
-      /* The title will appear above here as an <h1> if you've set it. */
       <article className={passageObject.name}>
         <h2>
           This is the sample Accelerator passage.
@@ -190,7 +189,7 @@ class Component extends React.PureComponent<
 const passage: passages.IPassage = {
   /* string: the story-unique name of the passage. */
   name: 'sample-passage',
-  
+
   /* array: an optional collection of either plain strings or
    * { key: string, value: string, } Tag objects. */
   tags: [

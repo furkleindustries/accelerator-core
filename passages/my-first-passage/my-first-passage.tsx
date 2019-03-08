@@ -34,10 +34,6 @@ const passage: passages.IPassage = {
   /* string: the story-unique name of the passage. */
   name: 'my-first-passage',
   
-  /* string: an optional expanded title for the passage to be printed
-   * each time a passage is displayed. */
-  title: '',
-  
   /* Tag[]: an optional collection of either plain strings or
    * { key: string, value: string, } objects. */
   tags: [],

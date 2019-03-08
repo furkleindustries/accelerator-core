@@ -1,4 +1,7 @@
 import {
+  IAsset,
+} from '../interfaces/IAsset';
+import {
   IPluginMethodBaseArgs,
   IPluginMethodChildArgs,
   IPluginMethodStateMutationArgs,
@@ -7,9 +10,11 @@ import {
 import {
   ReactNodeWithoutNullOrUndefined,
 } from '../typeAliases/ReactNodeWithoutNullOrUndefined';
-import { Omit } from '../typeAliases/Omit';
+import {
+  Omit,
+} from '../typeAliases/Omit';
 
-export interface IPlugin {
+export interface IPlugin extends IAsset {
   afterStoryInit?(args: Omit<IPluginMethodBaseArgs, 'storyState'> & IPluginMethodStateMutationArgs): void;
   beforePassageChange?(args: IPluginMethodBaseArgs & IPluginMethodStateMutationArgs): void;
   beforeRender?(args: IPluginMethodBaseArgs & IPluginMethodChildArgs): ReactNodeWithoutNullOrUndefined;

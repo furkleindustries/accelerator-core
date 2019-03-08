@@ -1,6 +1,6 @@
 import {
-  Tag,
-} from '../tags/Tag';
+  IContentfulAsset,
+} from '../interfaces/IContentfulAsset';
 import {
   IPassageProps,
 } from './IPassageProps';
@@ -8,9 +8,6 @@ import {
   ComponentType,
 } from 'react';
 
-export interface IPassage {
+export interface IPassage extends IContentfulAsset {
   readonly contents: ComponentType<IPassageProps>;
-  readonly name: string;
-  readonly title?: string;
-  readonly tags?: ReadonlyArray<Tag>;
 }

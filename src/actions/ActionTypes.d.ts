@@ -4,6 +4,7 @@ export enum ActionTypes {
   MidrenderSignal = 'MidrenderSignal',
   PassageNavigation = 'PassageNavigation',
   PassageTime = 'PassageTime',
+  StoryOptionUpdate = 'StoryOptionUpdate',
   StoryReset = 'StoryReset',
   StoryRequiresFullRerender = 'StoryRequiresFullRerender',
   StoryRewind = 'StoryRewind',

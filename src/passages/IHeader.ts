@@ -1,12 +1,5 @@
 import {
-  IPassageProps,
-} from './IPassageProps';
-import {
-  ComponentType,
-} from 'react';
+  IPassage,
+} from './IPassage';
 
-export interface IHeader {
-  readonly contents: ComponentType<IPassageProps>;
-  readonly name: string;
-  readonly precedence?: number;
-}
+export interface IHeader extends IPassage {}

@@ -35,10 +35,6 @@ export default {
   /* string: the story-unique name of the passage. */
   name: '%name%',
   
-  /* string: an optional expanded title for the passage to be printed
-   * each time a passage is displayed. */
-  title: '',
-  
   /* array: an optional collection of either plain strings or
    * { key: string, value: string, } objects. */
   tags: [],

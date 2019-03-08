@@ -1,9 +1,5 @@
 import {
-  ComponentType,
-} from 'react';
+  IPassage,
+} from './IPassage';
 
-export interface IFooter {
-  readonly contents: ComponentType;
-  readonly name: string;
-  readonly precedence?: number;
-}
+export interface IFooter extends IPassage {}
