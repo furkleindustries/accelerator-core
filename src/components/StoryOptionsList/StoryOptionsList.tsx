@@ -14,23 +14,26 @@ import styles from './StoryOptionsList.scss';
 export const StoryOptionsList: React.FunctionComponent<IStoryOptionsListOwnProps> = ({
   children,
   className,
+  optionPropName,
 }) => (
-  <ul className={classnames(
-    'storyOptionsList',
-    styles.storyOptionsList,
-    className,
-  )}>
-    {children.map((child, key) => (
-      <li
-        className={classnames('storyOptionListItem')}
-        key={key}
-      >
-        {child.props.optionPropName ?
-          <h4>{child.props.optionPropName}</h4> :
-          null}
+  <div className={classnames('storyOptionsListContainer')}>
+    <ul className={classnames(
+      'storyOptionsList',
+      styles.storyOptionsList,
+      className,
+    )}>
+      {children.map((child, key) => (
+        <li
+          className={classnames('storyOptionListItem')}
+          key={key}
+        >
+          {child.props.optionPropName ?
+            <h4>{child.props.optionPropName}</h4> :
+            null}
 
-        {child}
-      </li>
-    ))}
-  </ul>
+          {child}
+        </li>
+      ))}
+    </ul>
+  </div>
 );
