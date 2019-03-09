@@ -5,6 +5,6 @@ import {
   Dispatch,
 } from 'redux';
 
-export interface IOptionsDispatchProps {
+export interface IStoryOptionsDispatchProps {
   readonly dispatch: Dispatch<IStoryOptionUpdateAction>;
 }
