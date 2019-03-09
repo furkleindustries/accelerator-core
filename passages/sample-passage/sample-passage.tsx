@@ -1,6 +1,9 @@
 /* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
 import * as React from 'react';
 
+/* A small utility function to simplify formatting class names. */
+import classnames from 'classnames';
+
 /* Accelerator components, interfaces, functions, etc. Feel free to destructure
  * these as you see fit. */
 import * as components from '../../bundles/componentsBundle'; 
@@ -68,13 +71,17 @@ class Component extends React.PureComponent<
     } = this.state;
 
     return (
-      <article className={passageObject.name}>
+      <article className={classnames(
+        'passage',
+        builtInStyles.passage,
+        passageObject.name,
+      )}>
         <h2>
           This is the sample Accelerator passage.
         </h2>
 
         <img
-          className={styles.image}
+          className={classnames(styles.image)}
           /* See note above on logo import. */
           src={logo}
         />
@@ -83,7 +90,7 @@ class Component extends React.PureComponent<
         <components.Link
           /* Use the built in style for links. This is opt-in because it should
            * be as easy as possible to do without default framework styling. */
-          className={`${builtInStyles.link}`}
+          className={classnames(builtInStyles.link)}
           passageName="my-first-passage"
         >
           This is a link. Try creating a new passage with
@@ -94,7 +101,7 @@ class Component extends React.PureComponent<
         </components.Link>
 
         <components.Button
-          className={`${styles.button} ${styles.counter}`}
+          className={classnames(styles.button, styles.counter)}
           /* Set the click handler of the element to execute the component's
            * clickIncrementor method. */
           onClick={this.clickIncrementor}
@@ -112,7 +119,7 @@ class Component extends React.PureComponent<
           /* Set the value of the cycleVar variable to the current state of
            * the cycling link. */
           variableToSet="cycleVar"
-          className={builtInStyles.link}
+          className={classnames(builtInStyles.link)}
         >{[
           /* Children should be an array of strings. */
           'This is a cycling link.',
@@ -129,14 +136,14 @@ class Component extends React.PureComponent<
         <p>
           {/* This value updates automatically to match the cycling link
             * choice. */}
-          <em className={styles.cycleVar}>
+          <em className={classnames(styles.cycleVar)}>
             {cycleVar}
           </em>
         </p>
 
         <p>
           <components.Button
-            className={builtInStyles.link}
+            className={classnames(builtInStyles.link)}
             onClick={bookmark}
           >
             If you click this, it sets a bookmark.
@@ -145,7 +152,7 @@ class Component extends React.PureComponent<
 
         <p>
           <components.Button
-            className={builtInStyles.link}
+            className={classnames(builtInStyles.link)}
             onClick={this.toggleSampleSound}
             {
               /* Disable the button until the sound is loaded. */

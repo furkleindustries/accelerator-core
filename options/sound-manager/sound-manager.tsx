@@ -1,6 +1,7 @@
 import {
   Button,
 } from '../../src/components/Button/Button';
+import classnames from 'classnames';
 import {
   Dialog,
 } from '../../src/components/Dialog/Dialog';
@@ -23,21 +24,23 @@ class SoundManagerOption extends React.PureComponent<
   IStoryOptionComponentOwnProps,
   ISoundManagerOptionState
 >  {
+  public readonly state = { soundPanelVisible: false };
+
   public readonly render = () => (
-    <div className={`${styles.soundPanelContainer} soundPanelContainer`}>
+    <div className={classnames(styles.soundPanelContainer, 'soundPanelContainer')}>
       <Button
-        className={`soundPanelButton`}
+        className={classnames('soundPanelButton')}
         onClick={this.toggleSoundPanelVisibility}
         {...(this.state.soundPanelVisible ? { hidden: true } : {})}
       >
         Audio options
       </Button>
 
-      <div className={`soundPanelContentsContainer`}>
+      <div className={classnames('soundPanelContentsContainer')}>
         <Dialog
           dialogActions={<>
             <Button
-              className={`soundPanelCloseButton`}
+              className={classnames('soundPanelCloseButton')}
               onClick={this.toggleSoundPanelVisibility}
             >
               Close

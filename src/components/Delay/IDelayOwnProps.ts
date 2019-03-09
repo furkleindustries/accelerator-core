@@ -1,10 +1,12 @@
 import {
   ReactNodeWithoutNullOrUndefined,
 } from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
+import {
+  IClassNameable,
+} from '../../interfaces/IClassNameable';
 
-export interface IDelayOwnProps {
+export interface IDelayOwnProps extends IClassNameable {
   readonly children: ReactNodeWithoutNullOrUndefined;
   readonly timeout: number;
-  readonly className?: string;
   readonly renderWithZeroOpacity?: boolean;
 }

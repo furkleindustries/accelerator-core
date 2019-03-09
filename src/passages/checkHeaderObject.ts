@@ -1,6 +1,6 @@
 export const strings = {
   CONTENT_INVALID:
-    'The header object\'s content property were not an object or function.',
+    'The header object\'s content property was not a function.',
 
   CONTENT_MISSING:
     'The header object had no content element.',

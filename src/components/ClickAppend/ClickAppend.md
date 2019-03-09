@@ -6,7 +6,7 @@ A component that, when clicked, appends a new piece of content to itself.
 
 ```javascript
 <ClickAppend
-  className="test"
+  className={classnames('test')}
   toAppend="I show up after the first content."
 >
   {/* children */}

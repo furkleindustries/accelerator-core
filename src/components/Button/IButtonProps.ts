@@ -2,9 +2,9 @@ import {
   ButtonProps,
 } from '@material-ui/core/Button';
 import {
-  ReactNodeWithoutNullOrUndefined,
-} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
+  ReactNode,
+} from 'react';
 
 export interface IButtonProps extends ButtonProps {
-  readonly children: ReactNodeWithoutNullOrUndefined;
+  readonly children: ReactNode;
 }

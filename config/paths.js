@@ -45,5 +45,6 @@ export const paths = {
   proxySetup: resolveApp('src/setupProxy.ts'),
   publicDir: resolveApp('public/'),
   renderers: resolveApp('renderers/'),
+  storyOptions: resolveApp('options/'),
   testsSetup: resolveApp('src/setupTests.ts'),
 };

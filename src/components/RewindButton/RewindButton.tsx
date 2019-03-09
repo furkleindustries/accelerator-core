@@ -1,6 +1,7 @@
 import {
   Button,
 } from '../Button/Button';
+import classnames from 'classnames';
 import {
   getUnfilteredRewindIndex,
 } from '../../state/getUnfilteredRewindIndex';
@@ -49,7 +50,11 @@ export class RewindButtonUnconnected extends React.PureComponent<
 
     return (
       <Button
-        className={`rewindButton navigationButton${className ? ` ${className}` : ''}`}
+        className={classnames(
+          'rewindButton',
+          'navigationButton',
+          className,
+        )}
         {...statefulProps}
       >
         {children}

@@ -1,9 +1,11 @@
 import {
+  IClassNameable,
+} from '../../interfaces/IClassNameable';
+import {
   ReactNodeWithoutNullOrUndefined,
 } from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
-export interface IFadeInOwnProps {
+export interface IFadeInOwnProps extends IClassNameable {
   readonly children: ReactNodeWithoutNullOrUndefined;
-  readonly className?: string;
   readonly duration: number;
 }

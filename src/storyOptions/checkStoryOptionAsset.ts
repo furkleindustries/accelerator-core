@@ -8,7 +8,7 @@ import {
 
 export const strings = {
   CONTENT_INVALID:
-    'The passage object\'s content property were not an object or function.',
+    'The passage object\'s content property was not a function.',
 
   CONTENT_MISSING:
     'The passage object had no content element.',
@@ -25,7 +25,7 @@ export const strings = {
 
 /* This function returns an error string if the passage fails, and true if it is
  * a normal passage object. */
-export function checkStoryOptionObject(passage: any): passage is IStoryOption {
+export function checkStoryOptionAsset(passage: any): passage is IStoryOption {
   const {
     content,
     name,

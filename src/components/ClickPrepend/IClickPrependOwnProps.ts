@@ -1,8 +1,10 @@
 import {
-  ReactNodeWithoutNullOrUndefined,
-} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
+  IClassNameable,
+} from '../../interfaces/IClassNameable';
+import {
+  ReactNode,
+} from 'react';
 
-export interface IClickPrependOwnProps {
-  readonly toPrepend: ReactNodeWithoutNullOrUndefined;
-  readonly className?: string;
+export interface IClickPrependOwnProps extends IClassNameable {
+  readonly toPrepend: ReactNode;
 }

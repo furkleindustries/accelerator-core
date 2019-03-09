@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import {
   IHeader,
 } from '../../passages/IHeader';
@@ -5,17 +6,17 @@ import {
   IPassageProps,
 } from '../../passages/IPassageProps';
 import {
-  IPassageContentsContainerDispatchProps,
-} from '../PassageContentsContainer/IPassageContentsContainerDispatchProps';
+  IPassageContentContainerDispatchProps,
+} from '../PassageContentContainer/IPassageContentContainerDispatchProps';
 import {
-  IPassageContentsContainerOwnProps,
-} from '../PassageContentsContainer/IPassageContentsContainerOwnProps';
+  IPassageContentContainerOwnProps,
+} from '../PassageContentContainer/IPassageContentContainerOwnProps';
 import {
   Omit,
 } from '../../typeAliases/Omit';
 import {
   mapDispatchToProps,
-} from '../PassageContentsContainer/PassageContentsContainer';
+} from '../PassageContentContainer/PassageContentContainer';
 import {
   connect,
 } from 'react-redux';
@@ -25,8 +26,6 @@ import {
 
 import * as React from 'react';
 
-import styles from './PassageHeaders.scss';
-
 export const strings = {
   COMPONENT_CONSTRUCTOR_NOT_FOUND:
     'There was no contents property found in the header with name %NAME%.',
@@ -34,21 +33,21 @@ export const strings = {
 
 export const PassageHeaders: React.FunctionComponent<
   { headers: IHeader[] } &
-  Omit<IPassageContentsContainerOwnProps, 'passagesMap'> &
-  IPassageContentsContainerDispatchProps
+  Omit<IPassageContentContainerOwnProps, 'passagesMap'> &
+  IPassageContentContainerDispatchProps
 > = ({
   headers,
   ...passageProps
 }) => (
-  <div className={styles.passageHeaders}>
-    {headers.map(({ contents }, index) => {
-      const SafeContents = assertValid<React.ComponentType<IPassageProps>>(
-        contents,
+  <div className={classnames('passageHeaders')}>
+    {headers.map(({ content }, index) => {
+      const SafeContent = assertValid<React.ComponentType<IPassageProps>>(
+        content,
         strings.COMPONENT_CONSTRUCTOR_NOT_FOUND,
       );
 
       return (
-        <SafeContents
+        <SafeContent
           key={index}
           {...passageProps}
         />

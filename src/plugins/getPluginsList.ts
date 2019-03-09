@@ -1,6 +1,6 @@
 import {
-  checkPluginExport,
-} from './checkPluginExport';
+  checkPluginAsset,
+} from './checkPluginAsset';
 import {
   IPlugin,
 } from './IPlugin';
@@ -37,12 +37,12 @@ export function getPluginsList(): IPlugin[] {
   const pluginsPrecedenceMap: temp = { none: [] };
 
   manifest.forEach(({
+    asset,
     filepath,
-    pluginExport,
   }) => {
-    const pluginObj = pluginExport;
+    const pluginObj = asset;
     try {
-      checkPluginExport(pluginObj);
+      checkPluginAsset(pluginObj);
     } catch (err) {
       const errStr = strings.PLUGIN_OBJECT_INVALID
         .replace('%FILEPATH%', filepath)
@@ -96,4 +96,4 @@ export function getPluginsList(): IPlugin[] {
   ), []);
 
   return pluginsList;
-};
+}

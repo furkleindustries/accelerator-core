@@ -1,6 +1,8 @@
 /* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
 import * as React from 'react';
 
+import classnames from 'classnames';
+
 import * as components from '../../src/passages/componentsBundle';
 import * as tagsBundle from '../../src/passages/tagsBundle';
 import builtInStyles from '../../../passages/_global-styles/built-ins.scss';
@@ -21,7 +23,11 @@ class Footer extends React.PureComponent {
 
     return (
       <footer
-        className={`${styles['%name%']} ${builtInStyles.footer} footer`}
+        className={classnames(
+          'footer',
+          styles['%name%'],
+          builtInStyles.footer,
+        )}
       >
       </footer>
     );

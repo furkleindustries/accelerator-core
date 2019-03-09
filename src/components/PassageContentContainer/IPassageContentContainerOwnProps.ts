@@ -17,7 +17,7 @@ import {
   Tag,
 } from '../../tags/Tag';
 
-export interface IPassageContentsContainerOwnProps {
+export interface IPassageContentContainerOwnProps {
   readonly lastLinkTags: ReadonlyArray<Tag>;
   readonly passageObject: IPassage;
   readonly soundManager: IManager;

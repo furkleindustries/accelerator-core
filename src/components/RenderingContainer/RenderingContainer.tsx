@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import {
   createStoryRequiresFullRerenderAction,
 } from '../../actions/creators/createStoryRequiresFullRerenderAction';
@@ -26,6 +27,7 @@ import {
   connect,
   MapDispatchToProps,
   MapStateToProps,
+  ReactReduxContext,
 } from 'react-redux';
 import {
   SkipToContentLink,
@@ -48,35 +50,43 @@ export class RenderingContainer extends React.PureComponent<IRenderingContainerS
       <>
         <SkipToContentLink />
 
-        <PassagesMapAndStartPassageNameConsumer>
-          {({ passagesMap }) => (
-            <PluginsConsumer>
-              {({ plugins }) => (
-                /**
-                 * This is very evil! But right now it's the only way I've
-                 * found that is guaranteed to work, so evil it is. This and
-                 * the logic in componentDidUpdate force an unmount of
-                 * everything in the story, immediately rerendering the whole
-                 * passage tree and resetting the storyRequiresFullRerender
-                 * prop.
-                 */
-                storyRequiresFullRerender ?
-                  null :
-                  <div className={`${styles.renderingContainer} renderingContainer`}>
-                    <PassagePluginsWrapperConnected
-                      passagesMap={passagesMap}
-                      plugins={plugins}
-                    >
-                      <PassageRendererWrapperConnected
-                        passagesMap={passagesMap}
-                        plugins={plugins}
-                      />
-                    </PassagePluginsWrapperConnected>
-                  </div>
+        <ReactReduxContext.Consumer>
+          {({ store }) => (
+            <PassagesMapAndStartPassageNameConsumer>
+              {({ passagesMap }) => (
+                <PluginsConsumer>
+                  {({ plugins }) => (
+                    /**
+                     * This is very evil! But right now it's the only way I've
+                     * found that is guaranteed to work, so evil it is. This
+                     * and the logic in componentDidUpdate force an unmount of
+                     * everything in the story, immediately rerendering the
+                     * whole passage tree and resetting the
+                     * storyRequiresFullRerender prop.
+                     */
+                    storyRequiresFullRerender ?
+                      null :
+                      <div className={classnames(
+                        'renderingContainer',
+                        styles.renderingContainer,
+                      )}>
+                        <PassagePluginsWrapperConnected
+                          passagesMap={passagesMap}
+                          plugins={plugins}
+                          reduxStore={store}
+                        >
+                          <PassageRendererWrapperConnected
+                            passagesMap={passagesMap}
+                            plugins={plugins}
+                          />
+                        </PassagePluginsWrapperConnected>
+                      </div>
+                  )}
+                </PluginsConsumer>
               )}
-            </PluginsConsumer>
+            </PassagesMapAndStartPassageNameConsumer>
           )}
-        </PassagesMapAndStartPassageNameConsumer>
+        </ReactReduxContext.Consumer>
       </>
     );
   }

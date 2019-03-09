@@ -1,6 +1,6 @@
 export const strings = {
   CONTENT_INVALID:
-    'The footer object\'s content property were not an object or function.',
+    'The footer object\'s content property was not a function.',
 
   CONTENT_MISSING:
     'The footer object had no content element.',

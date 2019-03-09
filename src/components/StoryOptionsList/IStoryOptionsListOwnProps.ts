@@ -1,4 +1,7 @@
 import {
+  IClassNameable,
+} from '../../interfaces/IClassNameable';
+import {
   IStoryOptionComponentOwnProps,
 } from '../../storyOptions/IStoryOptionComponentOwnProps';
 import {
@@ -9,7 +12,7 @@ import {
  * Allow both <StoryOption /> and <StoryOptionList /> children.
  * An OptionList inside an OptionList becomes a nested menu.
  */
-export interface IStoryOptionsListOwnProps {
+export interface IStoryOptionsListOwnProps extends IClassNameable {
   readonly children: ReadonlyArray<
     ReactElement<IStoryOptionComponentOwnProps | IStoryOptionsListOwnProps>
   >;

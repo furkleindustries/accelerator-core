@@ -6,7 +6,7 @@ A component that, when clicked, disappears. Note that while the content will not
 
 ```javascript
 <ClickDisappear
-  className="test"
+  className={classnames('test')}
   fadeOutDuration={500}
 >
   {/* children */}

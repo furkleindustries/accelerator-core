@@ -6,7 +6,7 @@ A lower-level component which allows any piece of content to be replaced with an
 
 ```javascript
 <Clicker
-  className="test"
+  className={classnames('test')}
   contentAfterClick="I am here after click."
 >
   {/* children */}

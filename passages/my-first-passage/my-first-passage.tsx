@@ -1,6 +1,9 @@
 /* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
 import * as React from 'react';
 
+/* A small utility function to simplify formatting class names. */
+import classnames from 'classnames';
+
 /* Accelerator components, interfaces, styles, functions, etc. Feel free to
  * destructure this as you see fit. */
 import * as components from '../../bundles/componentsBundle'; 
@@ -23,7 +26,11 @@ class Passage extends React.PureComponent<passages.IPassageProps> {
 
     return (
       <div
-        className={`${styles['my-first-passage']} ${builtInStyles.passage} passage`}
+        className={classnames(
+          'passage',
+          builtInStyles.passage,
+          styles['my-first-passage'],
+        )}
       >
       </div>
     );

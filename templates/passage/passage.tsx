@@ -1,13 +1,15 @@
 /* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
 import * as React from 'react';
 
+import classnames from 'classnames';
+
 /* Accelerator components, interfaces, styles, functions, etc. Feel free to
  * destructure this as you see fit. */
-import * as components from '../../src/passages/componentsBundle'; 
-import * as passages from '../../src/passages/passagesBundle';
-import * as tags from '../../src/passages/tagsBundle';
+import * as components from '../../bundles/componentsBundle'; 
+import * as passages from '../../bundles/passagesBundle';
+import * as tags from '../../bundles/tagsBundle';
 
-import builtInStyles from '../../passages/_global-styles/built-ins.scss';
+import builtInStyles from '../_global-styles/built-ins.scss';
 import styles from './%name%.scss';
 
 class Passage extends React.PureComponent<passages.IPassageProps> {
@@ -23,7 +25,11 @@ class Passage extends React.PureComponent<passages.IPassageProps> {
 
     return (
       <div
-        className={`${styles['%name%']} ${builtInStyles.passage} passage`}
+        className={classnames(
+          'passage',
+          styles['%name%'],
+          builtInStyles.passage,
+        )}
       >
       </div>
     );

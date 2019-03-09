@@ -1,9 +1,11 @@
 import {
-  ReactNodeWithoutNullOrUndefined,
-} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
+  IClassNameable,
+} from '../../interfaces/IClassNameable';
+import {
+  ReactNode,
+} from 'react';
 
-export interface IClickReplaceOwnProps {
-  readonly children: ReactNodeWithoutNullOrUndefined;
-  readonly replaceWith: ReactNodeWithoutNullOrUndefined;
-  readonly className?: string;
+export interface IClickReplaceOwnProps extends IClassNameable  {
+  readonly children: ReactNode;
+  readonly replaceWith: ReactNode;
 }

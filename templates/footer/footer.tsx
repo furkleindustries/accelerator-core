@@ -1,11 +1,13 @@
 /* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
 import * as React from 'react';
 
-import * as components from '../../src/passages/componentsBundle';
-import * as passages from '../../src/passages/passagesBundle';
-import * as tagsBundle from '../../src/passages/tagsBundle';
+import classnames from 'classnames';
 
-import builtInStyles from '../../passages/built-ins.scss';
+import * as components from '../../bundles/componentsBundle';
+import * as passages from '../../bundles/passagesBundle';
+import * as tagsBundle from '../../bundles/tagsBundle';
+
+import builtInStyles from '../_global-styles/built-ins.scss';
 
 import styles from './%NAME%.scss';
 
@@ -23,7 +25,11 @@ class Footer extends React.PureComponent<passages.IPassageProps> {
 
     return (
       <footer
-        className={`${styles['%name%']} ${builtInStyles.footer} footer`}
+        className={classnames(
+          'footer',
+          styles['%name%'],
+          builtInStyles.footer,
+        )}
       >
       </footer>
     );

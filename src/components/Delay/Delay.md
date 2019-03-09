@@ -6,7 +6,7 @@ A component that does not render its contents on-screen until after a specified 
 
 ```javascript
 <Delay
-  className="test"
+  className={classnames('test')}
   renderWithZeroOpacity={true}
   timeout={2000}
 >

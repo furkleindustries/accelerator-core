@@ -10,28 +10,24 @@ import {
 
 import * as React from 'react';
 
-export class ClickDisappear extends React.PureComponent<IClickDisappearOwnProps> {
-  public render() {
-    const {
-      children,
-      className,
-      fadeOutDuration,
-    } = this.props;
+export const ClickDisappear: React.FunctionComponent<IClickDisappearOwnProps> = ({
+  children,
+  className,
+  fadeOutDuration,
+}) => {
+  const maybeClassName = className ? { className, } : {};
+  const after = fadeOutDuration! > 0 && fadeOutDuration! % 1 === 0 ?
+    <FadeOut duration={fadeOutDuration!}>
+      {children}
+    </FadeOut> :
+    null;
 
-    const maybeClassName = className ? { className, } : {};
-    const after = fadeOutDuration! > 0 && fadeOutDuration! % 1 === 0 ?
-      <FadeOut duration={fadeOutDuration!}>
-        {children}
-      </FadeOut> :
-      null;
-
-    return (
-      <Clicker
-        {...maybeClassName}
-        contentAfterClick={after}
-      >
-        {children}
-      </Clicker>
-    );
-  }
-}
+  return (
+    <Clicker
+      {...maybeClassName}
+      contentAfterClick={after}
+    >
+      {children}
+    </Clicker>
+  );
+};

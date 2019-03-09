@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import {
   IDelayOwnProps,
 } from './IDelayOwnProps';
@@ -19,7 +20,7 @@ export const strings = {
 export class Delay extends React.PureComponent<IDelayOwnProps, IDelayState> {
   public state = { shown: false };
 
-  public componentDidMount() {
+  public componentDidMount = () => {
     const {
       timeout,
     } = this.props;
@@ -30,9 +31,9 @@ export class Delay extends React.PureComponent<IDelayOwnProps, IDelayState> {
     );
 
     setTimeout(() => this.setState({ shown: true }), timeout);
-  }
+  };
 
-  public render() {
+  public render = () => {
     const {
       children,
       className,
@@ -41,7 +42,7 @@ export class Delay extends React.PureComponent<IDelayOwnProps, IDelayState> {
 
     const { shown } = this.state;
 
-    const classNameStr = `delay${className ? ` ${className}` : ''}`;
+    const classNameStr = classnames('delay', className);
 
     if (shown) {
       return (
@@ -61,5 +62,5 @@ export class Delay extends React.PureComponent<IDelayOwnProps, IDelayState> {
     }
     
     return null;
-  }
+  };
 }

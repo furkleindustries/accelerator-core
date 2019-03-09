@@ -1,6 +1,8 @@
 /* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
 import * as React from 'react';
 
+import classnames from 'classnames';
+
 /* Accelerator components, interfaces, styles, functions, etc. Feel free to
  * destructure this as you see fit but watch out that you don't get mixed up
  * between bundle props and component props with the same name (e.g. tags). */
@@ -24,7 +26,11 @@ class Passage extends React.PureComponent {
 
     return (
       <div
-        className={`${styles['%name%']} ${builtInStyles.passage} passage`}
+        className={classnames(
+          'passage',
+          styles['%name%'],
+          builtInStyles.passage,
+        )}
       >
       </div>
     );

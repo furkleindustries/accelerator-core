@@ -6,14 +6,16 @@ import {
   getNormalizedAcceleratorConfig,
 } from '../../src/configuration/getNormalizedAcceleratorConfig';
 
-export default {
+const plugin: IPluginExport = {
+  name: 'debug',
+  /* Always have the debug plugin execute first. */
+  precedence: Number.MAX_SAFE_INTEGER,
   /* Only inject the debug plugin if the story is in debug mode. */
   ...(
     getNormalizedAcceleratorConfig().debug ?
       { content: new DebugPlugin() } :
       {}
   ),
+};
 
-  name: 'Debug',
-  precedence: Number.MAX_SAFE_INTEGER,
-} as IPluginExport;
+export default plugin;

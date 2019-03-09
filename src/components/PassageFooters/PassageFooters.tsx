@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import {
   IFooter,
 } from '../../passages/IFooter';
@@ -5,17 +6,17 @@ import {
   IPassageProps,
 } from '../../passages/IPassageProps';
 import {
-  IPassageContentsContainerOwnProps,
-} from '../PassageContentsContainer/IPassageContentsContainerOwnProps';
+  IPassageContentContainerOwnProps,
+} from '../PassageContentContainer/IPassageContentContainerOwnProps';
 import {
-  IPassageContentsContainerDispatchProps,
-} from '../PassageContentsContainer/IPassageContentsContainerDispatchProps';
+  IPassageContentContainerDispatchProps,
+} from '../PassageContentContainer/IPassageContentContainerDispatchProps';
 import {
   Omit,
 } from '../../typeAliases/Omit';
 import {
   mapDispatchToProps,
-} from '../PassageContentsContainer/PassageContentsContainer';
+} from '../PassageContentContainer/PassageContentContainer';
 import {
   connect,
 } from 'react-redux';
@@ -32,21 +33,21 @@ export const strings = {
 
 export const PassageFooters: React.FunctionComponent<
   { footers: IFooter[] } &
-  Omit<IPassageContentsContainerOwnProps, 'passagesMap'> &
-  IPassageContentsContainerDispatchProps
+  Omit<IPassageContentContainerOwnProps, 'passagesMap'> &
+  IPassageContentContainerDispatchProps
 > = ({
   footers,
   ...passageProps
 }) => (
-  <div className="passageFooters">
-    {footers.map(({ contents }, index) => {
-      const SafeContents = assertValid<React.ComponentType<IPassageProps>>(
-        contents,
+  <div className={classnames('passageFooters')}>
+    {footers.map(({ content }, index) => {
+      const SafeContent = assertValid<React.ComponentType<IPassageProps>>(
+        content,
         strings.COMPONENT_CONSTRUCTOR_NOT_FOUND,
       );
   
       return (
-        <SafeContents
+        <SafeContent
           key={index}
           {...passageProps}
         />

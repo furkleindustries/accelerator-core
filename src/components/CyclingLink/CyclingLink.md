@@ -6,7 +6,7 @@ A component that, when clicked, replaces the initial piece of content with anoth
 
 ```javascript
 <CyclingLink
-  className="test"
+  className={classnames('test')}
   variableToSet="myCycleVar"
 >{[
   'one',

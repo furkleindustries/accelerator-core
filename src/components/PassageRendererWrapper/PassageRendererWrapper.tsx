@@ -4,6 +4,7 @@ import {
 import {
   bookmark as doBookmark,
 } from '../../state/bookmark';
+import classnames from 'classnames';
 import {
   getNormalizedAcceleratorConfig,
 } from '../../configuration/getNormalizedAcceleratorConfig';
@@ -97,7 +98,10 @@ export class PassageRendererWrapper extends React.PureComponent<
           }
 
           return (
-            <div className={`passageRendererWrapper ${rendererName}`}>
+            <div className={classnames(
+              'passageRendererWrapper',
+              rendererName,
+            )}>
               {renderer.render()}
             </div>
           );

@@ -1,9 +1,12 @@
-export interface ILoadingScreenOwnProps {
+import {
+  IClassNameable,
+} from '../../interfaces/IClassNameable';
+
+export interface ILoadingScreenOwnProps extends IClassNameable {
   readonly bodyText: string;
-  readonly descriptions?: string[];
   readonly progressMax: number;
   readonly progressStart: number;
   readonly logoPath: string;
   readonly title: string;
-  readonly className?: string;
+  readonly descriptions?: string[];
 }

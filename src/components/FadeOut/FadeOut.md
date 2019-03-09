@@ -6,7 +6,7 @@ A component that renders at full opacity and eases towards zero opacity over a s
 
 ```javascript
 <FadeOut
-  className="test"
+  className={classnames("test")}
   duration={2000}
 >
   {/* children */}

@@ -2,8 +2,8 @@ import {
   BuiltInTags,
 } from '../tags/BuiltInTags';
 import {
-  checkPassageObject,
-} from './checkPassageObject';
+  checkPassageAsset,
+} from './checkPassageAsset';
 import {
   getTag,
 } from '../tags/getTag';
@@ -70,7 +70,7 @@ export function getPassagesMapAndStartPassageName(): {
     filepath,
   }) => {
     try {
-      checkPassageObject(asset);
+      checkPassageAsset(asset);
     } catch (err) {
       const errStr = strings.PASSAGE_OBJECT_INVALID
         .replace('%FILEPATH%', filepath)

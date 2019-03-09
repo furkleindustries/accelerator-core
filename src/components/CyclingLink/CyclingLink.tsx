@@ -25,37 +25,20 @@ const {
 
 const { Consumer: PluginContextConsumer } = getPluginsContext();
 
-export class CyclingLink extends React.PureComponent<ICyclingLinkOwnProps> {
-  public render() {
-    const {
-      callback,
-      children,
-      className,
-      dontCallbackOnMount,
-      dontSetVariableOnMount,
-      variableToSet,
-    } = this.props;
-
-    return (
-      <PassagesMapAndStartPassageNameContextConsumer>
-        {({ passagesMap }) => (
-          <PluginContextConsumer>
-            {({ plugins }) => (
-              <CyclingLinkInternalConnected
-                callback={callback}
-                className={className}
-                dontCallbackOnMount={dontCallbackOnMount}
-                dontSetVariableOnMount={dontSetVariableOnMount}
-                passagesMap={passagesMap}
-                plugins={plugins}
-                variableToSet={variableToSet}
-              >
-                {children}
-              </CyclingLinkInternalConnected>
-            )}
-          </PluginContextConsumer>
+export const CyclingLink: React.FunctionComponent<ICyclingLinkOwnProps> = (props) => (
+  <PassagesMapAndStartPassageNameContextConsumer>
+    {({ passagesMap }) => (
+      <PluginContextConsumer>
+        {({ plugins }) => (
+          <CyclingLinkInternalConnected
+            passagesMap={passagesMap}
+            plugins={plugins}
+            {...props}
+          >
+            {props.children}
+          </CyclingLinkInternalConnected>
         )}
-      </PassagesMapAndStartPassageNameContextConsumer>
-    );
-  }
-}
+      </PluginContextConsumer>
+    )}
+  </PassagesMapAndStartPassageNameContextConsumer>
+);

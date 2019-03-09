@@ -6,7 +6,7 @@ A component that, when clicked, replaces the initial piece of content with anoth
 
 ```javascript
 <ClickReplace
-  className="test"
+  className={classnames("test")}
   replaceWith="I show up after click."
 >
   {/* children */}

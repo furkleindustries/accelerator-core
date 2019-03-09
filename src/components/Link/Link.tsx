@@ -1,6 +1,7 @@
 import {
   Button,
 } from '../Button/Button';
+import classnames from 'classnames';
 import {
   getPassagesMapAndStartPassageNameContext,
 } from '../../context/getPassagesMapAndStartPassageNameContext';
@@ -46,13 +47,13 @@ export class LinkUnconnected extends React.PureComponent<
 
     return (
       <Button
-        className={`link${className ? ` ${className}` : ''}`}
+        className={classnames('link', className)}
         onClick={this.doNavigation}
       >
         {children}
       </Button>
     );
-  }
+  };
 
   private doNavigation = () => {
     const {

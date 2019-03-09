@@ -1,9 +1,10 @@
+import classnames from 'classnames';
 import {
   IPassageContainerOwnProps,
 } from './IPassageContainerOwnProps';
 import {
-  PassageContentsContainerConnected,
-} from '../PassageContentsContainer/PassageContentsContainer';
+  PassageContentContainerConnected,
+} from '../PassageContentContainer/PassageContentContainer';
 import {
   PassageHeadersConnected,
 } from '../PassageHeaders/PassageHeaders';
@@ -18,16 +19,22 @@ export const PassageContainer = React.forwardRef<HTMLSpanElement, IPassageContai
   headers,
   ...passageProps
 }, ref) => (
-  <div className={`passageContainer ${passageProps.passageObject.name}`}>
+  <div className={classnames(
+    'passageContainer',
+    passageProps.passageObject.name,
+  )}>
     <PassageHeadersConnected
       headers={headers}
       {...passageProps}
     />
 
     {/* Provide a ref which can be scrolled to externally. */}
-    <span className="scroll" ref={ref}></span>
+    <span
+      className={classnames('scroll')}
+      ref={ref}
+    ></span>
 
-    <PassageContentsContainerConnected {...passageProps} />
+    <PassageContentContainerConnected {...passageProps} />
 
     <PassageFootersConnected
       footers={footers}

@@ -7,5 +7,4 @@ import {
 
 export interface IRestartButtonOwnProps extends IButtonProps {
   readonly children: ReactNodeWithoutNullOrUndefined;
-  readonly className?: string;
 }

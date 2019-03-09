@@ -29,25 +29,26 @@ export const StoryOptions: React.FunctionComponent<
       {getStoryOptionsList().map(({
         content: OptionComponentOrList,
         optionPropName,
-      }) => {
-        if (Array.isArray(OptionComponentOrList)) {
-          return (
-            <StoryOptionsList optionPropName={optionPropName}>
-              {OptionComponentOrList.map((child) => React.cloneElement(
-                child,
-                { updateOptionValue: updateOptionValueBound },
-              ))}
-            </StoryOptionsList>
-          );
-        }
-
-        return (
+      }, key) => (
+        Array.isArray(OptionComponentOrList)) ?
+          <StoryOptionsList
+            key={key}
+            optionPropName={optionPropName}
+          >
+            {OptionComponentOrList.map((child, key) => React.cloneElement(
+              child,
+              {
+                key: (child.props as any).key || key,
+                updateOptionValue: updateOptionValueBound,
+              },
+            ))}
+          </StoryOptionsList> :
           <OptionComponentOrList
+            key={key}
             optionPropName={optionPropName}
             updateOptionValue={updateOptionValueBound}
           />
-        );
-      })}
+      )}
     </StoryOptionsList>
   );
 };

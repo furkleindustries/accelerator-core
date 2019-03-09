@@ -10,5 +10,6 @@ export function getAllCompiledCodeDirectories() {
     paths.headers,
     paths.plugins,
     paths.renderers,
+    paths.storyOptions,
   ];
 }

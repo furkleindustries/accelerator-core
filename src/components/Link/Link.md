@@ -6,7 +6,7 @@ The most fundamental component in the Accelerator framework. This component, whe
 
 ```javascript
 <Link
-  className="test"
+  className={classnames('test')}
   passageName="passage2"
   tags={[
     'one',

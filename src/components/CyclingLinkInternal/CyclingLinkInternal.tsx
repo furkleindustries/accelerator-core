@@ -1,6 +1,4 @@
-import {
-  mutateCurrentStoryStateInstanceWithPluginExecution,
-} from '../../state/mutateCurrentStoryStateInstanceWithPluginExecution';
+import classnames from 'classnames';
 import {
   createMidrenderSignalAction,
 } from '../../actions/creators/createMidrenderSignalAction';
@@ -26,6 +24,9 @@ import {
   IStoryStateFrame,
 } from '../../state/IStoryStateFrame';
 import {
+  mutateCurrentStoryStateInstanceWithPluginExecution,
+} from '../../state/mutateCurrentStoryStateInstanceWithPluginExecution';
+import {
   connect,
   MapDispatchToProps,
   MapStateToProps,
@@ -50,14 +51,7 @@ export class CyclingLinkInternal extends React.PureComponent<
   ICyclingLinkInternalStateProps &
   ICyclingLinkInternalDispatchProps
 > {
-  constructor(props: any) {
-    super(props);
-
-    this.doCallback = this.doCallback.bind(this);
-    this.setStoryState = this.setStoryState.bind(this);
-  }
-
-  public componentDidMount() {
+  public componentDidMount = () => {
     const {
       callback,
       children,
@@ -86,25 +80,18 @@ export class CyclingLinkInternal extends React.PureComponent<
         callback(firstState);
       }
     }
-  }
+  };
 
-  public render() {
-    const {
-      children,
-      className,
-    } = this.props;
+  public render = () => (
+    <Cycler
+      callback={this.doCallback}
+      className={classnames(this.props.className)}
+    >
+      {this.props.children}
+    </Cycler>
+  );
 
-    return (
-      <Cycler
-        callback={this.doCallback}
-        className={className}
-      >
-        {children}
-      </Cycler>
-    )
-  }
-
-  private doCallback(current: string) {
+  private doCallback = (current: string) => {
     const {
       callback,
       variableToSet,
@@ -117,9 +104,9 @@ export class CyclingLinkInternal extends React.PureComponent<
     if (typeof callback === 'function') {
       callback(current);
     }
-  }
+  };
 
-  private setStoryState(updatedStateProps: Partial<IStoryStateFrame>) {
+  private setStoryState = (updatedStateProps: Partial<IStoryStateFrame>) => {
     const {
       dispatch,
       history,

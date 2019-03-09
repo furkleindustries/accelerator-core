@@ -1,13 +1,15 @@
 import {
+  IClassNameable,
+} from '../../interfaces/IClassNameable';
+import {
   IPassagesMap,
 } from '../../passages/IPassagesMap';
 import {
   IPlugin,
 } from '../../plugins/IPlugin';
 
-export interface ICyclingLinkInternalOwnProps {
+export interface ICyclingLinkInternalOwnProps extends IClassNameable {
   readonly children: string[];
-  readonly className?: string;
   readonly dontCallbackOnMount?: boolean;
   readonly dontSetVariableOnMount?: boolean;
   readonly passagesMap: IPassagesMap;

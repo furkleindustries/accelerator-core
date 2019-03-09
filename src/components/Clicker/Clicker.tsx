@@ -1,6 +1,7 @@
 import {
   Button,
 } from '../Button/Button';
+import classnames from 'classnames';
 import {
   IClickerOwnProps,
 } from './IClickerOwnProps';
@@ -26,7 +27,7 @@ export class Clicker extends React.PureComponent<IClickerOwnProps, IClickerState
 
     return (
       <Button
-        className={`${styles.clicker} clicker${className ? ` ${className}` : ''}`}
+        className={classnames('clicker', styles.clicker, className)}
         {...(clicked ? {} : { onClick: this.click })}
       >
         {clicked ? contentAfterClick : children}

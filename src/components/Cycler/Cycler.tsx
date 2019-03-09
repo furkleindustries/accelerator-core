@@ -1,6 +1,7 @@
 import {
   Button,
 } from '../Button/Button';
+import classnames from 'classnames';
 import {
   ICyclerOwnProps,
 } from './ICyclerOwnProps';
@@ -9,16 +10,12 @@ import {
 } from './ICyclerState';
 
 import * as React from 'react';
+import { assertValid } from 'ts-assertions';
 
 export class Cycler extends React.PureComponent<ICyclerOwnProps, ICyclerState> {
-  public state = { index: 0 };
-
-  constructor(props: any) {
-    super(props);
-    this.advance = this.advance.bind(this);
-  }
+  public readonly state = { index: 0 };
   
-  public render() {
+  public readonly render = () => {
     const {
       children,
       className,
@@ -28,15 +25,15 @@ export class Cycler extends React.PureComponent<ICyclerOwnProps, ICyclerState> {
 
     return (
       <Button 
-        className={`cycler${className ? ` ${className}` : ''}`}
+        className={classnames('cycler', className)}
         onClick={this.advance}
       >
         {React.Children.toArray(children)[index]}
       </Button>
     );
-  }
+  };
 
-  private advance() {
+  private readonly advance = () => {
     const {
       callback,
       children,
@@ -48,7 +45,7 @@ export class Cycler extends React.PureComponent<ICyclerOwnProps, ICyclerState> {
     const newIndex = index + 1 >= childArray.length ? 0 : index + 1;
     this.setState({ index: newIndex });
     if (typeof callback === 'function') {
-      callback(childArray[newIndex], newIndex);
+      callback(assertValid(childArray[newIndex]), newIndex);
     }
-  }
+  };
 }

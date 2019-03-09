@@ -1,6 +1,7 @@
 import {
   Button,
 } from '../Button/Button';
+import classnames from 'classnames';
 import {
   getPassagesMapAndStartPassageNameContext,
 } from '../../context/getPassagesMapAndStartPassageNameContext';
@@ -80,12 +81,16 @@ export class RestartButtonUnconnected extends React.PureComponent<
 
               return (
                 <Button
-                  className={`resetButton navigationButton${className ? ` ${className}` : ''}`}
+                  className={classnames(
+                    'resetButton',
+                    'navigationButton',
+                    className
+                  )}
                   onClick={boundRestart}
                 >
                   {children}
                 </Button>
-              )
+              );
             }}
           </PluginsContextConsumer>
         )}

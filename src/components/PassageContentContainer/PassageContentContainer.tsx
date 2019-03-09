@@ -8,11 +8,11 @@ import {
   IAction,
 } from '../../actions/IAction';
 import {
-  IPassageContentsContainerDispatchProps,
-} from './IPassageContentsContainerDispatchProps';
+  IPassageContentContainerDispatchProps,
+} from './IPassageContentContainerDispatchProps';
 import {
-  IPassageContentsContainerOwnProps,
-} from './IPassageContentsContainerOwnProps';
+  IPassageContentContainerOwnProps,
+} from './IPassageContentContainerOwnProps';
 import {
   IPassageProps,
 } from '../../passages/IPassageProps';
@@ -44,19 +44,19 @@ export const strings = {
     'No passage could be found in the passages map with the name %NAME%.',
 };
 
-export const PassageContentsContainer: React.FunctionComponent<
-  IPassageContentsContainerOwnProps &
-  IPassageContentsContainerDispatchProps
+export const PassageContentContainer: React.FunctionComponent<
+  IPassageContentContainerOwnProps &
+  IPassageContentContainerDispatchProps
 > = ({
   passageObject,
   passageObject: {
-    contents,
+    content,
     tags,
   },
   ...passageProps
 }) => {
-  const SafeContents = assertValid<React.ComponentType<IPassageProps>>(
-    contents,
+  const SafeContent = assertValid<React.ComponentType<IPassageProps>>(
+    content,
     strings.COMPONENT_NOT_FOUND,
   );
 
@@ -66,7 +66,7 @@ export const PassageContentsContainer: React.FunctionComponent<
   );
 
   return (
-    <SafeContents
+    <SafeContent
       passageObject={passageObject}
       {...passageProps}
     />
@@ -74,13 +74,13 @@ export const PassageContentsContainer: React.FunctionComponent<
 };
 
 export const mapDispatchToProps: MapDispatchToProps<
-  IPassageContentsContainerDispatchProps,
+  IPassageContentContainerDispatchProps,
   null
 > = (
   dispatch: Dispatch<IAction>,
 ) => ({ dispatch });
 
-export const PassageContentsContainerConnected = connect(
+export const PassageContentContainerConnected = connect(
   null,
   mapDispatchToProps,
-)(PassageContentsContainer);
+)(PassageContentContainer);

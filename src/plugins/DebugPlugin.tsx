@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import {
   log,
 } from 'colorful-logging';
@@ -16,7 +17,7 @@ import * as React from 'react';
 import styles from './DebugPlugin.scss';
 
 export class DebugPlugin implements IPlugin {
-  public afterStoryInit(args: IPluginMethodBaseArgs & IPluginMethodStateMutationArgs) {
+  public afterStoryInit = (args: IPluginMethodBaseArgs & IPluginMethodStateMutationArgs) => {
     const {
       passageObject,
       lastLinkTags,
@@ -60,15 +61,24 @@ export class DebugPlugin implements IPlugin {
       <>
         {children}
 
-        <div className={`${styles.debugContainer} debugContainer`}>
-          <p className={`${styles.debugStateTitleContainer} debugStateTitle`}>
-            <strong className={styles.debugStateTitle}>
+        <div className={classnames('debugContainer', styles.debugContainer)}>
+          <p className={classnames(
+            'debugStateTitle',
+            styles.debugStateTitleContainer,
+          )}>
+            <strong className={classnames(styles.debugStateTitle)}>
               Current story state:
             </strong>
           </p>
 
-          <div className={`${styles.debugReadoutContainer} debugReadoutContainer`}>
-            <pre className={`${styles.debugStateReadout} debugStateReadout`}>{
+          <div className={classnames(
+            'debugReadoutContainer',
+            styles.debugReadoutContainer,
+          )}>
+            <pre className={classnames(
+              'debugStateReadout',
+              styles.debugStateReadout,
+            )}>{
               JSON.stringify(currentStoryState, null, 2)
             }</pre>
           </div>
@@ -85,10 +95,10 @@ export class DebugPlugin implements IPlugin {
     log(`PassageContainer has rendered the passage named ${name}.`);
   }
 
-  public afterStoryStateChange({
+  public afterStoryStateChange = ({
     storyState,
     updatedStateProps,
-  }: IPluginMethodBaseArgs & IPluginMethodStateChangingArgs) {
+  }: IPluginMethodBaseArgs & IPluginMethodStateChangingArgs) => {
     log('---- afterStoryStateChange ----');
     log('The following modifications to the story state are being made:');
     log(JSON.stringify(updatedStateProps, null, 2));
@@ -99,13 +109,12 @@ export class DebugPlugin implements IPlugin {
         readout.textContent = JSON.stringify(storyState, null, 2);
       }
     }
-  }
+  };
 
-  public beforeRestart({
+  public beforeRestart = ({
     storyState,
     passageObject: { name },
-  }: IPluginMethodBaseArgs)
-  {
+  }: IPluginMethodBaseArgs) => {
     log('---- beforeRestart ----');
     log('The story is restarting.');
     log(`The passage on which the user restarted was named ${name}.`);
@@ -121,5 +130,5 @@ export class DebugPlugin implements IPlugin {
         readout.textContent = '{}';
       }
     }
-  }
+  };
 }

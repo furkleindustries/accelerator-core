@@ -35,11 +35,11 @@ export class SoundManagerAudioPanel extends React.PureComponent<ISoundManagerAud
 
     return (
       <SoundManagerAudioPanelRefForwarded
-        className={className}
+        className={classnames(className)}
         ref={this.ref}
       />
     );
-  }
+  };
 
   public componentDidMount = () => {
     /* All of this must be done through refs as sound-manager does not export
@@ -53,7 +53,7 @@ export class SoundManagerAudioPanel extends React.PureComponent<ISoundManagerAud
     const soundPanel = soundManager.generateVolumePanelElement();
     safeContainer.appendChild(soundPanel);
   }
-}
+};
 
 export const SoundManagerAudioPanelRefForwarded = React.forwardRef((
   { className }: { className?: string },

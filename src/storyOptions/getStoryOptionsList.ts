@@ -1,6 +1,6 @@
 import {
-  checkStoryOptionObject,
-} from './checkStoryOptionObject';
+  checkStoryOptionAsset,
+} from './checkStoryOptionAsset';
 import {
   IStoryOption,
 } from './IStoryOption';
@@ -40,7 +40,7 @@ export function getStoryOptionsList(): IStoryOption[] {
     filepath,
   }) => {
     try {
-      checkStoryOptionObject(asset);
+      checkStoryOptionAsset(asset);
     } catch (err) {
       const errStr = strings.STORY_OPTION_OBJECT_INVALID
         .replace('%FILEPATH%', filepath)

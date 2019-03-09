@@ -1,6 +1,9 @@
-export interface ICyclingLinkOwnProps {
+import {
+  IClassNameable,
+} from '../../interfaces/IClassNameable';
+
+export interface ICyclingLinkOwnProps extends IClassNameable {
   readonly children: string[];
-  readonly className?: string;
   readonly dontCallbackOnMount?: boolean;
   readonly dontSetVariableOnMount?: boolean;
   readonly variableToSet?: string;

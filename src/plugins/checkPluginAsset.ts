@@ -32,7 +32,7 @@ export const strings = {
 
 /* This function returns an error string if the plugin fails, and true if it is
  * a normal plugin object. */
-export function checkPluginExport(plugin: any): plugin is IPluginExport {
+export function checkPluginAsset(plugin: any): plugin is IPluginExport {
   const {
     content,
     name,
@@ -44,7 +44,7 @@ export function checkPluginExport(plugin: any): plugin is IPluginExport {
   assert(name && typeof name === 'string', strings.NAME_MISSING);
 
   if (content) {
-    assert(typeof content === 'function', strings.CONTENT_INVALID);
+    assert(typeof content === 'object', strings.CONTENT_INVALID);
 
     const count = methods.reduce((total, method) => (
       typeof content[method] === 'function' ? total + 1 : total

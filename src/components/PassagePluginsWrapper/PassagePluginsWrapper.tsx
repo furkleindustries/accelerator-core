@@ -25,7 +25,6 @@ import {
 import {
   connect,
   MapStateToProps,
-  ReactReduxContext,
   MapDispatchToProps,
 } from 'react-redux';
 import {
@@ -53,8 +52,6 @@ export class PassagePluginsWrapper extends React.PureComponent<
   IPassagePluginsWrapperOwnProps & IPassagePluginsWrapperStateProps & IPassagePluginsWrapperDispatchProps,
   IPassagePluginsWrapperState
 > {
-  public static readonly contextType = ReactReduxContext;
-
   public readonly state = { shouldCallRenderPlugin: false };
 
   /* Stores the last seen passage time, allowing the component to discern
@@ -75,9 +72,8 @@ export class PassagePluginsWrapper extends React.PureComponent<
       passageName,
       passagesMap,
       plugins,
+      reduxStore,
     } = props;
-
-    const { store } = this.context;
 
     const safePassageObject = assertValid<IPassage>(
       passagesMap[passageName],
@@ -94,8 +90,8 @@ export class PassagePluginsWrapper extends React.PureComponent<
       if (typeof afterStoryInit === 'function') {
         afterStoryInit({
           lastLinkTags,
-          store,
           passageObject: safePassageObject,
+          store: reduxStore,
           setStoryState(updatedStateProps) {
             /* Do NOT call mutateCurrentStoryStateInstanceWithPluginExecution here,
              * as it may cause an infinite loop of plugin actions. */
@@ -198,8 +194,9 @@ export const mapStateToProps: MapStateToProps<
       storyState,
     },
   },
-}) =>
+}, ownProps) =>
 ({
+  ...ownProps,
   lastLinkTags,
   passageName,
   passageTimeCounter,
