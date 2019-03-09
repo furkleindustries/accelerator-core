@@ -5,27 +5,29 @@ import {
   IStoryOption,
 } from './IStoryOption';
 import {
+  precedenceSort,
+} from '../passages/precedenceSort';
+import {
   assert,
 } from 'ts-assertions';
 
-import manifest from '../../options/options-manifest';
-import { precedenceSort } from '../passages/precedenceSort';
+import manifest from '../../options/storyOptions-manifest';
 
 export const strings = {
-  storyOptionS_MANIFEST_INVALID:
-  'The storyOptions-manifest.json file was not parseable into an array.',
-  
-  storyOption_OBJECT_INVALID:
-  'One of the storyOption objects, found at %FILEPATH%, was invalid. ' +
-  '%REASON%.',
+  STORY_OPTIONS_MANIFEST_INVALID:
+    'The storyOptions-manifest.ts file was not parseable into an array.',
+
+  STORY_OPTION_OBJECT_INVALID:
+    'One of the story option objects, found at %FILEPATH%, was invalid. ' +
+    '%REASON%.',
 };
 
-assert(Array.isArray(manifest), strings.storyOptionS_MANIFEST_INVALID);
+assert(Array.isArray(manifest), strings.STORY_OPTIONS_MANIFEST_INVALID);
 
 /* Memoize results and return them without computation on repeat calls. */
 let storyOptionsList: IStoryOption[] | null = null;
 
-export const getStoryOptionsList = (): IStoryOption[] => {
+export function getStoryOptionsList(): IStoryOption[] {
   if (storyOptionsList) {
     return storyOptionsList;
   }
@@ -40,7 +42,7 @@ export const getStoryOptionsList = (): IStoryOption[] => {
     try {
       checkStoryOptionObject(asset);
     } catch (err) {
-      const errStr = strings.storyOption_OBJECT_INVALID
+      const errStr = strings.STORY_OPTION_OBJECT_INVALID
         .replace('%FILEPATH%', filepath)
         .replace('%REASON%', err);
 
@@ -64,4 +66,4 @@ export const getStoryOptionsList = (): IStoryOption[] => {
   storyOptionsList = precedenceSort(storyOptionsPrecedenceMap);
 
   return storyOptionsList;
-};
+}

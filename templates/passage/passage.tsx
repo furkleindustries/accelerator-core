@@ -41,7 +41,7 @@ const passage: passages.IPassage = {
   /* React.ComponentType<IPassageProps>: the content that should be displayed,
    * or, in the case of noRender passages, a component that can be imported.
    * Should be formatted in JSX style. */
-  contents: Passage,
+  content: Passage,
 };
 
 /* Always make the passage object a default export. */

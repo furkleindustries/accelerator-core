@@ -1,12 +1,6 @@
 import {
-  BuiltInTags,
-} from '../tags/BuiltInTags';
-import {
-  getTag,
-} from '../tags/getTag';
-import {
-  IPassage,
-} from './IPassage';
+  IStoryOption,
+} from './IStoryOption';
 import {
   assert,
   assertValid,
@@ -31,26 +25,24 @@ export const strings = {
 
 /* This function returns an error string if the passage fails, and true if it is
  * a normal passage object. */
-export function checkPassageObject(passage: any): passage is IPassage {
+export function checkStoryOptionObject(passage: any): passage is IStoryOption {
   const {
     content,
     name,
     tags,
-  } = assertValid<IPassage>(
+  } = assertValid<IStoryOption>(
     passage,
     strings.PASSAGE_INVALID,
   );
 
   assert(name && typeof name === 'string', strings.NAME_MISSING);
+
   if (tags) {
     assert(Array.isArray(tags), strings.TAGS_INVALID);
   }
 
-  /* Don't test for content if it's a noRender passage. */
-  if (!tags || !getTag(tags, BuiltInTags.NoRender)) {
-    assert(content, strings.CONTENT_MISSING);
-    assert(typeof content === 'function', strings.CONTENT_INVALID);
-  }
+  assert(content, strings.CONTENT_MISSING);
+  assert(typeof content === 'function', strings.CONTENT_INVALID);
 
   return true;
 }

@@ -15,7 +15,7 @@ import * as React from 'react';
 const {
   name,
   tags,
-  contents: Component,
+  content: Component,
 } = passage;
 
 describe('Tests for the %name% passage.', () => {

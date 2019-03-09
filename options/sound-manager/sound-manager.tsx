@@ -17,8 +17,9 @@ import {
 import * as React from 'react';
 
 import styles from './sound-manager.scss';
+import { IStoryOption } from '../../src/storyOptions/IStoryOption';
 
-export class SoundManagerOption extends React.PureComponent<
+class SoundManagerOption extends React.PureComponent<
   IStoryOptionComponentOwnProps,
   ISoundManagerOptionState
 >  {
@@ -55,3 +56,11 @@ export class SoundManagerOption extends React.PureComponent<
     soundPanelVisible: !this.state.soundPanelVisible,
   });
 }
+
+const option: IStoryOption = {
+  content: SoundManagerOption,
+  name: 'sound-manager-option',
+  optionPropName: null,
+};
+
+export default option;

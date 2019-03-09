@@ -6,6 +6,6 @@ export enum BuiltInTags {
    * passages intended only to contain exported, reusable content), in which
    * case an error will be thrown if an attempt is made to navigate to it or
    * render it, and it will be exempted from validity check failures if it does
-   * not contain a valid contents property. */
+   * not contain a valid content property. */
   NoRender = 'noRender',
 }

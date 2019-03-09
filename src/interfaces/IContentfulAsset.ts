@@ -5,6 +5,6 @@ import {
   ComponentType,
 } from 'react';
 
-export interface IContentfulAsset extends IAsset {
-  readonly contents: ComponentType;
+export interface IContentfulAsset<T extends object> extends IAsset {
+  readonly content: ComponentType<T>;
 }

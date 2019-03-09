@@ -8,7 +8,7 @@ import * as React from 'react';
 
 const {
   name,
-  contents: Component,
+  content: Component,
 } = footer;
 
 describe('Tests for the %name% footer.', () => {

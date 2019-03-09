@@ -1,15 +1,15 @@
 import {
-  getOptionsList,
-} from '../../options/getOptionsList';
+  getStoryOptionsList,
+} from '../../storyOptions/getStoryOptionsList';
 import {
   IOptionsDispatchProps,
-} from './IOptionsDispatchProps'
+} from './IStoryOptionsDispatchProps'
 import {
-  IOptionsOwnProps,
-} from './IOptionsOwnProps';
+  IStoryOptionsOwnProps,
+} from './IStoryOptionsOwnProps';
 import {
-  OptionsList,
-} from '../OptionsList/OptionsList';
+  StoryOptionsList,
+} from '../StoryOptionsList/StoryOptionsList';
 import {
   connect,
   MapDispatchToProps,
@@ -20,35 +20,35 @@ import {
 
 import * as React from 'react';
 
-export const Options: React.FunctionComponent<
-  IOptionsOwnProps & IOptionsDispatchProps
+export const StoryOptions: React.FunctionComponent<
+  IStoryOptionsOwnProps & IOptionsDispatchProps
 > = ({ dispatch }) => {
   const updateOptionValueBound = updateOptionValue.bind(null, dispatch);
   return (
-    <OptionsList>
-      {getOptionsList().map(({
+    <StoryOptionsList>
+      {getStoryOptionsList().map(({
         content: OptionComponentOrList,
-        propName,
+        optionPropName,
       }) => {
         if (Array.isArray(OptionComponentOrList)) {
           return (
-            <OptionsList propName={propName}>
+            <StoryOptionsList optionPropName={optionPropName}>
               {OptionComponentOrList.map((child) => React.cloneElement(
                 child,
                 { updateOptionValue: updateOptionValueBound },
               ))}
-            </OptionsList>
+            </StoryOptionsList>
           );
         }
 
         return (
           <OptionComponentOrList
-            propName={propName}
+            optionPropName={optionPropName}
             updateOptionValue={updateOptionValueBound}
           />
         );
       })}
-    </OptionsList>
+    </StoryOptionsList>
   );
 };
 
@@ -60,4 +60,4 @@ export const mapDispatchToProps: MapDispatchToProps<
 export const StoryOptionsConnected = connect(
   null,
   mapDispatchToProps,
-)(Options);
+)(StoryOptions);

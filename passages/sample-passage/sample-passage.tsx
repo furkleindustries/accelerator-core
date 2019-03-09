@@ -32,7 +32,7 @@ class Component extends React.PureComponent<
     soundLoaded: false,
   };
 
-  private soundName: 'sample' = 'sample';
+  private soundName = 'sample';
 
   constructor(props: passages.IPassageProps) {
     super(props);
@@ -83,7 +83,7 @@ class Component extends React.PureComponent<
         <components.Link
           /* Use the built in style for links. This is opt-in because it should
            * be as easy as possible to do without default framework styling. */
-          className={`${styles.link}`}
+          className={`${builtInStyles.link}`}
           passageName="my-first-passage"
         >
           This is a link. Try creating a new passage with
@@ -206,7 +206,7 @@ const passage: passages.IPassage = {
 
   /* React.ComponentType<IPassageProps>: the content that should be
    * displayed. */
-  contents: Component,
+  content: Component,
 };
 
 /* Always make the passage object a default export. */

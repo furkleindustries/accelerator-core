@@ -8,14 +8,14 @@ import {
   BuiltInTags,
   getTag,
   Tag,
-} from '../../src/passages/tagsBundle';
+} from '../../bundles/tagsBundle';
 
 import * as React from 'react';
 
 const {
   name,
   tags,
-  contents: Component,
+  content: Component,
 } = passage;
 
 const testFactory = (options?: { [key: string]: any}) => (

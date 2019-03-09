@@ -21,6 +21,7 @@
     "generate-manifest:plugins": "node -r esm scripts/generatePluginsManifest.js",
     "generate-manifest:headers": "node -r esm scripts/generateHeadersManifest.js",
     "generate-manifest:footers": "node -r esm scripts/generateFootersManifest.js",
+    "generate-manifest:story-options": "node -r esm scripts/generateStoryOptionsManifest.js",
     "get-electron-redists": "node -r esm scripts/getElectronRedists.js",
     "promote-content-to-executables": "node -r esm scripts/promoteContentToExecutables.js",
     "test": "npm run generate-manifests && node -r esm scripts/test.js --config=config/testing/jest.config.js",

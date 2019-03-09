@@ -10,7 +10,7 @@ export default {
   /* Only inject the debug plugin if the story is in debug mode. */
   ...(
     getNormalizedAcceleratorConfig().debug ?
-      { contents: new DebugPlugin() } :
+      { content: new DebugPlugin() } :
       {}
   ),
 

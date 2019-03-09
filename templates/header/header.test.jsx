@@ -8,7 +8,7 @@ import * as React from 'react';
 
 const {
   name,
-  contents: Component,
+  content: Component,
 } = header;
 
 describe('Tests for the %name% header.', () => {

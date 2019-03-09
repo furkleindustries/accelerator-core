@@ -12,7 +12,7 @@ A lightweight, reactive hypertext fiction framework with the conveniences of mod
 2. [Installation](#installation)
 3. [Creating passages](#creating-passages)
 4. [The bundle imports](#bundle-imports)
-5. [The contents component class/function](#contents-component-creator)
+5. [The content component class/function](#content-component-creator)
 6. [Headers and footers](#headers-and-footers)
 7. [Development server](#development-server)
 8. [Testing your story](#testing)
@@ -96,7 +96,7 @@ All Accelerator passages have simple access to the bundle imports, located in `/
   * The [Permutation](/src/components/Permutation/Permutation.md) component, which randomly shuffles the collection passed as children, and allows picking a slice of the contents.
 * `passagesBundle`:
   * `IPassage`, an interface detailing the properties of the passage object, which is the default export of all passage files.
-  * `IPassageProps`, an interface detailing the properties passed to the `contents` property of the passage object, assuming `contents` is a React component.
+  * `IPassageProps`, an interface detailing the properties passed to the `content` property of the passage object, assuming `content` is a React component.
 * `builtInStyles`, an CSS modules object containing the classes and IDs defined in the passage's base stylesheet (located at [/src/passages/passage.scss]). This could be automatically used/injected, but I intend on making it as easy as possible to do without default styling. This may change in the future. 
 * `tagsBundle`:
   * `BuiltInTags`, an enum which expresses the tags already configured for use by the Accelerator runtime.
@@ -105,8 +105,8 @@ All Accelerator passages have simple access to the bundle imports, located in `/
 
 There is also the [pluginsBundle](/src/passages/pluginBundle.ts), which contains interfaces for plugins and the `DebugPlugin`, and the [actionsBundle](/src/passages/actionsBundle.ts), which contains Redux action interfaces and creator functions, if you want to e.g. manually dispatch built-in Accelerator actions with the `dispatch` function.
 
-<a name="contents-component-creator"></a>
-## The contents component class/function
+<a name="content-component-creator"></a>
+## The content component class/function
 
 For each passage, your ES6 class component (extending `React.Component` or `React.PureComponent`), or functional component (of type `React.SFC`), or React's new stateful functional component types) will be passed props automatically by the higher-order `PassageContainer` component. These props, defined in `IPassageProps`, are as follows:
 

@@ -2,8 +2,8 @@ import {
   AppBar,
 } from '../components/AppBar/AppBar';
 import {
-  Options,
-} from '../components/Options/Options';
+  StoryOptionsConnected,
+} from '../components/StoryOptions/StoryOptions';
 import {
   RestartButton,
 } from '../components/RestartButton/RestartButton';
@@ -37,8 +37,8 @@ export const MenuPluginComponent: React.FunctionComponent = () => (
         </RestartButton>
       </div>
 
-      <div className={`${styles.optionsContainer} optionsContainer`}>
-        <Options />
+      <div className={`${styles.storyOptionsContainer} storyOptionsContainer`}>
+        <StoryOptionsConnected />
       </div>
     </Toolbar>
   </AppBar>

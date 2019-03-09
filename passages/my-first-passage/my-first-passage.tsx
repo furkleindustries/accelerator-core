@@ -3,9 +3,9 @@ import * as React from 'react';
 
 /* Accelerator components, interfaces, styles, functions, etc. Feel free to
  * destructure this as you see fit. */
-import * as components from '../../src/passages/componentsBundle'; 
-import * as passages from '../../src/passages/passagesBundle';
-import * as tags from '../../src/passages/tagsBundle';
+import * as components from '../../bundles/componentsBundle'; 
+import * as passages from '../../bundles/passagesBundle';
+import * as tags from '../../bundles/tagsBundle';
 
 import builtInStyles from '../../passages/_global-styles/built-ins.scss';
 import styles from './my-first-passage.scss';
@@ -41,7 +41,7 @@ const passage: passages.IPassage = {
   /* React.ComponentType<IPassageProps>: the content that should be displayed,
    * or, in the case of noRender passages, a component that can be imported.
    * Should be formatted in JSX style. */
-  contents: Passage,
+  content: Passage,
 };
 
 /* Always make the passage object a default export. */

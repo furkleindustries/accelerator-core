@@ -4,10 +4,5 @@ import {
 import {
   IPassageProps,
 } from './IPassageProps';
-import {
-  ComponentType,
-} from 'react';
 
-export interface IPassage extends IContentfulAsset {
-  readonly contents: ComponentType<IPassageProps>;
-}
+export interface IPassage extends IContentfulAsset<IPassageProps> {}

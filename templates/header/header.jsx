@@ -34,7 +34,7 @@ export default {
 
   /* React.ComponentType<IPassageProps>: the content that should be displayed.
    * Should be formatted in JSX style. */
-  contents: Header,
+  content: Header,
 };
 
 /* Always make the passage object a default export. */

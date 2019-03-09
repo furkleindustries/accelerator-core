@@ -13,4 +13,7 @@ export interface IStoryOptionsListOwnProps {
   readonly children: ReadonlyArray<
     ReactElement<IStoryOptionComponentOwnProps | IStoryOptionsListOwnProps>
   >;
+
+  /* Only necessary if the list is being used as a submenu. */
+  readonly optionPropName?: string | null;
 }

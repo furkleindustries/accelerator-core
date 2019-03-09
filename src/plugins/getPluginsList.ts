@@ -81,7 +81,7 @@ export function getPluginsList(): IPlugin[] {
     /* Sort the plugins in each precedence in ascending lexicographic
      * order. */
     pluginsPrecedenceMap[key]
-      .filter(((exp) => exp.contents))
+      .filter(((exp) => exp.content))
       .sort((aa, bb) => {
         if (aa.name === bb.name) {
           return 0;
@@ -92,7 +92,7 @@ export function getPluginsList(): IPlugin[] {
         return -1;
       })
   )).reduce<IPlugin[]>((prev, curr) => (
-    prev.concat(curr.map((aa) => aa.contents!))
+    prev.concat(curr.map((aa) => aa.content!))
   ), []);
 
   return pluginsList;

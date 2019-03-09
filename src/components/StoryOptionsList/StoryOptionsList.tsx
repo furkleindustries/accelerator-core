@@ -13,7 +13,13 @@ export const StoryOptionsList: React.FunctionComponent<IStoryOptionsListOwnProps
 }) => (
   <ul className="storyOptionsList">
     {children.map((child) => (
-      <li className="storyOptionListItem">{child}</li>
+      <li className="storyOptionListItem">
+        {child.props.optionPropName ?
+          <h4>{child.props.optionPropName}</h4> :
+          null}
+
+        {child}
+      </li>
     ))}
   </ul>
 );

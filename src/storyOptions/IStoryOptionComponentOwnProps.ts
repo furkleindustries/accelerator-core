@@ -1,4 +1,4 @@
-export interface IStoryOptionComponentOwnProps<T extends any = any> {
-  readonly optionPropName: string | null;
-  getOptionValue?(): T;
+export interface IStoryOptionComponentOwnProps {
+  readonly optionPropName?: string | null;
+  updateOptionValue?(): any;
 }

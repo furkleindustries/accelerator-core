@@ -35,5 +35,5 @@ export default {
   
   /* React.ComponentType<IPassageProps>: the content that should be displayed.
    * Should be formatted in JSX style. */
-  contents: Footer,
+  content: Footer,
 };

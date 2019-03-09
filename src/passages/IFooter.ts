@@ -1,5 +1,11 @@
 import {
-  IPassage,
-} from './IPassage';
+  IContentfulAsset,
+} from '../interfaces/IContentfulAsset';
+import {
+  IPassageProps,
+} from './IPassageProps';
+import {
+  IPrecedenceWeighted,
+} from '../interfaces/IPrecedenceWeighted';
 
-export interface IFooter extends IPassage {}
+export interface IFooter extends IContentfulAsset<IPassageProps>, IPrecedenceWeighted {}

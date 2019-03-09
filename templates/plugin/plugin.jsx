@@ -69,7 +69,7 @@ const plugin = {
   name: '%name%',
 
   /* IPlugin: the instantiated plugin object. */
-  contents: new Plugin(),
+  content: new Plugin(),
 };
 
 /* Always make the plugin object a default export. */

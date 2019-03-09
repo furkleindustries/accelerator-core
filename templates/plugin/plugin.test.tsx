@@ -2,7 +2,7 @@ import pluginExport from './%name%';
 
 const {
   name,
-  contents: plugin,
+  content: plugin,
 } = pluginExport;
 
 describe('Tests for the %name% plugin.', () => {

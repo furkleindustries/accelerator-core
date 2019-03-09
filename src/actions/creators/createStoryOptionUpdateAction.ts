@@ -5,7 +5,7 @@ import {
   IStoryOptionUpdateAction,
 } from '../IStoryOptionUpdateAction';
 
-export function createStoryOptionUpdateAction<T extends any = any>(
+export function createStoryOptionUpdateAction<T extends any>(
   propName: string,
   value: T,
 ) {

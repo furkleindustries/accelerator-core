@@ -6,14 +6,16 @@ import {
   getNormalizedAcceleratorConfig,
 } from '../../src/configuration/getNormalizedAcceleratorConfig';
 
-export default {
-  /* Only inject the debug plugin if the story is in debug mode. */
+const plugin: IPluginExport = {
+  /* Only inject the menu if the showMenu config property is truthy. */
   ...(
     getNormalizedAcceleratorConfig().showMenu ?
-      { contents: new MenuPlugin() } :
+      { content: new MenuPlugin() } :
       {}
   ),
 
   name: 'Menu',
   precedence: 0,
-} as IPluginExport;
+};
+
+export default plugin;

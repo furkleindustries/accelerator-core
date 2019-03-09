@@ -36,7 +36,7 @@ const footer: passages.IFooter = {
   
   /* React.ComponentType<IPassageProps>: the content that should be displayed.
    * Should be formatted in JSX style. */
-  contents: Footer,
+  content: Footer,
 };
 
 /* Always make the passage object a default export. */

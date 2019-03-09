@@ -139,9 +139,9 @@ export class PassagePluginsWrapper extends React.PureComponent<
           passageObject,
           storyState,
           /**
-           * If this value is set to the children variable only the
+           * If this value is set to the `children` variable, only the
            * lowest-precedence plugin will render. Please set it to
-           * finalChildren instead.
+           * `finalChildren` instead.
            */
           children: finalChildren,
         }) ||
