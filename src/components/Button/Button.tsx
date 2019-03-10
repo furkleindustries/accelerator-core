@@ -10,13 +10,16 @@ import * as React from 'react';
 
 import styles from './Button.scss';
 
-export const Button: React.FunctionComponent<IButtonProps> = (props) => (
-  <MuiButton {...{
-    ...props,
-    className: classnames(
+export const Button: React.FunctionComponent<IButtonProps> = ({
+  className,
+  ...props
+}) => (
+  <MuiButton
+    {...props}
+    className={classnames(
       'button',
       styles.button,
-      props.className,
-    ),
-  }} />
+      className,
+    )}
+  />
 );

@@ -8,13 +8,16 @@ import * as React from 'react';
 
 import styles from './Chip.scss';
 
-export const Chip: React.FunctionComponent<IChipOwnProps> = (props) => (
-  <MuiChip {...{
-    ...props,
-    className: classnames(
+export const Chip: React.FunctionComponent<IChipOwnProps> = ({
+  className,
+  ...props
+}) => (
+  <MuiChip
+    {...props}
+    className={classnames(
       'chip',
       styles.chip,
-      props.className,
-    ),
-  }} />
+      className,
+    )}
+  />
 );

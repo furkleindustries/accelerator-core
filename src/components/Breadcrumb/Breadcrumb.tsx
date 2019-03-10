@@ -11,13 +11,15 @@ export const Breadcrumb: React.FunctionComponent<IBreadcrumbOwnProps> = ({
   crumb: {
     logo,
     logoAlt,
+    name,
     title,
   },
 
   ...props
 }) => (
-  <Chip {...props}>
-    {logo ? <img src={logo} alt={logoAlt} /> : null}
-    {title}
-  </Chip>
+  <Chip
+    {...props}
+    label={title || name || 'Previous'}
+    {...(logo ? { avatar: <img src={logo} alt={logoAlt} /> }  : {})}
+  />
 );

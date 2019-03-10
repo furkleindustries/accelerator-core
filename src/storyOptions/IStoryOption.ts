@@ -9,10 +9,9 @@ import {
 } from './IStoryOptionComponentOwnProps';
 import {
   ComponentType,
-  ReactElement,
 } from 'react';
 
 export interface IStoryOption extends IAsset, IPrecedenceWeighted {
-  readonly content: ComponentType<IStoryOptionComponentOwnProps> | ReactElement<IStoryOptionComponentOwnProps>[];
+  readonly content: ComponentType<IStoryOptionComponentOwnProps>;
   readonly optionPropName?: string | null;
 }

@@ -32,21 +32,24 @@ import {
 } from './updateOptionValue';
 
 import * as React from 'react';
+import { IBreadcrumbItem } from '../Breadcrumb/IBreadcrumbItem';
 
 export class StoryOptions extends React.PureComponent<
   IStoryOptionsOwnProps & IStoryOptionsDispatchProps,
   IStoryOptionsState
 > {
   public readonly state = {
-    modalVisible: false,
-    trail: [],
+    open: false,
+    trail: [
+      { name: 'Story Options' },
+    ],
   };
 
   public readonly render = () => {
     const { dispatch } = this.props;
 
     const {
-      modalVisible,
+      open,
       trail,
     } = this.state;
 
@@ -57,7 +60,7 @@ export class StoryOptions extends React.PureComponent<
         <Button
           className={classnames('storyOptionsToggle')}
           onClick={this.toggleModalVisibility}
-          {...(modalVisible ? { hidden: true } : {})}
+          {...(open ? { hidden: true } : {})}
         >{
           'Story Options'
         }</Button>
@@ -75,42 +78,39 @@ export class StoryOptions extends React.PureComponent<
             </>
           }
           includeTitle={'Story Options'}
-          open={modalVisible}
+          open={open}
         >
-          <BreadcrumbTrail trail={trail} />
-
-          <StoryOptionsList>
+          <BreadcrumbTrail
+            listComponent={StoryOptionsList}
+            clickBreadcrumb={this.clickBreadcrumb}
+            trail={trail}
+          >
             {getStoryOptionsList().map(({
-              content: OptionComponentOrList,
+              content: OptionComponent,
               optionPropName,
             }, key) => (
-              Array.isArray(OptionComponentOrList)) ?
-                <StoryOptionsList
-                  key={key}
-                  optionPropName={optionPropName}
-                >
-                  {OptionComponentOrList.map((child, key) => React.cloneElement(
-                    child,
-                    {
-                      key: (child.props as any).key || key,
-                      updateOptionValue: updateOptionValueBound,
-                    },
-                  ))}
-                </StoryOptionsList> :
-                <OptionComponentOrList
-                  key={key}
-                  optionPropName={optionPropName}
-                  updateOptionValue={updateOptionValueBound}
-                />
-            )}
-          </StoryOptionsList>
+              <OptionComponent
+                key={key}
+                optionPropName={optionPropName}
+                updateOptionValue={updateOptionValueBound}
+              />
+            ))}
+          </BreadcrumbTrail>
         </Dialog>
       </>
     );
   };
 
+  private readonly clickBreadcrumb = (index: number) => this.setState({
+    trail: this.state.trail.slice(0, index + 1),
+  });
+
+  private readonly addBreadcrumbState = (crumb: IBreadcrumbItem) => this.setState({
+    trail: this.state.trail.concat([ crumb ]),
+  });
+
   private readonly toggleModalVisibility = () => this.setState({
-    modalVisible: !this.state.modalVisible,
+    open: !this.state.open,
   });
 };
 

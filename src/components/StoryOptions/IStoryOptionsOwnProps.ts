@@ -1,7 +1,5 @@
 import {
-  ReactNoOutput,
-} from '../../typeAliases/ReactNoOutput';
+  INoChildren,
+} from '../../interfaces/INoChildren';
 
-export interface IStoryOptionsOwnProps {
-  readonly children?: ReactNoOutput;
-}
+export interface IStoryOptionsOwnProps extends INoChildren {}

@@ -1,3 +1,6 @@
+import {
+  Button,
+} from '../Button/Button';
 import classnames from 'classnames';
 import {
   IStoryOptionsListOwnProps,
@@ -16,32 +19,49 @@ export const StoryOptionsList: React.FunctionComponent<
 > = ({
   children,
   className,
+  open,
+  onClick,
   optionPropName,
-}) => (
-  <div className={classnames('storyOptionsListContainer')}>
-    <ul className={classnames(
-      'storyOptionsList',
-      styles.storyOptionsList,
-      className,
-    )}>
-      {optionPropName ?
-        <h4 className={classnames('storyOptionsListButton')}>{
-          optionPropName
-        }</h4> :
-        null}
+}) => {
+  let content: React.ReactNode;
+  if (open) {
+    content = (
+      <ul className={classnames(
+        'storyOptionsList',
+        styles.storyOptionsList,
+        className,
+      )}>
+        {optionPropName ?
+          <h4 className={classnames('storyOptionsListButton')}>{
+            optionPropName
+          }</h4> :
+          null}
 
-      {children.map((child, key) => (
-        <li
-          className={classnames('storyOptionListItem')}
-          key={key}
-        >
-          {child.props.optionPropName ?
-            <h4>{child.props.optionPropName}</h4> :
-            null}
+        {children.map((child, key) => (
+          <li
+            className={classnames('storyOptionListItem')}
+            key={key}
+          >
+            {child.props.optionPropName ?
+              <h4>{child.props.optionPropName}</h4> :
+              null}
 
-          {child}
-        </li>
-      ))}
-    </ul>
-  </div>
-);
+            {child}
+          </li>
+        ))}
+      </ul>
+    );
+  } else {
+    content = (
+      <Button {...(onClick ? { onClick } : {})}>
+        {optionPropName || 'Story options list'}
+      </Button>
+    );
+  }
+
+  return (
+    <div className={classnames('storyOptionsListContainer')}>
+      {content}
+    </div>
+  );
+};

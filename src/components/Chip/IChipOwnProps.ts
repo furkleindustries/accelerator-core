@@ -2,9 +2,9 @@ import {
   ChipProps,
 } from '@material-ui/core/Chip';
 import {
-  ReactNodeWithoutNullOrUndefined,
-} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
+  ReactNoOutput,
+} from '../../typeAliases/ReactNoOutput';
 
 export interface IChipOwnProps extends ChipProps {
-  readonly children: ReactNodeWithoutNullOrUndefined;
+  readonly children?: ReactNoOutput;
 }

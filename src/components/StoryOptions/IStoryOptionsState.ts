@@ -1,8 +1,11 @@
 import {
   IBreadcrumbItem,
 } from '../Breadcrumb/IBreadcrumbItem';
+import {
+  IOpenable,
+} from '../../interfaces/IOpenable';
 
-export interface IStoryOptionsState {
-  readonly modalVisible: boolean;
+export interface IStoryOptionsState extends IOpenable {
+  readonly open: boolean;
   readonly trail: IBreadcrumbItem[];
 }
