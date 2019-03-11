@@ -3,8 +3,14 @@ import {
 } from '../Breadcrumb/Breadcrumb';
 import classnames from 'classnames';
 import {
+  IBreadcrumbItem,
+} from '../Breadcrumb/IBreadcrumbItem';
+import {
   IBreadcrumbTrailOwnProps,
 } from './IBreadcrumbTrailOwnProps';
+import {
+  IBreadcrumbTrailState,
+} from './IBreadcrumbTrailState';
 
 import * as React from 'react';
 
@@ -12,12 +18,9 @@ export class BreadcrumbTrail extends React.PureComponent<
   IBreadcrumbTrailOwnProps,
   IBreadcrumbTrailState
 > {
-  public readonly state = {
+  public readonly state: IBreadcrumbTrailState = {
     trail: [
-      {
-        name: this.props.title || this.props.name,
-        visible: true, 
-      },
+      { name: this.props.name || 'Start' },
     ],
   };
 
@@ -46,16 +49,25 @@ export class BreadcrumbTrail extends React.PureComponent<
         }</nav>
 
         <ListComponent
+          addBreadcrumb={this.addBreadcrumb}
           breadcrumbTrail={trail}
-          open={true}
+          removeBreadcrumb={this.removeBreadcrumb}
         >
           {children}
         </ListComponent>
       </div>
     );
-  };
+  }; 
 
-  public readonly clickBreadcrumb = (index: number) => this.setState({
+  private readonly addBreadcrumb = (crumb: IBreadcrumbItem) => this.setState({
+    trail: this.state.trail.concat([ crumb ]),
+  }); 
+
+  private readonly clickBreadcrumb = (index: number) => this.setState({
     trail: this.state.trail.slice(0, index + 1),
+  });
+
+  private readonly removeBreadcrumb = () => this.setState({
+    trail: this.state.trail.slice(0, this.state.trail.length - 1),
   });
 }

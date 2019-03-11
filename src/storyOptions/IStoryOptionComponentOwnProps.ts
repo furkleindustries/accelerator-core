@@ -1,4 +1,19 @@
-export interface IStoryOptionComponentOwnProps {
+import {
+  IBreadcrumbTrailAware,
+} from '../interfaces/IBreadcrumbTrailAware';
+import {
+  IClassNameable,
+} from '../interfaces/IClassNameable';
+import {
+  IHideable,
+} from '../interfaces/IHideable';
+
+export interface IStoryOptionComponentOwnProps
+  extends
+    IBreadcrumbTrailAware,
+    IClassNameable,
+    IHideable
+{
   readonly optionPropName?: string | null;
-  updateOptionValue?(): any;
+  updateOptionValue?(value: any): void;
 }

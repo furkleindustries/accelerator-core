@@ -1,4 +1,7 @@
 import {
+  IBreadcrumbTrailAware,
+} from '../../interfaces/IBreadcrumbTrailAware';
+import {
   IClassNameable,
 } from '../../interfaces/IClassNameable';
 import {
@@ -14,7 +17,13 @@ import {
   ReactElement,
 } from 'react';
 
-export interface IStoryOptionsListOwnProps extends IClassNameable, IClickable, IOpenable {
+export interface IStoryOptionsListOwnProps
+  extends
+    IBreadcrumbTrailAware,
+    IClassNameable,
+    IClickable,
+    IOpenable
+{
   /**
    * Allow both <StoryOption /> and <StoryOptionList /> children.
    * An OptionList inside an OptionList becomes a nested menu.

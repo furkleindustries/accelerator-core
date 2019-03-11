@@ -1,4 +1,7 @@
 import {
+  addNeededPropsToStoryOptionsListChild,
+} from './addNeededPropsToStoryOptionsListChild';
+import {
   Button,
 } from '../Button/Button';
 import classnames from 'classnames';
@@ -17,11 +20,14 @@ import styles from './StoryOptionsList.scss';
 export const StoryOptionsList: React.FunctionComponent<
   IStoryOptionsListOwnProps
 > = ({
+  addBreadcrumb,
+  breadcrumbTrail,
   children,
   className,
-  open,
   onClick,
+  open,
   optionPropName,
+  removeBreadcrumb,
 }) => {
   let content: React.ReactNode;
   if (open) {
@@ -46,7 +52,12 @@ export const StoryOptionsList: React.FunctionComponent<
               <h4>{child.props.optionPropName}</h4> :
               null}
 
-            {child}
+            {addNeededPropsToStoryOptionsListChild({
+              addBreadcrumb,
+              breadcrumbTrail,
+              child,
+              removeBreadcrumb,
+            })}
           </li>
         ))}
       </ul>
