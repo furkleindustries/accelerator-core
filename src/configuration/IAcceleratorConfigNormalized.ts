@@ -9,6 +9,6 @@ import {
 } from '../fonts/IFontSubsettingDetailsNormalized';
 
 export interface IAcceleratorConfigNormalized extends IAcceleratorConfig {
-  readonly fontsToLoad?: IFontLoadingDetailsNormalized[];
+  readonly fontsToLoad?: ReadonlyArray<IFontLoadingDetailsNormalized>;
   readonly subsetFont?: IFontSubsettingDetailsNormalized;
 }

@@ -3,7 +3,7 @@ import {
 } from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export interface INOfOwnProps {
-  readonly children: ReactNodeWithoutNullOrUndefined[];
+  readonly children: ReadonlyArray<ReactNodeWithoutNullOrUndefined>;
   readonly n: number;
   readonly shuffle?: boolean;
 }

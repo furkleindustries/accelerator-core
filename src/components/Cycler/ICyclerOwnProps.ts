@@ -6,6 +6,6 @@ import {
 } from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export interface ICyclerOwnProps extends IButtonProps {
-  readonly children: ReactNodeWithoutNullOrUndefined[];
+  readonly children: ReadonlyArray<ReactNodeWithoutNullOrUndefined>;
   callback?(current: ReactNodeWithoutNullOrUndefined, index?: number): void;
 }

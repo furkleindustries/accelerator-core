@@ -12,7 +12,7 @@ import {
 } from './FontStyles';
 
 export interface IFontLoadingDetailsNormalized extends IFontLoadingDetails {
-  readonly formats: FontFormats[];
-  readonly ranges: FontRanges[];
+  readonly formats: ReadonlyArray<FontFormats>;
+  readonly ranges: ReadonlyArray<FontRanges>;
   readonly styles: [ FontStyles ] | [ FontStyles, FontStyles ];
 }

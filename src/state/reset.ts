@@ -18,8 +18,8 @@ import {
 } from 'redux-undo';
 
 export function reset(args: IPluginMethodBaseArgs & {
-  dispatch: Dispatch<IAction>,
-  plugins: IPlugin[],
+  readonly dispatch: Dispatch<IAction>,
+  readonly plugins: ReadonlyArray<IPlugin>,
 })
 {
   const {

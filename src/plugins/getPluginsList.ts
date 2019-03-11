@@ -25,9 +25,9 @@ export const strings = {
 assert(Array.isArray(manifest), strings.PLUGINS_MANIFEST_INVALID);
 
 /* Memoize results and return them without computation on repeat calls. */
-let pluginsList: IPlugin[] | null = null;
+let pluginsList: ReadonlyArray<IPlugin> | null = null;
 
-export function getPluginsList(): IPlugin[] {
+export function getPluginsList(): ReadonlyArray<IPlugin> {
   /* Return the memoized list if it exists. */
   if (pluginsList) {
     return pluginsList;
@@ -77,7 +77,7 @@ export function getPluginsList(): IPlugin[] {
     return 1;
   });
 
-  pluginsList = keys.map<IPluginExport[]>((key) => (
+  pluginsList = keys.map<ReadonlyArray<IPluginExport>>((key) => (
     /* Sort the plugins in each precedence in ascending lexicographic
      * order. */
     pluginsPrecedenceMap[key]
@@ -91,7 +91,7 @@ export function getPluginsList(): IPlugin[] {
 
         return -1;
       })
-  )).reduce<IPlugin[]>((prev, curr) => (
+  )).reduce<ReadonlyArray<IPlugin>>((prev, curr) => (
     prev.concat(curr.map((aa) => aa.content!))
   ), []);
 

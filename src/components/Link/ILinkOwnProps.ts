@@ -4,8 +4,10 @@ import {
 import {
   Tag,
 } from '../../tags/Tag';
+import {
+  ITaggable,
+} from '../../interfaces/ITaggable';
 
-export interface ILinkOwnProps extends IButtonProps {
+export interface ILinkOwnProps extends IButtonProps, ITaggable {
   readonly passageName: string;
-  readonly tags?: Tag[];
 }

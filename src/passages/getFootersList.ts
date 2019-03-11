@@ -25,9 +25,9 @@ export const strings = {
 assert(Array.isArray(manifest), strings.FOOTERS_MANIFEST_INVALID);
 
 /* Memoize results and return them without computation on repeat calls. */
-let footersList: IFooter[] | null = null;
+let footersList: ReadonlyArray<IFooter> | null = null;
 
-export const getFootersList = (): IFooter[] => {
+export function getFootersList(): ReadonlyArray<IFooter> {
   if (footersList) {
     return footersList;
   }
@@ -36,10 +36,10 @@ export const getFootersList = (): IFooter[] => {
   const footersPrecedenceMap: temp = { none: [] };
 
   manifest.forEach(({
+    asset,
     filepath,
-    footerObject,
   }) => {
-    const footerObj = footerObject;
+    const footerObj = asset;
     try {
       checkFooterObject(footerObj);
     } catch (err) {
@@ -65,4 +65,4 @@ export const getFootersList = (): IFooter[] => {
   footersList = precedenceSort(footersPrecedenceMap);
 
   return footersList;
-};
+}

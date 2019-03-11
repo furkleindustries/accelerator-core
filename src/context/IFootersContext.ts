@@ -1,7 +1,7 @@
 import {
   IFooter,
-} from '../../passages/IFooter';
+} from '../passages/IFooter';
 
 export interface IFootersContext {
-  readonly footers: IFooter[];
+  readonly footers: ReadonlyArray<IFooter>;
 }

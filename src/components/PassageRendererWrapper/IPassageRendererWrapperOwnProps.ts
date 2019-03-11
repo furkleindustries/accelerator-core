@@ -4,9 +4,12 @@ import {
 import {
   IPlugin,
 } from '../../plugins/IPlugin';
+import {
+  ReactNoOutput,
+} from '../../typeAliases/ReactNoOutput';
 
 export interface IPassageRendererWrapperOwnProps {
   readonly passagesMap: IPassagesMap;
-  readonly plugins: IPlugin[];
-  readonly children?: never[] | undefined;
+  readonly plugins: ReadonlyArray<IPlugin>;
+  readonly children?: ReactNoOutput;
 }

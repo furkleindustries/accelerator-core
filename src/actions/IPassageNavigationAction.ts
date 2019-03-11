@@ -8,13 +8,10 @@ import {
   IPassage,
 } from '../passages/IPassage';
 import {
-  Tag,
-} from '../tags/Tag';
+  ITaggable,
+} from '../interfaces/ITaggable';
 
 export interface IPassageNavigationAction extends IAction {
   readonly type: ActionTypes.PassageNavigation;
-  readonly value: {
-    passage: IPassage,
-    tags?: ReadonlyArray<Tag>,
-  };
+  readonly value: { passage: IPassage } & ITaggable;
 }

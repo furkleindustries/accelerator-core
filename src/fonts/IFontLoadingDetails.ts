@@ -10,8 +10,8 @@ import {
 
 export interface IFontLoadingDetails {
   readonly family: string;
-  readonly formats: FontFormats | FontFormats[];
-  readonly ranges: FontRanges | FontRanges[];
+  readonly formats: FontFormats | ReadonlyArray<FontFormats>;
+  readonly ranges: FontRanges | ReadonlyArray<FontRanges>;
   readonly styles: FontStyles | [ FontStyles ] | [ FontStyles, FontStyles ];
-  readonly weights: number[];
+  readonly weights: ReadonlyArray<number>;
 }

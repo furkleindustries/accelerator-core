@@ -41,11 +41,11 @@ export function mutateCurrentStoryStateInstanceWithPluginExecution({
   plugins,
   updatedStateProps,
 }: {
-  dispatch: Dispatch<IAction>,
-  history: IHistory,
-  passageObject: IPassage,
-  plugins: IPlugin[],
-  updatedStateProps: Partial<IStoryStateFrame>,
+  readonly dispatch: Dispatch<IAction>,
+  readonly history: IHistory,
+  readonly passageObject: IPassage,
+  readonly plugins: ReadonlyArray<IPlugin>,
+  readonly updatedStateProps: Partial<IStoryStateFrame>,
 }): void
 {
   const action = createStoryStateAction(updatedStateProps);

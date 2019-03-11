@@ -6,6 +6,6 @@ import {
 } from './FontFormats';
 
 export interface IFontSubsettingDetailsNormalized extends IFontSubsettingDetails {
-  readonly formats: FontFormats[];
+  readonly formats: ReadonlyArray<FontFormats>;
   readonly subsetRange: 'US_ASCII' | 'LATIN' | string;
 }

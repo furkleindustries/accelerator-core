@@ -14,101 +14,143 @@ import classnames from 'classnames';
 import {
   IStoryOptionsListOwnProps,
 } from './IStoryOptionsListOwnProps';
+import {
+  IVisibilityTree,
+} from '../BreadcrumbTrail/IVisibilityTree';
+import {
+  assertValid,
+} from 'ts-assertions';
 
 import * as React from 'react';
 
 import styles from './StoryOptionsList.scss';
-import { assertValid, assert } from 'ts-assertions';
-import { IVisibilityTree } from '../BreadcrumbTrail/IVisibilityTree';
+import { IOpenable } from '../../interfaces/IOpenable';
+import { Typography } from '../Typography/Typography';
 
 /**
  * Allow both <StoryOption /> and <StoryOptionsList /> children.
  * A StoryOptionsList inside a StoryOptionsList becomes a nested breadcrumb
  * branch.
  */
-export const StoryOptionsList: React.FunctionComponent<
-  IStoryOptionsListOwnProps
-> = ({
-  addBreadcrumb,
-  children,
-  className,
-  open,
-  optionPropName,
-  removeBreadcrumb,
-  visibilityTree,
-}) => {
-  let content: React.ReactNode;
-  if (open) {
-    content = (
-      <ul className={classnames(
-        'storyOptionsList',
-        styles.storyOptionsList,
-        className,
-      )}>
-        {optionPropName ?
-          <h4 className={classnames('storyOptionsListButton')}>{
-            optionPropName
-          }</h4> :
-          null}
+export class StoryOptionsList extends React.Component<
+  IStoryOptionsListOwnProps,
+  IOpenable
+> {
+  public readonly state: IOpenable = {
+    open: false,
+  };
 
-        {children.map((child, key) => (
-          <li
-            className={classnames('storyOptionListItem')}
-            key={key}
-          >
-            {child.props.optionPropName ?
-              <h4>{child.props.optionPropName}</h4> :
-              null}
+  public readonly render = () => {
+    const { open } = this.state;
 
-            {(() => {
-              assert(
-                argumentsAreValid({
-                  addBreadcrumb,
-                  removeBreadcrumb,
-                  visibilityTree,
-                }),
-              );
+    const {
+      children,
+      className,
+      getBreadcrumbProps,
+      root = false,
+      title,
+      treeSelector,
+    } = this.props;
 
-              const vizTree = assertValid<IVisibilityTree>(
-                visibilityTree,
-              );
+    let content: React.ReactNode;
 
-              if (!childIsShownInVisibilityTree(vizTree, key)) {
-                return null;
-              }
+    const {
+      addBreadcrumb,
+      breadcrumbTrail,
+      removeBreadcrumb,
+      visibilityTree,
+    } = (typeof getBreadcrumbProps === 'function' ? getBreadcrumbProps() : {}) as any;
 
-              if (childIsStoryOptionsList(child)) {
-                return React.cloneElement(child, {
-                  addBreadcrumb,
-                  removeBreadcrumb,
-                  visibilityTree: vizTree.children[key] || { children: [] },
-                });
-              }
+    if (visibilityTree && !visibilityTree.visible) {
+      return null;
+    }
 
+    /** If it is the root list, never collapse it. */
+    if (root || open) {
+      content = (
+        <ul className={classnames(
+          'storyOptionsList',
+          styles.storyOptionsList,
+          className,
+        )}>
+          {title ?
+            <Typography
+              className={classnames('storyOptionsListButton')}
+              component="h4"
+            >{
+              title
+            }</Typography> :
+            null}
+
+          {children.map((child, key) => {
+            const areValid = argumentsAreValid({
+              addBreadcrumb,
+              breadcrumbTrail,
+              removeBreadcrumb,
+              treeSelector,
+              visibilityTree,
+            });
+
+            /**
+             * Do not do any visibility mutation for elements which do not pass
+             * breadcrumb props.
+             */
+            if (!areValid) {
               return child;
-            })()}
-          </li>
-        ))}
-      </ul>
-    );
-  } else {
-    content = (
-      <Button
-        {...(addBreadcrumb ? {
-            onClick() {
-              addBreadcrumb({ name: this.title || 'Story options list' });
-            },
-          } :
-          {})}
-      >
-        {optionPropName || 'Story options list'}
-      </Button>
-    );
-  }
+            }
 
-  return (
-    <div className={classnames('storyOptionsListContainer')}>
-      {content}
-    </div>
-  );
+            const vizTree = assertValid<IVisibilityTree>(
+              visibilityTree,
+            );
+
+            let childContent: React.ReactNode = child;
+            if (!childIsShownInVisibilityTree(vizTree, key)) {
+              childContent = null;
+            } else {
+              childContent = React.cloneElement(child, {
+                treeSelector: treeSelector!.concat([ key ]),
+                getBreadcrumbProps() {
+                  return { 
+                    addBreadcrumb,
+                    breadcrumbTrail,
+                    removeBreadcrumb,
+                    visibilityTree: vizTree.children[key],
+                  };
+                },
+              });
+            }
+
+            return (
+              <li
+                className={classnames('storyOptionListItem')}
+                key={key}
+              >{
+                childContent
+              }</li>
+            );
+          })}
+        </ul>
+      );
+    } else {
+      content = (
+        <Button
+          onClick={() => {
+            this.setState({ open: true });
+
+            if (typeof addBreadcrumb === 'function') {
+              addBreadcrumb({ name: title || 'Story options list' });
+            }
+          }}
+        >
+          {title || 'Story options list'}
+        </Button>
+      );
+    }
+
+    return (
+      <div className={classnames('storyOptionsListContainer')}>
+        {content}
+      </div>
+    );
+  };
 };

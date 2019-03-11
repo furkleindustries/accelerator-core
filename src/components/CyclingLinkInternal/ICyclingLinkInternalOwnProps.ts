@@ -9,11 +9,11 @@ import {
 } from '../../plugins/IPlugin';
 
 export interface ICyclingLinkInternalOwnProps extends IClassNameable {
-  readonly children: string[];
+  readonly children: ReadonlyArray<string>;
   readonly dontCallbackOnMount?: boolean;
   readonly dontSetVariableOnMount?: boolean;
   readonly passagesMap: IPassagesMap;
-  readonly plugins: IPlugin[];
+  readonly plugins: ReadonlyArray<IPlugin>;
   readonly variableToSet?: string;
   callback?(current?: string): void;
 }

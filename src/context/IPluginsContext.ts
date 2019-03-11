@@ -3,5 +3,5 @@ import {
 } from '../plugins/IPlugin';
 
 export interface IPluginsContext {
-  readonly plugins: IPlugin[];
+  readonly plugins: ReadonlyArray<IPlugin>;
 }

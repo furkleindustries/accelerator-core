@@ -5,11 +5,11 @@ import {
   IClassNameable,
 } from '../../interfaces/IClassNameable';
 import {
-  IOpenable,
-} from '../../interfaces/IOpenable';
-import {
   IStoryOptionComponentOwnProps,
 } from '../../storyOptions/IStoryOptionComponentOwnProps';
+import {
+  ITitleable,
+} from '../../interfaces/ITitleable';
 import {
   IVisibilityTreeAware,
 } from '../BreadcrumbTrail/IVisibilityTreeAware';
@@ -21,7 +21,7 @@ export interface IStoryOptionsListOwnProps
   extends
     IBreadcrumbTrailAware,
     IClassNameable,
-    IOpenable,
+    ITitleable,
     IVisibilityTreeAware
 {
   /**
@@ -32,6 +32,5 @@ export interface IStoryOptionsListOwnProps
     ReactElement<IStoryOptionComponentOwnProps | IStoryOptionsListOwnProps>
   >;
 
-  /* Only necessary if the list is being used as a submenu. */
-  readonly optionPropName?: string | null;
+  readonly root?: boolean;
 }

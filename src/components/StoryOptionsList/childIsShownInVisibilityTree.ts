@@ -4,14 +4,11 @@ import {
 
 export function childIsShownInVisibilityTree(
   visibilityTree: IVisibilityTree,
-  indices: number | number[],
+  indices: number | ReadonlyArray<number>,
 ): boolean {
-  return Boolean(
-    visibilityTree &&
-    visibilityTree.visible &&
-    visibilityTree.children &&
-    (
-      Array.isArray(indices) ?
+  if (visibilityTree && visibilityTree.visible && visibilityTree.children) {
+    if (Array.isArray(indices)) {
+      return Boolean(
         indices.reduce<IVisibilityTree | null>((prev, index) => {
           if (prev &&
               prev.children &&
@@ -22,8 +19,12 @@ export function childIsShownInVisibilityTree(
           }
 
           return null;
-        }, visibilityTree) :
-        visibilityTree.children[indices].visible
-    )
-  );
+        }, visibilityTree)
+      );
+    } else {
+      return visibilityTree.children[indices as number] && visibilityTree.children[indices as number].visible;
+    }
+  }
+  
+  return true;
 }

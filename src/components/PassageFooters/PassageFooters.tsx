@@ -32,7 +32,7 @@ export const strings = {
 };
 
 export const PassageFooters: React.FunctionComponent<
-  { footers: IFooter[] } &
+  { readonly footers: ReadonlyArray<IFooter> } &
   Omit<IPassageContentContainerOwnProps, 'passagesMap'> &
   IPassageContentContainerDispatchProps
 > = ({

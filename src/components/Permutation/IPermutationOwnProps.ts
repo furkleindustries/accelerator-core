@@ -3,6 +3,6 @@ import {
 } from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export interface IPermutationOwnProps {
-  readonly children: ReactNodeWithoutNullOrUndefined[];
+  readonly children: ReadonlyArray<ReactNodeWithoutNullOrUndefined>;
   readonly pick?: number;
 }

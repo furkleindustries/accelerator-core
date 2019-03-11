@@ -1,4 +1,4 @@
 export interface IVisibilityTree {
-  readonly children: IVisibilityTree[];
+  readonly children: ReadonlyArray<IVisibilityTree>;
   readonly visible: boolean;
 }

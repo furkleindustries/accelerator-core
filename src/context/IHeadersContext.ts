@@ -1,7 +1,7 @@
 import {
   IHeader,
-} from '../../passages/IHeader';
+} from '../passages/IHeader';
 
 export interface IHeadersContext {
-  readonly headers: IHeader[];
+  readonly headers: ReadonlyArray<IHeader>;
 }

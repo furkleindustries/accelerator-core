@@ -4,5 +4,5 @@ import {
 
 export interface INOfState {
   readonly index: number;
-  readonly shuffled?: ReactNodeWithoutNullOrUndefined[];
+  readonly shuffled?: ReadonlyArray<ReactNodeWithoutNullOrUndefined>;
 }

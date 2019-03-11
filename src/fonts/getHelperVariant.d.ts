@@ -11,8 +11,8 @@ export function getHelperVariant({
   variants,
   weight,
 }: {
-  family: string,
-  style: FontStyles,
-  variants: IFontHelperVariant[],
-  weight: number,
+  readonly family: string,
+  readonly style: FontStyles,
+  readonly variants: ReadonlyArray<IFontHelperVariant>,
+  readonly weight: number,
 }): IFontHelperVariant;

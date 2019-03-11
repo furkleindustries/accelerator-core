@@ -25,9 +25,9 @@ export const strings = {
 assert(Array.isArray(manifest), strings.HEADERS_MANIFEST_INVALID);
 
 /* Memoize results and return them without computation on repeat calls. */
-let headersList: IHeader[] | null = null;
+let headersList: ReadonlyArray<IHeader> | null = null;
 
-export const getHeadersList = (): IHeader[] => {
+export function getHeadersList(): ReadonlyArray<IHeader> {
   if (headersList) {
     return headersList;
   }
@@ -36,12 +36,12 @@ export const getHeadersList = (): IHeader[] => {
   const headersPrecedenceMap: temp = { none: [] };
 
   manifest.forEach(({
+    asset,
     filepath,
-    headerObject,
   }) => {
-    const headerObj = headerObject;
+    const headerObj = asset;
     try {
-      checkHeaderObject(headerObject);
+      checkHeaderObject(headerObj);
     } catch (err) {
       const errStr = strings.HEADER_OBJECT_INVALID
         .replace('%FILEPATH%', filepath)
@@ -65,4 +65,4 @@ export const getHeadersList = (): IHeader[] => {
   headersList = precedenceSort(headersPrecedenceMap);
 
   return headersList;
-};
+}

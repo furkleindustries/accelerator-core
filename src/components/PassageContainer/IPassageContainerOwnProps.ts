@@ -28,8 +28,8 @@ import {
 
 export interface IPassageContainerOwnProps {
   readonly dispatch: Dispatch<IAction>;
-  readonly footers: IFooter[];
-  readonly headers: IHeader[];
+  readonly footers: ReadonlyArray<IFooter>;
+  readonly headers: ReadonlyArray<IHeader>;
   readonly lastLinkTags: ReadonlyArray<Tag>;
   readonly passageObject: IPassage;
   readonly soundManager: IManager;

@@ -1,7 +1,9 @@
-import { IBreadcrumbItem } from '../Breadcrumb/IBreadcrumbItem';
+import {
+  IBreadcrumbItem,
+} from '../Breadcrumb/IBreadcrumbItem';
 
 export function childIsVisibleInList(
-  breadcrumbTrail: IBreadcrumbItem[], 
+  breadcrumbTrail: ReadonlyArray<IBreadcrumbItem>, 
   key: number
 ): boolean {
 

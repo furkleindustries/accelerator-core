@@ -6,7 +6,7 @@ import {
 } from 'ts-assertions';
 
 export function getUnfilteredRewindIndex(
-  past: IStateFrame[],
+  past: ReadonlyArray<IStateFrame>,
   present: IStateFrame,
 ): number {
   assert(present);

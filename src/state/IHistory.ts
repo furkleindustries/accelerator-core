@@ -3,7 +3,7 @@ import {
 } from './IStateFrame';
 
 export interface IHistory {
-  readonly past: IStateFrame[];
+  readonly past: ReadonlyArray<IStateFrame>;
   readonly present: IStateFrame;
-  readonly future: IStateFrame[];
+  readonly future: ReadonlyArray<IStateFrame>;
 }

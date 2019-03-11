@@ -98,7 +98,7 @@ export class RestartButtonUnconnected extends React.PureComponent<
     );
   }
 
-  private restart(passagesMap: IPassagesMap, plugins: IPlugin[]) {
+  private restart(passagesMap: IPassagesMap, plugins: ReadonlyArray<IPlugin>) {
     const {
       passageName,
       storyState,

@@ -1,12 +1,16 @@
 import {
   IBreadcrumbItem,
 } from '../Breadcrumb/IBreadcrumbItem';
+import {
+  TreeSelector,
+} from '../BreadcrumbTrail/TreeSelector';
 
 export function argumentsAreValid<
   T extends Record<any, any> & {
-    readonly breadcrumbTrail: IBreadcrumbItem[],
+    readonly breadcrumbTrail: ReadonlyArray<IBreadcrumbItem>,
+    readonly treeSelector: TreeSelector,
     addBreadcrumb(crumb: IBreadcrumbItem): any,
-    removeBreadcrumb(): any
+    removeBreadcrumb(): any,
   },
 >(args: any): args is T {
   return (

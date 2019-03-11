@@ -1,8 +1,5 @@
 import classnames from 'classnames';
 import {
-  IOpenable,
-} from '../../src/interfaces/IOpenable';
-import {
   IStoryOptionComponentOwnProps,
 } from '../../src/storyOptions/IStoryOptionComponentOwnProps';
 import {
@@ -20,25 +17,18 @@ import * as React from 'react';
 import styles from './sound-manager.scss';
 
 class SoundManagerOption extends React.PureComponent<
-  IStoryOptionComponentOwnProps,
-  IOpenable
+  IStoryOptionComponentOwnProps
 > {
-  public readonly state = { open: false };
-
   public readonly render = () => (
     <StoryOptionsList
+      getBreadcrumbProps={this.props.getBreadcrumbProps}
       className={classnames(styles.soundPanelContainer, 'soundPanelContainer')}
-      optionPropName="Sound options"
-      onClick={this.toggleOpen}
-      open={this.state.open}
+      title="Sound options"
+      treeSelector={this.props.treeSelector}
     >{[
       <SoundManagerAudioPanel key={0} />
     ]}</StoryOptionsList>
   );
-
-  private readonly toggleOpen = () => this.setState({
-    open: !this.state.open,
-  });
 }
 
 const option: IStoryOption = {

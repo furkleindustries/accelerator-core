@@ -20,6 +20,6 @@ import {
 export interface IPassagePluginsWrapperOwnProps {
   readonly children: ReactNodeWithoutNullOrUndefined;
   readonly passagesMap: IPassagesMap;
-  readonly plugins: IPlugin[];
+  readonly plugins: ReadonlyArray<IPlugin>;
   readonly reduxStore: Store<IState, IAction>;
 }

@@ -8,5 +8,5 @@ export interface ILoadingScreenOwnProps extends IClassNameable {
   readonly progressStart: number;
   readonly logoPath: string;
   readonly title: string;
-  readonly descriptions?: string[];
+  readonly descriptions?: ReadonlyArray<string>;
 }

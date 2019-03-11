@@ -6,5 +6,5 @@ import {
 } from './IFooter';
 
 export interface IFooterManifestItem extends IAssetManifestItem {
-  readonly content: IFooter;
+  readonly asset: IFooter;
 }

@@ -15,6 +15,6 @@ export interface IFontHelper {
   readonly family: string;
   readonly fontWeight: number;
   readonly id: string;
-  readonly subsets: FontRanges[];
-  readonly variants: IFontHelperVariant[];
+  readonly subsets: ReadonlyArray<FontRanges>;
+  readonly variants: ReadonlyArray<IFontHelperVariant>;
 }

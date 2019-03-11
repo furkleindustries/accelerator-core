@@ -6,12 +6,12 @@ import {
 } from 'react';
 
 export interface IBeginLoadOptions {
-  bodyText?: string;
-  component?: ComponentType<ILoadingScreenOwnProps>;
-  descriptions?: string[];
-  logoPath?: string;
-  progressMax?: number;
-  progressStart?: number;
-  title?: string;
+  readonly bodyText?: string;
+  readonly component?: ComponentType<ILoadingScreenOwnProps>;
+  readonly descriptions?: ReadonlyArray<string>;
+  readonly logoPath?: string;
+  readonly progressMax?: number;
+  readonly progressStart?: number;
+  readonly title?: string;
   doneCallback?(): void;
 }

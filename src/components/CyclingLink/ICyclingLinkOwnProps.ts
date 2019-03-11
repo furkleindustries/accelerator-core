@@ -3,7 +3,7 @@ import {
 } from '../../interfaces/IClassNameable';
 
 export interface ICyclingLinkOwnProps extends IClassNameable {
-  readonly children: string[];
+  readonly children: ReadonlyArray<string>;
   readonly dontCallbackOnMount?: boolean;
   readonly dontSetVariableOnMount?: boolean;
   readonly variableToSet?: string;
