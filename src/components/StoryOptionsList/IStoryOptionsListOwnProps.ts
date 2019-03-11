@@ -5,14 +5,14 @@ import {
   IClassNameable,
 } from '../../interfaces/IClassNameable';
 import {
-  IClickable,
-} from '../../interfaces/IClickable';
-import {
   IOpenable,
 } from '../../interfaces/IOpenable';
 import {
   IStoryOptionComponentOwnProps,
 } from '../../storyOptions/IStoryOptionComponentOwnProps';
+import {
+  IVisibilityTreeAware,
+} from '../BreadcrumbTrail/IVisibilityTreeAware';
 import {
   ReactElement,
 } from 'react';
@@ -21,8 +21,8 @@ export interface IStoryOptionsListOwnProps
   extends
     IBreadcrumbTrailAware,
     IClassNameable,
-    IClickable,
-    IOpenable
+    IOpenable,
+    IVisibilityTreeAware
 {
   /**
    * Allow both <StoryOption /> and <StoryOptionList /> children.

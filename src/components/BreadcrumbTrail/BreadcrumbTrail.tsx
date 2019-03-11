@@ -14,13 +14,16 @@ import {
 
 import * as React from 'react';
 
-export class BreadcrumbTrail extends React.PureComponent<
-  IBreadcrumbTrailOwnProps,
+export class BreadcrumbTrail<T extends any> extends React.PureComponent<
+  IBreadcrumbTrailOwnProps<T>,
   IBreadcrumbTrailState
 > {
   public readonly state: IBreadcrumbTrailState = {
     trail: [
-      { name: this.props.name || 'Start' },
+      {
+        index: 0,
+        name: this.props.name || 'Start',
+      },
     ],
   };
 
