@@ -6,25 +6,24 @@ export function childIsShownInVisibilityTree(
   visibilityTree: IVisibilityTree,
   indices: number | ReadonlyArray<number>,
 ): boolean {
+  const safeIndices = Array.isArray(indices) ? indices : [ indices ];
   if (visibilityTree && visibilityTree.visible && visibilityTree.children) {
-    if (Array.isArray(indices)) {
-      return Boolean(
-        indices.reduce<IVisibilityTree | null>((prev, index) => {
-          if (prev &&
-              prev.children &&
-              prev.children[index] &&
-              prev.children[index].visible)
-          {
-            return prev.children[index];
-          }
+    let last = visibilityTree;
+    let signal = true;
+    for (let ii = 0; ii < safeIndices.length; ii += 1) {
+      last = last.children[safeIndices[ii]];
+      if (last && last.visible === false) {
+        signal = false;
+        break;
+      } else if (!last) {
+        break;
+      }
+    }
 
-          return null;
-        }, visibilityTree)
-      );
-    } else {
-      return visibilityTree.children[indices as number] && visibilityTree.children[indices as number].visible;
+    if (!signal) {
+      return false;
     }
   }
-  
+
   return true;
 }
