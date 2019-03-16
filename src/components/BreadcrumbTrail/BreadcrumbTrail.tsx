@@ -19,6 +19,7 @@ import {
 } from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 import * as React from 'react';
+import { warn } from 'colorful-logging';
 
 export class BreadcrumbTrail extends React.PureComponent<
   IBreadcrumbTrailOwnProps,
@@ -43,12 +44,14 @@ export class BreadcrumbTrail extends React.PureComponent<
 
       const tree: IVisibilityTree = {
         children: Object.freeze(treeChildren),
+        open: false,
         visible: index + 1 <= 1,
       };
 
       return Object.freeze(tree);
     }),
 
+    open: true,
     visible: index <= 1,
   });
 
@@ -93,9 +96,15 @@ export class BreadcrumbTrail extends React.PureComponent<
     );
   }; 
 
-  private readonly addBreadcrumb = (crumb: IBreadcrumbItem) => this.setState({
-    trail: this.state.trail.concat([ crumb ]),
-  });
+  private readonly addBreadcrumb = (crumb: IBreadcrumbItem) => {
+    this.setState({ trail: this.state.trail.concat([ crumb ]) });
+    if (crumb.treeSelector) {
+      this.setVisibilityTreePropsAt(
+        crumb.treeSelector.slice(0, crumb.treeSelector.length - 1),
+        { open: true },
+      );
+    }
+  };
 
   private readonly clickBreadcrumb = (index: number) => this.setState({
     trail: this.state.trail.slice(0, index + 1),
@@ -107,7 +116,6 @@ export class BreadcrumbTrail extends React.PureComponent<
 
   private readonly getBreadcrumbProps = () => ({
     addBreadcrumb: this.addBreadcrumb,
-    closeList: this.closeList,
     breadcrumbTrail: this.state.trail,
     removeBreadcrumb: this.removeBreadcrumb,
     visibilityTree: this.state.visibilityTree,
@@ -119,21 +127,55 @@ export class BreadcrumbTrail extends React.PureComponent<
     });
   };
 
-  /* TODO: fix this */
-  private readonly closeList = (component: React.Component) => (
-    component.setState({ open: false })
-  );
+  private readonly setVisibilityTreePropsAt = (
+    treeSelector: ReadonlyArray<number>,
+    updatedProps: Partial<IVisibilityTree>,
+  ) => {
+    const updatedVizTree = { ...this.state.visibilityTree };
+    let last = updatedVizTree;
+    let treeToSet = updatedVizTree;
+    for (let ii = 0; ii < treeSelector.length; ii += 1) {
+      treeToSet.children = treeToSet.children.map((child) => ({ ...child }));
+
+      treeToSet = treeToSet.children[treeSelector[ii]];
+      if (!treeToSet) {
+        last.children = last.children.slice(0, treeSelector[ii]).concat([
+          {
+            children: [],
+            open: false,
+            visible: false,
+          },
+        ]).concat(last.children.slice(treeSelector[ii] + 1));
+
+        treeToSet = last.children[treeSelector[ii]];
+        if (!treeToSet) {
+          warn('Tree selector could not be resolved to mutate menu breadcrumb trail.');
+          return;
+        }
+      }
+
+      last = treeToSet;
+    }
+
+    Object.keys(updatedProps).forEach((key) => (
+      treeToSet[key] = updatedProps[key]
+    ));
+
+    this.setState({ visibilityTree: updatedVizTree });
+  }
 
   private readonly trimVisibilityTree = (
     tree: IVisibilityTree,
     trimIndex: number,
     depthIndex = 0,
   ): IVisibilityTree => {
-    debugger;
+    let open;
     let visible;
     if (trimIndex === 0) {
-      visible = depthIndex === 0;
+      open = depthIndex === 0;
+      visible = depthIndex <= 1;
     } else {
+      open = false;
       visible = depthIndex < trimIndex && tree.visible;
     }
 
@@ -142,6 +184,7 @@ export class BreadcrumbTrail extends React.PureComponent<
         this.trimVisibilityTree(tree, trimIndex, depthIndex + 1)
       )),
 
+      open,
       visible,
     };
   };

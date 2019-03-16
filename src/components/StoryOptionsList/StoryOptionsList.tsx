@@ -150,6 +150,7 @@ export class StoryOptionsList extends React.Component<
     if (typeof getBreadcrumbProps === 'function') {
       getBreadcrumbProps().addBreadcrumb({
         name: title || 'Story options list',
+        treeSelector: this.props.treeSelector,
       });
     }
   };
