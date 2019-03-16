@@ -1,6 +1,6 @@
 import {
   IBreadcrumbItem,
-} from '../Breadcrumb/IBreadcrumbItem';
+} from './IBreadcrumbItem';
 import {
   IVisibilityTree,
 } from './IVisibilityTree';

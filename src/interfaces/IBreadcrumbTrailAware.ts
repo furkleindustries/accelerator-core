@@ -1,16 +1,8 @@
 import {
-  IBreadcrumbItem,
-} from '../components/Breadcrumb/IBreadcrumbItem';
-import {
-  IVisibilityTree,
-} from '../components/BreadcrumbTrail/IVisibilityTree';
+  IGetBreadcrumbPropsReturn,
+} from '../components/BreadcrumbTrail/IGetBreadcrumbPropsReturn';
 
 export interface IBreadcrumbTrailAware {
   readonly treeSelector?: ReadonlyArray<number>;
-  getBreadcrumbProps?(): {
-    readonly breadcrumbTrail: ReadonlyArray<IBreadcrumbItem>;
-    readonly visibilityTree: IVisibilityTree;
-    addBreadcrumb(crumb: IBreadcrumbItem): void;
-    removeBreadcrumb(): void;
-  };
+  getBreadcrumbProps?(): IGetBreadcrumbPropsReturn;
 }

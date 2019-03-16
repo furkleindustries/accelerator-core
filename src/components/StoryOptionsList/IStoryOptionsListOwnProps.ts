@@ -32,5 +32,6 @@ export interface IStoryOptionsListOwnProps
     ReactElement<IStoryOptionComponentOwnProps | IStoryOptionsListOwnProps>
   >;
 
+  readonly open?: boolean;
   readonly root?: boolean;
 }

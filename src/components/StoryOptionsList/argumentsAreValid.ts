@@ -1,6 +1,6 @@
 import {
   IBreadcrumbItem,
-} from '../Breadcrumb/IBreadcrumbItem';
+} from '../BreadcrumbTrail/IBreadcrumbItem';
 import {
   TreeSelector,
 } from '../BreadcrumbTrail/TreeSelector';

@@ -4,7 +4,7 @@ import {
 import classnames from 'classnames';
 import {
   IBreadcrumbItem,
-} from '../Breadcrumb/IBreadcrumbItem';
+} from './IBreadcrumbItem';
 import {
   IBreadcrumbTrailOwnProps,
 } from './IBreadcrumbTrailOwnProps';
@@ -97,15 +97,13 @@ export class BreadcrumbTrail extends React.PureComponent<
     trail: this.state.trail.concat([ crumb ]),
   });
 
-  private readonly clickBreadcrumb = (index: number) => (
-    this.setState({
-      trail: this.state.trail.slice(0, index + 1),
-      visibilityTree: this.trimVisibilityTree(
-        this.state.visibilityTree,
-        index,
-      ),
-    })
-  );
+  private readonly clickBreadcrumb = (index: number) => this.setState({
+    trail: this.state.trail.slice(0, index + 1),
+    visibilityTree: this.trimVisibilityTree(
+      this.state.visibilityTree,
+      index,
+    ),
+  });
 
   private readonly getBreadcrumbProps = () => ({
     addBreadcrumb: this.addBreadcrumb,

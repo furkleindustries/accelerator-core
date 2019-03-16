@@ -9,8 +9,8 @@ import {
 } from './childIsShownInVisibilityTree';
 import classnames from 'classnames';
 import {
-  IOpenable,
-} from '../../interfaces/IOpenable';
+  IGetBreadcrumbPropsReturn,
+} from '../BreadcrumbTrail/IGetBreadcrumbPropsReturn';
 import {
   IStoryOptionsListOwnProps,
 } from './IStoryOptionsListOwnProps';
@@ -34,14 +34,9 @@ import styles from './StoryOptionsList.scss';
  * branch.
  */
 export class StoryOptionsList extends React.Component<
-  IStoryOptionsListOwnProps,
-  IOpenable
+  IStoryOptionsListOwnProps
 > {
-  public readonly state: IOpenable = { open: false };
-
   public readonly render = () => {
-    const { open } = this.state;
-
     const {
       children,
       className,
@@ -58,7 +53,7 @@ export class StoryOptionsList extends React.Component<
       breadcrumbTrail,
       removeBreadcrumb,
       visibilityTree,
-    } = (typeof getBreadcrumbProps === 'function' ? getBreadcrumbProps() : {}) as any;
+    } = (typeof getBreadcrumbProps === 'function' ? getBreadcrumbProps() : {}) as IGetBreadcrumbPropsReturn;
 
     /* Do not show the list if the root node is visible: false.*/
     if (visibilityTree && visibilityTree.visible === false) {
@@ -66,7 +61,7 @@ export class StoryOptionsList extends React.Component<
     }
 
     /** If it is the root list, never collapse it. */
-    if (root || open) {
+    if (root || visibilityTree.open) {
       const areValid = argumentsAreValid({
         addBreadcrumb,
         breadcrumbTrail,
@@ -151,8 +146,6 @@ export class StoryOptionsList extends React.Component<
       getBreadcrumbProps,
       title,
     } = this.props;
-
-    this.setState({ open: true });
 
     if (typeof getBreadcrumbProps === 'function') {
       getBreadcrumbProps().addBreadcrumb({

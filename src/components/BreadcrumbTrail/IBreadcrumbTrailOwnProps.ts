@@ -14,6 +14,7 @@ export interface IBreadcrumbTrailOwnProps extends IClassNameable {
   readonly children: ReadonlyArray<ReactElement>;
   readonly listComponent: ComponentType<IBreadcrumbTrailAware & {
     readonly children: ReadonlyArray<any>;
+    readonly open?: boolean;
     readonly root?: boolean;
     closeList?(component: Component): void;
   }>;

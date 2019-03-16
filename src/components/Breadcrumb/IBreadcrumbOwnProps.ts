@@ -1,6 +1,6 @@
 import {
   IBreadcrumbItem,
-} from './IBreadcrumbItem';
+} from '../BreadcrumbTrail/IBreadcrumbItem';
 import {
   IClickable,
 } from '../../interfaces/IClickable';
