@@ -66,7 +66,7 @@ class Plugin {
 
 const plugin = {
   /* string: the name of the plugin. */
-  name: '%name%',
+  name: '{{{name}}}',
 
   /* IPlugin: the instantiated plugin object. */
   content: new Plugin(),

@@ -4,7 +4,7 @@ import {
 
 import * as React from 'react';
 
-import passage from './%name%';
+import passage from './{{{name}}}';
 
 import {
   BuiltInTags,
@@ -17,7 +17,7 @@ const {
   content: Component,
 } = passage;
 
-describe('Tests for the %name% passage.', () => {
+describe('Tests for the {{{name}}} passage.', () => {
   it('Has a non-empty name string.', () => {
     expect(name && typeof name === 'string').toBe(true);
   });

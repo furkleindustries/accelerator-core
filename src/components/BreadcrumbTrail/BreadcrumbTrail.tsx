@@ -121,15 +121,13 @@ export class BreadcrumbTrail extends React.PureComponent<
     visibilityTree: this.state.visibilityTree,
   });
 
-  private readonly removeBreadcrumb = () => {
-    this.setState({
-      trail: this.state.trail.slice(0, this.state.trail.length - 1),
-      visibilityTree: this.trimVisibilityTree(
-        this.state.visibilityTree,
-        Math.max(0, this.state.trail.length - 2),
-      ),
-    });
-  };
+  private readonly removeBreadcrumb = () => this.setState({
+    trail: this.state.trail.slice(0, this.state.trail.length - 1),
+    visibilityTree: this.trimVisibilityTree(
+      this.state.visibilityTree,
+      Math.max(0, this.state.trail.length - 2),
+    ),
+  });
 
   private readonly setVisibilityTreePropsAt = (
     treeSelector: ReadonlyArray<number>,
@@ -166,7 +164,7 @@ export class BreadcrumbTrail extends React.PureComponent<
     ));
 
     this.setState({ visibilityTree: updatedVizTree });
-  }
+  };
 
   private readonly trimVisibilityTree = (
     tree: IVisibilityTree,
@@ -179,7 +177,12 @@ export class BreadcrumbTrail extends React.PureComponent<
       open = depthIndex === 0;
       visible = depthIndex <= 1;
     } else {
-      open = false;
+      if (depthIndex < trimIndex) {
+        open = tree.open;
+      } else {
+        open = false;
+      }
+
       visible = depthIndex < trimIndex && tree.visible;
     }
 

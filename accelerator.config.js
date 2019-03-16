@@ -11,7 +11,7 @@ export default {
    * @property {string}
    * The page title which will be displayed in the browser.
    */
-  storyTitle: '%name%',
+  storyTitle: '{{{name}}}',
 
   /**
    * @property {string} 
@@ -110,7 +110,7 @@ export default {
    * @property {string}
    * The Interactive Fiction ID of the story.
    */
-  ifid: '%ifid%',
+  ifid: '{{{ifid}}}',
 
   /**
    * @property {number}
@@ -140,4 +140,16 @@ export default {
    * Passed directly to redux-undo's undoable() syncFilter option.
    */
   historySynchronizeUnrewindableStateWithPresent: true,
+
+  /**
+   * @property {string}
+   * The version of `accelerator-core` used to create the story.
+   */
+  acceleratorCoreVersion: '{{{coreVersion}}}',
+
+  /**
+   * @property {string}
+   * The version of `accelerator-tool` used to create the story.
+   */
+  acceleratorToolVersion: '{{{toolVersion}}}',
 };

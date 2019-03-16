@@ -10,7 +10,7 @@ import * as passages from '../../bundles/passagesBundle';
 import * as tags from '../../bundles/tagsBundle';
 
 import builtInStyles from '../_global-styles/built-ins.scss';
-import styles from './%name%.scss';
+import styles from './{{{name}}}.scss';
 
 class Passage extends React.PureComponent<passages.IPassageProps> {
   public render() {
@@ -27,7 +27,7 @@ class Passage extends React.PureComponent<passages.IPassageProps> {
       <div
         className={classnames(
           'passage',
-          styles['%name%'],
+          styles['{{{name}}}'],
           builtInStyles.passage,
         )}
       >
@@ -38,7 +38,7 @@ class Passage extends React.PureComponent<passages.IPassageProps> {
 
 const passage: passages.IPassage = {
   /* string: the story-unique name of the passage. */
-  name: '%name%',
+  name: '{{{name}}}',
   
   /* Tag[]: an optional collection of either plain strings or
    * { key: string, value: string, } objects. */

@@ -9,7 +9,7 @@ import * as tagsBundle from '../../bundles/tagsBundle';
 
 import builtInStyles from '../_global-styles/built-ins.scss';
 
-import styles from './%NAME%.scss';
+import styles from './{{{name}}}.scss';
 
 /* The footer gets all the same props as a normal passage. */
 class Footer extends React.PureComponent<passages.IPassageProps> {
@@ -27,7 +27,7 @@ class Footer extends React.PureComponent<passages.IPassageProps> {
       <footer
         className={classnames(
           'footer',
-          styles['%name%'],
+          styles['{{{name}}}'],
           builtInStyles.footer,
         )}
       >
@@ -38,7 +38,7 @@ class Footer extends React.PureComponent<passages.IPassageProps> {
 
 const footer: passages.IFooter = {
   /* string: the name of the footer. */
-  name: '%name%',
+  name: '{{{name}}}',
   
   /* React.ComponentType<IPassageProps>: the content that should be displayed.
    * Should be formatted in JSX style. */
