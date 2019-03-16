@@ -13,6 +13,7 @@ import {
 
 export interface IAcceleratorConfig {
   readonly [key: string]: any;
+  readonly coreVersion: string;
   readonly debug: boolean;
   readonly historyStackLimit: number;
   readonly historySaveTypes:
@@ -20,12 +21,14 @@ export interface IAcceleratorConfig {
     ReadonlyArray<ActionTypes> |
     string |
     ReadonlyArray<string>;
+
   readonly historySynchronizeUnrewindableStateWithPresent: boolean;
   readonly publicUrl: string;
   readonly rendererName: BuiltInRenderers | string;
   readonly showMenu: boolean;
   readonly storyDescription: string;
   readonly storyTitle: string;
+  readonly toolVersion: string;
   readonly fontsToLoad?: ReadonlyArray<IFontLoadingDetails | string>;
   readonly subsetFont?: IFontSubsettingDetails | string;
 }
