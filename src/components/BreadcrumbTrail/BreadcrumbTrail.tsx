@@ -124,6 +124,10 @@ export class BreadcrumbTrail extends React.PureComponent<
   private readonly removeBreadcrumb = () => {
     this.setState({
       trail: this.state.trail.slice(0, this.state.trail.length - 1),
+      visibilityTree: this.trimVisibilityTree(
+        this.state.visibilityTree,
+        Math.max(0, this.state.trail.length - 2),
+      ),
     });
   };
 
