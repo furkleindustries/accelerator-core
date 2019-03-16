@@ -5,9 +5,6 @@ import {
   Button,
 } from '../Button/Button';
 import {
-  childIsStoryOptionsList,
-} from './childIsStoryOptionsList';
-import {
   childIsShownInVisibilityTree,
 } from './childIsShownInVisibilityTree';
 import classnames from 'classnames';
@@ -36,9 +33,7 @@ export class StoryOptionsList extends React.Component<
   IStoryOptionsListOwnProps,
   IOpenable
 > {
-  public readonly state: IOpenable = {
-    open: false,
-  };
+  public readonly state: IOpenable = { open: false };
 
   public readonly render = () => {
     const { open } = this.state;
@@ -61,7 +56,8 @@ export class StoryOptionsList extends React.Component<
       visibilityTree,
     } = (typeof getBreadcrumbProps === 'function' ? getBreadcrumbProps() : {}) as any;
 
-    if (visibilityTree && !visibilityTree.visible) {
+    /* Do not show the list if the root node is visible: false.*/
+    if (visibilityTree && visibilityTree.visible === false) {
       return null;
     }
 

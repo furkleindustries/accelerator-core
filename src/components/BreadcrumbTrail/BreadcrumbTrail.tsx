@@ -11,13 +11,17 @@ import {
 import {
   IBreadcrumbTrailState,
 } from './IBreadcrumbTrailState';
+import {
+  IVisibilityTree,
+} from './IVisibilityTree';
+import {
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 import * as React from 'react';
-import { IVisibilityTree } from './IVisibilityTree';
-import { ReactNodeWithoutNullOrUndefined } from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
-export class BreadcrumbTrail<T extends any> extends React.PureComponent<
-  IBreadcrumbTrailOwnProps<T>,
+export class BreadcrumbTrail extends React.PureComponent<
+  IBreadcrumbTrailOwnProps,
   IBreadcrumbTrailState
 > {
   private readonly assembleVisibilityTree = (children: ReactNodeWithoutNullOrUndefined): IVisibilityTree => ({
@@ -54,16 +58,14 @@ export class BreadcrumbTrail<T extends any> extends React.PureComponent<
     return (
       <div className={classnames('breadcrumbTrailContainer', className)}>
         <nav className={classnames('breadcrumbNavigator')}>{
-          /** Don't show the trail unless there's more than one. */
-          trail.length > 1 ?
-            trail.map((crumb, key) => (
-              <Breadcrumb
-                crumb={crumb}
-                key={key}
-                onClick={this.clickBreadcrumb.bind(this, key)}
-              />
-            )) :
-            null
+          /** Don't show the current breadcrumb. */
+          (trail.length > 1 ? trail.slice(0, 1) : []).map((crumb, key) => (
+            <Breadcrumb
+              crumb={crumb}
+              key={key}
+              onClick={this.clickBreadcrumb.bind(this, key)}
+            />
+          ))
         }</nav>
 
         <ListComponent
@@ -81,10 +83,13 @@ export class BreadcrumbTrail<T extends any> extends React.PureComponent<
     trail: this.state.trail.concat([ crumb ]),
   });
 
-  private readonly clickBreadcrumb = (index: number) => this.setState({
-    trail: this.state.trail.slice(0, index + 1),
-    visibilityTree: this.trimVisibilityTree(this.state.visibilityTree, index),
-  });
+  private readonly clickBreadcrumb = (index: number) => {
+    debugger;
+    this.setState({
+      trail: this.state.trail.slice(0, index + 1),
+      visibilityTree: this.trimVisibilityTree(this.state.visibilityTree, index),
+    });
+  };
 
   private readonly getBreadcrumbProps = () => ({
     addBreadcrumb: this.addBreadcrumb,
@@ -93,9 +98,11 @@ export class BreadcrumbTrail<T extends any> extends React.PureComponent<
     visibilityTree: this.state.visibilityTree,
   });
 
-  private readonly removeBreadcrumb = () => this.setState({
-    trail: this.state.trail.slice(0, this.state.trail.length - 1),
-  });
+  private readonly removeBreadcrumb = () => {
+    this.setState({
+      trail: this.state.trail.slice(0, this.state.trail.length - 1),
+    });
+  };
 
   private readonly trimVisibilityTree = (
     visibilityTree: IVisibilityTree,
