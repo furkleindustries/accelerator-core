@@ -24,18 +24,32 @@ export class BreadcrumbTrail extends React.PureComponent<
   IBreadcrumbTrailOwnProps,
   IBreadcrumbTrailState
 > {
-  private readonly assembleVisibilityTree = (children: ReactNodeWithoutNullOrUndefined): IVisibilityTree => ({
+  private readonly assembleVisibilityTree = (
+    children: ReactNodeWithoutNullOrUndefined,
+    index: number,
+  ): IVisibilityTree => ({
     children: React.Children.map(children, (child) => {
-      return {
-        children: React.isValidElement<any>(child) && child.props.children ?
-          React.Children.map(child.props.children, this.assembleVisibilityTree) :
-          [],
-  
-        visible: true,
+      let treeChildren: ReadonlyArray<IVisibilityTree> = [];
+      if (React.isValidElement(child)) {
+        if (Array.isArray((child as any).props.children)) {
+          treeChildren = React.Children.map(
+            (child as any).props.children,
+            (child) => this.assembleVisibilityTree(child, index + 1),
+          );
+        } else if (typeof (child as any).props.collectVisibilityTree === 'function') {
+          treeChildren = (child as any).props.collectVisibilityTree();
+        }
+      }
+
+      const tree: IVisibilityTree = {
+        children: Object.freeze(treeChildren),
+        visible: index + 1 <= 1,
       };
+
+      return Object.freeze(tree);
     }),
 
-    visible: true,
+    visible: index <= 1,
   });
 
   public readonly state: IBreadcrumbTrailState = {
@@ -43,7 +57,7 @@ export class BreadcrumbTrail extends React.PureComponent<
       { name: this.props.name || 'Start' },
     ],
 
-    visibilityTree: this.assembleVisibilityTree(this.props.children),
+    visibilityTree: this.assembleVisibilityTree(this.props.children, 0),
   };
 
   public readonly render = () => {
@@ -83,16 +97,19 @@ export class BreadcrumbTrail extends React.PureComponent<
     trail: this.state.trail.concat([ crumb ]),
   });
 
-  private readonly clickBreadcrumb = (index: number) => {
-    debugger;
+  private readonly clickBreadcrumb = (index: number) => (
     this.setState({
       trail: this.state.trail.slice(0, index + 1),
-      visibilityTree: this.trimVisibilityTree(this.state.visibilityTree, index),
-    });
-  };
+      visibilityTree: this.trimVisibilityTree(
+        this.state.visibilityTree,
+        index,
+      ),
+    })
+  );
 
   private readonly getBreadcrumbProps = () => ({
     addBreadcrumb: this.addBreadcrumb,
+    closeList: this.closeList,
     breadcrumbTrail: this.state.trail,
     removeBreadcrumb: this.removeBreadcrumb,
     visibilityTree: this.state.visibilityTree,
@@ -104,14 +121,30 @@ export class BreadcrumbTrail extends React.PureComponent<
     });
   };
 
-  private readonly trimVisibilityTree = (
-    visibilityTree: IVisibilityTree,
-    heightToRetain: number,
-  ): IVisibilityTree => ({
-    children: visibilityTree.children.map((child) => (
-      this.trimVisibilityTree(child, heightToRetain - 1)
-    )),
+  /* TODO: fix this */
+  private readonly closeList = (component: React.Component) => (
+    component.setState({ open: false })
+  );
 
-    visible: heightToRetain <= 0 || visibilityTree.visible,
-  });
+  private readonly trimVisibilityTree = (
+    tree: IVisibilityTree,
+    trimIndex: number,
+    depthIndex = 0,
+  ): IVisibilityTree => {
+    debugger;
+    let visible;
+    if (trimIndex === 0) {
+      visible = depthIndex === 0;
+    } else {
+      visible = depthIndex < trimIndex && tree.visible;
+    }
+
+    return {
+      children: tree.children.map((tree) => (
+        this.trimVisibilityTree(tree, trimIndex, depthIndex + 1)
+      )),
+
+      visible,
+    };
+  };
 }

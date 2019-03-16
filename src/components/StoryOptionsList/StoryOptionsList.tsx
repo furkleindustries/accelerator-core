@@ -9,6 +9,9 @@ import {
 } from './childIsShownInVisibilityTree';
 import classnames from 'classnames';
 import {
+  IOpenable,
+} from '../../interfaces/IOpenable';
+import {
   IStoryOptionsListOwnProps,
 } from './IStoryOptionsListOwnProps';
 import {
@@ -17,12 +20,13 @@ import {
 import {
   assertValid,
 } from 'ts-assertions';
+import {
+  Typography,
+} from '../Typography/Typography';
 
 import * as React from 'react';
 
 import styles from './StoryOptionsList.scss';
-import { IOpenable } from '../../interfaces/IOpenable';
-import { Typography } from '../Typography/Typography';
 
 /**
  * Allow both <StoryOption /> and <StoryOptionsList /> children.
@@ -63,6 +67,14 @@ export class StoryOptionsList extends React.Component<
 
     /** If it is the root list, never collapse it. */
     if (root || open) {
+      const areValid = argumentsAreValid({
+        addBreadcrumb,
+        breadcrumbTrail,
+        removeBreadcrumb,
+        treeSelector,
+        visibilityTree,
+      });
+
       content = (
         <ul className={classnames(
           'storyOptionsList',
@@ -79,14 +91,6 @@ export class StoryOptionsList extends React.Component<
             null}
 
           {children.map((child, key) => {
-            const areValid = argumentsAreValid({
-              addBreadcrumb,
-              breadcrumbTrail,
-              removeBreadcrumb,
-              treeSelector,
-              visibilityTree,
-            });
-
             /**
              * Do not do any visibility mutation for elements which do not pass
              * breadcrumb props.
@@ -129,17 +133,9 @@ export class StoryOptionsList extends React.Component<
       );
     } else {
       content = (
-        <Button
-          onClick={() => {
-            this.setState({ open: true });
-
-            if (typeof addBreadcrumb === 'function') {
-              addBreadcrumb({ name: title || 'Story options list' });
-            }
-          }}
-        >
-          {title || 'Story options list'}
-        </Button>
+        <Button onClick={this.openMenu}>{
+          title || 'Story options list'
+        }</Button>
       );
     }
 
@@ -148,5 +144,20 @@ export class StoryOptionsList extends React.Component<
         {content}
       </div>
     );
+  };
+
+  private readonly openMenu = () => {
+    const {
+      getBreadcrumbProps,
+      title,
+    } = this.props;
+
+    this.setState({ open: true });
+
+    if (typeof getBreadcrumbProps === 'function') {
+      getBreadcrumbProps().addBreadcrumb({
+        name: title || 'Story options list',
+      });
+    }
   };
 };

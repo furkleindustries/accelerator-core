@@ -5,6 +5,7 @@ import {
   IClassNameable,
 } from '../../interfaces/IClassNameable';
 import {
+  Component,
   ComponentType,
   ReactElement,
 } from 'react';
@@ -14,6 +15,7 @@ export interface IBreadcrumbTrailOwnProps extends IClassNameable {
   readonly listComponent: ComponentType<IBreadcrumbTrailAware & {
     readonly children: ReadonlyArray<any>;
     readonly root?: boolean;
+    closeList?(component: Component): void;
   }>;
 
   readonly name?: string;
