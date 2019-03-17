@@ -1,8 +1,11 @@
 import {
-  ReactNodeArray,
-} from 'react';
+  IClassNameable,
+} from '../../interfaces/IClassNameable';
+import {
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
-export interface IPermutationOwnProps {
-  children: ReactNodeArray;
-  pick?: number;
+export interface ICombinationOwnProps extends IClassNameable {
+  readonly children: ReadonlyArray<ReactNodeWithoutNullOrUndefined>;
+  readonly pick?: number;
 }

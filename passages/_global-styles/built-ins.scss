@@ -1,0 +1,66 @@
+/* You may change these however you want, but if you decide to delete any rules
+ * some built-in components may stop working, and if you delete the file, the
+ * build will very likely break. */
+
+$background-color: #fafafa;
+
+@mixin passage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.passage {
+  @include passage();
+}
+
+@mixin header {
+  position: relative;
+  width: 100%;
+}
+
+.header {
+  @include header();
+}
+
+$hover-bezier: cubic-bezier(0.4, 0, 0.2, 1);
+$hover-color: rgb(255, 50, 50);
+$hover-duration: 0.3s;
+
+@mixin link {
+  background: none;
+  text-decoration: none;
+  transition:
+    color $hover-duration $hover-bezier 0ms,
+    background-color $hover-duration $hover-bezier 0ms,
+    box-shadow $hover-duration $hover-bezier 0ms,
+    border $hover-duration $hover-bezier 0ms;
+
+  &:not(:disabled) {
+    cursor: pointer;
+
+    &:hover {
+      color: $hover-color;
+    }
+  }
+}
+
+.link {
+  @include link();
+}
+
+@mixin loadingScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: $background-color;
+}
+
+.loadingScreen {
+  @include loadingScreen();
+}

@@ -1,16 +1,20 @@
-/** @see https://github.com/furkleindustries/ */
+/** @see {@link https://github.com/furkleindustries/accelerator-core/tree/master/accelerator.config.d.ts} */
 
-// @ts-ignore
-const { ActionTypes } = require('./src/actions/ActionTypes');
+import { ActionTypes } from './src/actions/ActionTypes';
+import { BuiltInRenderers } from './src/renderers/BuiltInRenderers';
+import { FontFormats } from './src/fonts/FontFormats';
+import { FontRanges } from './src/fonts/FontRanges';
+import { FontStyles } from './src/fonts/FontStyles';
 
-module.exports = {
+export default {
   /**
    * @property {string}
    * The page title which will be displayed in the browser.
    */
-  storyTitle: 'Untitled Accelerator Story',
+  storyTitle: '{{{name}}}',
 
-  /** @property {string} 
+  /**
+   * @property {string} 
    * The description of the story. This should be short and illustrative, and
    * below 160 characters. Bear in mind this will appear in search results and
    * good descriptions drive traffic and positive SEO.
@@ -28,12 +32,86 @@ module.exports = {
   debug: true,
 
   /**
+   * @property {BuiltInRenderers | string}
+   * The filename of the renderer. The corresponding file must be within
+   * renderers/.
+   * 
+   * The renderer transforms context, state, and passage objects into React
+   * elements shown to the user. This property defaults to a simple,
+   * Twine-style single-passage-display rendering style. You may replace this
+   * if you want a story to appear with an Ink or Twine 1 Jonah-style rendering
+   * behavior, or something more exotic. 
+   */
+  /* TODO: fix lack of reactive rerendering in ScrollRenderer. */
+  rendererName: BuiltInRenderers.SinglePassageRenderer,
+
+  /**
+   * @property {boolean}
+   * Determines whether the menu is shown.
+   */
+  showMenu: true,
+
+  /**
+   * @property {Array<string | IFontLoadingDetails>}
+   * @see {@link https://github.com/furkleindustries/accelerator-core/tree/master/src/fonts/IFontLoadingDetails.ts}
+   * Each of the items in this list is constructed into a @font-face rule and
+   * passed to the FontFaceObserver class and loaded, as-needed, at runtime.
+   */
+  fontsToLoad: [
+    {
+      family: 'Roboto',
+      formats: [
+        FontFormats.WOFF2,
+        FontFormats.WOFF,
+      ],
+
+      styles: [
+        FontStyles.Normal,
+        FontStyles.Italic,
+      ],
+
+      ranges: [
+        FontRanges.Latin,
+        FontRanges.LatinExtended,
+      ],
+
+      weights: [
+        300,
+        400,
+        500,
+      ],
+    },
+  ],
+
+  /**
+   * @property {IFontSubsettingDetails}
+   * @see {@link https://github.com/furkleindustries/accelerator-core/tree/master/src/fonts/IFontSubsettingDetails.ts}
+   * Allows a temporary subset of the font to be loaded almost immediately.
+   */
+  subsetFont: {
+    formats: [
+      FontFormats.WOFF2,
+      FontFormats.WOFF,
+    ],
+
+    fromFamily: 'Roboto',
+    loadingStrategy: 'preload',
+    subsetRange: 'US_ASCII',
+  },
+
+  /**
    * @property {string}
    * The path that should be prepended to static resource paths like the favicon
    * and js/css bundles. This will work fine for all cases except if you need to
    * know the absolute path the story is hosted at ahead of time.
    */
   publicUrl: '.',
+
+  /**
+   * @property {string}
+   * The Interactive Fiction ID of the story.
+   */
+  ifid: '{{{ifid}}}',
 
   /**
    * @property {number}
@@ -45,6 +123,7 @@ module.exports = {
 
   /**
    * @property {ActionTypes | ActionTypes[]}
+   * @see {@link https://github.com/furkleindustries/accelerator-core/blob/master/src/actions/ActionTypes.d.ts}
    * Determines which Redux actions will be saved in the history, and therefore
    * which are usable as rewind points. Important to consider
    * historyStackLimit when changing this. Do not change this unless
@@ -59,7 +138,19 @@ module.exports = {
 
   /**
    * @property {boolean}
-   * 
+   * Passed directly to redux-undo's undoable() syncFilter option.
    */
   historySynchronizeUnrewindableStateWithPresent: true,
+
+  /**
+   * @property {string}
+   * The version of `accelerator-core` used to create the story.
+   */
+  acceleratorCoreVersion: '{{{coreVersion}}}',
+
+  /**
+   * @property {string}
+   * The version of `accelerator-tool` used to create the story.
+   */
+  acceleratorToolVersion: '{{{toolVersion}}}',
 };

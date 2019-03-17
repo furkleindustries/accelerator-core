@@ -1,11 +1,11 @@
-import pluginExport from './%NAME%';
+import pluginExport from './{{{name}}}';
 
 const {
   name,
-  contents: plugin,
+  content: plugin,
 } = pluginExport;
 
-describe('Tests for the %NAME% plugin.', () => {
+describe('Tests for the {{{name}}} plugin.', () => {
   it('Has a non-empty name string.', () => {
     expect(name && typeof name === 'string').toBe(true);
   });

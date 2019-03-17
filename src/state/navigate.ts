@@ -8,9 +8,6 @@ import {
   createPassageTimeAction,
 } from '../actions/creators/createPassageTimeAction';
 import {
-  getPassagesMap,
-} from '../passages/getPassagesMap';
-import {
   getTag,
 } from '../tags/getTag';
 import {
@@ -30,7 +27,6 @@ import {
 } from '../tags/Tag';
 import {
   assert,
-  assertValid,
 } from 'ts-assertions';
 
 export const strings = {
@@ -48,36 +44,21 @@ export const strings = {
 
 export function navigate({
   dispatch,
-  passageName,
-  tags,
+  passage,
+  linkTags,
 }: {
   dispatch: Dispatch<IAction>,
-  passageName: string,
-  tags?: Tag[],
+  passage: IPassage,
+  linkTags?: ReadonlyArray<Tag>,
 }): IPassageNavigationAction
 {
-  assert(
-    passageName && typeof passageName !== 'string',
-    strings.PASSAGE_NAME_INVALID,
-  );
-
-  const {
-    passagesMap,
-  } = getPassagesMap();
-
-  const passage = assertValid<IPassage>(
-    passagesMap[passageName],
-    strings.PASSAGE_INVALID,
-  );
+  assert(passage, strings.PASSAGE_INVALID);
 
   assert(
     !getTag(passage.tags, BuiltInTags.NoRender),
     strings.NO_NAVIGATING_TO_NO_RENDER_PASSAGES,
   );
 
-  /* Update the passage time. */
-  dispatch(createPassageTimeAction());
-
   /* Update the current passage. */
-  return dispatch(createPassageNavigationAction(passage, tags));
+  return dispatch(createPassageNavigationAction(passage, linkTags));
 }

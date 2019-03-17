@@ -26,11 +26,5 @@ export function createStore(prerenderedState?: object) {
     });
   }
 
-  if (process.env.NODE_ENV === 'development' && (module as any).hot) {
-    (module as any).hot.accept('../reducers/rootReducer', () => {
-      store.replaceReducer(rootReducer);
-    });
-  }
-
   return store;
 }

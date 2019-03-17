@@ -1,29 +1,22 @@
-const paths = require('../paths');
+import {
+  moduleShouldBeTranspiled,
+} from './moduleShouldBeTranspiled';
+import slash from 'slash';
 
 /**
  * @see https://babeljs.io/docs/en/options
  */
-module.exports = function getBabelLoaders(mode) {
+export function getBabelLoaders(mode) {
   return [
     // Process application JS with Babel.
     // The preset includes JSX, Flow, and some ESnext features.
     {
-      test: /\.(js|mjs|jsx|ts|tsx)$/,
-      include: [
-        paths.appSrc,
-        paths.passagesSrc,
-        paths.headersSrc,
-        paths.footersSrc,
-        paths.pluginsSrc,
-        paths.acceleratorConfig,
-      ],
+      test: /\.m?[jt]sx?$/,
+      include: moduleShouldBeTranspiled,
 
       loader: require.resolve('babel-loader'),
       options: {
-        customize: require.resolve(
-          'babel-preset-react-app/webpack-overrides',
-        ),
-
+        customize: require.resolve('babel-preset-react-app/webpack-overrides'),
         plugins: [
           ...(
             mode === 'development' ?
@@ -35,17 +28,13 @@ module.exports = function getBabelLoaders(mode) {
             require.resolve('babel-plugin-named-asset-import'),
             {
               loaderMap: {
-                svg: {
-                  ReactComponent: '@svgr/webpack?-prettier,-svgo![path]',
-                },
+                svg: { ReactComponent: '@svgr/webpack?-prettier,-svgo![path]', },
               },
             },
           ],
         ],
 
-        presets: [
-          require.resolve('babel-preset-react-app'),
-        ],
+        presets: [ require.resolve('babel-preset-react-app') ],
 
         // This is a feature of `babel-loader` for webpack (not Babel itself).
         // It enables caching results in ./node_modules/.cache/babel-loader/
@@ -61,7 +50,16 @@ module.exports = function getBabelLoaders(mode) {
     // Unlike the application JS, we only compile the standard ES features.
     {
       test: /\.(js|mjs)$/,
-      exclude: /@babel(?:\/|\\{1,2})runtime/,
+      include(fp) {
+        const filepath = slash(fp);
+        if (/@babel(?:\/|\\{1,2})runtime/.test(filepath)) {
+          return false;
+        }
+
+        const alreadySlashed = true;
+        return moduleShouldBeTranspiled(filepath, alreadySlashed);
+      },
+
       loader: require.resolve('babel-loader'),
       options: {
         babelrc: false,
@@ -86,4 +84,4 @@ module.exports = function getBabelLoaders(mode) {
       },
     }
   ];
-};
+}

@@ -1,8 +1,8 @@
+@import '../passages/_global-styles/fonts.scss';
 @import '../passages/_global-styles/index.scss';
 
-html, body, :global(#root) {
+html, body, :global(#root), :global(#load) {
   display: block;
-  position: relative;
   left: 0;
   top: 0;
   width: 100%;
@@ -10,5 +10,42 @@ html, body, :global(#root) {
   padding: 0;
   margin: 0;
   border: 0;
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+html {
+  /* Antialiasing. */
+  -webkit-font-smoothing: antialiased;
+  /* Antialiasing. */
+  -moz-osx-font-smoothing: grayscale;
+  /* Change from `box-sizing: content-box` so that `width` is not affected by
+   * `padding` or `border`. */
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+body {
+  background-color: #fafafa;
+
+  @media print {
+    background-color: #fff;
+  }
+}
+
+html, body, :global(#root) {
+  position: relative;
+}
+
+:global(#load) {
+  position: fixed;
+}
+
+:global(#root[aria-busy="false"]) {
+  z-index: 1;
+
+  & + :global(#load) {
+    display: none;
+  }
 }

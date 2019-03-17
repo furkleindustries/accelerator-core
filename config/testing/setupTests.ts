@@ -1,4 +1,8 @@
+import 'web-audio-test-api';
+
 import * as Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
-Enzyme.configure({ adapter: new Adapter() });
+const adapter = new Adapter();
+
+Enzyme.configure({ adapter });

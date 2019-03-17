@@ -16,7 +16,7 @@ import {
 
 const deflt = Object.freeze([ BuiltInTags.Start ]);
 export function lastLinkTagsReducer(
-  previousState: Tag[] = [ ...deflt ],
+  previousState: ReadonlyArray<Tag> = [ ...deflt ],
   action: IPassageNavigationAction | IStoryResetAction,
 )
 {

@@ -1,28 +1,22 @@
-import {
-  getFootersList,
-} from '../../passages/getFootersList';
+import classnames from 'classnames';
 import {
   IFooter,
 } from '../../passages/IFooter';
 import {
-  HistoryFilter,
-} from '../../reducers/IHistoryFilter';
-import {
   IPassageProps,
 } from '../../passages/IPassageProps';
 import {
-  IPassageContentsContainerDispatchProps,
-} from '../PassageContentsContainer/IPassageContentsContainerDispatchProps';
+  IPassageContentContainerOwnProps,
+} from '../PassageContentContainer/IPassageContentContainerOwnProps';
 import {
-  IPassageContentsContainerStateProps,
-} from '../PassageContentsContainer/IPassageContentsContainerStateProps';
+  IPassageContentContainerDispatchProps,
+} from '../PassageContentContainer/IPassageContentContainerDispatchProps';
 import {
-  mutateCurrentStoryStateInstanceWithPluginExecution,
-} from '../../state/mutateCurrentStoryStateInstanceWithPluginExecution';
+  Omit,
+} from '../../typeAliases/Omit';
 import {
   mapDispatchToProps,
-  mapStateToProps,
-} from '../PassageContentsContainer/PassageContentsContainer';
+} from '../PassageContentContainer/PassageContentContainer';
 import {
   connect,
 } from 'react-redux';
@@ -32,91 +26,37 @@ import {
 
 import * as React from 'react';
 
-import styles from './PassageFooters.scss';
-
 export const strings = {
   COMPONENT_CONSTRUCTOR_NOT_FOUND:
     'There was no contents property found in the footer with name %NAME%.',
 };
 
-export class PassageFooters extends React.PureComponent<IPassageContentsContainerStateProps & IPassageContentsContainerDispatchProps> {
-  public render() {
-    const {
-      bookmark: bookmark,
-      dispatch,
-      history,
-      lastLinkTags,
-      passageObject,
-      storyState,
-      navigateTo,
-    } = this.props;
-
-    const propsPassedDown: IPassageProps = {
-      bookmark,
-      dispatch,
-      lastLinkTags,
-      navigateTo,
-      passageObject,
-      storyState,
-      restart: this.restart,
-      rewind: this.rewind,
-      setStoryState(updatedStateProps) {
-        mutateCurrentStoryStateInstanceWithPluginExecution({
-          dispatch,
-          history,
-          updatedStateProps,
-        });
-      },
-    };
-
-    const footers: IFooter[] = getFootersList();
-    const footerComponents = footers.map(({ contents }, index) => {
-      const safeContents = assertValid<React.ComponentClass<IPassageProps> | React.SFCFactory<IPassageProps>>(
-        contents,
+export const PassageFooters: React.FunctionComponent<
+  { readonly footers: ReadonlyArray<IFooter> } &
+  Omit<IPassageContentContainerOwnProps, 'passagesMap'> &
+  IPassageContentContainerDispatchProps
+> = ({
+  footers,
+  ...passageProps
+}) => (
+  <div className={classnames('passageFooters')}>
+    {footers.map(({ content }, index) => {
+      const SafeContent = assertValid<React.ComponentType<IPassageProps>>(
+        content,
         strings.COMPONENT_CONSTRUCTOR_NOT_FOUND,
       );
-
-      return React.createElement(
-        safeContents,
-        {
-          ...propsPassedDown,
-          key: index,
-        },
+  
+      return (
+        <SafeContent
+          key={index}
+          {...passageProps}
+        />
       );
-    });
-
-    return (
-      <div className={`${styles.passageFooters} passageFooters`}>
-        {footerComponents}
-      </div>
-    );
-  }
-
-  private restart() {
-    const {
-      lastLinkTags,
-      restart,
-      passageObject: currentPassageObject,
-      storyState: currentStoryState,
-    } = this.props;
-
-    restart(currentPassageObject, currentStoryState, lastLinkTags);
-  }
-
-  private rewind(filter?: HistoryFilter) {
-    const {
-      rewind,
-      history: {
-        present,
-        past,
-      },
-    } = this.props;
-
-    rewind(present, past, filter);
-  }
-}
+    })}
+  </div>
+);
 
 export const PassageFootersConnected = connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(PassageFooters);

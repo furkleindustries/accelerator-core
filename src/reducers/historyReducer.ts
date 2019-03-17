@@ -2,8 +2,8 @@ import {
   bookmarkCounterReducer,
 } from './bookmarkCounterReducer';
 import {
-  currentPassageNameReducer,
-} from './currentPassageNameReducer';
+  passageNameReducer,
+} from './passageNameReducer';
 import {
   IAction,
 } from '../actions/IAction';
@@ -18,14 +18,14 @@ import {
 } from './passageTimeReducer';
 import {
   storyStateReducer,
-} from './storyStateHistoryReducer';
+} from './storyStateReducer';
 import {
   combineReducers,
   Reducer,
 } from 'redux';
 import {
-  getAcceleratorConfig,
-} from '../configuration/getAcceleratorConfig';
+  getNormalizedAcceleratorConfig,
+} from '../configuration/getNormalizedAcceleratorConfig';
 import {
   IHistory,
 } from '../state/IHistory';
@@ -38,15 +38,15 @@ const {
   historySaveTypes,
   historyStackLimit: limit,
   historySynchronizeUnrewindableStateWithPresent: syncFilter,
-} = getAcceleratorConfig();
+} = getNormalizedAcceleratorConfig();
 
-export const historyReducer = undoable(
+export const historyReducer: Reducer<IHistory, IAction> = undoable(
   combineReducers({
     bookmarkCounter: bookmarkCounterReducer,
-    currentPassageName: currentPassageNameReducer,
+    passageName: passageNameReducer,
     lastLinkTags: lastLinkTagsReducer,
     midrenderSignalCounter: midrenderSignalCounterReducer,
-    passageTime: passageTimeReducer,
+    passageTimeCounter: passageTimeReducer,
     storyState: storyStateReducer,
   }),
   {
@@ -54,4 +54,4 @@ export const historyReducer = undoable(
     syncFilter,
     filter: includeAction(historySaveTypes),
   },
-) as Reducer<IHistory, IAction>;
+);

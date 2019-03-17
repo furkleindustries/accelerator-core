@@ -1,9 +1,11 @@
 import {
-  ReactNode,
-} from 'react';
+  IClassNameable,
+} from '../../interfaces/IClassNameable';
+import {
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
-export interface IClickAppendOwnProps {
-  children: ReactNode;
-  className?: string;
-  toAppend: ReactNode;
+export interface IClickAppendOwnProps extends IClassNameable {
+  readonly children: ReactNodeWithoutNullOrUndefined;
+  readonly toAppend: ReactNodeWithoutNullOrUndefined;
 }

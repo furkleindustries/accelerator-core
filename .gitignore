@@ -7,8 +7,12 @@
 /coverage/
 
 # production
+/dist/
 /build*/
 /.zips/
+
+# fonts
+public/fonts/
 
 # footers
 footers/*-manifest.ts
@@ -21,6 +25,9 @@ passages/*-manifest.ts
 
 # plugins
 plugins/*-manifest.ts
+
+# options
+options/*-manifest.ts
 
 # misc
 

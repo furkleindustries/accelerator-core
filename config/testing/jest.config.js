@@ -5,7 +5,9 @@ module.exports = {
   rootDir: '../../',
 
   testMatch: [
-    `<rootDir>/${includedDirectories}/**/?(*.){spec,test}.{js,jsx,ts,tsx}`,
+    /* Using <rootDir> breaks due to
+     * https://github.com/facebook/jest/issues/7108. */
+    `**/${includedDirectories}/**/?(*.)(spec|test).(j|t)s?(x)`,
   ],
 
   collectCoverageFrom: [
@@ -13,9 +15,12 @@ module.exports = {
     '!**/*.d.ts',
   ],
 
-  setupTestFrameworkScriptFile: '<rootDir>/config/testing/setupTests.ts',
   setupFiles: [
     'react-app-polyfill/jsdom',
+  ],
+  
+  setupFilesAfterEnv: [
+    '<rootDir>/config/testing/setupTests.ts',
   ],
 
   transform: {

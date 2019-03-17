@@ -1,9 +1,11 @@
 import {
-  ReactNode,
-} from 'react';
+  IButtonProps,
+} from '../Button/IButtonProps';
+import {
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
-export interface ICyclerOwnProps {
-  children: ReactNode[];
-  className?: string;
-  callback?(current: ReactNode, index?: number): void;
+export interface ICyclerOwnProps extends IButtonProps {
+  readonly children: ReadonlyArray<ReactNodeWithoutNullOrUndefined>;
+  callback?(current: ReactNodeWithoutNullOrUndefined, index?: number): void;
 }

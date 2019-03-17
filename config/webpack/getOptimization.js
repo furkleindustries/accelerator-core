@@ -1,6 +1,8 @@
-const getMinimizers = require('./getMinimizers');
+import {
+  getMinimizers,
+} from './getMinimizers';
 
-module.exports = function getOptimization(mode, shouldUseSourceMap) {
+export function getOptimization(mode, shouldUseSourceMap) {
   const base = {
     // Automatically split vendor and commons
     // https://twitter.com/wSokra/status/969633336732905474
@@ -23,4 +25,4 @@ module.exports = function getOptimization(mode, shouldUseSourceMap) {
     ...base,
     minimizer: getMinimizers(shouldUseSourceMap),
   };
-};
+}

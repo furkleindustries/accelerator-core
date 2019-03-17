@@ -2,30 +2,17 @@ import {
   createStoryStateAction,
 } from '../../actions/creators/createStoryStateAction';
 import {
-  getPassagesMap,
-} from '../../passages/getPassagesMap';
+  IPassage,
+} from '../../passages/IPassage';
 import {
-  getPluginsList,
-} from '../../plugins/getPluginsList';
+  IPassagePluginsWrapperOwnProps,
+} from './IPassagePluginsWrapperOwnProps';
 import {
-  IAction,
-} from '../../actions/IAction';
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 import {
-  IPassagePluginsWrapperStateProps,
-} from './IPassagePluginsWrapperStateProps';
-import {
-  IState,
-} from '../../state/IState';
-import {
-  object as ObjectProp,
-} from 'prop-types';
-import {
-  connect,
-  MapStateToProps,
-} from 'react-redux';
-import {
-  Store,
-} from 'redux';
+  assertValid,
+} from 'ts-assertions';
 
 import * as React from 'react';
 
@@ -34,44 +21,63 @@ export const strings = {
     'No passage could be found in the passages map with the name %NAME%.',
 };
 
+/* TODO: Investigate effects of hot-reloads on this component. */
+
 /* Allows plugin markup to be injected alongside passage content as well
  * as ensuring plugins are only run once per render. */
-export class PassagePluginsWrapper extends React.PureComponent<{ children: React.ReactNode, } & IPassagePluginsWrapperStateProps> {
-  public static contextTypes = {
-    store: ObjectProp,
-  };
+export class PassagePluginsWrapper extends React.PureComponent<
+  IPassagePluginsWrapperOwnProps
+> {
+  /* Stores the last seen passage time, allowing the component to discern
+   * whether a passage navigation has occurred. */
+  private lastPassageTime: number;
+  /* Memoizes the output of the plugins, allowing them to be called once per
+   * passage change. */
+  private lastPluginsBeforeRenderOutput: ReactNodeWithoutNullOrUndefined;
 
-  constructor(props: any, context: { store: Store<IState, IAction> }) {
+  constructor(props: IPassagePluginsWrapperOwnProps) {
     super(props);
 
     const {
-      currentPassageObject,
-      lastLinkTags,
-    } = props;
-
-    const {
-      store,
-      store: {
+      passagesMap,
+      plugins,
+      reduxStore: store,
+      reduxStore: {
         dispatch,
         getState,
-      },
-    } = context;
+      }
+    } = (props as IPassagePluginsWrapperOwnProps);
 
-    /* Call the afterStoryInit method on all plugins. In practice, this should
+    const {
+      history: {
+        present: {
+          lastLinkTags,
+          passageName,
+        },
+      },
+    } = getState();
+
+    const safePassageObject = assertValid<IPassage>(
+      passagesMap[passageName],
+      strings.PASSAGE_NOT_FOUND.replace(/%name%/gi, passageName),
+    );
+
+    /**
+     * Call the afterStoryInit method on all plugins. In practice, this should
      * only happen in two cases: firstly, when the story is first loaded in the
      * browser, and secondly when the story is restarted. This must be
      * performed in the constructor as componentDidMount occurs after render,
-     * and we want afterStoryInit to occur before beforeRender. */
-    getPluginsList().forEach(({ afterStoryInit }) => {
+     * and we want afterStoryInit to occur before beforeRender.
+     */
+    plugins.forEach(({ afterStoryInit }) => {
       if (typeof afterStoryInit === 'function') {
         afterStoryInit({
-          store,
-          currentPassageObject,
-          storyState: getState().history.present.storyState,
           lastLinkTags,
+          store,
+          passageObject: safePassageObject,
           setStoryState(updatedStateProps) {
             /* Do NOT call mutateCurrentStoryStateInstanceWithPluginExecution here,
-            * as it may cause an infinite loop of plugin actions. */
+             * as it may cause an infinite loop of plugin actions. */
             return dispatch(createStoryStateAction(updatedStateProps));
           },
         });
@@ -79,69 +85,102 @@ export class PassagePluginsWrapper extends React.PureComponent<{ children: React
     });
   }
 
-  public render() {
+  public render = () => {
     const {
       children,
-      currentPassageObject,
-      lastLinkTags,
+      passagesMap,
+      plugins,
+      reduxStore: { getState },
     } = this.props;
 
-    /* Get the store from the context so as to prevent re-execution of the
-     * plugins' beforeRender method each time story state is mutated. */
     const {
-      store: { getState },
-    }: { store: Store<IState, IAction> } = this.context;
+      history: {
+        present: {
+          lastLinkTags,
+          passageName,
+          passageTimeCounter,
+          storyState,
+        },
+      },
+    } = getState();
+
+    const passageObject = assertValid<IPassage>(
+      passagesMap[passageName],
+      strings.PASSAGE_NOT_FOUND,
+    );
+
+    /* Don't execute the beforeRender plugins, returning the memoized value
+     * instead, if the passage time has not increased since the last render. */
+    if (this.lastPluginsBeforeRenderOutput &&
+        this.lastPassageTime === passageTimeCounter)
+    {
+      return this.lastPluginsBeforeRenderOutput;
+    }
 
     let finalChildren = children;
     /* Apply the beforeRender lifecycle method of each plugin. */
-    getPluginsList().forEach(({ beforeRender }) => {
+    plugins.forEach(({ beforeRender }) => {
       if (typeof beforeRender === 'function') {
         finalChildren = beforeRender({
-          children,
           lastLinkTags,
-          currentPassageObject,
-          storyState: getState().history.present.storyState,
-          /* If for some reason the plugin is non-conformant and outputs
-           * something falsy, use the last good children value. */
-        }) || finalChildren;
+          passageObject,
+          storyState,
+          /**
+           * If this value is set to the `children` variable, only the
+           * lowest-precedence plugin will render. Please set it to
+           * `finalChildren` instead.
+           */
+          children: finalChildren,
+        }) ||
+        /* If for some reason the plugin is non-conformant and outputs
+         * something falsy, use the last good children value. */
+        finalChildren;
       }
-    });        
+    });
+
+    /* Store a reference to the current passage time. */
+    this.lastPassageTime = passageTimeCounter;
+    /* Memoize the plugin output. */
+    this.lastPluginsBeforeRenderOutput = finalChildren;
     
     return finalChildren;
   }
 
-  public componentDidUpdate() {
+  public componentDidUpdate = () => {
     const {
-      currentPassageObject,
-      lastLinkTags,
+      passagesMap,
+      plugins,
+      reduxStore: { getState },
     } = this.props;
 
     const {
-      store: { getState },
-    }: { store: Store<IState, IAction> } = this.context;
-    getPluginsList().forEach(({ afterPassageChange }) => {
+      history: {
+        present: {
+          lastLinkTags,
+          passageName,
+          passageTimeCounter,
+          storyState,
+        },
+      }
+    } = getState();
+
+    if (passageTimeCounter === this.lastPassageTime) {
+      return;
+    }
+
+    const passageObject = assertValid<IPassage>(
+      passagesMap[passageName],
+      strings.PASSAGE_NOT_FOUND,
+    );
+
+    plugins.forEach(({ afterPassageChange }) => {
       if (typeof afterPassageChange === 'function') {
         afterPassageChange({
-          currentPassageObject,
           lastLinkTags,
-          storyState: getState().history.present.storyState,
+          passageObject,
+          storyState,
         });
       }
     });
   }
 }
-
-export const mapStateToProps: MapStateToProps<IPassagePluginsWrapperStateProps, {}, IState> = ({
-  history: {
-    present: {
-      lastLinkTags,
-      currentPassageName: name,
-    },
-  }
-}) =>
-({
-  lastLinkTags,
-  currentPassageObject: getPassagesMap().passagesMap[name],
-});
-
-export const PassagePluginsWrapperConnected = connect(mapStateToProps)(PassagePluginsWrapper);

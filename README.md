@@ -1,10 +1,10 @@
-![Accelerator speedometer logo](https://s3.amazonaws.com/furkleindustries-accelerator/logo_320px.png "Accelerator speedometer logo")
+# accelerator-core
 
 [![Build Status](https://travis-ci.org/furkleindustries/accelerator-core.svg?branch=master)](https://travis-ci.org/furkleindustries/accelerator-core)
 
-# accelerator-core
-
 A lightweight, reactive hypertext fiction framework with the conveniences of modern web dev and few of the pain points. This repository is the framework's runtime, which is more or less what is generated for you when you use the Accelerator devtool ([git repository](https://github.com/furkleindustries/accelerator-tool), [npm package](https://npmjs.com/package/accelerator-tool)) to create a new Accelerator project.
+
+![Accelerator speedometer logo](https://s3.amazonaws.com/furkleindustries-accelerator/logo_320px.png "Accelerator speedometer logo")
 
 ## Table of contents
 
@@ -12,7 +12,7 @@ A lightweight, reactive hypertext fiction framework with the conveniences of mod
 2. [Installation](#installation)
 3. [Creating passages](#creating-passages)
 4. [The bundle imports](#bundle-imports)
-5. [The contents component class/function](#contents-component-creator)
+5. [The content component class/function](#content-component-creator)
 6. [Headers and footers](#headers-and-footers)
 7. [Development server](#development-server)
 8. [Testing your story](#testing)
@@ -70,7 +70,7 @@ To write a new passage, either use `accelerator-tool new passage %YOUR_PASSAGE_N
 
 The exported object must be the passage object, and it must be the default export. You can use any valid JSX, including functional and class-based components. You may use any named export for whatever you please. You may also feel free to organize your files however you please, as Accelerator will search any number of folders deep within the `passages` folder.
 
-Note that passage files *must* end in `.jsx` or `.tsx`. This is convenient because it fits VS Code's syntax highlighting for files containing JSX elements, and also because it reserves all `.js` or `.ts` files for you to use and import as you see fit.
+Note that passage files *must* end in `.jsx` or `.tsx`. This is convenient because it fits VS Code's syntax highlighting for files containing JSX elements, and also because it reserves all `.js` or `.ts` files for you to use and import as you see fit. Additionally, no files or folders in the base directory beginning with `_` will be processed as passages.
 
 If you are using TypeScript (allowing for the full value of Accelerator's built-in functionalities), you should indicate the type of the passage object by replacing `const passage =` with `const passage: passagesBundle.IPassage =`, and setting the props type of the React component to `passagesBundle.IPassageProps`, importing these interfaces from `..//src/passages/passagesBundle`. This will allow full type-checking of your story passages. (You can also just destructure the bundle, or the passages property, so that you can refer directly to `IPassage` and `IPassageProps`.)
 
@@ -96,7 +96,7 @@ All Accelerator passages have simple access to the bundle imports, located in `/
   * The [Permutation](/src/components/Permutation/Permutation.md) component, which randomly shuffles the collection passed as children, and allows picking a slice of the contents.
 * `passagesBundle`:
   * `IPassage`, an interface detailing the properties of the passage object, which is the default export of all passage files.
-  * `IPassageProps`, an interface detailing the properties passed to the `contents` property of the passage object, assuming `contents` is a React component.
+  * `IPassageProps`, an interface detailing the properties passed to the `content` property of the passage object, assuming `content` is a React component.
 * `builtInStyles`, an CSS modules object containing the classes and IDs defined in the passage's base stylesheet (located at [/src/passages/passage.scss]). This could be automatically used/injected, but I intend on making it as easy as possible to do without default styling. This may change in the future. 
 * `tagsBundle`:
   * `BuiltInTags`, an enum which expresses the tags already configured for use by the Accelerator runtime.
@@ -105,8 +105,8 @@ All Accelerator passages have simple access to the bundle imports, located in `/
 
 There is also the [pluginsBundle](/src/passages/pluginBundle.ts), which contains interfaces for plugins and the `DebugPlugin`, and the [actionsBundle](/src/passages/actionsBundle.ts), which contains Redux action interfaces and creator functions, if you want to e.g. manually dispatch built-in Accelerator actions with the `dispatch` function.
 
-<a name="contents-component-creator"></a>
-## The contents component class/function
+<a name="content-component-creator"></a>
+## The content component class/function
 
 For each passage, your ES6 class component (extending `React.Component` or `React.PureComponent`), or functional component (of type `React.SFC`), or React's new stateful functional component types) will be passed props automatically by the higher-order `PassageContainer` component. These props, defined in `IPassageProps`, are as follows:
 

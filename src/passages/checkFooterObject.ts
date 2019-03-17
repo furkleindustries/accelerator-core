@@ -1,9 +1,9 @@
 export const strings = {
-  CONTENTS_INVALID:
-    'The footer object\'s contents property were not an object or function.',
+  CONTENT_INVALID:
+    'The footer object\'s content property was not a function.',
 
-  CONTENTS_MISSING:
-    'The footer object had no contents element.',
+  CONTENT_MISSING:
+    'The footer object had no content element.',
 
   NAME_MISSING:
     'The footer object had no name string.',
@@ -23,11 +23,10 @@ export const checkFooterObject = (footer: any): null => {
     throw new Error(strings.NAME_MISSING);
   }
 
-  if (!footer.contents) {
-    throw new Error(strings.CONTENTS_MISSING);
-  } else if (typeof footer.contents !== 'object' &&
-              typeof footer.contents !== 'function') {
-    throw new Error(strings.CONTENTS_INVALID);
+  if (!footer.content) {
+    throw new Error(strings.CONTENT_MISSING);
+  } else if (typeof footer.content !== 'function') {
+    throw new Error(strings.CONTENT_INVALID);
   }
 
   return null;

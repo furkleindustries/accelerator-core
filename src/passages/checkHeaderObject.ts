@@ -1,9 +1,9 @@
 export const strings = {
-  CONTENTS_INVALID:
-    'The header object\'s contents property were not an object or function.',
+  CONTENT_INVALID:
+    'The header object\'s content property was not a function.',
 
-  CONTENTS_MISSING:
-    'The header object had no contents element.',
+  CONTENT_MISSING:
+    'The header object had no content element.',
 
   NAME_MISSING:
     'The header object had no name string.',
@@ -14,7 +14,7 @@ export const strings = {
 
 /* This function returns an error string if the header fails, and null if it is
  * a normal header object. */
-export const checkHeaderObject = (header: any): null => {
+export function checkHeaderObject(header: any): null {
   if (!header || typeof header !== 'object') {
     throw new Error(strings.HEADER_INVALID);
   }
@@ -23,11 +23,10 @@ export const checkHeaderObject = (header: any): null => {
     throw new Error(strings.NAME_MISSING);
   }
 
-  if (!header.contents) {
-    throw new Error(strings.CONTENTS_MISSING);
-  } else if (typeof header.contents !== 'object' &&
-              typeof header.contents !== 'function') {
-    throw new Error(strings.CONTENTS_INVALID);
+  if (!header.content) {
+    throw new Error(strings.CONTENT_MISSING);
+  } else if (typeof header.content !== 'function') {
+    throw new Error(strings.CONTENT_INVALID);
   }
 
   return null;

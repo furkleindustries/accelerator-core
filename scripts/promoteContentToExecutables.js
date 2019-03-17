@@ -1,26 +1,26 @@
-const {
-  join,
-} = require('path');
+import {
+  log,
+  warn,
+} from 'colorful-logging';
+import {
+  setUnhandledRejectionEvent,
+} from './functions/setUnhandledRejectionEvent';
+import * as fs from 'fs-extra';
+import {
+  getNormalizedAcceleratorConfig,
+} from '../configuration/getNormalizedAcceleratorConfig';
+import * as path from 'path';
 
-const fs = require('fs-extra');
+setUnhandledRejectionEvent();
 
-const projectDir = join(__dirname, '..');
-const appDir = join(projectDir, 'build-web');
-const distDir = join(projectDir, 'build-desktop');
+const projectDir = path.join(__dirname, '..');
+const appDir = path.join(projectDir, 'build-web');
+const distDir = path.join(projectDir, 'build-desktop');
+const publicDir = path.join(projectDir, 'public');
 
-const windowsDir = join(distDir, 'windows', 'resources', 'app');
-const macOSDir = join(distDir, 'macOS', 'Electron.app', 'Contents', 'Resources', 'app');
-const linuxDir = join(distDir, 'linux', 'resources', 'app');
-
-/* Ingest the .env file, if it exists. */
-const dotEnvFile = join(projectDir, '.env');
-if (fs.existsSync(dotEnvFile)) {
-  require('dotenv-expand')(
-    require('dotenv').config({
-      path: dotEnvFile,
-    })
-  );
-}
+const windowsDir = path.join(distDir, 'windows', 'resources', 'app');
+const macOSDir = path.join(distDir, 'macOS', 'Electron.app', 'Contents', 'Resources', 'app');
+const linuxDir = path.join(distDir, 'linux', 'resources', 'app');
 
 /* Written to main.js. Provides extremely simple defaults for the main thread
  * for Electron. */
@@ -34,7 +34,7 @@ const mainStr =
   `app.on('ready', () => {\n` +
   `  win = new BrowserWindow();\n` +
   `  // Load a local HTML file.\n` +
-  '  twin.loadURL(`file://${__dirname}/index.html`);\n' +
+  '  win.loadURL(`file://${__dirname}/index.html`);\n' +
   `  // ready-to-show; should prevent slow load i.e. issue in Safari.\n` +
   `  win.once('ready-to-show', () => {\n` +
   `    win.show();\n` +
@@ -56,54 +56,56 @@ const mainStr =
   `  }\n` +
   `});`;
 
+const {
+  storyTitle,
+  storyVersion,
+} = getNormalizedAcceleratorConfig();
+
 const packageStr = JSON.stringify({
-  name: process.env.ACCELERATOR_STORY_TITLE || 'Untitled Accelerator Story',
-  version: process.env.ACCELERATOR_STORY_VERSION || '1.0.0',
+  name: storyTitle || 'Untitled Accelerator Story',
+  version: storyVersion || '1.0.0',
   main: 'main.js',
 });
 
 const skipMacOS =
   process.argv.indexOf('--force-mac-build-on-windows') === -1 &&
   process.platform === 'win32';
+
 if (skipMacOS) {
-  console.log('Due to issues in the way Windows handles symlinks in zip ' +
-              'archives, it is not possible to make macOS electron ' +
-              'packages. You may override this by passing the ' +
-              '--force-mac-build-on-windows to the ' +
-              'promoteContentToExecutables script or the ' +
-              'promote-content-to-executables npm task, but it will likely ' +
-              'fail, and even if it does not, you should test to be ' +
-              'absolutely sure it works.\n');
+  warn('Due to issues in the way Windows handles symlinks in zip ' +
+       'archives, it is not possible to make macOS electron ' +
+       'packages. You may override this by passing the ' +
+       '--force-mac-build-on-windows to the ' +
+       'promoteContentToExecutables script or the ' +
+       'promote-content-to-executables npm task, but it will likely ' +
+       'fail, and even if it does not, you should test to be ' +
+       'absolutely sure it works.\n');
 }
 
-Promise.all([
-  fs.remove(windowsDir),
-  skipMacOS ? null : fs.remove(macOSDir),
-  fs.remove(linuxDir),
-]).then(() => {
-  Promise.all([
+(async function () {
+  await Promise.all([
+    fs.remove(windowsDir),
+    skipMacOS ? null : fs.remove(macOSDir),
+    fs.remove(linuxDir),
+  ]);
+
+  await Promise.all([
     fs.copy(appDir, windowsDir),
+    fs.copy(publicDir, windowsDir),
     skipMacOS ? null : fs.copy(appDir, macOSDir),
+    skipMacOS ? null : fs.copy(publicDir, macOSDir),
     fs.copy(appDir, linuxDir),
-  ]).then(() => {
-    Promise.all([
-      fs.outputFile(join(linuxDir, 'package.json'), packageStr),
-      skipMacOS ? null : fs.outputFile(join(macOSDir, 'package.json'), packageStr),
-      fs.outputFile(join(windowsDir, 'package.json'), packageStr),
-      fs.outputFile(join(linuxDir, 'main.js'), mainStr),
-      skipMacOS ? null : fs.outputFile(join(macOSDir, 'main.js'), mainStr),
-      fs.outputFile(join(windowsDir, 'main.js'), mainStr),
-    ]).then(() => {
-      console.log('Electron bundles are ready.');
-    }, (err) => {
-      console.error(err.toString());
-      throw err;
-    });
-  }, (err) => {
-    console.error(err.toString());
-    throw err;
-  });
-}, (err) => {
-  console.error(err.toString());
-  throw err;
-});
+    fs.copy(publicDir, linuxDir),
+  ]);
+
+  await Promise.all([
+    fs.outputFile(path.join(linuxDir, 'package.json'), packageStr),
+    skipMacOS ? null : fs.outputFile(path.join(macOSDir, 'package.json'), packageStr),
+    fs.outputFile(path.join(windowsDir, 'package.json'), packageStr),
+    fs.outputFile(path.join(linuxDir, 'main.js'), mainStr),
+    skipMacOS ? null : fs.outputFile(path.join(macOSDir, 'main.js'), mainStr),
+    fs.outputFile(path.join(windowsDir, 'main.js'), mainStr),
+  ]);
+
+  log('Electron bundles are ready.');
+})();

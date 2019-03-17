@@ -1,27 +1,24 @@
 import {
-  PassageContainerConnected,
-} from '../PassageContainer/PassageContainer';
+  AppContextProviderWrapper,
+} from '../AppContextProviderWrapper/AppContextProviderWrapper';
+import {
+  AppJssProvider,
+} from '../AppJssProvider/AppJssProvider';
 import {
   hot,
-} from 'react-hot-loader';
+} from 'react-hot-loader/root';
+import {
+  RenderingContainerConnected,
+} from '../RenderingContainer/RenderingContainer';
 
 import * as React from 'react';
 
-import styles from './App.scss';
+export const App: React.FunctionComponent = () => (
+  <AppJssProvider>
+    <AppContextProviderWrapper>
+      <RenderingContainerConnected />
+    </AppContextProviderWrapper>
+  </AppJssProvider>
+);
 
-export class App extends React.Component {
-  public render() {
-    /* No clue why this is working. Something in the Redux typing is failing
-     * in a way that's making it ask for store state props as own props. */
-    // @ts-ignore
-    const passageContainer = <PassageContainerConnected />;
-
-    return (
-      <div className={`${styles.app} app`}>
-        {passageContainer}
-      </div>
-    );
-  }
-}
-
-export default hot(module)(App);
+export default hot(App);

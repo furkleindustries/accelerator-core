@@ -1,9 +1,11 @@
 import {
+  IClassNameable,
+} from '../../interfaces/IClassNameable';
+import {
   ReactNode,
 } from 'react';
 
-export interface IClickReplaceOwnProps {
-  children: ReactNode;
-  className?: string;
-  replaceWith: ReactNode;
+export interface IClickReplaceOwnProps extends IClassNameable  {
+  readonly children: ReactNode;
+  readonly replaceWith: ReactNode;
 }

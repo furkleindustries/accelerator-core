@@ -21,6 +21,6 @@ A component which takes N elements from the `children` array at random, with opt
 
 ## Property arguments
 
-* `children (ReactNodeArray)`: The list of content from which the random N elements will be drawn. An exception will be thrown if the length of children is less than `n`.
+* `children (ReadonlyArray<ReactNodeWithoutNullOrUndefined>)`: The list of content from which the random N elements will be drawn. An exception will be thrown if the length of children is less than `n`.
 * `n (number)`: The number of the children to display.
 * `shuffle? (boolean)`: Determines whether the array will be shuffled or not.

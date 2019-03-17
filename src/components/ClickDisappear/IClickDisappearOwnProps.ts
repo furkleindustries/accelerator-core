@@ -1,9 +1,11 @@
 import {
-  ReactNode,
-} from 'react';
+  IClassNameable,
+} from '../../interfaces/IClassNameable';
+import {
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
-export interface IClickDisappearOwnProps {
-  children: ReactNode;
-  className?: string;
-  fadeOutDuration?: number;
+export interface IClickDisappearOwnProps extends IClassNameable {
+  readonly children: ReactNodeWithoutNullOrUndefined;
+  readonly fadeOutDuration?: number;
 }

@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import {
   IFadeInOwnProps,
 } from './IFadeInOwnProps';
@@ -15,26 +16,22 @@ export const strings = {
     'greater than zero.',
 };
 
-export class FadeIn extends React.PureComponent<IFadeInOwnProps> {
-  public render() {
-    const {
-      children,
-      className,
-      duration,
-    } = this.props;
+export const FadeIn: React.FunctionComponent<IFadeInOwnProps> = ({
+  children,
+  className,
+  duration,
+}) => {
+  assert(
+    !(duration >= 0),
+    strings.DURATION_NOT_GREATER_THAN_ZERO_NUMBER,
+  );
 
-    assert(
-      !(duration >= 0),
-      strings.DURATION_NOT_GREATER_THAN_ZERO_NUMBER,
-    );
-
-    return (
-      <div
-        className={`${styles.fadeIn} fadeIn${className ? ` ${className}` : ''}`}
-        style={{ animationDuration: `${duration}ms` }}
-      >
-        {children}
-      </div>
-    );   
-  }
-}
+  return (
+    <div
+      className={classnames('fadeIn', styles.fadeIn, className)}
+      style={{ animationDuration: `${duration}ms` }}
+    >
+      {children}
+    </div>
+  );
+};

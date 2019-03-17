@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import {
   IFadeOutOwnProps,
 } from './IFadeOutOwnProps';
@@ -15,28 +16,24 @@ export const strings = {
     'greater than zero.',
 };
 
-export class FadeOut extends React.PureComponent<IFadeOutOwnProps> {
-  public render() {
-    const {
-      children,
-      className,
-      duration,
-    } = this.props;
+export const FadeOut: React.FunctionComponent<IFadeOutOwnProps> = ({
+  children,
+  className,
+  duration,
+}) => {
+  assert(
+    !(duration >= 0),
+    strings.DURATION_NOT_GREATER_THAN_OR_EQUAL_TO_ZERO_NUMBER,
+  );
 
-    assert(
-      !(duration >= 0),
-      strings.DURATION_NOT_GREATER_THAN_OR_EQUAL_TO_ZERO_NUMBER,
-    );
-
-    return (
-      <div
-        className={`${styles.fadeOut} fadeOut${className ? ` ${className}` : ''}`}
-        style={{
-          animationDuration: `${duration}ms`
-        }}
-      >
-        {children}
-      </div>
-    );
-  }
-}
+  return (
+    <div
+      className={classnames('fadeOut', styles.fadeOut, className)}
+      style={{
+        animationDuration: `${duration}ms`
+      }}
+    >
+      {children}
+    </div>
+  );
+};

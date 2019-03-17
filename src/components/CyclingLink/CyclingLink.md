@@ -6,7 +6,7 @@ A component that, when clicked, replaces the initial piece of content with anoth
 
 ```javascript
 <CyclingLink
-  className="test"
+  className={classnames('test')}
   variableToSet="myCycleVar"
 >{[
   'one',
@@ -18,7 +18,7 @@ A component that, when clicked, replaces the initial piece of content with anoth
 
 ## Property arguments
 
-* `children (string[])`: Each of the string choices that the link will cycle through on click.
+* `children (ReadonlyArray<string>)`: Each of the string choices that the link will cycle through on click.
 * `className? (string)`: An optional, extra class that will be passed on to the rendered container element. Note that, regardless of whether this argument is provided, `cyclingLink` is still provided as a class to the container element (rendered by `Cycler`).
 * `dontCallbackOnMount? (boolean)`: Prevents the component from calling the callback argument when the component is first mounted. Useless without also providing `callback`.
 * `dontSetVariableOnMount? (boolean)`: Prevents the component from setting the variable whose name matches `variableToSet`. Useless without also providing `variableToSet`.

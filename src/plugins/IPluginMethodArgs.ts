@@ -11,23 +11,23 @@ import {
   IStoryStateAction,
 } from '../actions/IStoryStateAction';
 import {
-  Tag,
-} from '../tags/Tag';
-import {
-  ReactNode,
-} from 'react';
+  ReactNodeWithoutNullOrUndefined,
+} from '../typeAliases/ReactNodeWithoutNullOrUndefined';
 import {
   Store,
 } from 'redux';
+import {
+  Tag,
+} from '../tags/Tag';
 
 export interface IPluginMethodBaseArgs {
-  readonly currentPassageObject: IPassage;
+  readonly passageObject: IPassage;
   readonly storyState: IStoryStateFrame;
-  readonly lastLinkTags: Readonly<Tag[]>;
+  readonly lastLinkTags: ReadonlyArray<Tag>;
 }
 
 export interface IPluginMethodChildArgs {
-  readonly children: ReactNode;
+  readonly children: ReactNodeWithoutNullOrUndefined;
 }
 
 export interface IPluginMethodStateMutationArgs {

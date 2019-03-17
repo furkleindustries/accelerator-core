@@ -8,15 +8,14 @@ import {
   BuiltInTags,
   getTag,
   Tag,
-} from '../../src/passages/tagsBundle';
+} from '../../bundles/tagsBundle';
 
 import * as React from 'react';
 
 const {
   name,
   tags,
-  title,
-  contents: Component,
+  content: Component,
 } = passage;
 
 const testFactory = (options?: { [key: string]: any}) => (
@@ -29,6 +28,7 @@ const testFactory = (options?: { [key: string]: any}) => (
     restart={jest.fn()}
     rewind={jest.fn()}
     setStoryState={jest.fn()}
+    soundManager={{} as any}
     storyState={{}}
     {...options}
   />
@@ -37,10 +37,6 @@ const testFactory = (options?: { [key: string]: any}) => (
 describe('Tests for the sample-passage passage.', () => {
   it('Has a non-empty name string.', () => {
     expect(name && typeof name === 'string').toBe(true);
-  });
-
-  it('If it has a title, it is a non-empty string.', () => {
-    expect(!title || typeof title === 'string').toBe(true);
   });
 
   it('If it has tags, they are either non-empty strings or key-value objects.', () => {

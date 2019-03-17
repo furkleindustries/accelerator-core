@@ -2,8 +2,11 @@ import {
   IAction,
 } from '../actions/IAction';
 import {
-  HistoryFilter,
-} from '../reducers/IHistoryFilter';
+  IPassageFunctions,
+} from './IPassageFunctions';
+import {
+  IManager,
+} from 'sound-manager';
 import {
   IPassage,
 } from './IPassage';
@@ -17,14 +20,10 @@ import {
   Tag,
 } from '../tags/Tag';
 
-export interface IPassageProps {
-  dispatch: Dispatch<IAction>;
-  lastLinkTags: Readonly<Tag[]>;
-  passageObject: IPassage;
-  storyState: IStoryStateFrame;
-  bookmark(): void;
-  navigateTo(passageName: string, tags?: Readonly<Tag[]>): void;
-  restart(): void;
-  rewind(filter?: HistoryFilter): void;
-  setStoryState(updatedStateProps: Partial<IStoryStateFrame>): void;
+export interface IPassageProps extends IPassageFunctions {
+  readonly dispatch: Dispatch<IAction>;
+  readonly lastLinkTags: ReadonlyArray<Tag>;
+  readonly passageObject: IPassage;
+  readonly soundManager: IManager;
+  readonly storyState: IStoryStateFrame;
 }

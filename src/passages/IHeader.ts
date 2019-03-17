@@ -1,13 +1,11 @@
 import {
+  IContentfulAsset,
+} from '../interfaces/IContentfulAsset';
+import {
   IPassageProps,
 } from './IPassageProps';
 import {
-  ComponentClass,
-  SFC,
-} from 'react';
+  IPrecedenceWeighted,
+} from '../interfaces/IPrecedenceWeighted';
 
-export interface IHeader {
-  contents: ComponentClass<IPassageProps> | SFC<IPassageProps>;
-  name: string;
-  precedence?: number;
-}
+export interface IHeader extends IContentfulAsset<IPassageProps>, IPrecedenceWeighted {}

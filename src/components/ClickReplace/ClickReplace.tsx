@@ -7,23 +7,15 @@ import {
 
 import * as React from 'react';
 
-export class ClickReplace extends React.Component<IClickReplaceOwnProps> {
-  public render() {
-    const {
-      children,
-      className,
-      replaceWith,
-    } = this.props;
-    
-    const maybeClassName = className ? { className, } : {};
-    
-    return (
-      <Clicker
-        {...maybeClassName}
-        contentAfterClick={replaceWith}
-      >
-        {children}
-      </Clicker>
-    );
-  }
-}
+export const ClickReplace: React.FunctionComponent<IClickReplaceOwnProps> = ({
+  children,
+  className,
+  replaceWith,
+}) => (
+  <Clicker
+    contentAfterClick={replaceWith}
+    {...(className ? { className, } : {})}
+  >
+    {children}
+  </Clicker>
+);

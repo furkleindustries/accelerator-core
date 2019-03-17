@@ -1,9 +1,10 @@
-module.exports.ActionTypes = {
+/* Did you remember to change ./ActionTypes.d.ts? */
+export const ActionTypes = {
   Bookmark: 'Bookmark',
-  CurrentPassageName: 'CurrentPassageName',
   MidrenderSignal: 'MidrenderSignal',
   PassageNavigation: 'PassageNavigation',
   PassageTime: 'PassageTime',
+  StoryOptionUpdate: 'StoryOptionUpdate',
   StoryRequiresFullRerender: 'StoryRequiresFullRerender',
   StoryReset: 'StoryReset',
   StoryRewind: 'StoryRewind',

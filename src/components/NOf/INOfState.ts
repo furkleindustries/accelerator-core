@@ -1,8 +1,8 @@
 import {
-  ReactNodeArray,
-} from 'react';
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export interface INOfState {
-  index: number;
-  shuffled?: ReactNodeArray;
+  readonly index: number;
+  readonly shuffled?: ReadonlyArray<ReactNodeWithoutNullOrUndefined>;
 }

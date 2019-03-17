@@ -2,7 +2,7 @@ import {
   Tag,
 } from './Tag';
 
-export const getTag = (tags: Tag[] | undefined, key: string) => {
+export const getTag = (tags: ReadonlyArray<Tag> | undefined, key: string) => {
   if (!Array.isArray(tags)) {
     return null;
   }

@@ -2,17 +2,17 @@ import {
   createStoryStateAction,
 } from '../actions/creators/createStoryStateAction';
 import {
-  getPassagesMap,
-} from '../passages/getPassagesMap';
-import {
-  getPluginsList,
-} from '../plugins/getPluginsList';
-import {
   IAction,
 } from '../actions/IAction';
 import {
   IHistory,
 } from './IHistory';
+import {
+  IPassage,
+} from '../passages/IPassage';
+import {
+  IPlugin,
+} from '../plugins/IPlugin';
 import {
   IStoryStateFrame,
 } from './IStoryStateFrame';
@@ -20,42 +20,46 @@ import {
   Dispatch,
 } from 'redux';
 
+export const strings = {
+  PASSAGE_NOT_FOUND:
+    'The currentPassageName property of the present state frame does not ' +
+    'correspond to any passage in the passages map.',
+};
+
 /* Do NOT call this from within a plugin -- there is a very high chance you'll
  * cause an infinite loop, then a stack overflow. */
 export function mutateCurrentStoryStateInstanceWithPluginExecution({
   dispatch,
-  history,
+  history: {
+    present: {
+      lastLinkTags,
+      storyState: preupdateStoryState,
+    },
+  },
+
+  passageObject,
+  plugins,
   updatedStateProps,
 }: {
-  dispatch: Dispatch<IAction>,
-  history: IHistory,
-  updatedStateProps: Partial<IStoryStateFrame>,
+  readonly dispatch: Dispatch<IAction>,
+  readonly history: IHistory,
+  readonly passageObject: IPassage,
+  readonly plugins: ReadonlyArray<IPlugin>,
+  readonly updatedStateProps: Partial<IStoryStateFrame>,
 }): void
 {
   const action = createStoryStateAction(updatedStateProps);
   dispatch(action);
-
-  const {
-    present: {
-      currentPassageName,
-      lastLinkTags,
-      storyState: preupdateStoryState,
-    },
-  } = history;
 
   const storyState = {
     ...preupdateStoryState,
     ...updatedStateProps,
   };
 
-  const {
-    passagesMap: { [currentPassageName]: currentPassageObject },
-  } = getPassagesMap();
-
-  getPluginsList().forEach(({ afterStoryStateChange }) => {
+  plugins.forEach(({ afterStoryStateChange }) => {
     if (typeof afterStoryStateChange === 'function') {
       afterStoryStateChange({
-        currentPassageObject,
+        passageObject,
         lastLinkTags,
         storyState,
         updatedStateProps,

@@ -1,14 +1,21 @@
 import {
   DebugPlugin,
   IPluginExport,
-} from '../../src/passages/pluginsBundle';
+} from '../../bundles/pluginsBundle';
 import {
-  getAcceleratorConfig,
-} from '../../src/configuration/getAcceleratorConfig';
+  getNormalizedAcceleratorConfig,
+} from '../../src/configuration/getNormalizedAcceleratorConfig';
 
-export default {
-  /* Only inject the debug plugin if the story is in debug mode. */
-  ...(getAcceleratorConfig().debug ? { contents: new DebugPlugin() } : {}),
-  name: 'Debug',
+const plugin: IPluginExport = {
+  name: 'debug',
+  /* Always have the debug plugin execute first. */
   precedence: Number.MAX_SAFE_INTEGER,
-} as IPluginExport;
+  /* Only inject the debug plugin if the story is in debug mode. */
+  ...(
+    getNormalizedAcceleratorConfig().debug ?
+      { content: new DebugPlugin() } :
+      {}
+  ),
+};
+
+export default plugin;

@@ -1,9 +1,9 @@
 import {
-  ReactNodeArray,
-} from 'react';
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export interface INOfOwnProps {
-  readonly children: ReactNodeArray;
+  readonly children: ReadonlyArray<ReactNodeWithoutNullOrUndefined>;
   readonly n: number;
   readonly shuffle?: boolean;
 }

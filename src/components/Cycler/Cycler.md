@@ -6,7 +6,7 @@ A component that, when clicked, replaces the initial piece of content with anoth
 
 ```javascript
 <Cycler
-  className="test"
+  className={classnames('test')}
   notify
 >
   {/* children */}
@@ -20,6 +20,6 @@ A component that, when clicked, replaces the initial piece of content with anoth
 
 ## Property arguments
 
-* `children (ReactNodeArray)`: A list of any valid content that will be cycled through each time the component is clicked.
+* `children (ReadonlyArray<ReactNodeWithoutNullOrUndefined>)`: A list of any valid content that will be cycled through each time the component is clicked.
 * `className (string, optional)`: An optional, extra class name that will be passed on to the rendered container element.
-* `notifyOfChange ((current: ReactNode, index?: number) => void, optional)`: An optional function which is fired by the `Cycler` instance whenever it cycles, passing the current content and its index to the function. This allows, for example, the `CyclingLink` component to optionally set an arbitrary state property to the value of the `Cycler`'s current text. 
+* `notifyOfChange ((current: ReactNodeWithoutNullOrUndefined, index?: number) => void, optional)`: An optional function which is fired by the `Cycler` instance whenever it cycles, passing the current content and its index to the function. This allows, for example, the `CyclingLink` component to optionally set an arbitrary state property to the value of the `Cycler`'s current text. 

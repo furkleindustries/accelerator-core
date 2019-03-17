@@ -1,6 +1,4 @@
-import {
-  getHeadersList,
-} from '../../passages/getHeadersList';
+import classnames from 'classnames';
 import {
   IHeader,
 } from '../../passages/IHeader';
@@ -8,118 +6,57 @@ import {
   IPassageProps,
 } from '../../passages/IPassageProps';
 import {
-  IPassageContentsContainerDispatchProps,
-} from '../PassageContentsContainer/IPassageContentsContainerDispatchProps';
+  IPassageContentContainerDispatchProps,
+} from '../PassageContentContainer/IPassageContentContainerDispatchProps';
 import {
-  IPassageContentsContainerOwnProps,
-} from '../PassageContentsContainer/IPassageContentsContainerOwnProps';
+  IPassageContentContainerOwnProps,
+} from '../PassageContentContainer/IPassageContentContainerOwnProps';
 import {
-  IPassageContentsContainerStateProps,
-} from '../PassageContentsContainer/IPassageContentsContainerStateProps';
-import {
-  mutateCurrentStoryStateInstanceWithPluginExecution,
-} from '../../state/mutateCurrentStoryStateInstanceWithPluginExecution';
+  Omit,
+} from '../../typeAliases/Omit';
 import {
   mapDispatchToProps,
-  mapStateToProps,
-} from '../PassageContentsContainer/PassageContentsContainer';
+} from '../PassageContentContainer/PassageContentContainer';
 import {
   connect,
 } from 'react-redux';
+import {
+  assertValid,
+} from 'ts-assertions';
 
 import * as React from 'react';
-
-import styles from './PassageHeaders.scss';
-import { HistoryFilter } from '../../reducers/IHistoryFilter';
-import { assert } from 'ts-assertions';
 
 export const strings = {
   COMPONENT_CONSTRUCTOR_NOT_FOUND:
     'There was no contents property found in the header with name %NAME%.',
 };
 
-export class PassageHeaders extends React.PureComponent<IPassageContentsContainerOwnProps & IPassageContentsContainerStateProps & IPassageContentsContainerDispatchProps> {
-  constructor(props: any) {
-    super(props);
-
-    this.restart = this.restart.bind(this);
-    this.rewind = this.rewind.bind(this);
-  }
-  
-  public render() {
-    const {
-      bookmark: bookmark,
-      dispatch,
-      history,
-      lastLinkTags,
-      navigateTo,
-      passageObject,
-      storyState,
-    } = this.props;
-
-    const propsPassedDown: IPassageProps = {
-      bookmark,
-      dispatch,
-      lastLinkTags,
-      navigateTo,
-      passageObject,
-      storyState,
-      restart: this.restart,
-      rewind: this.rewind,
-      setStoryState(updatedStateProps) {
-        mutateCurrentStoryStateInstanceWithPluginExecution({
-          dispatch,
-          history,
-          updatedStateProps,
-        });
-      },
-    };
-
-    const headers: IHeader[] = getHeadersList();
-    const headerComponents = headers.map(({ contents }, index) => {
-      assert(
-        contents,
+export const PassageHeaders: React.FunctionComponent<
+  { readonly headers: ReadonlyArray<IHeader> } &
+  Omit<IPassageContentContainerOwnProps, 'passagesMap'> &
+  IPassageContentContainerDispatchProps
+> = ({
+  headers,
+  ...passageProps
+}) => (
+  <div className={classnames('passageHeaders')}>
+    {headers.map(({ content }, index) => {
+      const SafeContent = assertValid<React.ComponentType<IPassageProps>>(
+        content,
         strings.COMPONENT_CONSTRUCTOR_NOT_FOUND,
       );
 
-      return React.createElement(
-        contents as React.ComponentClass<IPassageProps> | React.SFCFactory<IPassageProps>,
-        Object.assign({}, propsPassedDown, { key: index, }),
+      return (
+        <SafeContent
+          key={index}
+          {...passageProps}
+        />
       );
-    });
-
-    return (
-      <div className={`${styles.passageHeaders} passageHeaders`}>
-        {headerComponents}
-      </div>
-    );
-  }
-
-  private restart() {
-    const {
-      lastLinkTags,
-      restart,
-      passageObject: currentPassageObject,
-      storyState: currentStoryState,
-    } = this.props;
-
-    restart(currentPassageObject, currentStoryState, lastLinkTags);
-  }
-
-  private rewind(filter?: HistoryFilter) {
-    const {
-      rewind,
-      history: {
-        present,
-        past,
-      },
-    } = this.props;
-
-    rewind(present, past, filter);
-  }
-}
+    })}
+  </div>
+);
 
 export const PassageHeadersConnected = connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(PassageHeaders);

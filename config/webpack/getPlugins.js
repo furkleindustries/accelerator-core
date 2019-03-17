@@ -1,22 +1,25 @@
-const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-const getCommonPlugins = require('./getCommonPlugins');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const paths = require('../paths');
-const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
-const webpack = require('webpack');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
+import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
+import {
+  getCommonPlugins,
+} from './getCommonPlugins';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import InlineChunkHtmlPlugin from 'react-dev-utils/InlineChunkHtmlPlugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import * as path from 'path';
+import {
+  paths,
+} from '../paths';
+import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
+import webpack from 'webpack';
+import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 
-module.exports = function getPlugins({
+export function getPlugins({
+  config,
   mode,
-  modern,
-  publicUrl,
   shouldInlineRuntimeChunk,
-  useTypeScript,
 })
 {
-  const base = getCommonPlugins(mode, useTypeScript);
+  const base = getCommonPlugins(mode, config);
   if (mode === 'development') {
     return [
       ...base,
@@ -46,6 +49,18 @@ module.exports = function getPlugins({
         []
     ),
 
+    // This creates a performance profile of the plugins. It can be read by
+    // opening the file in the Performance tab of the Chrome dev tools.
+    new webpack.debug.ProfilingPlugin({
+      outputPath: path.join(
+        __dirname,
+        '..',
+        '..',
+        'build-web',
+        'pluginsProfile.json',
+      ),
+    }),
+
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
@@ -57,10 +72,14 @@ module.exports = function getPlugins({
     // the HTML & assets that are part of the Webpack build.
     new WorkboxWebpackPlugin.GenerateSW({
       clientsClaim: true,
-      exclude: [/\.map$/, /asset-manifest\.json$/],
+      exclude: [
+        /\.map$/,
+        /asset-manifest\.json$/,
+      ],
+
       importWorkboxFrom: 'cdn',
-      navigateFallback: `${publicUrl}/index.html`,
-       navigateFallbackBlacklist: [
+      navigateFallback: `${paths.publicUrl}/index.html`,
+      navigateFallbackBlacklist: [
         // Exclude URLs starting with /_, as they're likely an API call
         new RegExp('^/_'),
         // Exclude URLs containing a dot, as they're likely a resource in
@@ -69,4 +88,4 @@ module.exports = function getPlugins({
       ],
     }),
   ];
-};
+}

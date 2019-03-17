@@ -1,113 +1,126 @@
-// Do this as the first thing so that any code reading it knows the right env.
-process.env.BABEL_ENV = 'development';
-process.env.NODE_ENV = 'development';
+import './functions/setUnhandledRejectionEvent';
+import '../config/setDevelopmentEnv';
 
-// Makes the script crash on unhandled rejections instead of silently
-// ignoring them. In the future, promise rejections that are not handled will
-// terminate the Node.js process with a non-zero exit code.
-process.on('unhandledRejection', err => {
-  throw err;
-});
-
-// Ensure environment variables are read.
-require('../config/env');
-
-const fs = require('fs-extra');
-const chalk = require('chalk');
-const webpack = require('webpack');
-const WebpackDevServer = require('webpack-dev-server');
-const clearConsole = require('react-dev-utils/clearConsole');
-const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
-const {
+import {
+  checkBrowsers,
+} from 'react-dev-utils/browsersHelper';
+import chalk from 'chalk';
+import checkRequiredFiles from 'react-dev-utils/checkRequiredFiles';
+//import clearConsole from 'react-dev-utils/clearConsole');
+import {
+  error,
+  log,
+} from 'colorful-logging';
+import config from '../config/webpack/webpack.config';
+import createDevServerConfig from '../config/webpack/webpackDevServer.config';
+import openBrowser from 'react-dev-utils/openBrowser';
+import {
+  paths,
+} from '../config/paths';
+import webpack from 'webpack';
+import WebpackDevServer from 'webpack-dev-server';
+import {
   choosePort,
   createCompiler,
   prepareProxy,
   prepareUrls,
-} = require('react-dev-utils/WebpackDevServerUtils');
-const openBrowser = require('react-dev-utils/openBrowser');
-const paths = require('../config/paths');
-const config = require('../config/webpack/webpack.config');
-const createDevServerConfig = require('../config/webpack/webpackDevServer.config');
+} from 'react-dev-utils/WebpackDevServerUtils';
 
-const useYarn = fs.existsSync(paths.yarnLockFile);
-const isInteractive = process.stdout.isTTY;
+const packageJson = require(paths.appPackageJson);
+
+const {
+  env: {
+    HOST,
+    HTTPS,
+    PORT,
+  },
+
+  exit,
+  stdout: { isTty: isInteractive },
+} = process;
 
 // Warn and crash if required files are missing
-if (!checkRequiredFiles([paths.appHtml, paths.appIndex])) {
-  process.exit(1);
+if (!checkRequiredFiles([ paths.htmlTemplate, paths.appIndex, paths.appPackageJson ])) {
+  exit(1);
 }
 
 // Tools like Cloud9 rely on this.
-const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
-const HOST = process.env.HOST || '0.0.0.0';
+const defaultPort = parseInt(PORT, 10) || 3000;
+const host = HOST || '0.0.0.0';
 
-if (process.env.HOST) {
-  console.log(
-    chalk.cyan(
-      `Attempting to bind to HOST environment variable: ${chalk.yellow(
-        chalk.bold(process.env.HOST)
-      )}`
-    )
+if (HOST) {
+  log(
+    `Attempting to bind to HOST environment variable: ${chalk.yellow(
+      chalk.bold(host)
+    )}`
   );
-  console.log(
+
+  log(
     `If this was unintentional, check that you haven't mistakenly set it in your shell.`
   );
-  console.log(
-    `Learn more here: ${chalk.yellow('http://bit.ly/CRA-advanced-config')}`
+
+  log(
+    `Learn more here: ${chalk.bold('http://bit.ly/CRA-advanced-config')}\n`
   );
-  console.log();
 }
 
 // We require that you explictly set browsers and do not fall back to
 // browserslist defaults.
-const { checkBrowsers } = require('react-dev-utils/browsersHelper');
 checkBrowsers(paths.appPath, isInteractive)
-  .then(() => {
-    // We attempt to use the default port but if it is busy, we offer the user to
-    // run on a different port. `choosePort()` Promise resolves to the next free port.
-    return choosePort(HOST, DEFAULT_PORT);
-  })
-  .then(port => {
-    if (port == null) {
+// We attempt to use the default port but if it is busy, we offer the user to
+// run on a different port. `choosePort()` Promise resolves to the next free port.
+  .then(() => choosePort(host, defaultPort))
+  .then((port) => {
+    if (port === null) {
       // We have not found a port.
       return;
     }
-    const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
+
+    const protocol = HTTPS === 'true' ? 'https' : 'http';
     const appName = require(paths.appPackageJson).name;
-    const urls = prepareUrls(protocol, HOST, port);
+
+    const urls = prepareUrls(protocol, host, port);
+    const {
+      lanUrlForConfig,
+      localUrlForBrowser,
+    } = urls;
+
     // Create a webpack compiler that is configured with custom messages.
-    const compiler = createCompiler(webpack, config, appName, urls, useYarn);
+    const compiler = createCompiler(webpack, config, appName, urls);
     // Load proxy config
-    const proxySetting = require(paths.appPackageJson).proxy;
+    const proxySetting = packageJson.proxy;
     const proxyConfig = prepareProxy(proxySetting, paths.appPublic);
     // Serve webpack assets generated by the compiler over a web server.
     const serverConfig = createDevServerConfig(
       proxyConfig,
-      urls.lanUrlForConfig
+      lanUrlForConfig,
     );
+
     const devServer = new WebpackDevServer(compiler, serverConfig);
     // Launch WebpackDevServer.
-    devServer.listen(port, HOST, err => {
+    devServer.listen(port, host, (err) => {
       if (err) {
-        return console.log(err);
+        console.log(err);
+        error(err.stack || err.message || err);
+        return;
       } else if (isInteractive) {
-        clearConsole();
+        //clearConsole();
       }
 
-      console.log(chalk.cyan('Starting the development server...\n'));
-      openBrowser(urls.localUrlForBrowser);
+      log(chalk.cyan('Starting the development server...\n'));
+      openBrowser(localUrlForBrowser);
     });
 
-    ['SIGINT', 'SIGTERM'].forEach(function(sig) {
-      process.on(sig, function() {
+    [
+      'SIGINT',
+      'SIGTERM',
+    ].forEach((sig) => {
+      process.on(sig, () => {
         devServer.close();
-        process.exit();
+        exit(0);
       });
     });
-  })
-  .catch(err => {
-    if (err && err.message) {
-      console.log(err.message);
-    }
-    process.exit(1);
+  }).catch((err) => {
+    error(err.stack || err.message || err);
+    exit(1);
   });

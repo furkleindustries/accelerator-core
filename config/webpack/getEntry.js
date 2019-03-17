@@ -1,6 +1,8 @@
-const paths = require('../paths');
+import {
+  paths,
+} from '../paths';
 
-module.exports = function getEntry(mode) {
+export function getEntry(mode) {
   if (mode === 'development') {
     return [
       // Include an alternative client for WebpackDevServer. A client's job is to
@@ -24,4 +26,4 @@ module.exports = function getEntry(mode) {
     // In production, we only want to load the app code.
     return [ paths.appIndex ];
   }
-};
+}

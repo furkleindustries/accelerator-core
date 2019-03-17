@@ -1,6 +1,10 @@
 import {
-  getPassagesMap,
-} from '../../passages/getPassagesMap';
+  Button,
+} from '../Button/Button';
+import classnames from 'classnames';
+import {
+  getPassagesMapAndStartPassageNameContext,
+} from '../../context/getPassagesMapAndStartPassageNameContext';
 import {
   ILinkDispatchProps,
 } from './ILinkDispatchProps';
@@ -33,51 +37,51 @@ export class LinkUnconnected extends React.PureComponent<
   ILinkOwnProps & ILinkDispatchProps
 >
 {
-  constructor(props: any) {
-    super(props);
-    this.navigate = this.navigate.bind(this);
-  }
+  public static contextType = getPassagesMapAndStartPassageNameContext();
 
-  public render() {
+  public render = () => {
     const {
       children,
       className,
-      passageName,
     } = this.props;
 
     return (
-      <button
-        className={`link${className ? ` ${className}` : ''}`}
-        passage-name={passageName}
-        onClick={this.navigate}
+      <Button
+        className={classnames('link', className)}
+        onClick={this.doNavigation}
       >
         {children}
-      </button>
+      </Button>
     );
-  }
+  };
 
-  private navigate() {
+  private doNavigation = () => {
     const {
       dispatch,
       passageName,
-      tags,
+      tags: linkTags,
     } = this.props;
 
+    const {
+      passagesMap: { [passageName]: passage },
+    } = this.context;
+
     assert(
-      getPassagesMap().passagesMap[passageName],
+      passage,
       strings.PASSAGE_DOES_NOT_EXIST.replace('%NAME%', passageName),
     );
 
     navigate({
       dispatch,
-      passageName,
-      tags,
+      passage,
+      linkTags,
     });
-  }
+  };
 }
 
-export const mapDispatchToProps: MapDispatchToProps<ILinkDispatchProps, ILinkOwnProps> = (dispatch: Dispatch) => ({
-  dispatch,
-}); 
+export const mapDispatchToProps: MapDispatchToProps<
+  ILinkDispatchProps,
+  ILinkOwnProps
+> = (dispatch: Dispatch) => ({ dispatch }); 
 
 export const Link = connect(null, mapDispatchToProps)(LinkUnconnected);

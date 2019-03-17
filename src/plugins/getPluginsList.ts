@@ -1,6 +1,6 @@
 import {
-  checkPluginExport,
-} from './checkPluginExport';
+  checkPluginAsset,
+} from './checkPluginAsset';
 import {
   IPlugin,
 } from './IPlugin';
@@ -22,31 +22,33 @@ export const strings = {
     '%REASON%.',
 };
 
-/* Memoize results and return them without computation on repeat calls. */
-let pluginsList: IPlugin[] | null = null;
+assert(Array.isArray(manifest), strings.PLUGINS_MANIFEST_INVALID);
 
-export function getPluginsList(): IPlugin[] {
+/* Memoize results and return them without computation on repeat calls. */
+let pluginsList: ReadonlyArray<IPlugin> | null = null;
+
+export function getPluginsList(): ReadonlyArray<IPlugin> {
   /* Return the memoized list if it exists. */
   if (pluginsList) {
     return pluginsList;
   }
 
-  assert(Array.isArray(manifest), strings.PLUGINS_MANIFEST_INVALID);
+  type temp = { [key: string]: IPluginExport[] } & { none: IPluginExport[] };
+  const pluginsPrecedenceMap: temp = { none: [] };
 
-  const pluginsPrecedenceMap: { [key: string]: IPluginExport[] } & { none: IPluginExport[] } = {
-    none: [],
-  };
-
-  manifest.forEach(({ filepath, pluginExport, }) => {
-    const pluginObj = pluginExport;
+  manifest.forEach(({
+    asset,
+    filepath,
+  }) => {
+    const pluginObj = asset;
     try {
-      checkPluginExport(pluginObj);
+      checkPluginAsset(pluginObj);
     } catch (err) {
       const errStr = strings.PLUGIN_OBJECT_INVALID
         .replace('%FILEPATH%', filepath)
         .replace('%REASON%', err);
   
-      assert(null, errStr);
+      throw new Error(errStr);
     }
 
     if (typeof pluginObj.precedence === 'number' &&
@@ -75,23 +77,23 @@ export function getPluginsList(): IPlugin[] {
     return 1;
   });
 
-  pluginsList = keys.map<IPluginExport[]>((key) => (
+  pluginsList = keys.map<ReadonlyArray<IPluginExport>>((key) => (
     /* Sort the plugins in each precedence in ascending lexicographic
      * order. */
     pluginsPrecedenceMap[key]
-      .filter(((exp) => exp.contents))
+      .filter(((exp) => exp.content))
       .sort((aa, bb) => {
-        if (aa.name < bb.name) {
-          return -1;
-        } else if (aa.name === bb.name) {
+        if (aa.name === bb.name) {
           return 0;
+        } else if (aa.name > bb.name) {
+          return 1;
         }
 
-        return 1;
+        return -1;
       })
-  )).reduce<IPlugin[]>((prev, curr) => (
-    prev.concat(curr.map((aa) => aa.contents!))
+  )).reduce<ReadonlyArray<IPlugin>>((prev, curr) => (
+    prev.concat(curr.map((aa) => aa.content!))
   ), []);
 
   return pluginsList;
-};
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>{{storyTitle}}</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="{{storyDescription}}">
+
+    <!--
+      manifest.json provides metadata used when your web app is added to the
+      homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
+    -->
+    <link rel="manifest" href="{{publicUrl}}/manifest.json">
+    <link rel="shortcut icon" href="{{publicUrl}}/favicon.ico">
+    <!--
+      Notice the use of { { publicUrl } } (without spaces) in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "{ { publicUrl } }/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+
+      accelerator-core uses no routing by default so the value of { { publicUrl } }
+      is typically `.`.
+    -->
+
+    <style id="fontLoaderStyle">
+    {{{fontLoaderStyle}}}
+    </style>
+
+    <!--
+      This is here to ensure that `@material-ui`'s generated and
+      injected styles are placed before the webpack-injected authored styles,
+      and thus given a lower priority.
+    --> 
+    <noscript id="jss-insertion-point"></noscript>
+  </head>
+
+  <body>
+    <noscript>You need to enable JavaScript to run this story.</noscript>
+
+    <div
+      id="root"
+      aria-describedby="load"
+      aria-busy="true"
+    ></div>
+
+    <div id="load"></div>
+
+    {{> fontFaceObserver}}
+    {{> fontLoader}}
+
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start`.
+      To create a production bundle, use `npm run build`.
+    -->
+  </body>
+</html>

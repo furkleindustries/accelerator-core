@@ -1,10 +1,11 @@
 import {
-  ComponentClass,
-  SFCFactory,
-} from 'react';
+  IContentfulAsset,
+} from '../interfaces/IContentfulAsset';
+import {
+  IPassageProps,
+} from './IPassageProps';
+import {
+  IPrecedenceWeighted,
+} from '../interfaces/IPrecedenceWeighted';
 
-export interface IFooter {
-  contents: ComponentClass | SFCFactory<any>;
-  name: string;
-  precedence?: number;
-}
+export interface IFooter extends IContentfulAsset<IPassageProps>, IPrecedenceWeighted {}

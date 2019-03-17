@@ -5,15 +5,18 @@ import {
   INOfState,
 } from './INOfState';
 import {
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
+import {
   assert,
   assertValid,
 } from 'ts-assertions';
 
-import * as React from 'react';
+declare function arrayShuffle(arr: any[]): any[];
+// @ts-ignore 
+import * as arrayShuffle from 'array-shuffle';
 
-// tslint:disable
-const arrayShuffle: (arr: any[]) => any[] = require('array-shuffle');
-// tslint:enable
+import * as React from 'react';
 
 export const strings = {
   N_NOT_POSITIVE_INTEGER:
@@ -23,7 +26,7 @@ export const strings = {
     'The `shuffled` state value '
 };
 
-export class NOf extends React.Component<INOfOwnProps, INOfState> {
+export class NOf extends React.PureComponent<INOfOwnProps, INOfState> {
   public state = {
     index: 0,
     shuffled: undefined,
@@ -66,7 +69,7 @@ export class NOf extends React.Component<INOfOwnProps, INOfState> {
 
     return (
       shuffle === true ?
-        assertValid<React.ReactNodeArray>(
+        assertValid<ReadonlyArray<ReactNodeWithoutNullOrUndefined>>(
           shuffled,
           strings.SHUFFLED_INVALID,
         ) :

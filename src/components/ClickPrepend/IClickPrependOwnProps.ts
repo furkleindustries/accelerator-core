@@ -1,8 +1,10 @@
 import {
+  IClassNameable,
+} from '../../interfaces/IClassNameable';
+import {
   ReactNode,
 } from 'react';
 
-export interface IClickPrependOwnProps {
-  className?: string;
-  toPrepend: ReactNode;
+export interface IClickPrependOwnProps extends IClassNameable {
+  readonly toPrepend: ReactNode;
 }

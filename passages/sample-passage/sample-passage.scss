@@ -7,19 +7,17 @@
  */
 
 /**
+ * @see https://github.com/css-modules/css-modules
  * Accelerator is configured to use CSS Modules. Ordinarily, a CSS class you
  * define (e.g. .foo) will affect every element with that class
  * (e.g. <a class="foo"></a>). With CSS Modules, variables are local to the
  * file in which they are imported, unless the author indicates otherwise.
- * The .rewindButton class below has an example of this. 
- * @see https://github.com/css-modules/css-modules
+ * The .rewindButton class below has an example of this.
+ *
+ * If you'd like to opt out of CSS Modules functionality, give your style
+ * files the suffix `.nomodule.css`, e.g. `passage.nomodule.css`, or change
+ * the build configuration so that modularization is off by default.
  */
-
-/**
- * Reuse the link style from the built in styles for the example.
- * @see /src/passages/builtInStyles.scss
- */
-@import '../../src/passages/styles.scss';
 
 /* Variables can be defined (and shared through imports elsewhere) as any
  * CSS value. */
@@ -28,13 +26,14 @@ $space-med: 10px;
 /* You can use math expressions in SCSS files too. */
 $space-lg: $space-med * 3;
 
-$image-width: 300px;
+$image-width: 250px;
+$max-image-width: 80%;
 
 .sample-passage {
   padding: $space-med;
 }
 
-.link {
+:global(.link) {
   display: block;
   margin: 0 auto $space-lg auto;
 }
@@ -42,17 +41,12 @@ $image-width: 300px;
 .image {
   display: block;
   width: $image-width;
-  max-width: 60%;
+  max-width: $max-image-width;
   margin: 0 auto $space-lg auto;
 }
 
 .button {
   margin: 0 auto $space-med auto;
-  background: #fff;
-  padding: $space-sm;
-  border: 2px outset #bbb;
-  font: inherit;
-  color: #000;
 
   /* This class is nested, and will compile to .button .counter. */
   .counter {
@@ -60,17 +54,7 @@ $image-width: 300px;
   }
 }
 
-.paragraph {
-  margin: 0 0 $space-lg 0;
-}
-
 .cycleVar {
   display: block;
   margin-top: $space-med;
-}
-
-/* Use the globally defined classes of the navigation buttons and one of the
- * built-in style mixins. */
-:global(.navigationButton) {
-  @include link;
 }

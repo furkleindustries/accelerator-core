@@ -7,23 +7,15 @@ import {
 
 import * as React from 'react';
 
-export class ClickAppend extends React.PureComponent<IClickAppendOwnProps> {
-  public render() {
-    const {
-      className,
-      children,
-      toAppend,
-    } = this.props;
-
-    const maybeClassName = className ? { className, } : {};
-
-    return (
-      <Clicker
-        {...maybeClassName}
-        contentAfterClick={[ children, toAppend, ]}
-      >
-        {children}
-      </Clicker>
-    );
-  }
-}
+export const ClickAppend: React.FunctionComponent<IClickAppendOwnProps> = ({
+  className,
+  children,
+  toAppend,
+}) => (
+  <Clicker
+    {...(className ? { className } : {})}
+    contentAfterClick={[ children, toAppend, ]}
+  >
+    {children}
+  </Clicker>
+);

@@ -1,7 +1,9 @@
-const path = require('path');
-const paths = require('../paths');
+import * as path from 'path';
+import {
+  paths,
+} from '../paths';
 
-module.exports = function getOutput(mode, publicPath) {
+export function getOutput(mode, publicPath) {
   const base = { publicPath };
   if (mode === 'development') {
     return {
@@ -16,9 +18,7 @@ module.exports = function getOutput(mode, publicPath) {
       pathinfo: true,
       // Point sourcemap entries to original disk location (format as URL on Windows)
       devtoolModuleFilenameTemplate: (info) => (
-        path
-          .resolve(info.absoluteResourcePath)
-          .replace(/\\/g, '/')
+        path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
       ),
     };
   }
@@ -36,4 +36,4 @@ module.exports = function getOutput(mode, publicPath) {
         .replace(/\\/g, '/')
     ),
   };
-};
+}
