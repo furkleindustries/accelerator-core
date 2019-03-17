@@ -34,7 +34,6 @@ class SoundManagerOption extends React.PureComponent<
 const option: IStoryOption = {
   content: SoundManagerOption,
   name: 'sound-manager-option',
-  optionPropName: null,
 };
 
 export default option;

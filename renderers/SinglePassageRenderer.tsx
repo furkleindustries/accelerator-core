@@ -2,6 +2,9 @@ import {
   AbstractPassageRenderer,
 } from '../src/renderers/AbstractPassageRenderer';
 import {
+  createStoryStateAction,
+} from '../src/actions/creators/createStoryStateAction';
+import {
   PassageContainer,
 } from '../src/components/PassageContainer/PassageContainer';
 import {

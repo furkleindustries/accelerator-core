@@ -21,7 +21,6 @@ class Option extends React.PureComponent {
 const option = {
   content: Option,
   name: '{{{name}}}',
-  optionPropName: null,
 };
 
 export default option;

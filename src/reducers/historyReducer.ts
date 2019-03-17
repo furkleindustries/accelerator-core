@@ -18,7 +18,7 @@ import {
 } from './passageTimeReducer';
 import {
   storyStateReducer,
-} from './storyStateHistoryReducer';
+} from './storyStateReducer';
 import {
   combineReducers,
   Reducer,

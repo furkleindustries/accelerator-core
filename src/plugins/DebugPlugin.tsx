@@ -93,7 +93,7 @@ export class DebugPlugin implements IPlugin {
   {
     log('---- afterRender ----');
     log(`PassageContainer has rendered the passage named ${name}.`);
-  }
+  };
 
   public afterStoryStateChange = ({
     storyState,

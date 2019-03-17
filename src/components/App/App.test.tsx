@@ -7,7 +7,7 @@ import {
 
 import * as React from 'react';
 
-it ('Renders shallowly without crashing.', () => {
+it('Renders shallowly without crashing.', () => {
   const func = () => shallow(<App />);
   expect(func).not.toThrow();
 });

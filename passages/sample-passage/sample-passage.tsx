@@ -28,7 +28,7 @@ interface SampleComponentState {
 
 class Component extends React.PureComponent<
   passages.IPassageProps,
-  SampleComponentState 
+  SampleComponentState
 > {
   public state = {
     soundPlaying: false,
@@ -168,6 +168,8 @@ class Component extends React.PureComponent<
   };
 
   private clickIncrementor = () => {
+    console.log(this);
+    debugger;
     const {
       setStoryState,
       storyState: { counter },

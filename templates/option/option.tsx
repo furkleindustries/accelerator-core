@@ -15,7 +15,6 @@ class Option extends React.PureComponent<IStoryOptionComponentOwnProps> {
     const {
       getBreadcrumbProps,
       open,
-      optionPropName,
       treeSelector,
       updateOptionValue,
     } = this.props;
@@ -31,7 +30,6 @@ class Option extends React.PureComponent<IStoryOptionComponentOwnProps> {
 const option: IStoryOption = {
   content: Option,
   name: '{{{name}}}',
-  optionPropName: null,
 };
 
 export default option;

@@ -13,5 +13,4 @@ import {
 
 export interface IStoryOption extends IAsset, IPrecedenceWeighted {
   readonly content: ComponentType<IStoryOptionComponentOwnProps>;
-  readonly optionPropName?: string | null;
 }

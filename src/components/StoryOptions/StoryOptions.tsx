@@ -63,14 +63,10 @@ export class StoryOptions extends React.PureComponent<
         open={this.state.open}
       >
         <BreadcrumbTrail listComponent={StoryOptionsList}>{
-          getStoryOptionsList().map(({
-            content: OptionComponent,
-            optionPropName,
-          }, key) => (
+          getStoryOptionsList().map(({ content: OptionComponent }, key) => (
             <OptionComponent
               key={key}
-              optionPropName={optionPropName}
-              updateOptionValue={this.updateOptionValue.bind(this, optionPropName)}
+              updateOptionValue={this.updateOptionValue}
             />
           ))
         }</BreadcrumbTrail>

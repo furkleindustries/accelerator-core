@@ -18,7 +18,7 @@ import {
   IState,
 } from '../../state/IState';
 import {
-  PassagePluginsWrapperConnected,
+  PassagePluginsWrapper,
 } from '../PassagePluginsWrapper/PassagePluginsWrapper';
 import {
   PassageRendererWrapperConnected,
@@ -70,7 +70,7 @@ export class RenderingContainer extends React.PureComponent<IRenderingContainerS
                         'renderingContainer',
                         styles.renderingContainer,
                       )}>
-                        <PassagePluginsWrapperConnected
+                        <PassagePluginsWrapper
                           passagesMap={passagesMap}
                           plugins={plugins}
                           reduxStore={store}
@@ -79,7 +79,7 @@ export class RenderingContainer extends React.PureComponent<IRenderingContainerS
                             passagesMap={passagesMap}
                             plugins={plugins}
                           />
-                        </PassagePluginsWrapperConnected>
+                        </PassagePluginsWrapper>
                       </div>
                   )}
                 </PluginsConsumer>

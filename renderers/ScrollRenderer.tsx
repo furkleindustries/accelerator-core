@@ -5,6 +5,9 @@ import {
   warn,
 } from 'colorful-logging';
 import {
+  createStoryStateAction,
+} from '../src/actions/creators/createStoryStateAction';
+import {
   IAcceleratorConfigNormalized,
 } from '../src/configuration/IAcceleratorConfigNormalized';
 import {

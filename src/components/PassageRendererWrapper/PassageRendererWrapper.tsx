@@ -6,6 +6,9 @@ import {
 } from '../../state/bookmark';
 import classnames from 'classnames';
 import {
+  createStoryStateAction,
+} from '../../actions/creators/createStoryStateAction';
+import {
   getNormalizedAcceleratorConfig,
 } from '../../configuration/getNormalizedAcceleratorConfig';
 import {
@@ -14,6 +17,9 @@ import {
 import {
   IAction,
 } from '../../actions/IAction';
+import {
+  IPassageFunctions,
+} from '../../passages/IPassageFunctions';
 import {
   IPassageRenderer,
 } from '../../renderers/IPassageRenderer';
@@ -32,6 +38,9 @@ import {
 import {
   IState,
 } from '../../state/IState';
+import {
+  IStoryStateFrame,
+} from '../../state/IStoryStateFrame';
 import {
   navigate,
 } from '../../state/navigate';
@@ -57,6 +66,7 @@ import {
 } from 'ts-assertions';
 
 import * as React from 'react';
+import { mutateCurrentStoryStateInstanceWithPluginExecution } from '../../state/mutateCurrentStoryStateInstanceWithPluginExecution';
 
 export const strings = {
   PASSAGE_NOT_FOUND:
@@ -83,11 +93,12 @@ export class PassageRendererWrapper extends React.PureComponent<
           ...contextWithoutRenderer
         }) => {
           if (!renderer) {
-            const passageFuncs = {
+            const passageFuncs: IPassageFunctions = {
               bookmark: this.bookmark,
               navigateTo: this.navigateTo,
               rewind: this.rewind,
               restart: this.restart,
+              setStoryState: this.setStoryState,
             };
 
             renderer = new PassageRendererConstructor(
@@ -163,6 +174,16 @@ export class PassageRendererWrapper extends React.PureComponent<
       doRewind(dispatch, present, past);
     }
   };
+
+  private readonly setStoryState = (
+    updatedStateProps: Partial<IStoryStateFrame>,
+  ) => mutateCurrentStoryStateInstanceWithPluginExecution({
+    updatedStateProps,
+    dispatch: this.props.dispatch,
+    history: this.props.history,
+    passageObject: this.props.passageObject,
+    plugins: this.props.plugins,
+  });
 }
 
 export const mapStateToProps: MapStateToProps<
