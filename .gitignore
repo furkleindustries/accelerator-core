@@ -26,6 +26,9 @@ passages/*-manifest.ts
 # plugins
 plugins/*-manifest.ts
 
+# options
+options/*-manifest.ts
+
 # misc
 
 .DS_Store

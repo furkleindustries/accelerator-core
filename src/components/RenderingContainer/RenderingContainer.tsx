@@ -48,6 +48,11 @@ export class RenderingContainer extends React.PureComponent<IRenderingContainerS
 
     return (
       <>
+        {/**
+          * The first item in the tab ordering (and natural document flow)
+          * should be the accessibility link used to skip to the newest passage
+          * content.
+          */}
         <SkipToContentLink />
 
         <ReactReduxContext.Consumer>
