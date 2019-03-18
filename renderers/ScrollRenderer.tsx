@@ -1,12 +1,7 @@
-import {
-  AbstractPassageRenderer,
-} from '../src/renderers/AbstractPassageRenderer';
+import classnames from 'classnames';
 import {
   warn,
 } from 'colorful-logging';
-import {
-  createStoryStateAction,
-} from '../src/actions/creators/createStoryStateAction';
 import {
   IAcceleratorConfigNormalized,
 } from '../src/configuration/IAcceleratorConfigNormalized';
@@ -16,6 +11,9 @@ import {
 import {
   IPassageFunctions,
 } from '../src/passages/IPassageFunctions';
+import {
+  IPassageRendererOwnProps,
+} from '../src/renderers/IPassageRendererOwnProps';
 import {
   PassageContainer,
 } from '../src/components/PassageContainer/PassageContainer';
@@ -31,24 +29,21 @@ import {
 
 import * as React from 'react';
 
-export class ScrollRenderer extends AbstractPassageRenderer {
+import styles from '../passages/_global-styles/built-ins.scss';
+
+export class ScrollRenderer extends React.PureComponent<IPassageRendererOwnProps> {
   private elementBuffer: ReactNodeWithoutNullOrUndefined[] = [];
-
   private lastPassageTime: number;
-
-  constructor(
-    config: Omit<IAcceleratorConfigNormalized, 'rendererName'>,
-    context: Omit<IContext, 'PassageRendererConstructor'>,
-    passageFuncs: IPassageFunctions,
-  ) {
-    super(config, context, passageFuncs);
-    this.context.store.subscribe(this.subscription);
-  }
+  private unsubscribe: Function;
 
   public readonly render = () => {
     const {
-      store: { getState },
-    } = this.context;
+      context: {
+        store: { getState },
+      },
+
+      passageFunctions,
+    } = this.props;
 
     const {
       history: {
@@ -80,28 +75,48 @@ export class ScrollRenderer extends AbstractPassageRenderer {
         {this.elementBuffer.length === 1 ?
           <SkipToContentLinkDestination /> :
           <>
-            {this.elementBuffer.slice(0, this.elementBuffer.length - 1)}
+            {this.elementBuffer.slice(0, this.elementBuffer.length - 1).map((child, index) => (
+              <div
+                className={classnames('pastScrollPassage', styles.pastScrollPassage)}
+                onClick={() => {
+                  let counter = 0;
+                  passageFunctions.rewind(() => (counter += 1) < index);
+                }}
+              >
+                {child}
+              </div>
+            ))}
 
             <SkipToContentLinkDestination />
           </>}
 
-        {this.elementBuffer[this.elementBuffer.length - 1]}
+        <div className={classnames(
+          'currentScrollPassage',
+          styles.currentScrollPassage,
+        )}>
+          {this.elementBuffer[this.elementBuffer.length - 1]}
+        </div>
       </>
     );
   };
 
   private readonly getPassageContainer = (ref: React.RefObject<HTMLSpanElement>) => {
     const {
-      footers,
-      headers,
-      passagesMap,
-      store: {
-        dispatch,
-        getState,
+      config,
+      context: {
+        footers,
+        headers,
+        passagesMap,
+        store: {
+          dispatch,
+          getState,
+        },
+        
+        soundManager,
       },
 
-      soundManager,
-    } = this.context;
+      passageFunctions,
+    } = this.props;
 
     const {
       history: {
@@ -115,6 +130,7 @@ export class ScrollRenderer extends AbstractPassageRenderer {
 
     return (
       <PassageContainer
+        config={config}
         dispatch={dispatch}
         footers={footers}
         headers={headers}
@@ -124,10 +140,16 @@ export class ScrollRenderer extends AbstractPassageRenderer {
         ref={ref}
         soundManager={soundManager}
         storyState={storyState}
-        {...this.passageFunctions}
+        {...passageFunctions}
       />
     );
   };
+
+  public readonly componentDidMount = () => (
+    this.unsubscribe = this.props.context.store.subscribe(this.subscription)
+  );
+
+  public readonly componentWillUnmount = () => this.unsubscribe();;
 
   private readonly maintainBuffer = (
     buffer: ReactNodeWithoutNullOrUndefined[],
@@ -135,8 +157,10 @@ export class ScrollRenderer extends AbstractPassageRenderer {
 
   private readonly subscription = () => {
     const {
-      store: { getState },
-    } = this.context;
+      context: {
+        store: { getState },
+      },
+    } = this.props;
 
     const { storyRequiresFullRerender } = getState();
 

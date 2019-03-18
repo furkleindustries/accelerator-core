@@ -8,13 +8,19 @@ import * as React from 'react';
 
 import styles from './Toolbar.scss';
 
-export const Toolbar: React.FunctionComponent<IToolbarOwnProps> = (props) => (
+export const Toolbar: React.FunctionComponent<IToolbarOwnProps> = ({
+  children,
+  className,
+  ...props
+}) => (
   <MuiToolbar {...{
     ...props,
     className: classnames(
       'toolbar',
       styles.toolbar,
-      props.className,
+      className,
     ),
-  }} />
+  }}>
+    {children}
+  </MuiToolbar>
 );

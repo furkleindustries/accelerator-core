@@ -1,3 +1,6 @@
+import { 
+  IAcceleratorConfigNormalized,
+} from '../configuration/IAcceleratorConfigNormalized';
 import {
   IAction,
 } from '../actions/IAction';
@@ -21,6 +24,7 @@ import {
 } from '../tags/Tag';
 
 export interface IPassageProps extends IPassageFunctions {
+  readonly config: IAcceleratorConfigNormalized;
   readonly dispatch: Dispatch<IAction>;
   readonly lastLinkTags: ReadonlyArray<Tag>;
   readonly passageObject: IPassage;

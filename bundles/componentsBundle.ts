@@ -68,6 +68,9 @@ export {
   OneOf,
 } from '../src/components/OneOf/OneOf';
 export {
+  Paper,
+} from '../src/components/Paper/Paper';
+export {
   Permutation,
 } from '../src/components/Permutation/Permutation';
 export {
@@ -82,3 +85,6 @@ export {
 export {
   Toolbar,
 } from '../src/components/Toolbar/Toolbar';
+export {
+  Typography,
+} from '../src/components/Typography/Typography';

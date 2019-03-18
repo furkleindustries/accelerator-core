@@ -19,42 +19,43 @@
  * the build configuration so that modularization is off by default.
  */
 
-/* Variables can be defined (and shared through imports elsewhere) as any
- * CSS value. */
-$space-sm: 6px;
-$space-med: 10px;
-/* You can use math expressions in SCSS files too. */
-$space-lg: $space-med * 3;
+/**
+ * You can include Sass files in other Sass files, composing them elegantly.
+ * The following statement imports the built-in styles, which you may adjust or
+ * add to at your risk and leisure.
+ */
+@import '../_global-styles/built-ins.scss';
 
-$image-width: 250px;
-$max-image-width: 80%;
+/**
+ * Variables can be defined (and shared through imports elsewhere) as any
+ * CSS value, or the result of a CSS value passed to a function.
+ */
+$darker-background-color: darken($background-color, 1 + 0.1);
 
-.sample-passage {
-  padding: $space-med;
-}
+$image-card-width: 250px;
+$max-image-card-width: 80%;
 
-:global(.link) {
-  display: block;
-  margin: 0 auto $space-lg auto;
+.imageCard {
+  /* You can set properties to the value of a variable. */
+  width: $image-card-width;
+  max-width: $max-image-card-width;
+
+ /* You can also use math operators on a wide variety of values in Sass. */
+  padding: $space-med + $space-sm * 0.5;
+  margin: 0 auto $space-med auto;
+  background-color: $darker-background-color;
 }
 
 .image {
-  display: block;
-  width: $image-width;
-  max-width: $max-image-width;
-  margin: 0 auto $space-lg auto;
+  width: 100%;
 }
 
-.button {
-  margin: 0 auto $space-med auto;
-
-  /* This class is nested, and will compile to .button .counter. */
-  .counter {
-    margin-bottom: $space-lg;
-  }
+.counterButton {
+  margin-bottom: $space-sm * 2;
 }
 
-.cycleVar {
-  display: block;
-  margin-top: $space-med;
+.cyclingLinkCard {
+  display: inline-block;
+  margin-bottom: $space-med + $space-sm * 0.5;
 }
+

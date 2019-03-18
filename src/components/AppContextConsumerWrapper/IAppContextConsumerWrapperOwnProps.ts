@@ -6,5 +6,5 @@ import {
 } from 'react';
 
 export interface IAppContextConsumerWrapperOwnProps {
-  readonly children: FunctionComponent<IContext> | null;
+  readonly children: FunctionComponent<IContext>;
 }

@@ -7,5 +7,6 @@ Some changes made to author-facing content will update automatically. Others wil
 * Altered a template file (in `/templates/`).
 * Altered any of the configuration or scripting in `/config/`.
 * Updated a package.
+* Edited or instrumented an external dependency (e.g. a package in `node_modules/`)
 
 More will be added to this page as needed.

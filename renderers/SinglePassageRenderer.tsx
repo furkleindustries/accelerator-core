@@ -1,9 +1,6 @@
 import {
-  AbstractPassageRenderer,
-} from '../src/renderers/AbstractPassageRenderer';
-import {
-  createStoryStateAction,
-} from '../src/actions/creators/createStoryStateAction';
+  IPassageRendererOwnProps,
+} from '../src/renderers/IPassageRendererOwnProps';
 import {
   PassageContainer,
 } from '../src/components/PassageContainer/PassageContainer';
@@ -18,44 +15,46 @@ export const strings = {
     'No passage named %NAME% could be found within the passages map.',
 };
 
-export class SinglePassageRenderer extends AbstractPassageRenderer {
-  public readonly render = () => {
-    const {
-      footers,
-      headers,
-      passagesMap,
-      soundManager,
-      store: {
-        dispatch,
-        getState,
+export const SinglePassageRenderer: React.FunctionComponent<IPassageRendererOwnProps> = ({
+  config,
+  context: {
+    footers,
+    headers,
+    passagesMap,
+    soundManager,
+    store: {
+      dispatch,
+      getState,
+    },
+  },
+
+  passageFunctions,
+}) => {
+  const {
+    history: {
+      present: {
+        lastLinkTags,
+        passageName,
+        storyState,
       },
-    } = this.context;
+    },
+  } = getState();
 
-    const {
-      history: {
-        present: {
-          lastLinkTags,
-          passageName,
-          storyState,
-        },
-      },
-    } = getState();
+  return (
+    <>
+      <SkipToContentLinkDestination />
 
-    return (
-      <>
-        <SkipToContentLinkDestination />
-
-        <PassageContainer
-          dispatch={dispatch}
-          footers={footers}
-          headers={headers}
-          lastLinkTags={lastLinkTags}
-          passageObject={passagesMap[passageName]}
-          soundManager={soundManager}
-          storyState={storyState}
-          {...this.passageFunctions}
-        />
-      </>
-    );
-  };
+      <PassageContainer
+        config={config}
+        dispatch={dispatch}
+        footers={footers}
+        headers={headers}
+        lastLinkTags={lastLinkTags}
+        passageObject={passagesMap[passageName]}
+        soundManager={soundManager}
+        storyState={storyState}
+        {...passageFunctions}
+      />
+    </>
+  );
 };

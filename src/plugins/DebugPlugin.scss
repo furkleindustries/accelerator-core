@@ -1,5 +1,7 @@
+@import '../../passages/_global-styles/built-ins.scss';
+
 .debugContainer {
-  margin-top: 30px;
+  margin-top: $space-med + $space-sm;
 }
 
 .debugStateTitleContainer {
@@ -12,10 +14,10 @@
 
 .debugReadoutContainer {
   display: inline-block;
-  max-width: 800px;
-  margin: 0 auto;
+  width: $space-xl * 3;
 }
 
 .debugStateReadout {
+  white-space: pre;
   text-align: left;
 }

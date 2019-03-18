@@ -11,18 +11,17 @@ import * as passages from '../../bundles/passagesBundle';
 import builtInStyles from '../../passages/_global-styles/built-ins.scss';
 import styles from './my-first-passage.scss';
 
-class Passage extends React.PureComponent<passages.IPassageProps> {
-  public render = () => (
-    <div
-      className={classnames(
-        'passage',
-        builtInStyles.passage,
-        styles['my-first-passage'],
-      )}
-    >
-    </div>
-  );
-}
+const Passage: React.FunctionComponent<passages.IPassageProps> = () => (
+  <div
+    className={classnames(
+      'passage',
+      builtInStyles.passage,
+      styles['my-first-passage'],
+    )}
+  >
+    This is the second passage.
+  </div>
+);
 
 const passage: passages.IPassage = {
   /* string: the story-unique name of the passage. */

@@ -3,6 +3,9 @@ import {
   log,
 } from 'colorful-logging';
 import {
+  Typography,
+} from '../../bundles/componentsBundle';
+import {
   IPlugin,
 } from './IPlugin';
 import {
@@ -17,39 +20,33 @@ import * as React from 'react';
 import styles from './DebugPlugin.scss';
 
 export class DebugPlugin implements IPlugin {
-  public afterStoryInit = (args: IPluginMethodBaseArgs & IPluginMethodStateMutationArgs) => {
-    const {
-      passageObject,
-      lastLinkTags,
-    } = args;
-
+  public readonly afterStoryInit = ({
+    passageObject,
+    lastLinkTags,
+  }: IPluginMethodBaseArgs & IPluginMethodStateMutationArgs) => {
     log('---- afterStoryInit ----');
     log('The story is initializing.');
     log(`Current passage is: ${passageObject.name}`);
     log('The previous link tags after story initialization were:\n' +
         JSON.stringify(lastLinkTags, null, 2));
-  }
+  };
 
-  public beforePassageChange(args: IPluginMethodBaseArgs) {
-    const {
-      passageObject: { name },
-    } = args;
-
+  public readonly beforePassageChange = ({
+    passageObject: { name },
+  }: IPluginMethodBaseArgs) => {
     log('---- beforePassageChange ----');
     log(`PassageContainer will render the passage named ${name}.`);
-  }
+  };
 
-  public beforeRender = (args: IPluginMethodBaseArgs & IPluginMethodChildArgs) => {
-    const {
-      children,
-      passageObject: {
-        name,
-        tags,
-      },
+  public readonly beforeRender = ({
+    children,
+    passageObject: {
+      name,
+      tags,
+    },
 
-      storyState: currentStoryState,
-    } = args;
-
+    storyState: currentStoryState,
+  }: IPluginMethodBaseArgs & IPluginMethodChildArgs) => {
     log('---- beforeRender ----');
     log(`PassageContainer is rendering the passage named ${name}.`);
     log('The passage\'s tags are:');
@@ -61,33 +58,50 @@ export class DebugPlugin implements IPlugin {
       <>
         {children}
 
-        <div className={classnames('debugContainer', styles.debugContainer)}>
-          <p className={classnames(
-            'debugStateTitle',
-            styles.debugStateTitleContainer,
-          )}>
-            <strong className={classnames(styles.debugStateTitle)}>
+        {/* Inject the debug widget at the bottom of the page. */}
+        <article className={classnames(
+          styles.debugContainer,
+          'debugContainer',
+        )}>
+          <Typography
+            className={classnames(
+              styles.debugStateTitleContainer,
+              'debugStateTitle',
+            )}
+            paragraph={true}
+          >
+            <Typography
+              className={classnames(styles.debugStateTitle)}
+              component="strong"
+            >
               Current story state:
-            </strong>
-          </p>
+            </Typography>
+          </Typography>
 
-          <div className={classnames(
-            'debugReadoutContainer',
-            styles.debugReadoutContainer,
-          )}>
-            <pre className={classnames(
-              'debugStateReadout',
-              styles.debugStateReadout,
-            )}>{
-              JSON.stringify(currentStoryState, null, 2)
-            }</pre>
-          </div>
-        </div>
+          <Typography
+            className={classnames(
+              styles.debugReadoutContainer,
+              'debugReadoutContainer',
+            )}
+            component="div"
+          >
+            <Typography
+              className={classnames(
+                styles.debugStateReadout,
+                'debugStateReadout',
+              )}
+
+              component="code"
+            >
+              {JSON.stringify(currentStoryState, null, 2)}
+            </Typography>
+          </Typography>
+        </article>
       </>
     );
   };
 
-  public afterPassageChange = ({
+  public readonly afterPassageChange = ({
     passageObject: { name },
   }: IPluginMethodBaseArgs) =>
   {
@@ -95,7 +109,7 @@ export class DebugPlugin implements IPlugin {
     log(`PassageContainer has rendered the passage named ${name}.`);
   };
 
-  public afterStoryStateChange = ({
+  public readonly afterStoryStateChange = ({
     storyState,
     updatedStateProps,
   }: IPluginMethodBaseArgs & IPluginMethodStateChangingArgs) => {
@@ -111,7 +125,7 @@ export class DebugPlugin implements IPlugin {
     }
   };
 
-  public beforeRestart = ({
+  public readonly beforeRestart = ({
     storyState,
     passageObject: { name },
   }: IPluginMethodBaseArgs) => {

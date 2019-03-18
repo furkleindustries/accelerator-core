@@ -2,6 +2,9 @@ import {
   HistoryFilter,
 } from '../../reducers/IHistoryFilter';
 import {
+  IAcceleratorConfigNormalized,
+} from '../../configuration/IAcceleratorConfigNormalized';
+import {
   IAction,
 } from '../../actions/IAction';
 import {
@@ -20,6 +23,9 @@ import {
   IStoryStateFrame,
 } from '../../state/IStoryStateFrame';
 import {
+  Omit,
+} from '../../typeAliases/Omit';
+import {
   Dispatch,
 } from 'redux';
 import {
@@ -27,6 +33,7 @@ import {
 } from '../../tags/Tag';
 
 export interface IPassageContainerOwnProps {
+  readonly config: Omit<IAcceleratorConfigNormalized, 'rendererName'>;
   readonly dispatch: Dispatch<IAction>;
   readonly footers: ReadonlyArray<IFooter>;
   readonly headers: ReadonlyArray<IHeader>;

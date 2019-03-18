@@ -5,9 +5,6 @@ import {
   getTag,
 } from '../../tags/getTag';
 import {
-  IAction,
-} from '../../actions/IAction';
-import {
   IPassageContentContainerDispatchProps,
 } from './IPassageContentContainerDispatchProps';
 import {
@@ -20,9 +17,6 @@ import {
   connect,
   MapDispatchToProps,
 } from 'react-redux';
-import {
-  Dispatch,
-} from 'redux';
 import {
   assert,
   assertValid,
@@ -76,9 +70,7 @@ export const PassageContentContainer: React.FunctionComponent<
 export const mapDispatchToProps: MapDispatchToProps<
   IPassageContentContainerDispatchProps,
   null
-> = (
-  dispatch: Dispatch<IAction>,
-) => ({ dispatch });
+> = (dispatch) => ({ dispatch });
 
 export const PassageContentContainerConnected = connect(
   null,

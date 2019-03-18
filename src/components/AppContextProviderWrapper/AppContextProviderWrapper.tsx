@@ -65,7 +65,7 @@ export const AppContextProviderWrapper: React.FunctionComponent<IAppContextProvi
 }) => (
   <FootersContextProvider value={{ footers }}>
     <HeadersContextProvider value={{ headers }}>
-      <PassageRendererProvider value={{ PassageRendererConstructor }}>
+      <PassageRendererProvider value={{ PassageRendererComponent: PassageRendererConstructor }}>
         <PassagesMapAndStartPassageNameProvider
           value={passagesMapAndStartPassageName}
         >
