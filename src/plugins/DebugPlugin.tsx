@@ -90,7 +90,6 @@ export class DebugPlugin implements IPlugin {
                 styles.debugStateReadout,
                 'debugStateReadout',
               )}
-
               component="code"
             >
               {JSON.stringify(currentStoryState, null, 2)}
