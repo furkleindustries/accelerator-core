@@ -2,6 +2,9 @@ export {
   AppBar,
 } from '../src/components/AppBar/AppBar';
 export {
+  Article,
+} from '../src/components/Article/Article';
+export {
   Button,
 } from '../src/components/Button/Button';
 export {
@@ -53,6 +56,12 @@ export {
   FadeOut,
 } from '../src/components/FadeOut/FadeOut';
 export {
+  Footer,
+} from '../src/components/Footer/Footer';
+export {
+  Header,
+} from '../src/components/Header/Header';
+export {
   LinearProgress,
 } from '../src/components/LinearProgress/LinearProgress';
 export {
@@ -79,6 +88,9 @@ export {
 export {
   RewindButton,
 } from '../src/components/RewindButton/RewindButton';
+export {
+  Section,
+} from '../src/components/Section/Section';
 export {
   SoundManagerAudioPanel,
 } from '../src/components/SoundManagerAudioPanel/SoundManagerAudioPanel';

@@ -2,6 +2,9 @@ import {
   HistoryFilter,
 } from '../../reducers/IHistoryFilter';
 import {
+  IAcceleratorConfigNormalized,
+} from '../../configuration/IAcceleratorConfigNormalized';
+import {
   IManager,
 } from 'sound-manager';
 import {
@@ -18,6 +21,7 @@ import {
 } from '../../tags/Tag';
 
 export interface IPassageContentContainerOwnProps {
+  readonly config: IAcceleratorConfigNormalized;
   readonly lastLinkTags: ReadonlyArray<Tag>;
   readonly passageObject: IPassage;
   readonly soundManager: IManager;

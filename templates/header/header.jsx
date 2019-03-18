@@ -22,14 +22,14 @@ class Header extends React.PureComponent {
     } = this.props;
 
     return (
-      <div
+      <components.Header
         className={classnames(
           'header',
           styles['{{{name}}}'],
           builtInStyles.header
         )}
       >
-      </div>
+      </components.Header>
     );
   }
 }
