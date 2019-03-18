@@ -6,6 +6,7 @@ import MuiCard from '@material-ui/core/Card';
 import MuiCardActions from '@material-ui/core/CardActions';
 import MuiCardContent from '@material-ui/core/CardContent';
 import MuiCardHeader from '@material-ui/core/CardHeader';
+import MuiCardMedia from '@material-ui/core/CardMedia';
 
 import * as React from 'react';
 
@@ -40,12 +41,16 @@ export const Card: React.FunctionComponent<ICardOwnProps> = ({
       null}
 
     <MuiCardContent className={classnames(styles.content, 'cardContent')}>
-      {children}
+      {React.Children.map(children, (child) => (
+        React.isValidElement(child) && child.type === 'img' ?
+          <MuiCardMedia {...child.props} /> :
+          child
+      ))}
     </MuiCardContent>
 
     {actions ?
       <MuiCardActions
-        className={classnames(styles.actions, 'cardActions')}
+        className={classnames('cardActions')}
       >
         {actions}
       </MuiCardActions> :
