@@ -11,3 +11,7 @@ This file lists descriptions of top-level changes to the Accelerator framework f
   * Updated all dependencies to ES modules and included paths for external packages to offer ES Modules for tree-shaken build consumption.
   * Rearranged passage object props so that relevant state is injected as props rather than being connected to the store. This allows present-state-agnostic rendering, which is necessary for scroll rendering and other more exotic styles.
   * Added `coreVersion` and `toolVersion` properties to the Accelerator config.
+* `0.12.0`
+  * Added `Article`, `Footer`, `Grid`, `Header`, `List`, and `Section` components.
+  * Updated the styles of the sample passage.
+  * Updated the `Card` component to transform media children into a `CardMedia` component.

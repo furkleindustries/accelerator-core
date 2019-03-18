@@ -12,6 +12,8 @@ import * as React from 'react';
 
 import styles from './Card.scss';
 
+const mediaRe = /^audio|iframe|img|picture|video$/;
+
 export const Card: React.FunctionComponent<ICardOwnProps> = ({
   actions,
   children,
@@ -42,9 +44,9 @@ export const Card: React.FunctionComponent<ICardOwnProps> = ({
 
     <MuiCardContent className={classnames(styles.content, 'cardContent')}>
       {React.Children.map(children, (child) => (
-        React.isValidElement(child) && child.type === 'img' ?
+        React.isValidElement(child) && mediaRe.test(child.type) ?
           <MuiCardMedia
-            component="img"
+            component={String(child.type)}
             {...(child.props || {})}
             className={classnames(
               'cardMedia',
