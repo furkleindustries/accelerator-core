@@ -25,14 +25,14 @@ class Passage extends React.PureComponent {
     } = this.props;
 
     return (
-      <div
+      <components.Article
         className={classnames(
           'passage',
           styles['{{{name}}}'],
           builtInStyles.passage,
         )}
       >
-      </div>
+      </components.Article>
     );
   }
 }

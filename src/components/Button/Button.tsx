@@ -12,6 +12,7 @@ import styles from './Button.scss';
 
 export const Button: React.FunctionComponent<IButtonProps> = ({
   className,
+  color = 'primary',
   ...props
 }) => (
   <MuiButton
@@ -21,5 +22,6 @@ export const Button: React.FunctionComponent<IButtonProps> = ({
       styles.button,
       className,
     )}
+    color={color}
   />
 );

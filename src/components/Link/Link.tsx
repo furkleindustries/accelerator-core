@@ -3,8 +3,14 @@ import {
 } from '../Button/Button';
 import classnames from 'classnames';
 import {
+  doLinkNavigation,
+} from './doLinkNavigation';
+import {
   getPassagesMapAndStartPassageNameContext,
 } from '../../context/getPassagesMapAndStartPassageNameContext';
+import {
+  IButtonProps,
+} from '../Button/IButtonProps';
 import {
   ILinkDispatchProps,
 } from './ILinkDispatchProps';
@@ -12,72 +18,49 @@ import {
   ILinkOwnProps,
 } from './ILinkOwnProps';
 import {
-  navigate,
-} from '../../state/navigate';
-import {
   connect,
   MapDispatchToProps,
 } from 'react-redux';
 import {
   Dispatch,
 } from 'redux';
-import {
-  assert,
-} from 'ts-assertions';
 
 import * as React from 'react';
 
-export const strings = {
-  PASSAGE_DOES_NOT_EXIST:
-    'The passageName argument, %NAME%, does not match any passages within ' +
-    'the passages map.',
-};
+const {
+  Consumer: PassagesMapAndStartPassageNameConsumer,
+} = getPassagesMapAndStartPassageNameContext();
 
-export class LinkUnconnected extends React.PureComponent<
-  ILinkOwnProps & ILinkDispatchProps
->
-{
-  public static contextType = getPassagesMapAndStartPassageNameContext();
-
-  public render = () => {
-    const {
-      children,
-      className,
-    } = this.props;
-
-    return (
+export const LinkUnconnected: React.FunctionComponent<
+  ILinkOwnProps & ILinkDispatchProps & IButtonProps
+> = ({
+  children,
+  className,
+  dispatch,
+  passageName,
+  tags,
+  ...props
+}) => (
+  <PassagesMapAndStartPassageNameConsumer>
+    {({ passagesMap }) => (
       <Button
-        className={classnames('link', className)}
-        onClick={this.doNavigation}
+        {...props}
+        className={classnames(
+          'link',
+          className,
+        )}
+        onClick={() => doLinkNavigation({
+          dispatch,
+          passageName,
+          passage: passagesMap[passageName],
+          tags,
+        })}
       >
         {children}
       </Button>
-    );
-  };
-
-  private doNavigation = () => {
-    const {
-      dispatch,
-      passageName,
-      tags: linkTags,
-    } = this.props;
-
-    const {
-      passagesMap: { [passageName]: passage },
-    } = this.context;
-
-    assert(
-      passage,
-      strings.PASSAGE_DOES_NOT_EXIST.replace('%NAME%', passageName),
-    );
-
-    navigate({
-      dispatch,
-      passage,
-      linkTags,
-    });
-  };
-}
+    )}
+  </PassagesMapAndStartPassageNameConsumer>
+);
 
 export const mapDispatchToProps: MapDispatchToProps<
   ILinkDispatchProps,

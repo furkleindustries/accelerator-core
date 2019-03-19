@@ -6,9 +6,6 @@ import {
 } from '../../state/bookmark';
 import classnames from 'classnames';
 import {
-  createStoryStateAction,
-} from '../../actions/creators/createStoryStateAction';
-import {
   getNormalizedAcceleratorConfig,
 } from '../../configuration/getNormalizedAcceleratorConfig';
 import {
@@ -17,12 +14,6 @@ import {
 import {
   IAction,
 } from '../../actions/IAction';
-import {
-  IPassageFunctions,
-} from '../../passages/IPassageFunctions';
-import {
-  IPassageRenderer,
-} from '../../renderers/IPassageRenderer';
 import {
   IPassageRendererDispatchProps,
 } from './IPassageRendererDispatchProps';
@@ -41,6 +32,9 @@ import {
 import {
   IStoryStateFrame,
 } from '../../state/IStoryStateFrame';
+import {
+  mutateCurrentStoryStateInstanceWithPluginExecution,
+} from '../../state/mutateCurrentStoryStateInstanceWithPluginExecution';
 import {
   navigate,
 } from '../../state/navigate';
@@ -66,7 +60,8 @@ import {
 } from 'ts-assertions';
 
 import * as React from 'react';
-import { mutateCurrentStoryStateInstanceWithPluginExecution } from '../../state/mutateCurrentStoryStateInstanceWithPluginExecution';
+
+import builtIns from '../../../passages/_global-styles/built-ins.scss';
 
 export const strings = {
   PASSAGE_NOT_FOUND:
@@ -78,50 +73,39 @@ const {
   ...configWithoutRendererName
 } = getNormalizedAcceleratorConfig();
 
-let renderer: IPassageRenderer;
-
 export class PassageRendererWrapper extends React.PureComponent<
   IPassageRendererWrapperOwnProps &
   IPassageRendererWrapperStateProps &
   IPassageRendererDispatchProps
 > {
-  public readonly render = () => {
-    return (
-      <AppContextConsumerWrapper>
-        {({
-          PassageRendererConstructor,
-          ...contextWithoutRenderer
-        }) => {
-          if (!renderer) {
-            const passageFuncs: IPassageFunctions = {
+  public readonly render = () => (
+    <AppContextConsumerWrapper>
+      {({
+        PassageRendererComponent,
+        ...contextWithoutRenderer
+      }) => (
+        <div className={classnames(
+          builtIns.passageRendererWrapper,
+          'passageRendererWrapper',
+          rendererName,
+        )}>
+          <PassageRendererComponent
+            config={configWithoutRendererName}
+            context={contextWithoutRenderer}
+            passageFunctions={{
               bookmark: this.bookmark,
               navigateTo: this.navigateTo,
               rewind: this.rewind,
               restart: this.restart,
               setStoryState: this.setStoryState,
-            };
+            }}
+          />
+        </div>
+      )}
+    </AppContextConsumerWrapper>
+  );
 
-            renderer = new PassageRendererConstructor(
-              configWithoutRendererName,
-              contextWithoutRenderer,
-              passageFuncs,
-            );
-          }
-
-          return (
-            <div className={classnames(
-              'passageRendererWrapper',
-              rendererName,
-            )}>
-              {renderer.render()}
-            </div>
-          );
-        }}
-      </AppContextConsumerWrapper>
-    );
-  };
-
-  private readonly bookmark = () => doBookmark(this.context.store.dispatch);
+  private readonly bookmark = () => doBookmark(this.props.dispatch);
 
   private navigateTo(passageName: string, tags?: ReadonlyArray<Tag>) {
     const {
@@ -199,18 +183,17 @@ export const mapStateToProps: MapStateToProps<
       storyState,
     },
   }
-}, {
-  passagesMap,
-}) => ({
+}, { passagesMap }) => ({
   history,
   lastLinkTags,
   storyState,
   passageObject: passagesMap[passageName],
 });
 
-export const mapDispatchToProps: MapDispatchToProps<{ dispatch: Dispatch<IAction> }, {}> = (dispatch) => ({
-  dispatch,
-});
+export const mapDispatchToProps: MapDispatchToProps<
+  { dispatch: Dispatch<IAction> },
+  {}
+> = (dispatch) => ({ dispatch });
 
 export const PassageRendererWrapperConnected = connect(
   mapStateToProps,

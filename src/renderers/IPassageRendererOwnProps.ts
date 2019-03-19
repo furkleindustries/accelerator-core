@@ -7,20 +7,12 @@ import {
 import {
   IPassageFunctions,
 } from '../passages/IPassageFunctions';
-import {
-  IPassageProps,
-} from '../passages/IPassageProps';
  import {
   Omit,
 } from '../typeAliases/Omit';
-import {
-  ReactElement,
-  ReactFragment,
-} from 'react';
 
-export interface IPassageRenderer {
+export interface IPassageRendererOwnProps {
   readonly config: Omit<IAcceleratorConfigNormalized, 'rendererName'>;
-  readonly context: Omit<IContext, 'PassageRendererConstructor'>;
+  readonly context: Omit<IContext, 'PassageRendererComponent'>;
   readonly passageFunctions: IPassageFunctions;
-  render(...args: any[]): ReactElement<IPassageProps> | ReactFragment;
 }

@@ -1,7 +1,10 @@
 import {
-  IPassageRendererConstructor,
-} from '../renderers/IPassageRendererConstructor';
+  IPassageRendererOwnProps,
+} from '../renderers/IPassageRendererOwnProps';
+import {
+  ComponentType,
+} from 'react';
 
 export interface IPassageRendererConstructorContext {
-  readonly PassageRendererConstructor: IPassageRendererConstructor;
+  readonly PassageRendererComponent: ComponentType<IPassageRendererOwnProps>;
 }

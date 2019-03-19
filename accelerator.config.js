@@ -42,7 +42,8 @@ export default {
    * if you want a story to appear with an Ink or Twine 1 Jonah-style rendering
    * behavior, or something more exotic. 
    */
-  /* TODO: fix lack of reactive rerendering in ScrollRenderer. */
+  /* TODO: fix lack of reactive rerendering in ScrollRenderer. Do not use
+   * ScrollRenderer yet. */
   rendererName: BuiltInRenderers.SinglePassageRenderer,
 
   /**

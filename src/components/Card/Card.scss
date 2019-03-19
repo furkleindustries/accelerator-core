@@ -1,3 +1,13 @@
+@import '../../../passages/_global-styles/built-ins.scss';
+
 .card {
-  /* Empty. */
+  background-color: $background-color;
+}
+
+.header {
+  padding: $space-med $space-med 0 $space-med;
+}
+
+.content:last-child:first-child {
+  padding-bottom: 16px;
 }

@@ -4,15 +4,10 @@
 
 $background-color: #fafafa;
 
-@mixin passage {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.passage {
-  @include passage();
-}
+$space-sm: 0.3rem;
+$space-med: 1rem;
+$space-lg: $space-med * 3;
+$space-xl: $space-lg * 3;
 
 @mixin header {
   position: relative;
@@ -63,4 +58,39 @@ $hover-duration: 0.3s;
 
 .loadingScreen {
   @include loadingScreen();
+}
+
+@mixin passage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.passage {
+  @include passage();
+}
+
+@mixin passageRendererWrapper() {
+  padding-top: 1.5rem;
+}
+
+.passageRendererWrapper {
+  @include passageRendererWrapper();
+}
+
+.pastScrollPassage {
+  opacity: 0.5;
+  cursor: pointer;
+
+  & * {
+    pointer-events: none;
+  }
+}
+
+@mixin section() {
+  margin-bottom: $space-med + $space-sm;
+}
+
+.section {
+  @include section();
 }

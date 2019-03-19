@@ -24,14 +24,14 @@ class Footer extends React.PureComponent<passages.IPassageProps> {
     } = this.props;
 
     return (
-      <footer
+      <components.Footer
         className={classnames(
           'footer',
           styles['{{{name}}}'],
           builtInStyles.footer,
         )}
       >
-      </footer>
+      </components.Footer>
     );
   }
 }
