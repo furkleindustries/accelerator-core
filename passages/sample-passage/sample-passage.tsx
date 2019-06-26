@@ -22,11 +22,11 @@ import {
 } from '../../bundles/tagsBundle';
 
 /* Import the passage style. See css-modules.d.ts for types. */
-import styles from './sample-passage.scss';
+import styles from './sample-passage.less';
 
 /* Import the built-in styles. These are bare-minimum defaults that are meant
  * to be overridden by authors. */
-import builtInStyles from '../_global-styles/built-ins.scss';
+import builtInStyles from '../_global-styles/built-ins.less';
 
 /* Images (see images.d.ts for allowed types) are imported as URLs to
  * the file in the public/ directory. */

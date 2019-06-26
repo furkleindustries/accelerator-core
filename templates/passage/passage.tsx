@@ -9,39 +9,45 @@ import * as components from '../../bundles/componentsBundle';
 import * as passages from '../../bundles/passagesBundle';
 import * as tags from '../../bundles/tagsBundle';
 
-import builtInStyles from '../_global-styles/built-ins.scss';
-import styles from './{{{name}}}.scss';
+/**
+ * The authoring passage is imported and rendered into the React passage.
+ */
+import AuthoringPassage from './passage.mdx';
 
-class Passage extends React.PureComponent<passages.IPassageProps> {
-  public render() {
-    const {
-      lastLinkTags,
-      passageObject,
-      navigateTo,
-      restart,
-      setStoryState,
-      storyState,
-    } = this.props;
+import builtInStyles from '../_global-styles/built-ins.less';
+import styles from './{{{name}}}.less';
 
-    return (
-      <components.Article
-        className={classnames(
-          'passage',
-          styles['{{{name}}}'],
-          builtInStyles.passage,
-        )}
-      >
-      </components.Article>
-    );
-  }
-}
+const Passage: React.FunctionComponent<passages.IPassageProps> = (props) => {
+  const {
+    lastLinkTags,
+    passageObject,
+    navigateTo,
+    restart,
+    setStoryState,
+    storyState,
+  } = props;
+
+  return (
+    <components.Article
+      className={classnames(
+        builtInStyles.passage,
+        styles['{{{name}}}'],
+        'passage',
+      )}
+    >
+      <components.AuthoringPassageContainer value={props}>
+        <AuthoringPassage />
+      </components.AuthoringPassageContainer>
+    </components.Article>
+  );
+};
 
 const passage: passages.IPassage = {
   /* string: the story-unique name of the passage. */
   name: '{{{name}}}',
   
   /* Tag[]: an optional collection of either plain strings or
-   * { key: string, value: string, } objects. */
+   * { key: string, value: string } (ITag) objects. */
   tags: [],
 
   /* React.ComponentType<IPassageProps>: the content that should be displayed,

@@ -9,7 +9,7 @@ import {
   UrlLink,
 } from '../UrlLink/UrlLink';
 
-import styles from './SkipToContentLink.scss';
+import styles from './SkipToContentLink.less';
 
 import * as React from 'react';
 

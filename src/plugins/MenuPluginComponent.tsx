@@ -17,8 +17,8 @@ import {
 
 import * as React from 'react';
 
-import builtInStyles from '../../passages/_global-styles/built-ins.scss';
-import styles from './MenuPlugin.scss';
+import builtInStyles from '../../passages/_global-styles/built-ins.less';
+import styles from './MenuPlugin.less';
 
 export const MenuPluginComponent: React.FunctionComponent = () => (
   <AppBar

@@ -29,7 +29,7 @@ import {
 
 import * as React from 'react';
 
-import './index.scss';
+import './index.less';
 
 if (isNode()) {
   // Makes the script crash on unhandled rejections instead of silently

@@ -17,7 +17,7 @@ import {
 
 import * as React from 'react';
 
-import styles from './DebugPlugin.scss';
+import styles from './DebugPlugin.less';
 
 export class DebugPlugin implements IPlugin {
   public readonly afterStoryInit = ({

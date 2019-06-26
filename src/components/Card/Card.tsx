@@ -10,7 +10,7 @@ import MuiCardMedia from '@material-ui/core/CardMedia';
 
 import * as React from 'react';
 
-import styles from './Card.scss';
+import styles from './Card.less';
 
 const mediaRe = /^audio|iframe|img|picture|video$/;
 

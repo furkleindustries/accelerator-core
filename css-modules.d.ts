@@ -4,10 +4,6 @@ declare module '*.css' {
   export default classes;
 }
 
-declare module '*.sass' {
-  export default classes;
-}
-
-declare module '*.scss' {
+declare module '*.less' {
   export default classes;
 }

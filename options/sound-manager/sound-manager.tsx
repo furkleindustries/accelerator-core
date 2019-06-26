@@ -14,7 +14,7 @@ import {
 
 import * as React from 'react';
 
-import styles from './sound-manager.scss';
+import styles from './sound-manager.less';
 
 class SoundManagerOption extends React.PureComponent<
   IStoryOptionComponentOwnProps

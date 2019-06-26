@@ -8,7 +8,7 @@ import {
 
 import * as React from 'react';
 
-import styles from './Button.scss';
+import styles from './Button.less';
 
 export const Button: React.FunctionComponent<IButtonProps> = ({
   className,

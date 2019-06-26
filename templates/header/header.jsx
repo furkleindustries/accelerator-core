@@ -5,9 +5,9 @@ import classnames from 'classnames';
 
 import * as components from '../../src/passages/componentsBundle';
 import * as tagsBundle from '../../src/passages/tagsBundle';
-import builtInStyles from '../../passages/_global-styles/built-ins.scss';
 
-import styles from './{{{name}}}.scss';
+import builtInStyles from '../../passages/_global-styles/built-ins.less';
+import styles from './{{{name}}}.less';
 
 /* The header gets all the same props as a normal passage. */
 class Header extends React.PureComponent {

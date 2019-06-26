@@ -12,7 +12,7 @@ import {
 
 import * as React from 'react';
 
-import builtInStyles from '../../../passages/_global-styles/built-ins.scss';
+import builtInStyles from '../../../passages/_global-styles/built-ins.less';
 
 export const LoadingScreen: React.FunctionComponent<
   ILoadingScreenOwnProps & ILoadingScreenStateProps

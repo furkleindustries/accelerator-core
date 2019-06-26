@@ -8,7 +8,7 @@ import {
 
 import * as React from 'react';
 
-import styles from './{{{name}}}.scss';
+import styles from './{{{name}}}.less';
 
 class Option extends React.PureComponent<IStoryOptionComponentOwnProps> {
   public readonly render = () => {

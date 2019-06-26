@@ -7,7 +7,7 @@ import import_0 from '../options/sound-manager/sound-manager';
 const manifest: ReadonlyArray<IStoryOptionManifestItem> = [
   {
     asset: import_0,
-    filepath: `C:/Users/furkle/Documents/code/accelerator/accelerator-core/options/sound-manager/sound-manager.tsx`,
+    filepath: `/home/furkle/code/accelerator/accelerator-core/options/sound-manager/sound-manager.tsx`,
   },
 ];
 

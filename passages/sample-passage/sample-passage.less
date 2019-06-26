@@ -1,9 +1,9 @@
 /**
- * This is a Sass file written in the SCSS flavor. Sass allows a whole host of
+ * This is a LESS file. LESS allows a whole host of
  * extra functionalities relative to CSS, including variables, inheritance,
  * functions, and math. This is automatically compiled into minified CSS and a
  * source map and injected into the story HTML.
- * @see https://sass-lang.com
+ * @see https://lesscss.com
  */
 
 /**
@@ -24,26 +24,26 @@
  * The following statement imports the built-in styles, which you may adjust or
  * add to at your risk and leisure.
  */
-@import '../_global-styles/built-ins.scss';
+@import '../_global-styles/built-ins.less';
 
 /**
  * Variables can be defined (and shared through imports elsewhere) as any
  * CSS value, or the result of a CSS value passed to a function.
  */
-$darker-background-color: darken($background-color, 1 + 0.1);
+@darker-background-color: darken(@background-color, 1 + 0.1);
 
-$image-card-width: 250px;
-$max-image-card-width: 80%;
+@image-card-width: 250px;
+@max-image-card-width: 80%;
 
 .imageCard {
   /* You can set properties to the value of a variable. */
-  width: $image-card-width;
-  max-width: $max-image-card-width;
+  width: @image-card-width;
+  max-width: @max-image-card-width;
 
  /* You can also use math operators on a wide variety of values in Sass. */
-  padding: $space-med + $space-sm * 0.5;
-  margin: 0 auto $space-med auto;
-  background-color: $darker-background-color;
+  padding: @space-med + @space-sm * 0.5;
+  margin: 0 auto @space-med auto;
+  background-color: @darker-background-color;
 }
 
 .image {
@@ -51,11 +51,10 @@ $max-image-card-width: 80%;
 }
 
 .counterButton {
-  margin-bottom: $space-sm * 2;
+  margin-bottom: @space-sm * 2;
 }
 
 .cyclingLinkCard {
   display: inline-block;
-  margin-bottom: $space-med + $space-sm * 0.5;
+  margin-bottom: @space-med + @space-sm * 0.5;
 }
-

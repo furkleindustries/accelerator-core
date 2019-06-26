@@ -26,7 +26,7 @@ import {
 
 import * as React from 'react';
 
-import styles from './StoryOptionsList.scss';
+import styles from './StoryOptionsList.less';
 
 /**
  * Allow both <StoryOption /> and <StoryOptionsList /> children.

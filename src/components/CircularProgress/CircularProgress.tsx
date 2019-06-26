@@ -6,7 +6,7 @@ import MuiCircularProgress from '@material-ui/core/CircularProgress';
 
 import * as React from 'react';
 
-import styles from './CircularProgress.scss';
+import styles from './CircularProgress.less';
 
 export const CircularProgress: React.FunctionComponent<ICircularProgressOwnProps> = (props) => (
   <MuiCircularProgress {...{

@@ -9,7 +9,7 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 
 import * as React from 'react';
 
-import styles from './Dialog.scss';
+import styles from './Dialog.less';
 
 export const Dialog: React.FunctionComponent<IDialogOwnProps> = (props) => {
   const {

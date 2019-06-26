@@ -8,7 +8,7 @@ import {
 
 import * as React from 'react';
 
-import styles from './FadeIn.scss';
+import styles from './FadeIn.less';
 
 export const strings = {
   DURATION_NOT_GREATER_THAN_ZERO_NUMBER:

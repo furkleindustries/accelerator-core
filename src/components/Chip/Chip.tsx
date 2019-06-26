@@ -6,7 +6,7 @@ import MuiChip from '@material-ui/core/Chip';
 
 import * as React from 'react';
 
-import styles from './Chip.scss';
+import styles from './Chip.less';
 
 export const Chip: React.FunctionComponent<IChipOwnProps> = ({
   className,

@@ -5,6 +5,15 @@ export {
   Article,
 } from '../src/components/Article/Article';
 export {
+  AuthoringPassageContainer,
+} from '../src/components/AuthoringPassageContainer/AuthoringPassageContainer';
+export {
+  AuthoringPassageContextConsumerWrapper,
+} from '../src/components/AuthoringPassageContextConsumerWrapper/AuthoringPassageConsumerWrapper';
+export {
+  AuthoringPassageContextProviderWrapper,
+} from '../src/components/AuthoringPassageContextProviderWrapper/AuthoringPassageContextProviderWrapper';
+export {
   Button,
 } from '../src/components/Button/Button';
 export {

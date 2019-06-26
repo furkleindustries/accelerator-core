@@ -6,7 +6,7 @@ import MuiCheckbox from '@material-ui/core/Checkbox';
 
 import * as React from 'react';
 
-import styles from './Checkbox.scss';
+import styles from './Checkbox.less';
 
 export const Checkbox: React.FunctionComponent<ICheckboxOwnProps> = (props) => (
   <MuiCheckbox {...{

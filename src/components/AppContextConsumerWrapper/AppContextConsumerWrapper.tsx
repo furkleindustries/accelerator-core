@@ -8,6 +8,9 @@ import {
   getHeadersContext,
 } from '../../context/getHeadersContext';
 import {
+  getPassageRendererConstructorContext,
+} from '../../context/getPassageRendererConstructorContext';
+import {
   getPassagesMapAndStartPassageNameContext,
 } from '../../context/getPassagesMapAndStartPassageNameContext';
 import {
@@ -21,7 +24,6 @@ import {
 } from '../../context/getSoundManagerContext';
 
 import * as React from 'react';
-import { getPassageRendererConstructorContext } from '../../context/getPassageRendererConstructorContext';
 
 const { Consumer: FootersConsumer } = getFootersContext();
 const { Consumer: HeadersConsumer } = getHeadersContext();

@@ -29,7 +29,7 @@ import {
 
 import * as React from 'react';
 
-import styles from '../passages/_global-styles/built-ins.scss';
+import styles from '../passages/_global-styles/built-ins.less';
 
 export class ScrollRenderer extends React.PureComponent<IPassageRendererOwnProps> {
   private elementBuffer: ReactNodeWithoutNullOrUndefined[] = [];

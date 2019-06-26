@@ -6,7 +6,7 @@ import MuiLinearProgress from '@material-ui/core/LinearProgress';
 
 import * as React from 'react';
 
-import styles from './LinearProgress.scss';
+import styles from './LinearProgress.less';
 
 export const LinearProgress: React.FunctionComponent<ILinearProgressOwnProps> = (props) => (
   <MuiLinearProgress {...{

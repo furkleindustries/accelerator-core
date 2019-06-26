@@ -6,7 +6,7 @@ import MuiLink from '@material-ui/core/Link';
 
 import * as React from 'react';
 
-import styles from './UrlLink.scss';
+import styles from './UrlLink.less';
 
 export const UrlLink: React.FunctionComponent<IUrlLinkOwnProps> = (props) => (
   <MuiLink {...{

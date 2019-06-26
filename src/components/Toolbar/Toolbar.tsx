@@ -6,7 +6,7 @@ import MuiToolbar from '@material-ui/core/Toolbar';
 
 import * as React from 'react';
 
-import styles from './Toolbar.scss';
+import styles from './Toolbar.less';
 
 export const Toolbar: React.FunctionComponent<IToolbarOwnProps> = ({
   children,

@@ -61,7 +61,7 @@ import {
 
 import * as React from 'react';
 
-import builtIns from '../../../passages/_global-styles/built-ins.scss';
+import builtIns from '../../../passages/_global-styles/built-ins.less';
 
 export const strings = {
   PASSAGE_NOT_FOUND:

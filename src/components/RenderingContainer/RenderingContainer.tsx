@@ -35,7 +35,7 @@ import {
 
 import * as React from 'react';
 
-import styles from './RenderingContainer.scss';
+import styles from './RenderingContainer.less';
 
 const {
   Consumer: PassagesMapAndStartPassageNameConsumer,

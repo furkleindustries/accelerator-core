@@ -31,7 +31,7 @@ It is, however, a good choice if you want any of the following:
 
 * A fast, simple, reactive runtime
 * Scripting in JavaScript/TypeScript rather than a special-purpose hypertext fiction language
-* Sass/CSS modules
+* LESS/CSS modules
 * Prerendering of state and start passage
 * Simple component and function reuse
 * Minification of authored content and bundles ~50% as large as a Twine project of equivalent size
@@ -97,7 +97,7 @@ All Accelerator passages have simple access to the bundle imports, located in `/
 * `passagesBundle`:
   * `IPassage`, an interface detailing the properties of the passage object, which is the default export of all passage files.
   * `IPassageProps`, an interface detailing the properties passed to the `content` property of the passage object, assuming `content` is a React component.
-* `builtInStyles`, an CSS modules object containing the classes and IDs defined in the passage's base stylesheet (located at [/src/passages/passage.scss]). This could be automatically used/injected, but I intend on making it as easy as possible to do without default styling. This may change in the future. 
+* `builtInStyles`, an CSS modules object containing the classes and IDs defined in the passage's base stylesheet (located at [/src/passages/passage.less]). This could be automatically used/injected, but I intend on making it as easy as possible to do without default styling. This may change in the future. 
 * `tagsBundle`:
   * `BuiltInTags`, an enum which expresses the tags already configured for use by the Accelerator runtime.
   * `getTag`, a function which accepts a tag array and desired key, and produces either `true` if the key was in the array as a plain string, or the value string if the key was the key property of a key-value tag.

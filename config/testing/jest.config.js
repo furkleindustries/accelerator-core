@@ -31,7 +31,7 @@ module.exports = {
 
   transformIgnorePatterns: [
     '[/\\\\]node_modules[/\\\\].+\\.[jt]sx?$',
-    '^.+\\.module\\.(css|sass|scss)$',
+    '^.+\\.module\\.(css|less)$',
     'scripts/',
   ],
 
@@ -39,7 +39,7 @@ module.exports = {
   testURL: 'http://localhost',
   moduleNameMapper: {
     '^react-native$': 'react-native-web',
-    '^.+\\.(sass|scss)$': 'identity-obj-proxy',
+    '^.+\\.(less)$': 'identity-obj-proxy',
   },
 
   moduleFileExtensions: [
