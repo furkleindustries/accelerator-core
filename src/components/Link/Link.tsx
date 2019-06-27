@@ -42,23 +42,27 @@ export const LinkUnconnected: React.FunctionComponent<
   ...props
 }) => (
   <PassagesMapAndStartPassageNameConsumer>
-    {({ passagesMap }) => (
-      <Button
-        {...props}
-        className={classnames(
-          'link',
-          className,
-        )}
-        onClick={() => doLinkNavigation({
-          dispatch,
-          passageName,
-          passage: passagesMap[passageName],
-          tags,
-        })}
-      >
-        {children}
-      </Button>
-    )}
+    {({ passagesMap }) => {
+      const onClick = () => doLinkNavigation({
+        dispatch,
+        passageName,
+        passage: passagesMap[passageName],
+        tags,
+      });
+
+      return (
+        <Button
+          {...props}
+          className={classnames(
+            'link',
+            className,
+          )}
+          onClick={onClick}
+        >
+          {children}
+        </Button>
+      );
+    }}
   </PassagesMapAndStartPassageNameConsumer>
 );
 

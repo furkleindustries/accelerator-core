@@ -6,6 +6,6 @@ import {
 } from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export interface ICombinationOwnProps extends IClassNameable {
-  readonly children: ReadonlyArray<ReactNodeWithoutNullOrUndefined>;
+  readonly children: ReactNodeWithoutNullOrUndefined[];
   readonly pick?: number;
 }

@@ -17,6 +17,9 @@ import {
   IStoryStateFrame,
 } from '../state/IStoryStateFrame';
 import {
+  Omit,
+} from '../typeAliases/Omit';
+import {
   Dispatch,
 } from 'redux';
 import {
@@ -24,7 +27,7 @@ import {
 } from '../tags/Tag';
 
 export interface IPassageProps extends IPassageFunctions {
-  readonly config: IAcceleratorConfigNormalized;
+  readonly config: Omit<IAcceleratorConfigNormalized, 'rendererName'>;
   readonly dispatch: Dispatch<IAction>;
   readonly lastLinkTags: ReadonlyArray<Tag>;
   readonly passageObject: IPassage;

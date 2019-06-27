@@ -52,6 +52,6 @@ export const historyReducer: Reducer<IHistory, IAction> = undoable(
   {
     limit,
     syncFilter,
-    filter: includeAction(historySaveTypes),
+    filter: includeAction(Array.prototype.slice.call(historySaveTypes)),
   },
 );

@@ -36,6 +36,10 @@
     "not op_mini all"
   ],
   "reactSnap": {
+    "puppeteerArgs": [
+      "--no-sandbox",
+      "--disable-setuid-sandbox"
+    ],
     "source": "build-web"
   },
   "devDependencies": {

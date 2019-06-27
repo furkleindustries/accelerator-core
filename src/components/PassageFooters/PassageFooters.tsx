@@ -12,9 +12,6 @@ import {
   IPassageContentContainerDispatchProps,
 } from '../PassageContentContainer/IPassageContentContainerDispatchProps';
 import {
-  Omit,
-} from '../../typeAliases/Omit';
-import {
   mapDispatchToProps,
 } from '../PassageContentContainer/PassageContentContainer';
 import {
@@ -33,7 +30,7 @@ export const strings = {
 
 export const PassageFooters: React.FunctionComponent<
   { readonly footers: ReadonlyArray<IFooter> } &
-  Omit<IPassageContentContainerOwnProps, 'passagesMap'> &
+  IPassageContentContainerOwnProps &
   IPassageContentContainerDispatchProps
 > = ({
   footers,

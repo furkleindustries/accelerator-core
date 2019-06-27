@@ -44,10 +44,10 @@ export const Card: React.FunctionComponent<ICardOwnProps> = ({
 
     <MuiCardContent className={classnames(styles.content, 'cardContent')}>
       {React.Children.map(children, (child) => (
-        React.isValidElement(child) && mediaRe.test(child.type) ?
+        React.isValidElement(child) && mediaRe.test(child.type as any) ?
           <MuiCardMedia
-            component={String(child.type)}
-            {...(child.props || {})}
+            component={child.type as any}
+            {...child.props}
             className={classnames(
               'cardMedia',
               child.props && (child.props as any).className,

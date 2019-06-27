@@ -136,20 +136,20 @@ export class BreadcrumbTrail extends React.PureComponent<
     const updatedVizTree = { ...this.state.visibilityTree };
     let last = updatedVizTree;
     let treeToSet = updatedVizTree;
-    for (let ii = 0; ii < treeSelector.length; ii += 1) {
+    for (const item of treeSelector) {
       treeToSet.children = treeToSet.children.map((child) => ({ ...child }));
 
-      treeToSet = treeToSet.children[treeSelector[ii]];
+      treeToSet = treeToSet.children[item];
       if (!treeToSet) {
-        last.children = last.children.slice(0, treeSelector[ii]).concat([
+        last.children = last.children.slice(0, item).concat([
           {
             children: [],
             open: false,
             visible: false,
           },
-        ]).concat(last.children.slice(treeSelector[ii] + 1));
+        ]).concat(last.children.slice(item + 1));
 
-        treeToSet = last.children[treeSelector[ii]];
+        treeToSet = last.children[item];
         if (!treeToSet) {
           warn('Tree selector could not be resolved to mutate menu breadcrumb trail.');
           return;

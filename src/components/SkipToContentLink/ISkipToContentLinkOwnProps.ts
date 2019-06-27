@@ -2,4 +2,4 @@ import {
   IUrlLinkOwnProps,
 } from '../UrlLink/IUrlLinkOwnProps';
 
-export interface ISkipToContentLinkOwnProps extends IUrlLinkOwnProps {};
+export type ISkipToContentLinkOwnProps = IUrlLinkOwnProps;

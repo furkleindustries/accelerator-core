@@ -7,7 +7,7 @@ import {
 import {
   IPassageFunctions,
 } from '../passages/IPassageFunctions';
- import {
+import {
   Omit,
 } from '../typeAliases/Omit';
 

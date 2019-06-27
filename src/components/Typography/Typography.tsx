@@ -17,6 +17,5 @@ export const Typography: React.FunctionComponent<ITypographyOwnProps> = (props) 
       styles.typography,
       props.className,
     )}
-
   />
 );

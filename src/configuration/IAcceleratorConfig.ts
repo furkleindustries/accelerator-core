@@ -11,8 +11,7 @@ import {
   IFontSubsettingDetails,
 } from '../fonts/IFontSubsettingDetails';
 
-export interface IAcceleratorConfig {
-  readonly [key: string]: any;
+export interface IAcceleratorConfig extends Record<string, any> {
   readonly coreVersion: string;
   readonly debug: boolean;
   readonly historyStackLimit: number;

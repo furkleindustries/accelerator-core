@@ -48,7 +48,7 @@ const devtool = mode === 'development' ?
 const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== 'false';
 
 const publicUrl = mode === 'development' ? '' : config.publicUrl;
-const publicPath = `/${publicUrl}`;
+const publicPath = publicUrl;
 
 export default {
   mode,

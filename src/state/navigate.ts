@@ -5,9 +5,6 @@ import {
   createPassageNavigationAction,
 } from '../actions/creators/createPassageNavigationAction';
 import {
-  createPassageTimeAction,
-} from '../actions/creators/createPassageTimeAction';
-import {
   getTag,
 } from '../tags/getTag';
 import {

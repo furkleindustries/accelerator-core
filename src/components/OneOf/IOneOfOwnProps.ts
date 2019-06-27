@@ -3,5 +3,5 @@ import {
 } from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export interface IOneOfOwnProps {
-  readonly children: ReactNodeWithoutNullOrUndefined;
+  readonly children: ReactNodeWithoutNullOrUndefined[];
 }

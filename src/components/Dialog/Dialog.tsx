@@ -25,7 +25,11 @@ export const Dialog: React.FunctionComponent<IDialogOwnProps> = (props) => {
     if (typeof includeTitle === 'string') {
       title = <MuiDialogTitle id={id}>{includeTitle}</MuiDialogTitle>;
     } else {
-      title = <MuiDialogTitle id={id} {...includeTitle} />;
+      title = <MuiDialogTitle
+        id={id}
+        key={0}
+        {...includeTitle}
+      />;
     }
   }
 

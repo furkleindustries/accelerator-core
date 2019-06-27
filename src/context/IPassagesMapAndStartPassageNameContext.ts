@@ -1,6 +1,6 @@
 import {
   IPassagesMap,
-} from '../../passages/IPassagesMap';
+} from '../passages/IPassagesMap';
 
 export interface IPassagesMapAndStartPassageNameContext {
   readonly passagesMap: IPassagesMap;

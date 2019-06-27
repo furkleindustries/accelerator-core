@@ -106,7 +106,7 @@ export default {
    * and js/css bundles. This will work fine for all cases except if you need to
    * know the absolute path the story is hosted at ahead of time.
    */
-  publicUrl: '.',
+  publicUrl: '',
 
   /**
    * @property {string}

@@ -50,11 +50,11 @@ const writeStatsJson = argv.indexOf('--stats') !== -1;
 // We require that you explicitly set browsers and do not fall back to
 // browserslist defaults.
 checkBrowsers(paths.appPath, isInteractive)
-  .then(() => {
+  .then(() => (
     // First, read the current file sizes in build directory.
     // This lets us display how much they changed later.
-    return measureFileSizesBeforeBuild(paths.appBuild);
-  }).then((previousFileSizes) => {
+    measureFileSizesBeforeBuild(paths.appBuild)
+  )).then((previousFileSizes) => {
     // Remove all content but keep the directory so that
     // if you're in it, you don't end up in Trash
     fs.emptyDirSync(paths.appBuild);
@@ -183,9 +183,7 @@ function build(previousFileSizes) {
   });
 }
 
-function copyPublicFolder() {
-  fs.copySync(paths.appPublic, paths.appBuild, {
-    dereference: true,
-    filter: (file) => file !== paths.fontLoaderTemplate,
-  });
-}
+const copyPublicFolder = () => fs.copySync(paths.appPublic, paths.appBuild, {
+  dereference: true,
+  filter: (file) => file !== paths.fontLoaderTemplate,
+});

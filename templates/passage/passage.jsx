@@ -50,7 +50,7 @@ export default {
   name: '{{{name}}}',
   
   /* array: an optional collection of either plain strings or
-   * { key: string, value: string } (ITag) objects. */
+   * { key: string, value: string } (Tag) objects. */
   tags: [],
 
   /* React.ComponentType<IPassageProps>: the content that should be displayed,

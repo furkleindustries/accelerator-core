@@ -3,23 +3,11 @@ import {
   warn,
 } from 'colorful-logging';
 import {
-  IAcceleratorConfigNormalized,
-} from '../src/configuration/IAcceleratorConfigNormalized';
-import {
-  IContext,
-} from '../src/context/IContext';
-import {
-  IPassageFunctions,
-} from '../src/passages/IPassageFunctions';
-import {
   IPassageRendererOwnProps,
 } from '../src/renderers/IPassageRendererOwnProps';
 import {
   PassageContainer,
 } from '../src/components/PassageContainer/PassageContainer';
-import {
-  Omit,
-} from '../src/typeAliases/Omit';
 import {
   ReactNodeWithoutNullOrUndefined,
 } from '../src/typeAliases/ReactNodeWithoutNullOrUndefined';
@@ -34,15 +22,13 @@ import styles from '../passages/_global-styles/built-ins.less';
 export class ScrollRenderer extends React.PureComponent<IPassageRendererOwnProps> {
   private elementBuffer: ReactNodeWithoutNullOrUndefined[] = [];
   private lastPassageTime: number;
-  private unsubscribe: Function;
+  private unsubscribe: () => void;
 
   public readonly render = () => {
     const {
       context: {
         store: { getState },
       },
-
-      passageFunctions,
     } = this.props;
 
     const {
@@ -75,17 +61,18 @@ export class ScrollRenderer extends React.PureComponent<IPassageRendererOwnProps
         {this.elementBuffer.length === 1 ?
           <SkipToContentLinkDestination /> :
           <>
-            {this.elementBuffer.slice(0, this.elementBuffer.length - 1).map((child, index) => (
-              <div
-                className={classnames('pastScrollPassage', styles.pastScrollPassage)}
-                onClick={() => {
-                  let counter = 0;
-                  passageFunctions.rewind(() => (counter += 1) < index);
-                }}
-              >
-                {child}
-              </div>
-            ))}
+            {this.elementBuffer.slice(0, this.elementBuffer.length - 1).map((child, index) => {
+              const doRewind = () => this.doRewind(index);
+              return (
+                <div
+                  className={classnames('pastScrollPassage', styles.pastScrollPassage)}
+                  key={index}
+                  onClick={doRewind}
+                >
+                  {child}
+                </div>
+              );
+            })}
 
             <SkipToContentLinkDestination />
           </>}
@@ -177,5 +164,10 @@ export class ScrollRenderer extends React.PureComponent<IPassageRendererOwnProps
     } else {
       warn('The ref has not been added and the passage cannot be scrolled.');
     }
+  };
+
+  private readonly doRewind = (index: number) => {
+    let counter = 0;
+    this.props.passageFunctions.rewind(() => (counter += 1) < index);
   };
 }

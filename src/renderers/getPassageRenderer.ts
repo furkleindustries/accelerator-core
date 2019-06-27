@@ -23,14 +23,18 @@ export function getPassageRenderer(): IPassageRendererConstructor {
       rendererName = configurationDefaults.rendererName;
     }
 
-    const validator = (renderer: any) => typeof renderer === 'function';
-    passageRenderer = assertValid(
+    rendererName = assertValid<string>(
+      rendererName,
+      'No renderer name could be found.',
+    );
+
+    passageRenderer = assertValid<IPassageRendererConstructor>(
       /* Get the path relative to the renderers/ folder. */
       require(`../../renderers/${rendererName}`)[rendererName],
       '',
-      validator,
+      (renderer: any) => typeof renderer === 'function',
     );
   }
 
-  return passageRenderer!;
+  return passageRenderer;
 }

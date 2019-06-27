@@ -15,6 +15,7 @@ import {
 import * as React from 'react';
 
 export const PassageContainer = React.forwardRef<HTMLSpanElement, IPassageContainerOwnProps>(({
+  config,
   footers,
   headers,
   ...passageProps
@@ -24,6 +25,7 @@ export const PassageContainer = React.forwardRef<HTMLSpanElement, IPassageContai
     passageProps.passageObject.name,
   )}>
     <PassageHeadersConnected
+      config={config}
       headers={headers}
       {...passageProps}
     />
@@ -34,11 +36,15 @@ export const PassageContainer = React.forwardRef<HTMLSpanElement, IPassageContai
       ref={ref}
     ></span>
 
-    <PassageContentContainerConnected {...passageProps} />
+    <PassageContentContainerConnected
+      config={config}
+      {...passageProps}
+    />
 
     <PassageFootersConnected
       footers={footers}
       {...passageProps}
+      config={config}
     />
   </div>
 ));

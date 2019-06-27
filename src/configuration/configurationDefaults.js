@@ -17,7 +17,7 @@ export const configurationDefaults = Object.freeze({
   historyStackLimit: 500,
   historySynchronizeUnrewindableStateWithPresent: true,
   /* This path must be relative to the config, not the defaults file. */
-  publicUrl: '.',
+  publicUrl: '',
   rendererName: BuiltInRenderers.SinglePassageRenderer,
   showMenu: true,
   storyDescription:

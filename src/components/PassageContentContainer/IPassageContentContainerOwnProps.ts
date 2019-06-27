@@ -17,11 +17,14 @@ import {
   IStoryStateFrame,
 } from '../../state/IStoryStateFrame';
 import {
+  Omit,
+} from '../../typeAliases/Omit';
+import {
   Tag,
 } from '../../tags/Tag';
 
 export interface IPassageContentContainerOwnProps {
-  readonly config: IAcceleratorConfigNormalized;
+  readonly config: Omit<IAcceleratorConfigNormalized, 'rendererName'>;
   readonly lastLinkTags: ReadonlyArray<Tag>;
   readonly passageObject: IPassage;
   readonly soundManager: IManager;

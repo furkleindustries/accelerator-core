@@ -27,7 +27,7 @@ const { Consumer: PluginContextConsumer } = getPluginsContext();
 
 export const CyclingLink: React.FunctionComponent<ICyclingLinkOwnProps> = ({
   children,
-  ...props,
+  ...props
 }) => (
   <PassagesMapAndStartPassageNameContextConsumer>
     {({ passagesMap }) => (

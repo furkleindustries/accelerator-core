@@ -2,9 +2,6 @@ import {
   IButtonProps,
 } from '../Button/IButtonProps';
 import {
-  Tag,
-} from '../../tags/Tag';
-import {
   ITaggable,
 } from '../../interfaces/ITaggable';
 
