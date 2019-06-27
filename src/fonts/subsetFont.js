@@ -4,6 +4,12 @@ import {
 import {
   getFontFilepath,
 } from './getFontFilepath';
+import GlyphHanger from 'glyphhanger';
+import GlyphHangerFontFace from 'glyphhanger/src/GlyphHangerFontFace';
+import GlyphHangerWhitelist from 'glyphhanger/src/GlyphHangerWhitelist';
+import {
+  LocalGlyphHangerSubset,
+} from '../../lib/GlyphHanger/LocalGlyphHangerSubset';
 import * as path from 'path';
 import {
   paths,
@@ -12,22 +18,22 @@ import {
   assert,
 } from 'ts-assertions';
 
-export function subsetFont({
+export const subsetFont = async ({
   directory,
   fontsToLoad,
   subsetFont: {
     fromFamily,
     subsetRange,
   },
-}) {
+}) => {
   assert(directory);
   assert(Array.isArray(fontsToLoad) && fontsToLoad.length);
   assert(fromFamily);
   assert(subsetRange);
 
-  const fontLoadingObjToSubset = fontsToLoad.find(({
-    family,
-  }) => family === fromFamily);
+  const fontLoadingObjToSubset = fontsToLoad.find(({ family }) => (
+    family === fromFamily
+  ));
 
   if (!fontLoadingObjToSubset) {
     warn('No font loading object could be found for subsetting which ' +
@@ -52,18 +58,15 @@ export function subsetFont({
     style: FontStyles.Normal,
   });
 
-  const GlyphHangerFontFace = require('glyphhanger/src/GlyphHangerFontFace');
   const ghff = new GlyphHangerFontFace();
 
-  const GlyphHangerSubset = require('glyphhanger/src/GlyphHangerSubset');
-  const ghs = new GlyphHangerSubset();
-  ghs.setOutputDirectory(directory);
-  ghs.setFormats(formats.join(','));
-  ghs.setFontFilesGlob(pathOfFontToSubset);
+  const lghs = new LocalGlyphHangerSubset();
+  lghs.setOutputDirectory(directory);
+  lghs.setFormats(formats.join(','));
+  await lghs.setFontFilesGlob(pathOfFontToSubset);
 
-  ghff.setSubset(ghs);
+  ghff.setSubset(lghs);
 
-  const GlyphHangerWhitelist = require('glyphhanger/src/GlyphHangerWhitelist');
   let ghw;
   if (/^latin$/i.test(subsetRange)) {
     ghw = new GlyphHangerWhitelist(null, { LATIN: true });
@@ -74,15 +77,16 @@ export function subsetFont({
   }
 
   const unicodes = ghw.getWhitelistAsUnicodes();
+
   ghff.setUnicodeRange(unicodes);
 
-  const gh = new (require('glyphhanger'))();
+  const gh = new GlyphHanger();
 
   gh.setSubset(pathOfFontToSubset);
   gh.setWhitelist(ghw);  
   gh.output();
 
-  ghs.subsetAll(unicodes);
+  await lghs.subsetAll(unicodes);
 
   ghff.setUnicodeRange(unicodes);
   ghff.output();
@@ -106,11 +110,9 @@ export function subsetFont({
     `}`;
 
   return getReturnObject(fontFaceRule, subsetName);
-}
+};
 
-function getReturnObject(fontFaceRule, subsetName) {
-  return {
-    fontFaceRule: fontFaceRule || null,
-    subsetName: subsetName || null,
-  };
-}
+const getReturnObject = (fontFaceRule, subsetName) => ({
+  fontFaceRule: fontFaceRule || null,
+  subsetName: subsetName || null,
+});

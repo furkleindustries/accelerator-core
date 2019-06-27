@@ -7,7 +7,7 @@ This file lists descriptions of top-level changes to the Accelerator framework f
   * Added facades for `@material-ui/core` components.
   * Added a loading screen with an exposed API for critical, asynchronous loading logic, and progress indication to the reader.
   * Externalized rendering logic into the user space and added an Ink-like scroll-type renderer.
-  * Added an auto-assembled menu widget based on user-creatable, tool-generatable story option assets. This widget also includes contextual rendering of menu objects based on visibility tree, a breadcrumb navigation bar, and the ability to expose to users the mutation of serializable option values, e.g. through form inputs. This may be extracted into a separate package later, but would require significant refactoring to be useful on its own.
+  * Added an auto-assembled menu widget based on user-creatable, tool-generatable story option assets. This widget also includes contextual rendering of menu objects based on a visibility tree, a breadcrumb navigation bar, and the ability to expose to users the mutation of serializable option values, e.g. through form inputs. This may be extracted into a separate package later, but would require significant refactoring to be useful on its own.
   * Updated all dependencies to ES modules and included paths for external packages to offer ES Modules for tree-shaken build consumption.
   * Rearranged passage object props so that relevant state is injected as props rather than being connected to the store. This allows present-state-agnostic rendering, which is necessary for scroll rendering and other more exotic styles.
   * Added `coreVersion` and `toolVersion` properties to the Accelerator config.
