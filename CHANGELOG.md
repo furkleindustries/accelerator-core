@@ -15,3 +15,6 @@ This file lists descriptions of top-level changes to the Accelerator framework f
   * Added `Article`, `Footer`, `Grid`, `Header`, `List`, and `Section` components.
   * Updated the styles of the sample passage.
   * Updated the `Card` component to transform media children into a `CardMedia` component.
+* `0.13.0`
+  * Added MDX for Markdown+React authoring passages.
+  * Switched from Sass to LESS.
