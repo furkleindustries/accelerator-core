@@ -13,8 +13,8 @@ import * as path from 'path';
 // style files regexes
 const cssNoModuleRegex = /\.nomodule\.css$/;
 const cssRegex = /\.css$/;
-const lessNoModuleRegex = /\.nomodule\.s[ac]ss$/;
-const lessRegex = /\.s[ac]ss$/;
+const lessNoModuleRegex = /\.nomodule\.less$/;
+const lessRegex = /\.less$/;
 
 export const getModule = (mode, publicPath, shouldUseSourceMap) => ({
   strictExportPresence: true,
@@ -22,13 +22,13 @@ export const getModule = (mode, publicPath, shouldUseSourceMap) => ({
     {
       parser: {
         amd: false,
-        // Disable require.ensure as it's not a standard language feature.
+        /* Disable require.ensure as it's not a standard language feature. */
         requireEnsure: false,
-      }
+      },
     },
 
-    // First, run the linter.
-    // It's important to do this before Babel processes the JS.
+    /* First, run the linter.
+     * It's important to do this before Babel processes the JS. */
     {
       test: /\.(js|mjs|jsx)$/,
       enforce: 'pre',
@@ -50,9 +50,9 @@ export const getModule = (mode, publicPath, shouldUseSourceMap) => ({
     },
 
     {
-      // "oneOf" will traverse all following loaders until one will
-      // match the requirements. When no loader matches it will fall
-      // back to the "file" loader at the end of the loader list.
+      /* "oneOf" will traverse all following loaders until one will
+       * match the requirements. When no loader matches it will fall
+       * back to the "file" loader at the end of the loader list. */
       oneOf: [
         // "url" loader works like "file" loader except that it embeds assets
         // smaller than specified limit in bytes as data URLs to avoid requests.
@@ -68,7 +68,7 @@ export const getModule = (mode, publicPath, shouldUseSourceMap) => ({
 
         ...getBabelLoaders(mode),
 
-        // CSS with no modules
+        /* CSS with no modules */
         {
           test: cssNoModuleRegex,
           use: getStyleLoaders({
@@ -80,10 +80,10 @@ export const getModule = (mode, publicPath, shouldUseSourceMap) => ({
             },
           }),
 
-          // Don't consider CSS imports dead code even if the
-          // containing package claims to have no side effects.
-          // Remove this when webpack adds a warning or an error for this.
-          // See https://github.com/webpack/webpack/issues/6571
+          /* Don't consider CSS imports dead code even if the
+           * containing package claims to have no side effects.
+           * Remove this when webpack adds a warning or an error for this.
+           * See https://github.com/webpack/webpack/issues/6571 */
           sideEffects: true,
         },
 

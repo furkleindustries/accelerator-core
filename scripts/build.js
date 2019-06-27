@@ -14,7 +14,10 @@ import {
 } from 'colorful-logging';
 import FileSizeReporter from 'react-dev-utils/FileSizeReporter';
 import formatWebpackMessages from 'react-dev-utils/formatWebpackMessages';
-import * as fs from 'fs-extra';
+import {
+  copy,
+  emptyDir,
+} from 'fs-extra';
 import config from '../config/webpack/webpack.config';
 import * as path from 'path';
 import {
@@ -23,6 +26,9 @@ import {
 import printHostingInstructions from 'react-dev-utils/printHostingInstructions';
 import printBuildError from 'react-dev-utils/printBuildError';
 import webpack from 'webpack';
+
+/* Ensure the library is built in production. */
+process.env.NODE_ENV = 'production';
 
 const appPackage = require(paths.appPackageJson);
 
@@ -35,29 +41,32 @@ const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024;
 const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024;
 
 const {
-  stdout: { isTTY: isInteractive },
+  argv,
+  cwd,
+  env: { CI },
+  exit,
+  stdout: { isTTY },
 } = process;
 
 // Warn and crash if required files are missing
 if (!checkRequiredFiles([ paths.fontLoaderTemplate, paths.appIndex, ])) {
-  process.exit(1);
+  exit(1);
 }
 
 // Process CLI arguments
-const argv = process.argv.slice(2);
-const writeStatsJson = argv.indexOf('--stats') !== -1;
+const writeStatsJson = argv.slice(2).indexOf('--stats') !== -1;
 
 // We require that you explicitly set browsers and do not fall back to
 // browserslist defaults.
-checkBrowsers(paths.appPath, isInteractive)
+checkBrowsers(paths.appPath, isTTY)
   .then(() => (
     // First, read the current file sizes in build directory.
     // This lets us display how much they changed later.
     measureFileSizesBeforeBuild(paths.appBuild)
-  )).then((previousFileSizes) => {
+  )).then(async (previousFileSizes) => {
     // Remove all content but keep the directory so that
     // if you're in it, you don't end up in Trash
-    fs.emptyDirSync(paths.appBuild);
+    await emptyDir(paths.appBuild);
     // Merge with the public folder
     copyPublicFolder();
     // Start the webpack build
@@ -95,11 +104,9 @@ checkBrowsers(paths.appPath, isInteractive)
         WARN_AFTER_CHUNK_GZIP_SIZE,
       );
 
-      log();
-
       const publicUrl = paths.publicUrl;
       const publicPath = config.output.publicPath;
-      const buildFolder = path.relative(process.cwd(), paths.appBuild);
+      const buildFolder = path.relative(cwd(), paths.appBuild);
       printHostingInstructions(
         appPackage,
         publicUrl,
@@ -110,21 +117,21 @@ checkBrowsers(paths.appPath, isInteractive)
     (err) => {
       error('Failed to compile.\n');
       printBuildError(err ? err.stack || err.message ||  err : err);
-      process.exit(1);
+      exit(1);
     },
   ).catch((err) => {
     if (err && err.message) {
       error(err ? err.stack || err.message : err);
     }
 
-    process.exit(1);
+    exit(1);
   });
 
 // Create the production build and print the deployment instructions.
 function build(previousFileSizes) {
   log('Creating an optimized production build...');
 
-  let compiler = webpack(config);
+  const compiler = webpack(config);
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
       let messages;
@@ -138,9 +145,13 @@ function build(previousFileSizes) {
           warnings: [],
         });
       } else {
-        messages = formatWebpackMessages(
-          stats.toJson({ all: false, warnings: true, errors: true })
-        );
+        const jsonStats = stats.toJson({
+          all: false,
+          errors: true,
+          warnings: true,
+        });
+
+        messages = formatWebpackMessages(jsonStats);
       }
 
       if (messages.errors.length) {
@@ -151,12 +162,10 @@ function build(previousFileSizes) {
         }
 
         return reject(new Error(messages.errors.join('\n\n')));
-      } else if (
-        process.env.CI &&
-        (typeof process.env.CI !== 'string' ||
-          process.env.CI.toLowerCase() !== 'false') &&
-        messages.warnings.length
-      ) {
+      } else if (CI &&
+        (typeof CI !== 'string' || CI.toLowerCase() !== 'false') &&
+        messages.warnings.length)
+      {
         warn(
           '\nTreating warnings as errors because process.env.CI = true.\n' +
             'Most CI servers set it automatically.\n'
@@ -175,7 +184,7 @@ function build(previousFileSizes) {
         return bfj
           .write(`${paths.appBuild}/bundle-stats.json`, stats.toJson())
           .then(() => resolve(resolveArgs))
-          .catch(error => reject(new Error(error)));
+          .catch(reject);
       }
 
       return resolve(resolveArgs);
@@ -183,7 +192,7 @@ function build(previousFileSizes) {
   });
 }
 
-const copyPublicFolder = () => fs.copySync(paths.appPublic, paths.appBuild, {
+const copyPublicFolder = async () => await copy(paths.appPublic, paths.appBuild, {
   dereference: true,
   filter: (file) => file !== paths.fontLoaderTemplate,
 });

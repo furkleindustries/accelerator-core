@@ -29,7 +29,7 @@ export default {
    * story is run in development (NODE_ENV=development) mode. It has no bearing on
    * the story when it is built for production.
    */
-  debug: true,
+  debug: false,
 
   /**
    * @property {BuiltInRenderers | string}

@@ -17,7 +17,7 @@ import {
 } from '../paths';
 import webpack from 'webpack';
 
-export function getCommonPlugins(mode, config) {  
+export function getCommonPlugins(mode, config) {
   return [
     getHtmlPlugin(mode),
     /* Handlebars plugin *must* come after HTML plugin. */
@@ -28,7 +28,7 @@ export function getCommonPlugins(mode, config) {
     new ModuleNotFoundPlugin(paths.appPath),
     // Makes NODE_ENV available to the JS code, for example:
     // if (process.env.NODE_ENV === 'development') { ... }..
-    new webpack.DefinePlugin({ NODE_ENV: process.env.NODE_ENV }),
+    new webpack.EnvironmentPlugin([ 'NODE_ENV' ]),
     // Moment.js is an extremely popular library that bundles large locale files
     // by default due to how Webpack interprets its code. This is a practical
     // solution that requires the user to opt into importing specific locales.

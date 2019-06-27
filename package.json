@@ -1,7 +1,7 @@
 {
   "name": "accelerator-core",
   "author": "furkle",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "license": "GPL-3.0",
   "homepage": "https://github.com/furkleindustries/accelerator-core#readme",
   "bugs": {
@@ -93,6 +93,7 @@
     "jest": "^24.3.1",
     "jest-pnp-resolver": "^1.1.0",
     "jest-resolve": "^24.1.0",
+    "less": "^3.9.0",
     "less-loader": "^5.0.0",
     "mini-css-extract-plugin": "^0.5.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
