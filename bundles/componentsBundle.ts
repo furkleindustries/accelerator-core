@@ -71,11 +71,20 @@ export {
   Header,
 } from '../src/components/Header/Header';
 export {
+  InkContainer,
+} from '../src/components/InkContainer/InkContainer';
+export {
   LinearProgress,
 } from '../src/components/LinearProgress/LinearProgress';
 export {
   Link,
 } from '../src/components/Link/Link';
+export {
+  List,
+} from '../src/components/List/List';
+export {
+  ListItem,
+} from '../src/components/ListItem/ListItem';
 export {
   LoadingScreen,
 } from '../src/components/LoadingScreen/LoadingScreen';

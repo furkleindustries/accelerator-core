@@ -6,19 +6,29 @@ import {
   InkContainerOwnProps,
 } from './InkContainerOwnProps';
 import {
+  InkSection,
+} from '../InkSection/InkSection';
+import {
+  parsePlainTextAndReactElements,
+} from '../../functions/parsePlainTextAndReactElements';
+import {
   Story,
 } from 'inkjs/engine/Story';
+import {
+  StoryWithDoneEvent,
+} from '../../../lib/inkjs/StoryWithDoneEvent';
 import {
   assertValid,
 } from 'ts-assertions';
 
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
 import styles from './InkContainer.less';
 
 export class InkContainer extends React.PureComponent<InkContainerOwnProps> {
   private ref: React.RefObject<HTMLDivElement>;
-  private story: Story;
+  private story: StoryWithDoneEvent;
 
   public readonly render = () => {
     const {
@@ -44,7 +54,12 @@ export class InkContainer extends React.PureComponent<InkContainerOwnProps> {
       variablesToObserve,
     } = this.props;
 
-    const story = new Story(storyContent);
+    const story = new StoryWithDoneEvent(storyContent);
+
+    if (typeof doneCallback === 'function') {
+      story.__registerDoneCallback(doneCallback);
+    }
+
     this.story = story;
 
     if (inputVariables) {
@@ -58,16 +73,12 @@ export class InkContainer extends React.PureComponent<InkContainerOwnProps> {
     }
 
     await this.continueStory();
-
-    if (typeof doneCallback === 'function') {
-      doneCallback(story);
-    }
   };
 
   public readonly showAfter = (
     delay: number,
-    el: HTMLElement,
-  ) => setTimeout(() => el.classList.add('show'), delay);
+    { classList }: HTMLElement,
+  ) => setTimeout(() => classList.add('show'), delay);
 
   public readonly scrollToBottom = () => {
     const start = window.pageYOffset ||
@@ -93,7 +104,7 @@ export class InkContainer extends React.PureComponent<InkContainerOwnProps> {
       if (t < 1) {
         requestAnimationFrame(step);
       }
-    }
+    };
 
     requestAnimationFrame(step);
   };
@@ -102,65 +113,80 @@ export class InkContainer extends React.PureComponent<InkContainerOwnProps> {
     resolve,
     reject,
   ) => {
-    const story = this.story;
-    if (!story.canContinue) {
-      return resolve();
-    }
-    
-    let delay = 0.0;
-    const refElement = this.getRefElement();
+    try {
+      const {
+        bindings,
+        components,
+        mergeComponents,
+      } = this.props;
 
-    /* Create container element. */
-    const section = document.createElement('section');
-    const list = document.createElement('ul');
-    section.appendChild(list);
+      const story = this.story;
+      if (!story.canContinue) {
+        return resolve();
+      }
 
-    /* Generate story text - loop through available content. */
-    while (story.canContinue) {
-
+      const refElement = this.getRefElement();
+      
+      const inkContents = [];
+      /* Generate story text - loop through available content. */
       /* Get ink to generate the next paragraph. */
-      const inkResponse = story.Continue() || '';
-      section.append(...this.parsePlainTextAndReactElements(inkResponse));
-      refElement.appendChild(section);
+      const inkResponse = story.ContinueMaximally() || '';
+      const textAndReactElems = parsePlainTextAndReactElements(
+        inkResponse,
+        {
+          bindings,
+          components,
+          mergeComponents,
+        },
+      );
 
-      /* Fade in paragraph after a short delay. */
-      this.showAfter(delay, section);
+      inkContents.push(...textAndReactElems);
 
-      delay += 200.0;
+      if (!story.currentChoices.length) {
+        return resolve();
+      }
+
+      const onClick = (index: number, e: Event) => this.clickChoice(
+        index,
+        e,
+        resolve,
+        reject,
+      );
+
+      const reactElem = (
+        <InkSection
+          onClick={onClick}
+          parseProps={{
+            bindings,
+            components,
+            mergeComponents,
+          }}
+
+          story={story}
+        />
+      );
+
+      ReactDOM.render(reactElem, refElement);
+      this.scrollToBottom();
+    } catch (err) {
+      return reject(err);
     }
-
-    /* Create HTML choices from ink choices. */
-    this.story.currentChoices.forEach((choice) => {
-      /* Create paragraph with anchor element. */
-      const listItem = document.createElement('li');
-      listItem.classList.add('choice');
-
-      const listItemButton = document.createElement('button');
-      listItemButton.innerHTML = choice.text;
-
-      list.appendChild(listItem);
-
-      // Fade choice in after a short delay
-      this.showAfter(delay, list);
-      delay += 200.0;
-
-      listItemButton.addEventListener('click', async (e) => {
-        // Don't follow <a> link
-        e.preventDefault();
-
-        // Remove all existing choices
-        list.remove();
-
-        // Tell the story where to go next
-        story.ChooseChoiceIndex(choice.index);
-
-        // Aaand loop
-        this.continueStory().then(resolve, reject);
-      });
-    });
-
-    this.scrollToBottom();
   });
+
+  public readonly clickChoice = async (
+    index: number,
+    e: Event,
+    resolve: () => void,
+    reject: (err: Error) => void,
+  ) => {
+    assertValid<HTMLUListElement>(
+      this.getRefElement().querySelector(`.choiceList:nth-child${index + 1}`),
+      'The list to be removed could not be found in InkContainer.clickChoice.',
+    ).remove();
+
+    this.story.ChooseChoiceIndex(index);
+    this.continueStory().then(resolve, reject);
+  };
 
   public readonly getRefElement = () => assertValid<HTMLDivElement>(
     this.ref.current,
@@ -176,33 +202,4 @@ export class InkContainer extends React.PureComponent<InkContainerOwnProps> {
       (val) => typeof val === 'function',
     ),
   );
-
-  public readonly parsePlainTextAndReactElements = (text: string) => {
-    const elems: HTMLElement[] = [];
-    let underscoresInRow = 0;
-    let inReactMode = false;
-    let blockStartIndex = 0;
-    for (let ii = 0; ii < text.length; ii += 1) {
-      const char = text[ii];
-      if (char === '_') {
-        underscoresInRow += 1;
-        if (underscoresInRow === 3) {
-          const block = text.slice(blockStartIndex, ii);
-          if (inReactMode) {
-            /* Do JSX parsing. */
-          } else {
-            const span = document.createElement('span');
-            span.innerHTML = block;
-            elems.push(span);
-          }
-
-          inReactMode = !inReactMode;
-          underscoresInRow = 0;
-          blockStartIndex = ii + 1;
-        }
-      }
-    }
-
-    return elems;
-  };
 };

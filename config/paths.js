@@ -40,6 +40,7 @@ export const paths = {
   headers: resolveApp('headers/'),
   htmlTemplate: resolveApp('templates/index.hbs'),
   indexHtml: resolveApp('build-web/index.html'),
+  lib: resolveApp('lib'),
   passages: resolveApp('passages/'),
   plugins: resolveApp('plugins/'),
   proxySetup: resolveApp('src/setupProxy.ts'),
