@@ -6,8 +6,9 @@ export function getAllCompiledCodeDirectories() {
   return [
     paths.appSrc,
     paths.footers,
-    paths.passages,
     paths.headers,
+    paths.lib,
+    paths.passages,
     paths.plugins,
     paths.renderers,
     paths.storyOptions,

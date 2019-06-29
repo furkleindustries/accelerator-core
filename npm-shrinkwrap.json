@@ -1,6 +1,6 @@
 {
   "name": "accelerator-core",
-  "version": "0.13.0",
+  "version": "0.13.1",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
@@ -8650,6 +8650,57 @@
       "integrity": "sha512-RZY5huIKCMRWDUqZlEi72f/lmXKMvuszcMBduliQ3nnWbx9X/ZBQO7DijMEYS9EhHBb2qacRUMtC7svLwe0lcw==",
       "dev": true
     },
+    "inkjs": {
+      "version": "1.10.2",
+      "resolved": "https://registry.npmjs.org/inkjs/-/inkjs-1.10.2.tgz",
+      "integrity": "sha512-Xv/u/i/fQkhJF/7+gwZYe3RDmzkrhXFzDh9McAiF3r8ojmhQdEuVy3ibTVCWIZY1nF7daApaGYuuhuwkTJzCXg=="
+    },
+    "inklecate": {
+      "version": "1.2.8",
+      "resolved": "https://registry.npmjs.org/inklecate/-/inklecate-1.2.8.tgz",
+      "integrity": "sha512-Ty+hrO5DChXg/SDARs/jt6EIBj3wLvBoV9a9DfzCWJxJWektLtyzYRILB3twcXwnMD8v8gJybj9q532CMTBgUw==",
+      "dev": true,
+      "requires": {
+        "colorful-logging": "^1.2.2",
+        "commander": "^2.20.0",
+        "glob": "^7.1.4",
+        "ts-assertions": "^2.0.5",
+        "uuid": "^3.3.2"
+      },
+      "dependencies": {
+        "colorful-logging": {
+          "version": "1.2.2",
+          "resolved": "https://registry.npmjs.org/colorful-logging/-/colorful-logging-1.2.2.tgz",
+          "integrity": "sha512-V/oNZQ9D63zPmNc+FQaDmhxsNV6yMzN1OpY4vR6qTYXdE6fNxSwfpw71Wbl4Co5QG9UkG5q+7dDqnMt1yvG/jQ==",
+          "dev": true,
+          "requires": {
+            "chalk": "^2.4.2",
+            "esm": "^3.2.22"
+          }
+        },
+        "commander": {
+          "version": "2.20.0",
+          "resolved": "https://registry.npmjs.org/commander/-/commander-2.20.0.tgz",
+          "integrity": "sha512-7j2y+40w61zy6YC2iRNpUe/NwhNyoXrYpHMrSunaMG64nRnaf96zO/KMQR4OyN/UnE5KLyEBnKHd4aG3rskjpQ==",
+          "dev": true
+        },
+        "esm": {
+          "version": "3.2.25",
+          "resolved": "https://registry.npmjs.org/esm/-/esm-3.2.25.tgz",
+          "integrity": "sha512-U1suiZ2oDVWv4zPO56S0NcR5QriEahGtdN2OR6FiOG4WJvcjBVFB0qI4+eKoWFH483PKGuLuu6V8Z4T5g63UVA==",
+          "dev": true
+        }
+      }
+    },
+    "inklecate-loader": {
+      "version": "1.0.16",
+      "resolved": "https://registry.npmjs.org/inklecate-loader/-/inklecate-loader-1.0.16.tgz",
+      "integrity": "sha512-PtqK0gejS3iWhld7e13CU3yDtL4ooaAYQqEjPNHoyVHR84OBaoWa3B5N7W3+E1byS7/W9CHYM5XyQyulielFDw==",
+      "dev": true,
+      "requires": {
+        "inklecate": "^1.2.4"
+      }
+    },
     "inline-style-parser": {
       "version": "0.1.1",
       "resolved": "https://registry.npmjs.org/inline-style-parser/-/inline-style-parser-0.1.1.tgz",
@@ -13707,6 +13758,29 @@
           "version": "2.5.5",
           "resolved": "https://registry.npmjs.org/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz",
           "integrity": "sha512-rqcy4pJo55FTTLWt+bU8ukscqHeE/e9KWvsOW2b/a3afxQZhwkQdT1rPPCJ0rYXdj4vNcasY8zHTH+jF/qStxw=="
+        }
+      }
+    },
+    "react-jsx-parser": {
+      "version": "1.18.0",
+      "resolved": "https://registry.npmjs.org/react-jsx-parser/-/react-jsx-parser-1.18.0.tgz",
+      "integrity": "sha512-OJC7hg/Q3f7zPhQWTlTIiMBDI5BsFhIUIcNwgpp7L01lOKM+k3b9SdC7hSPIwWxTjQ3RnzDw0mSqHE/TZ1L/9g==",
+      "requires": {
+        "acorn-jsx": "^4.1.1"
+      },
+      "dependencies": {
+        "acorn": {
+          "version": "5.7.3",
+          "resolved": "https://registry.npmjs.org/acorn/-/acorn-5.7.3.tgz",
+          "integrity": "sha512-T/zvzYRfbVojPWahDsE5evJdHb3oJoQfFbsrKM7w5Zcs++Tr257tia3BmMP8XYVjp1S9RZXQMh7gao96BlqZOw=="
+        },
+        "acorn-jsx": {
+          "version": "4.1.1",
+          "resolved": "https://registry.npmjs.org/acorn-jsx/-/acorn-jsx-4.1.1.tgz",
+          "integrity": "sha512-JY+iV6r+cO21KtntVvFkD+iqjtdpRUpGqKWgfkCdZq1R+kbreEl8EcdcJR4SmiIgsIQT33s6QzheQ9a275Q8xw==",
+          "requires": {
+            "acorn": "^5.0.3"
+          }
         }
       }
     },
