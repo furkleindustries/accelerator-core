@@ -83,7 +83,7 @@ export class StoryWithDoneEvent extends Story {
 		/* No control content, must be ordinary content. */
 		return false;
   };
-  
+
   public readonly __handleDivert = (currentDivert: Divert) => {
     if (currentDivert.isConditional) {
       const conditionValue = this.state.PopEvaluationStack();
@@ -577,9 +577,12 @@ export class StoryWithDoneEvent extends Story {
     return true;
   };
 
-  public readonly __handleNativeFunctionCall = (func: NativeFunctionCall) => {
-    let funcParams = this.state.PopEvaluationStack(func.numberOfParameters);
-    let result = func.Call(funcParams);
+  public readonly __handleNativeFunctionCall = ({
+    Call,
+    numberOfParameters,
+  }: NativeFunctionCall) => {
+    const funcParams = this.state.PopEvaluationStack(numberOfParameters);
+    const result = Call(funcParams);
     this.state.PushEvaluationStack(result);
 
     return true;
@@ -598,7 +601,7 @@ export class StoryWithDoneEvent extends Story {
         'The value passed to StoryWithDoneEvent was not a function.',
         (func) => typeof func === 'function',
       )
-    )
+    );
   };
 
   public readonly __performDoneCallbacks = () => (
