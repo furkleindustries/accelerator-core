@@ -72,7 +72,7 @@ export class InkContainer extends React.PureComponent<InkContainerOwnProps> {
       variablesToObserve.forEach(this.observeVariable);
     }
 
-    await this.continueStory();
+    this.continueStory();
   };
 
   public readonly showAfter = (
@@ -109,75 +109,52 @@ export class InkContainer extends React.PureComponent<InkContainerOwnProps> {
     requestAnimationFrame(step);
   };
 
-  public readonly continueStory = () => new Promise<void>((
-    resolve,
-    reject,
-  ) => {
-    try {
-      const {
+  public readonly continueStory = () => {
+    const {
+      bindings,
+      components,
+      mergeComponents,
+    } = this.props;
+
+    const story = this.story;
+    const refElement = this.getRefElement();
+    const inkContents = [];
+    /* Generate story text - loop through available content.
+      * Get ink to generate the next paragraph. */
+    const inkResponse = story.ContinueMaximally() || '';
+    const textAndReactElems = parsePlainTextAndReactElements(
+      inkResponse,
+      {
         bindings,
         components,
         mergeComponents,
-      } = this.props;
+      },
+    );
 
-      const story = this.story;
-      if (!story.canContinue) {
-        return resolve();
-      }
+    inkContents.push(...textAndReactElems);
 
-      const refElement = this.getRefElement();
-      
-      const inkContents = [];
-      /* Generate story text - loop through available content. */
-      /* Get ink to generate the next paragraph. */
-      const inkResponse = story.ContinueMaximally() || '';
-      const textAndReactElems = parsePlainTextAndReactElements(
-        inkResponse,
-        {
+    const onClick = (index: number, e: Event) => this.clickChoice(index, e);
+
+    const reactElem = (
+      <InkSection
+        onClick={onClick}
+        parseProps={{
           bindings,
           components,
           mergeComponents,
-        },
-      );
+        }}
 
-      inkContents.push(...textAndReactElems);
+        story={story}
+      />
+    );
 
-      if (!story.currentChoices.length) {
-        return resolve();
-      }
-
-      const onClick = (index: number, e: Event) => this.clickChoice(
-        index,
-        e,
-        resolve,
-        reject,
-      );
-
-      const reactElem = (
-        <InkSection
-          onClick={onClick}
-          parseProps={{
-            bindings,
-            components,
-            mergeComponents,
-          }}
-
-          story={story}
-        />
-      );
-
-      ReactDOM.render(reactElem, refElement);
-      this.scrollToBottom();
-    } catch (err) {
-      return reject(err);
-    }
-  });
+    ReactDOM.render(reactElem, refElement);
+    this.scrollToBottom();
+  };
 
   public readonly clickChoice = async (
     index: number,
     e: Event,
-    resolve: () => void,
-    reject: (err: Error) => void,
   ) => {
     assertValid<HTMLUListElement>(
       this.getRefElement().querySelector(`.choiceList:nth-child${index + 1}`),
@@ -185,7 +162,7 @@ export class InkContainer extends React.PureComponent<InkContainerOwnProps> {
     ).remove();
 
     this.story.ChooseChoiceIndex(index);
-    this.continueStory().then(resolve, reject);
+    this.continueStory();
   };
 
   public readonly getRefElement = () => assertValid<HTMLDivElement>(

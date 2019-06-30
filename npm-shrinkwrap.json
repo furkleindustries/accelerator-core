@@ -1,6 +1,6 @@
 {
   "name": "accelerator-core",
-  "version": "0.13.1",
+  "version": "0.13.2",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
@@ -2707,13 +2707,13 @@
       "integrity": "sha512-sY5AXXVZv4Y1VACTtR11UJCPHHudgY5i26Qj5TypE6DKlIApbwb5uqhXcJ5UUGbvZNRh7EeIoW+LrJumBsKp7w=="
     },
     "accelerator-tool-cli": {
-      "version": "0.1.0",
-      "resolved": "https://registry.npmjs.org/accelerator-tool-cli/-/accelerator-tool-cli-0.1.0.tgz",
-      "integrity": "sha512-aOTuOA79Q3Nv6U5IkuvXQgMLldJB1/KhNnlaGsBKpPE7jqgZnzUcWy+XfrztTE8+HMbZGq9GgZ3KUujiN6GDhA==",
+      "version": "0.2.5",
+      "resolved": "https://registry.npmjs.org/accelerator-tool-cli/-/accelerator-tool-cli-0.2.5.tgz",
+      "integrity": "sha512-1J5DGs8pxRyVp6tMx4PHOvt4IeAT0wmOzqixIT52ZE+gJPoikNngy7NGXfXgSwkbPlngjiqvh35mdi8Mo/h+yg==",
       "dev": true,
       "requires": {
         "chalk": "^2.4.2",
-        "colorful-logging": "^1.2.0",
+        "colorful-logging": "^1.2.2",
         "commander": "^2.19.0",
         "esm": "^3.2.7",
         "fs-extra": "^7.0.1",
@@ -2723,6 +2723,24 @@
         "validate-npm-package-name": "^3.0.0"
       },
       "dependencies": {
+        "colorful-logging": {
+          "version": "1.2.2",
+          "resolved": "https://registry.npmjs.org/colorful-logging/-/colorful-logging-1.2.2.tgz",
+          "integrity": "sha512-V/oNZQ9D63zPmNc+FQaDmhxsNV6yMzN1OpY4vR6qTYXdE6fNxSwfpw71Wbl4Co5QG9UkG5q+7dDqnMt1yvG/jQ==",
+          "dev": true,
+          "requires": {
+            "chalk": "^2.4.2",
+            "esm": "^3.2.22"
+          },
+          "dependencies": {
+            "esm": {
+              "version": "3.2.25",
+              "resolved": "https://registry.npmjs.org/esm/-/esm-3.2.25.tgz",
+              "integrity": "sha512-U1suiZ2oDVWv4zPO56S0NcR5QriEahGtdN2OR6FiOG4WJvcjBVFB0qI4+eKoWFH483PKGuLuu6V8Z4T5g63UVA==",
+              "dev": true
+            }
+          }
+        },
         "ts-assertions": {
           "version": "1.0.11",
           "resolved": "https://registry.npmjs.org/ts-assertions/-/ts-assertions-1.0.11.tgz",
@@ -14737,17 +14755,6 @@
           "integrity": "sha1-fajPLiZijtcygDWB/SH2fKzS7uw=",
           "dev": true
         }
-      }
-    },
-    "shelljs": {
-      "version": "0.8.3",
-      "resolved": "https://registry.npmjs.org/shelljs/-/shelljs-0.8.3.tgz",
-      "integrity": "sha512-fc0BKlAWiLpwZljmOvAOTE/gXawtCoNrP5oaY7KIaQbbyHeQVg01pSEuEGvGh3HEdBU4baCD7wQBwADmM/7f7A==",
-      "dev": true,
-      "requires": {
-        "glob": "^7.0.0",
-        "interpret": "^1.0.0",
-        "rechoir": "^0.6.2"
       }
     },
     "shellwords": {
