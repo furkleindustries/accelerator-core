@@ -3,6 +3,9 @@ import {
   RefObject,
 } from 'react';
 import {
+  Story,
+} from 'inkjs/engine/Story';
+import {
   StoryWithDoneEvent,
 } from '../../../lib/inkjs/StoryWithDoneEvent';
 
@@ -15,7 +18,7 @@ export interface InkContainerOwnProps {
   readonly inputVariables?: Record<string, any>;
   readonly listDefinitions?: Record<string, string | number>;
   readonly mergeComponents?: boolean;
-  readonly observerCallback?: (variableName: string, value: any) => void;
+  readonly observerCallback?: Story.VariableObserver;
   readonly ref?: RefObject<HTMLDivElement>;
   readonly variablesToObserve?: string[];
 }

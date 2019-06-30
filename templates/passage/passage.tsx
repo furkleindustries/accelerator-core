@@ -12,7 +12,7 @@ import * as tags from '../../bundles/tagsBundle';
 /**
  * The authoring passage is imported and rendered into the React passage.
  */
-import AuthoringPassage from './passage.mdx';
+import AuthoringPassage from './{{{name}}}.mdx';
 
 import builtInStyles from '../_global-styles/built-ins.less';
 import styles from './{{{name}}}.less';

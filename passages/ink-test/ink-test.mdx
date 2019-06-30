@@ -1,0 +1,21 @@
+import { log } from 'colorful-logging'; 
+
+import * as components from '../../bundles/componentsBundle';
+
+import inkStoryContent from './ink-test.ink';
+
+<components.AuthoringPassageContextConsumer>
+{({
+  lastLinkTags,
+  passageObject,
+  navigateTo,
+  restart,
+  setStoryState,
+  storyState,
+}) => (
+<>
+  {<components.InkContainer
+  />}
+</>
+)}
+</components.AuthoringPassageContextConsumer>

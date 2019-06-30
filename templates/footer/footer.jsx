@@ -3,8 +3,8 @@ import * as React from 'react';
 
 import classnames from 'classnames';
 
-import * as components from '../../src/passages/componentsBundle';
-import * as tagsBundle from '../../src/passages/tagsBundle';
+import * as components from '../../src/bundles/componentsBundle';
+import * as tagsBundle from '../../src/bundles/tagsBundle';
 
 import builtInStyles from '../../../passages/_global-styles/built-ins.less';
 import styles from './{{{name}}}.less';

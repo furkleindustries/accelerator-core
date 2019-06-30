@@ -1,8 +1,8 @@
 import {
-  MDXComponent,
+  MDXComponent as MDXComponentAlias,
 } from './src/typeAliases/MDXComponent';
 
+declare const MDXComponent: MDXComponentAlias;
 declare module '*.mdx' {
-  const MDXComponent: MDXComponent;
   export default MDXComponent;
 }

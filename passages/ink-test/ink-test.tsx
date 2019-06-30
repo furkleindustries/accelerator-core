@@ -4,23 +4,20 @@ import * as React from 'react';
 import classnames from 'classnames';
 
 /* Accelerator components, interfaces, styles, functions, etc. Feel free to
- * destructure this as you see fit but watch out that you don't get mixed up
- * between bundle props and component props with the same name (e.g. tags). */
-import * as components from '../../bundles/componentsBundle';
-import * as tagsBundle from '../../bundles/tagsBundle';
+ * destructure this as you see fit. */
+import * as components from '../../bundles/componentsBundle'; 
+import * as passages from '../../bundles/passagesBundle';
+import * as tags from '../../bundles/tagsBundle';
 
 /**
  * The authoring passage is imported and rendered into the React passage.
  */
-import AuthoringPassage from './{{{name}}}.mdx';
+import AuthoringPassage from './ink-test.mdx';
 
-import builtInStyles from '../../passages/_global-styles/built-ins.less';
-import styles from './{{{name}}}.less';
+import builtInStyles from '../_global-styles/built-ins.less';
+import styles from './ink-test.less';
 
-const Passage = ({
-  children,
-  ...props
-}) => {
+const Passage: React.FunctionComponent<passages.IPassageProps> = (props) => {
   const {
     lastLinkTags,
     passageObject,
@@ -33,23 +30,23 @@ const Passage = ({
   return (
     <components.Article
       className={classnames(
-        'passage',
-        styles['{{{name}}}'],
         builtInStyles.passage,
+        styles['ink-test'],
+        'passage',
       )}
     >
-      <components.AuthoringPassageContainer>
+      <components.AuthoringPassageContainer value={props}>
         <AuthoringPassage />
       </components.AuthoringPassageContainer>
     </components.Article>
   );
 };
 
-export default {
+const passage: passages.IPassage = {
   /* string: the story-unique name of the passage. */
-  name: '{{{name}}}',
+  name: 'ink-test',
   
-  /* array: an optional collection of either plain strings or
+  /* Tag[]: an optional collection of either plain strings or
    * { key: string, value: string } (Tag) objects. */
   tags: [],
 
@@ -58,3 +55,6 @@ export default {
    * Should be formatted in JSX style. */
   content: Passage,
 };
+
+/* Always make the passage object a default export. */
+export default passage;

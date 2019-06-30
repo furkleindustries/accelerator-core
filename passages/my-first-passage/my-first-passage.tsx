@@ -8,7 +8,7 @@ import classnames from 'classnames';
  * destructure this as you see fit. */
 import * as passages from '../../bundles/passagesBundle';
 
-import builtInStyles from '../../passages/_global-styles/built-ins.less';
+import builtInStyles from '../_global-styles/built-ins.less';
 import styles from './my-first-passage.less';
 
 const Passage: React.FunctionComponent<passages.IPassageProps> = () => (
