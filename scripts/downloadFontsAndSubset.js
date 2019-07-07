@@ -149,6 +149,7 @@ const printWarning = (err) => {
 
   const fontFacePath = path.join(paths.fontsAutogenerationDir, 'fontface-autogen.css');
   try {
+    console.log(fontFacePath, fontLoaderStyle);
     await fs.writeFile(fontFacePath, fontLoaderStyle);
   } catch (err) {
     warn('Encountered an error while writing the @font-face file.');

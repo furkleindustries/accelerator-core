@@ -66,6 +66,51 @@ export const getModule = (mode, publicPath, shouldUseSourceMap) => ({
           },
         },
 
+        {
+          test: /\.tsx?$/,
+          use: [
+            {
+              loader: require.resolve('babel-loader'),
+              options: {
+                customize: require.resolve('babel-preset-react-app/webpack-overrides'),
+                plugins: [
+                  ...(
+                    mode === 'development' ?
+                      [ require.resolve('react-hot-loader/babel') ] :
+                      []
+                  ),
+
+                  [
+                    require.resolve('babel-plugin-named-asset-import'),
+                    {
+                      loaderMap: {
+                        svg: { ReactComponent: '@svgr/webpack?-prettier,-svgo![path]', },
+                      },
+                    },
+                  ],
+                ],
+
+                presets: [ require.resolve('babel-preset-react-app') ],
+
+                // This is a feature of `babel-loader` for webpack (not Babel itself).
+                // It enables caching results in ./node_modules/.cache/babel-loader/
+                // directory for faster rebuilds.
+                cacheDirectory: true,
+                // Don't waste time on Gzipping the cache
+                cacheCompression: false,
+                compact: mode !== 'development',
+              },
+            },
+
+            {
+              loader: require.resolve('ts-loader'),
+              options: {
+                transpileOnly: true,
+              },
+            },
+          ],
+        },
+
         ...getBabelLoaders(mode),
 
         /* CSS with no modules */

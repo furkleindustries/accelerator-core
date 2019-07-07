@@ -6,6 +6,7 @@ import classnames from 'classnames';
 
 /* Accelerator components, interfaces, styles, functions, etc. Feel free to
  * destructure this as you see fit. */
+import * as components from '../../bundles/componentsBundle';
 import * as passages from '../../bundles/passagesBundle';
 
 import builtInStyles from '../_global-styles/built-ins.less';
@@ -20,6 +21,10 @@ const Passage: React.FunctionComponent<passages.IPassageProps> = () => (
     )}
   >
     This is the second passage.
+
+    <components.Link passageName="ink-test">
+      ink-test
+    </components.Link>
   </div>
 );
 

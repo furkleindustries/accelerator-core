@@ -13,10 +13,10 @@ import {
 } from '../../functions/parsePlainTextAndReactElements';
 import {
   Story,
-} from 'inkjs/engine/Story';
+} from '../../../lib/ink/inkjs/src/Story';
 import {
   StoryWithDoneEvent,
-} from '../../../lib/inkjs/StoryWithDoneEvent';
+} from '../../../lib/ink/StoryWithDoneEvent';
 import {
   assertValid,
 } from 'ts-assertions';
@@ -113,21 +113,21 @@ export class InkContainer extends React.PureComponent<InkContainerOwnProps> {
     const {
       bindings,
       components,
-      mergeComponents,
+      dontMergeComponents,
     } = this.props;
 
     const story = this.story;
     const refElement = this.getRefElement();
     const inkContents = [];
     /* Generate story text - loop through available content.
-      * Get ink to generate the next paragraph. */
+     * Get ink to generate the next paragraph. */
     const inkResponse = story.ContinueMaximally() || '';
     const textAndReactElems = parsePlainTextAndReactElements(
       inkResponse,
       {
         bindings,
         components,
-        mergeComponents,
+        dontMergeComponents,
       },
     );
 
@@ -141,14 +141,18 @@ export class InkContainer extends React.PureComponent<InkContainerOwnProps> {
         parseProps={{
           bindings,
           components,
-          mergeComponents,
+          dontMergeComponents,
         }}
 
         story={story}
-      />
+      >
+        {inkContents}
+      </InkSection>
     );
 
-    ReactDOM.render(reactElem, refElement);
+    const container = document.createElement('div');
+    refElement.appendChild(container);
+    ReactDOM.render(reactElem, container);
     this.scrollToBottom();
   };
 
@@ -156,10 +160,19 @@ export class InkContainer extends React.PureComponent<InkContainerOwnProps> {
     index: number,
     e: Event,
   ) => {
-    assertValid<HTMLUListElement>(
-      this.getRefElement().querySelector(`.choiceList:nth-child${index + 1}`),
-      'The list to be removed could not be found in InkContainer.clickChoice.',
-    ).remove();
+    const choices = assertValid<HTMLButtonElement[]>(
+      this.getRefElement().querySelectorAll('.choiceButton'),
+      'The clicked choice could not be found in InkContainer.clickChoice.',
+    );
+
+    choices.forEach((choice) => {
+      if (choice === e.currentTarget) {
+        choice.blur();
+        choice.classList.add('clicked');
+      } else {
+        choice.classList.add('hidden');
+      }
+    });
 
     this.story.ChooseChoiceIndex(index);
     this.continueStory();

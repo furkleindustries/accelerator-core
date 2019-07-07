@@ -22,6 +22,21 @@ export function getPlugins({
   const base = getCommonPlugins(mode, config);
   if (mode === 'development') {
     return [
+      new class AccessDependenciesPlugin {
+        apply (compiler) {
+          compiler.hooks.compilation.tap('AccessDependenciesPlugin', compilation => {
+            compilation.hooks.finishModules.tap('AccessDependenciesPlugin', modules => {
+              console.log(JSON.stringify(modules));
+              /*
+              |---------------------------------------------------
+              | Here we go, `modules` is what we're looking for!
+              |---------------------------------------------------
+              */
+            })
+          })
+        }
+      },
+
       ...base,
 
       // This is necessary to emit hot updates:

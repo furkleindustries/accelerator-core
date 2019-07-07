@@ -7,7 +7,7 @@ import {
 } from 'inkjs/engine/Story';
 import {
   StoryWithDoneEvent,
-} from '../../../lib/inkjs/StoryWithDoneEvent';
+} from '../../../lib/ink/StoryWithDoneEvent';
 
 export interface InkContainerOwnProps {
   readonly storyContent: Record<string, any> & { root: Record<string, any> };
@@ -17,7 +17,7 @@ export interface InkContainerOwnProps {
   readonly doneCallback?: (story: StoryWithDoneEvent) => void;
   readonly inputVariables?: Record<string, any>;
   readonly listDefinitions?: Record<string, string | number>;
-  readonly mergeComponents?: boolean;
+  readonly dontMergeComponents?: boolean;
   readonly observerCallback?: Story.VariableObserver;
   readonly ref?: RefObject<HTMLDivElement>;
   readonly variablesToObserve?: string[];

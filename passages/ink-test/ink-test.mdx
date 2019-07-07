@@ -1,10 +1,15 @@
 import { log } from 'colorful-logging'; 
 
-import * as components from '../../bundles/componentsBundle';
+import {
+  AuthoringPassageContextConsumerWrapper,
+  InkContainer,
+} from '../../bundles/componentsBundle';
 
-import inkStoryContent from './ink-test.ink';
+import {
+  storyContent,
+} from './ink-test.ink';
 
-<components.AuthoringPassageContextConsumer>
+<AuthoringPassageContextConsumerWrapper>
 {({
   lastLinkTags,
   passageObject,
@@ -13,9 +18,11 @@ import inkStoryContent from './ink-test.ink';
   setStoryState,
   storyState,
 }) => (
-<>
-  {<components.InkContainer
+<div>
+  {<InkContainer
+    doneCallback={() => console.log('all done!')}
+    storyContent={storyContent}
   />}
-</>
+</div>
 )}
-</components.AuthoringPassageContextConsumer>
+</AuthoringPassageContextConsumerWrapper>

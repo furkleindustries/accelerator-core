@@ -5,18 +5,27 @@ import {
 // @ts-ignore
 import JsxParser from 'react-jsx-parser';
 import {
+  cloneElement,
   ComponentType,
 } from 'react';
 
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 
 export const parsePlainTextAndReactElements = (text: string, {
   bindings,
   components,
-  mergeComponents,
+  dontMergeComponents,
 }: ParseReactElementsAndTextProps) => {
-  const elems: HTMLElement[] = [];
+  const comps: Record<string, ComponentType<any>> =
+    dontMergeComponents !== true ?
+      {
+        ...componentsBundle,
+        ...components,
+      } : (
+        { ...(components || componentsBundle) }
+      ) as Record<string, ComponentType<any>>;
+
+  const elems: JSX.Element[] = [];
   let underscoresInRow = 0;
   let inReactMode = false;
   let blockStartIndex = 0;
@@ -25,25 +34,9 @@ export const parsePlainTextAndReactElements = (text: string, {
     if (char === '_') {
       underscoresInRow += 1;
       if (underscoresInRow === 3) {
-        const block = text.slice(blockStartIndex, ii);
+        const block = text.slice(blockStartIndex, ii - 2);
         if (inReactMode) {
-          let comps: Record<string, ComponentType<any>> = (
-            { ...(components || componentsBundle) }
-          ) as Record<string, ComponentType<any>>;
-
-          if (components) {
-            if (mergeComponents === false) {
-              comps = { ...componentsBundle };
-            } else {
-              comps = {
-                ...componentsBundle,
-                ...components,
-              };
-            }
-          }
-
-          const container = document.createElement('div');
-          const Component = (
+          const elem = (
             <JsxParser
               bindings={bindings}
               components={comps}
@@ -51,11 +44,9 @@ export const parsePlainTextAndReactElements = (text: string, {
             />
           );
 
-          ReactDOM.render(Component, container);
-          elems.push(container);
+          elems.push(elem);
         } else {
-          const span = document.createElement('span');
-          span.innerHTML = block;
+          const span = <span>{block}</span>;
           elems.push(span);
         }
 
@@ -63,8 +54,20 @@ export const parsePlainTextAndReactElements = (text: string, {
         underscoresInRow = 0;
         blockStartIndex = ii + 1;
       }
+    } else {
+      underscoresInRow = 0;
     }
   }
 
-  return elems;
+  if (inReactMode) {
+    throw new Error('Unfinished ___ink-react___ block detected.');
+  }
+
+  if (blockStartIndex < text.length) {
+    const block = text.slice(blockStartIndex, text.length);
+    const span = <span>{block}</span>;
+    elems.push(span);
+  }
+
+  return elems.map((elem, key) => cloneElement(elem, { key }));
 };

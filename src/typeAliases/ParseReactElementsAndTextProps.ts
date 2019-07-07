@@ -4,5 +4,5 @@ import {
 
 export type ParseReactElementsAndTextProps = Pick<
   InkContainerOwnProps,
-  'bindings' | 'components' | 'mergeComponents'
+  'bindings' | 'components' | 'dontMergeComponents'
 >;

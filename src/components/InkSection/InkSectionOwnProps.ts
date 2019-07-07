@@ -2,10 +2,14 @@ import {
   ParseReactElementsAndTextProps,
 } from '../../typeAliases/ParseReactElementsAndTextProps';
 import {
-  Story,
-} from 'inkjs/engine/Story';
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
+import {
+  StoryWithDoneEvent,
+} from '../../../lib/ink/StoryWithDoneEvent';
 
 export interface InkSectionOwnProps {
+  readonly children?: ReactNodeWithoutNullOrUndefined;
   readonly parseProps: ParseReactElementsAndTextProps;
 
   readonly onClick: (
@@ -15,6 +19,6 @@ export interface InkSectionOwnProps {
     reject: (err: Error) => void,
   ) => void;
 
-  readonly story: Story;
+  readonly story: StoryWithDoneEvent;
   readonly className?: string;
 }

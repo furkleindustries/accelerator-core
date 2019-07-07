@@ -1,0 +1,3 @@
+[submodule "lib/ink/inkjs"]
+	path = lib/ink/inkjs
+	url = https://github.com/y-lohse/inkjs

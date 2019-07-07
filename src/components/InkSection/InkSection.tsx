@@ -1,6 +1,3 @@
-import {
-  Button,
-} from '../Button/Button';
 import classNames from 'classnames';
 import {
   InkSectionOwnProps,
@@ -8,9 +5,6 @@ import {
 import {
   List,
 } from '../List/List';
-import {
-  ListItem,
-} from '../ListItem/ListItem';
 import {
   parsePlainTextAndReactElements,
 } from '../../functions/parsePlainTextAndReactElements';
@@ -23,6 +17,7 @@ import * as React from 'react'
 import styles from './InkSection.less';
 
 export const InkSection: React.FunctionComponent<InkSectionOwnProps> = ({
+  children,
   parseProps: childProps,
   className,
   onClick,
@@ -36,16 +31,27 @@ export const InkSection: React.FunctionComponent<InkSectionOwnProps> = ({
         className,
       )}
     >
+      {children}
       <List className={classNames(styles.choiceList, 'choiceList')}>
-        {story.currentChoices.map(({ text }, index) => (
-          <ListItem className={classNames(styles.choice, 'choice')}>
-            <Button
+        {story.currentChoices.map(({ text }, key) => (
+          <div
+            className={classNames(styles.choice, 'choice')}
+            key={key}
+          >
+            <button
               className={classNames(styles.choiceButton, 'choiceButton')}
-              onClick={onClick.bind(index)}
+              onClick={onClick.bind(null, key)}
             >
-              {parsePlainTextAndReactElements(text, { ...childProps })}
-            </Button>
-          </ListItem>
+              <div
+                className={classNames(
+                  styles.choiceContainer,
+                  'choiceContainer',
+                )}
+              >
+                {parsePlainTextAndReactElements(text, { ...childProps })}
+              </div>
+            </button>
+          </div>
         ))}
       </List>
     </Section>

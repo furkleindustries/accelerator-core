@@ -1,3 +1,5 @@
 export function getNodeModulesToAlwaysTranspile() {
-  return [];
+  return [
+    'inkjs',
+  ];
 }

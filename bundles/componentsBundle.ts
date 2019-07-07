@@ -9,7 +9,7 @@ export {
 } from '../src/components/AuthoringPassageContainer/AuthoringPassageContainer';
 export {
   AuthoringPassageContextConsumerWrapper,
-} from '../src/components/AuthoringPassageContextConsumerWrapper/AuthoringPassageConsumerWrapper';
+} from '../src/components/AuthoringPassageContextConsumerWrapper/AuthoringPassageContextConsumerWrapper';
 export {
   AuthoringPassageContextProviderWrapper,
 } from '../src/components/AuthoringPassageContextProviderWrapper/AuthoringPassageContextProviderWrapper';

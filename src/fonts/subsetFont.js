@@ -21,16 +21,15 @@ import {
   assert,
 } from 'ts-assertions';
 
-export const subsetFont = async ({
+export const subsetFont = ({
   directory,
   fontsToLoad,
   subsetFont: {
     fromFamily,
     subsetRange,
   },
-}) => {
+}) => new Promise(async (resolve, reject) => {
   try {
-
     assert(directory);
     assert(Array.isArray(fontsToLoad) && fontsToLoad.length);
     assert(fromFamily);
@@ -113,12 +112,15 @@ export const subsetFont = async ({
       `  src: ${subsetSrc};\n` +
       `  unicode-range: ${unicodes};\n` +
       `}`;
+
+    return getReturnObject(fontFaceRule, subsetName);
   } catch (err) {
     error(err);
+    reject(err);
   }
 
-  return getReturnObject(fontFaceRule, subsetName);
-};
+  return getReturnObject();
+});
 
 const getReturnObject = (fontFaceRule, subsetName) => ({
   fontFaceRule: fontFaceRule || null,

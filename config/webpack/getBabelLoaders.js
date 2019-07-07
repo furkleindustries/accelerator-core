@@ -11,7 +11,7 @@ export function getBabelLoaders(mode) {
     // Process application JS with Babel.
     // The preset includes JSX, Flow, and some ESnext features.
     {
-      test: /\.m?[jt]sx?$/,
+      test: /\.m?jsx?$/,
       include: moduleShouldBeTranspiled,
 
       loader: require.resolve('babel-loader'),
