@@ -32,6 +32,7 @@ export const getModule = (mode, publicPath, shouldUseSourceMap) => ({
     {
       test: /\.(js|mjs|jsx)$/,
       enforce: 'pre',
+      include: getAllCompiledCodeDirectories(),
       use: [
         /**
          * @see https://github.com/webpack-contrib/eslint-loader
@@ -45,8 +46,6 @@ export const getModule = (mode, publicPath, shouldUseSourceMap) => ({
           },
         },
       ],
-
-      include: getAllCompiledCodeDirectories(),
     },
 
     {
@@ -54,11 +53,17 @@ export const getModule = (mode, publicPath, shouldUseSourceMap) => ({
        * match the requirements. When no loader matches it will fall
        * back to the "file" loader at the end of the loader list. */
       oneOf: [
-        // "url" loader works like "file" loader except that it embeds assets
-        // smaller than specified limit in bytes as data URLs to avoid requests.
-        // A missing `test` is equivalent to a match.
+        /* "url" loader works like "file" loader except that it embeds assets
+         * smaller than specified limit in bytes as data URLs to avoid requests.
+         * A missing `test` is equivalent to a match. */
         {
-          test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+          test: [
+            /\.bmp$/,
+            /\.gif$/,
+            /\.jpe?g$/,
+            /\.png$/,
+          ],
+
           loader: require.resolve('url-loader'),
           options: {
             limit: 10000,
@@ -92,11 +97,11 @@ export const getModule = (mode, publicPath, shouldUseSourceMap) => ({
 
                 presets: [ require.resolve('babel-preset-react-app') ],
 
-                // This is a feature of `babel-loader` for webpack (not Babel itself).
-                // It enables caching results in ./node_modules/.cache/babel-loader/
-                // directory for faster rebuilds.
+                /* This is a feature of `babel-loader` for webpack (not Babel itself).
+                 * It enables caching results in ./node_modules/.cache/babel-loader/
+                 * directory for faster rebuilds. */
                 cacheDirectory: true,
-                // Don't waste time on Gzipping the cache
+                /* Don't waste time on gzipping the cache. */
                 cacheCompression: false,
                 compact: mode !== 'development',
               },
@@ -105,6 +110,7 @@ export const getModule = (mode, publicPath, shouldUseSourceMap) => ({
             {
               loader: require.resolve('ts-loader'),
               options: {
+                experimentalWatchApi: true,
                 transpileOnly: true,
               },
             },
@@ -181,14 +187,22 @@ export const getModule = (mode, publicPath, shouldUseSourceMap) => ({
         {
           test: /\.mdx?$/,
           use: [
-            require.resolve('babel-loader'),
+            {
+              loader: getBabelLoaders(mode)[0].loader,
+              options: getBabelLoaders(mode)[0].options,
+            },
+       
             require.resolve('@mdx-js/loader'),
           ],
         },
 
         {
           test: /\.ink$/,
-          use: require.resolve('inklecate-loader'),
+          use: [
+            require.resolve('./InkMdxResolverWebpackLoader'),
+            require.resolve('inklecate-loader'),
+            require.resolve('./InkMdxAliasWebpackLoader'),
+          ],
         },
 
         // "file" loader makes sure assets end up in the `build` folder.

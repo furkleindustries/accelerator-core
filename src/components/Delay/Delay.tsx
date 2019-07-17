@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   IDelayOwnProps,
 } from './IDelayOwnProps';
@@ -11,6 +11,8 @@ import {
 
 import * as React from 'react';
 
+import styles from './index.less';
+
 export const strings = {
   TIMEOUT_NOT_GREATER_THAN_OR_EQUAL_TO_ZERO_NUMBER:
     'The timeout argument passed to a Delay component was not a number ' +
@@ -21,9 +23,7 @@ export class Delay extends React.PureComponent<IDelayOwnProps, IDelayState> {
   public state = { shown: false };
 
   public componentDidMount = () => {
-    const {
-      timeout,
-    } = this.props;
+    const { timeout } = this.props;
 
     assert(
       timeout > 0,
@@ -42,7 +42,7 @@ export class Delay extends React.PureComponent<IDelayOwnProps, IDelayState> {
 
     const { shown } = this.state;
 
-    const classNameStr = classnames('delay', className);
+    const classNameStr = classNames(styles.delay, 'delay', className);
 
     if (shown) {
       return (

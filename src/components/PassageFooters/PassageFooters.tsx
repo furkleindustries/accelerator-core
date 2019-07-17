@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   IFooter,
 } from '../../passages/IFooter';
@@ -36,7 +36,7 @@ export const PassageFooters: React.FunctionComponent<
   footers,
   ...passageProps
 }) => (
-  <div className={classnames('passageFooters')}>
+  <div className={classNames('passageFooters')}>
     {footers.map(({ content }, index) => {
       const SafeContent = assertValid<React.ComponentType<IPassageProps>>(
         content,

@@ -1,13 +1,13 @@
 import {
+  AppContextConsumerWrapper,
+} from '../AppContextConsumerWrapper';
+import {
   Button,
-} from '../Button/Button';
-import classnames from 'classnames';
+} from '../Button';
+import classNames from 'classnames';
 import {
   doLinkNavigation,
 } from './doLinkNavigation';
-import {
-  getPassagesMapAndStartPassageNameContext,
-} from '../../context/getPassagesMapAndStartPassageNameContext';
 import {
   IButtonProps,
 } from '../Button/IButtonProps';
@@ -27,10 +27,6 @@ import {
 
 import * as React from 'react';
 
-const {
-  Consumer: PassagesMapAndStartPassageNameConsumer,
-} = getPassagesMapAndStartPassageNameContext();
-
 export const LinkUnconnected: React.FunctionComponent<
   ILinkOwnProps & ILinkDispatchProps & IButtonProps
 > = ({
@@ -41,7 +37,7 @@ export const LinkUnconnected: React.FunctionComponent<
   tags,
   ...props
 }) => (
-  <PassagesMapAndStartPassageNameConsumer>
+  <AppContextConsumerWrapper>
     {({ passagesMap }) => {
       const onClick = () => doLinkNavigation({
         dispatch,
@@ -53,7 +49,7 @@ export const LinkUnconnected: React.FunctionComponent<
       return (
         <Button
           {...props}
-          className={classnames(
+          className={classNames(
             'link',
             className,
           )}
@@ -63,7 +59,7 @@ export const LinkUnconnected: React.FunctionComponent<
         </Button>
       );
     }}
-  </PassagesMapAndStartPassageNameConsumer>
+  </AppContextConsumerWrapper>
 );
 
 export const mapDispatchToProps: MapDispatchToProps<

@@ -101,13 +101,11 @@ checkBrowsers(paths.appPath, isInteractive)
     );
 
     const devServer = new WebpackDevServer(compiler, serverConfig);
-    // Launch WebpackDevServer.
+    /* Launch WebpackDevServer. */
     devServer.listen(port, host, (err) => {
       if (err) {
-        error(err.stack || err.message || err);
+        error(err);
         return;
-      } else if (isInteractive) {
-        //clearConsole();
       }
 
       log(chalk.cyan('Starting the development server...\n'));
@@ -117,13 +115,11 @@ checkBrowsers(paths.appPath, isInteractive)
     [
       'SIGINT',
       'SIGTERM',
-    ].forEach((sig) => {
-      process.on(sig, () => {
-        devServer.close();
-        exit(0);
-      });
-    });
+    ].forEach((sig) => process.on(sig, () => {
+      devServer.close();
+      exit(0);
+    }));
   }).catch((err) => {
-    error(err.stack || err.message || err);
+    error(err);
     exit(1);
   });

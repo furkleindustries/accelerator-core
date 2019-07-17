@@ -1,16 +1,16 @@
 import {
   Button,
-} from '../Button/Button';
+} from '../Button';
 import {
   BreadcrumbTrail,
-} from '../BreadcrumbTrail/BreadcrumbTrail'
-import classnames from 'classnames';
+} from '../BreadcrumbTrail'
+import classNames from 'classnames';
 import {
   createStoryOptionUpdateAction,
 } from '../../actions/creators/createStoryOptionUpdateAction';
 import {
   Dialog,
-} from '../Dialog/Dialog';
+} from '../Dialog';
 import {
   getStoryOptionsList,
 } from '../../storyOptions/getStoryOptionsList';
@@ -25,7 +25,7 @@ import {
 } from './IStoryOptionsState';
 import {
   StoryOptionsList,
-} from '../StoryOptionsList/StoryOptionsList';
+} from '../StoryOptionsList';
 import {
   connect,
   MapDispatchToProps,
@@ -42,7 +42,7 @@ export class StoryOptions extends React.PureComponent<
   public readonly render = () => (
     <>
       <Button
-        className={classnames('storyOptionsToggle')}
+        className={classNames('storyOptionsToggle')}
         onClick={this.toggleModalVisibility}
         {...(open ? { hidden: true } : {})}
       >{
@@ -50,16 +50,19 @@ export class StoryOptions extends React.PureComponent<
       }</Button>
 
       <Dialog
-        className={classnames('soundPanelContentsContainer')}
-        dialogActions={<>
-          <Button
-            className={classnames('soundPanelCloseButton')}
-            onClick={this.toggleModalVisibility}
-          >
-            Close
-          </Button>
-        </>}
-        includeTitle={'Story Options'}
+        className={classNames('soundPanelContentsContainer')}
+        dialogActions={
+          <>
+            <Button
+              className={classNames('soundPanelCloseButton')}
+              onClick={this.toggleModalVisibility}
+            >
+              Close
+            </Button>
+          </>
+        }
+
+        includeTitle="Story Options"
         open={this.state.open}
       >
         <BreadcrumbTrail listComponent={StoryOptionsList}>{

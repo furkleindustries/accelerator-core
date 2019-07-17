@@ -12,13 +12,13 @@ import {
 } from './IBeginLoadOptions';
 import {
   ILoadingScreenOwnProps,
-} from '../components/LoadingScreen/ILoadingScreenOwnProps';
+} from '../components/LoadingScreen';
 import {
   InitializationHandlerOptions,
 } from './InitializationHandlerOptions';
 import {
   LoadingScreen,
-} from '../components/LoadingScreen/LoadingScreen';
+} from '../components/LoadingScreen';
 import {
   render,
 } from 'react-dom';

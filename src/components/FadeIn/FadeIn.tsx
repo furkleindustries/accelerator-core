@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   IFadeInOwnProps,
 } from './IFadeInOwnProps';
@@ -8,7 +8,7 @@ import {
 
 import * as React from 'react';
 
-import styles from './FadeIn.less';
+import styles from './index.less';
 
 export const strings = {
   DURATION_NOT_GREATER_THAN_ZERO_NUMBER:
@@ -28,7 +28,7 @@ export const FadeIn: React.FunctionComponent<IFadeInOwnProps> = ({
 
   return (
     <div
-      className={classnames('fadeIn', styles.fadeIn, className)}
+      className={classNames(styles.fadeIn, 'fadeIn', className)}
       style={{ animationDuration: `${duration}ms` }}
     >
       {children}

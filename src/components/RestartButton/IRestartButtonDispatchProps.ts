@@ -1,10 +1,10 @@
 import {
-  IStoryRewindAction,
-} from '../../actions/IStoryRewindAction';
+  IStoryResetAction,
+} from '../../actions/IStoryResetAction';
 import {
   Dispatch,
 } from 'redux';
 
 export interface IRestartButtonDispatchProps {
-  dispatch: Dispatch<IStoryRewindAction>;
+  readonly dispatch: Dispatch<IStoryResetAction>;
 }

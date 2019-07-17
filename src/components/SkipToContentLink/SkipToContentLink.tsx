@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   getDefaultSkipToContentHref,
 } from '../../functions/getDefaultSkipToContentLinkHref';
@@ -7,9 +7,9 @@ import {
 } from './ISkipToContentLinkOwnProps';
 import {
   UrlLink,
-} from '../UrlLink/UrlLink';
+} from '../UrlLink';
 
-import styles from './SkipToContentLink.less';
+import styles from './index.less';
 
 import * as React from 'react';
 
@@ -20,16 +20,17 @@ export const SkipToContentLink: React.FunctionComponent<ISkipToContentLinkOwnPro
   tabIndex,
   ...otherProps
 }) => (
-  <UrlLink {...{
-    ...otherProps,
-    className: classnames(
-      'skipToContentLink',
+  <UrlLink
+    {...otherProps}
+    className={classNames(
       styles.skipToContentLink,
+      'skipToContentLink',
       className,
-    ),
-    href: href || getDefaultSkipToContentHref(),
-    tabIndex: tabIndex || 1,
-  }}>{
+    )}
+
+    href={href || getDefaultSkipToContentHref()}
+    tabIndex={tabIndex || 1}
+  >{
     children || (children && Array.isArray(children) && children.length) ?
       children :
       'Skip to content'

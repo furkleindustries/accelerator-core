@@ -1,6 +1,6 @@
 import {
   ILoadingScreenOwnProps,
-} from '../components/LoadingScreen/ILoadingScreenOwnProps';
+} from '../components/LoadingScreen';
 import {
   ComponentType,
 } from 'react';

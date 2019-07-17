@@ -4,13 +4,13 @@ import {
 } from './IPassageContainerOwnProps';
 import {
   PassageContentContainerConnected,
-} from '../PassageContentContainer/PassageContentContainer';
+} from '../PassageContentContainer';
 import {
   PassageHeadersConnected,
-} from '../PassageHeaders/PassageHeaders';
+} from '../PassageHeaders';
 import {
   PassageFootersConnected,
-} from '../PassageFooters/PassageFooters';
+} from '../PassageFooters';
 
 import * as React from 'react';
 

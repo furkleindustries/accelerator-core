@@ -1,16 +1,16 @@
-import classnames from 'classnames';
-import {
-  createMidrenderSignalAction,
-} from '../../actions/creators/createMidrenderSignalAction';
+import classNames from 'classnames';
 import {
   Cycler,
-} from '../Cycler/Cycler';
+} from '../Cycler';
 import {
   ICyclingLinkInternalDispatchProps,
 } from './ICyclingLinkInternalDispatchProps';
 import {
   ICyclingLinkInternalOwnProps,
 } from './ICyclingLinkInternalOwnProps';
+import {
+  ICyclingLinkInternalState,
+} from './ICyclingLinkInternalState';
 import {
   ICyclingLinkInternalStateProps,
 } from './ICyclingLinkInternalStateProps';
@@ -49,33 +49,52 @@ export const strings = {
 export class CyclingLinkInternal extends React.PureComponent<
   ICyclingLinkInternalOwnProps &
   ICyclingLinkInternalStateProps &
-  ICyclingLinkInternalDispatchProps
+  ICyclingLinkInternalDispatchProps,
+  ICyclingLinkInternalState
 > {
-  public componentDidMount = () => {
+  public readonly state = { startIndex: 0 };
+
+  constructor(
+    props:
+      ICyclingLinkInternalOwnProps &
+      ICyclingLinkInternalStateProps &
+      ICyclingLinkInternalDispatchProps
+  ) {
+    super(props);
+
     const {
       callback,
       children,
-      dispatch,
+      history: {
+        present: { storyState },
+      },
+
       dontCallbackOnMount,
       dontSetVariableOnMount,
       variableToSet,
-    } = this.props;
-
-    const firstState = assertValid<string>(
-      children[0],
-      strings.FIRST_STATE_EMPTY,
-    );
+    } = props;
   
     if (!dontSetVariableOnMount &&
         variableToSet &&
         typeof variableToSet === 'string')
     {
-      this.setStoryState({ [variableToSet]: firstState });
-  
-      /* Issue a midrender signal action to prevent rewinding over state
-       * assigned during the rendering process. */
-      dispatch(createMidrenderSignalAction());
-  
+      if (typeof storyState[variableToSet] !== 'undefined') {
+        const index = children.indexOf(storyState[variableToSet]);
+        this.state = { startIndex: index === -1 ? 0 : index };
+      }
+
+      const firstState = assertValid<string>(
+        children[this.state.startIndex],
+        strings.FIRST_STATE_EMPTY,
+      );
+
+      /* If this is not guarded by whether the story state already contains
+       * this value, it will re-render to the React limit and then break. */
+      if (storyState[variableToSet] !== firstState) {
+        this.setStoryState({ [variableToSet]: firstState });
+      }
+
+
       if (!dontCallbackOnMount && typeof callback === 'function') {
         callback(firstState);
       }
@@ -85,7 +104,8 @@ export class CyclingLinkInternal extends React.PureComponent<
   public render = () => (
     <Cycler
       callback={this.doCallback}
-      className={classnames(this.props.className)}
+      className={classNames(this.props.className)}
+      startIndex={this.state.startIndex}
     >
       {this.props.children}
     </Cycler>

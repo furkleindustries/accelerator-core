@@ -1,7 +1,10 @@
 import {
   Breadcrumb,
-} from '../Breadcrumb/Breadcrumb';
-import classnames from 'classnames';
+} from '../Breadcrumb';
+import classNames from 'classnames';
+import {
+  warn,
+} from 'colorful-logging';
 import {
   IBreadcrumbItem,
 } from './IBreadcrumbItem';
@@ -19,7 +22,6 @@ import {
 } from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 import * as React from 'react';
-import { warn } from 'colorful-logging';
 
 export class BreadcrumbTrail extends React.PureComponent<
   IBreadcrumbTrailOwnProps,
@@ -73,8 +75,8 @@ export class BreadcrumbTrail extends React.PureComponent<
     const { trail } = this.state;
 
     return (
-      <div className={classnames('breadcrumbTrailContainer', className)}>
-        <nav className={classnames('breadcrumbNavigator')}>{
+      <div className={classNames('breadcrumbTrailContainer', className)}>
+        <nav className={classNames('breadcrumbNavigator')}>{
           /** Don't show the current breadcrumb. */
           (trail.length > 1 ? trail.slice(0, 1) : []).map((crumb, key) => (
             <Breadcrumb

@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   IButtonProps,
 } from './IButtonProps';
@@ -8,20 +8,24 @@ import {
 
 import * as React from 'react';
 
-import styles from './Button.less';
+import styles from './index.less';
 
 export const Button: React.FunctionComponent<IButtonProps> = ({
+  children,
   className,
   color = 'primary',
   ...props
 }) => (
   <MuiButton
     {...props}
-    className={classnames(
-      'button',
+    className={classNames(
       styles.button,
+      'button',
       className,
     )}
+
     color={color}
-  />
+  >
+    {children}
+  </MuiButton>
 );

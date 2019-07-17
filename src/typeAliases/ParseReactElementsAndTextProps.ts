@@ -1,8 +1,3 @@
-import {
-  InkContainerOwnProps,
-} from '../components/InkContainer/InkContainerOwnProps';
-
-export type ParseReactElementsAndTextProps = Pick<
-  InkContainerOwnProps,
-  'bindings' | 'components' | 'dontMergeComponents'
->;
+export type ParseReactElementsAndTextProps = {
+  readonly dontMergeComponent: boolean;
+}

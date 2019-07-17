@@ -29,34 +29,33 @@ import {
 } from '../src/fonts/subsetFont';
 
 setUnhandledRejectionEvent();
-
-const {
-  fontsToLoad,
-  subsetFont: maybeSubsetFont,
-} = getNormalizedAcceleratorConfig();
-
-let subsetFontObject = maybeSubsetFont || null;
-
-/* Don't do anything if the user doesn't indicate any fonts to load. */
-if (!fontsToLoad) {
-  warn(
-    'No fontsToLoad property was present in accelerator.config.js, and no ' +
-      'fonts will be loaded.',
-  );
-
-  process.exit(0);
-}
-
-const errorHeader = 'The following error occurred when loading your fonts:';
-const genericWarning = 'Your fonts may not work as expected. Please correct ' +
-  'the error and rebuild.';
-const printWarning = (err) => {
-  warn(errorHeader);
-  warn(err.stack || err);
-  warn(genericWarning);
-};
-
 (async () => {
+  const {
+    fontsToLoad,
+    subsetFont: maybeSubsetFont,
+  } = getNormalizedAcceleratorConfig();
+
+  let subsetFontObject = maybeSubsetFont || null;
+
+  /* Don't do anything if the user doesn't indicate any fonts to load. */
+  if (!fontsToLoad) {
+    warn(
+      'No fontsToLoad property was present in accelerator.config.js, and no ' +
+        'fonts will be loaded.',
+    );
+
+    return;
+  }
+
+  const errorHeader = 'The following error occurred when loading your fonts:';
+  const genericWarning = 'Your fonts may not work as expected. Please correct ' +
+    'the error and rebuild.';
+  const printWarning = (err) => {
+    warn(errorHeader);
+    warn(err.stack || err);
+    warn(genericWarning);
+  };
+
   try {
     await fs.remove(paths.fontsAutogenerationDir);
   } catch (err) {
@@ -149,7 +148,6 @@ const printWarning = (err) => {
 
   const fontFacePath = path.join(paths.fontsAutogenerationDir, 'fontface-autogen.css');
   try {
-    console.log(fontFacePath, fontLoaderStyle);
     await fs.writeFile(fontFacePath, fontLoaderStyle);
   } catch (err) {
     warn('Encountered an error while writing the @font-face file.');

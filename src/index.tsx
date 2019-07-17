@@ -1,6 +1,6 @@
 import {
-  default as App,
-} from './components/App/App';
+  App,
+} from './components/App';
 import {
   createStore,
 } from './state/createStore';

@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   IFooterOwnProps,
 } from './IFooterOwnProps';
@@ -11,9 +11,9 @@ export const Footer = React.forwardRef<HTMLElement, IFooterOwnProps>(({
   ...props
 }, ref) => (
   <footer
-    className={classnames('footer', className)}
-    ref={ref}
     {...props}
+    className={classNames('footer', className)}
+    ref={ref}
   >
     {children}
   </footer>

@@ -1,16 +1,26 @@
 import {
   Article,
-} from '../Article/Article';
+} from '../Article';
 import classNames from 'classnames';
+import {
+  getBaseMarkdownComponents,
+} from '../AuthoringPassageContainer/getBaseMarkdownComponents';
 import {
   InkContainerOwnProps,
 } from './InkContainerOwnProps';
 import {
-  InkSection,
-} from '../InkSection/InkSection';
+  InkContainerState,
+} from './InkContainerState';
 import {
-  parsePlainTextAndReactElements,
-} from '../../functions/parsePlainTextAndReactElements';
+  InkSection,
+} from '../InkSection';
+import {
+  MDXComponent,
+} from '../../typeAliases/MDXComponent';
+import {
+  MDXProvider,
+// @ts-ignore
+} from '@mdx-js/react';
 import {
   Story,
 } from '../../../lib/ink/inkjs/src/Story';
@@ -22,11 +32,12 @@ import {
 } from 'ts-assertions';
 
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 
-import styles from './InkContainer.less';
+import styles from './index.less';
 
-export class InkContainer extends React.PureComponent<InkContainerOwnProps> {
+export class InkContainer extends React.PureComponent<InkContainerOwnProps, InkContainerState> {
+  public readonly state: InkContainerState = { sections: [] };
+
   private ref: React.RefObject<HTMLDivElement>;
   private story: StoryWithDoneEvent;
 
@@ -36,13 +47,17 @@ export class InkContainer extends React.PureComponent<InkContainerOwnProps> {
       ref,
     } = this.props;
 
+    const { sections } = this.state;
+
     this.ref = ref || this.ref || React.createRef();
 
     return (
       <Article
         className={classNames(styles.inkContainer, 'inkContainer', className)}
         ref={this.ref}
-      ></Article>
+      >
+        {sections.map((section, key) => React.cloneElement(section, { key }))}
+      </Article>
     );
   };
 
@@ -50,7 +65,7 @@ export class InkContainer extends React.PureComponent<InkContainerOwnProps> {
     const {
       doneCallback,
       inputVariables,
-      storyContent,
+      inkModule: { storyContent },
       variablesToObserve,
     } = this.props;
 
@@ -111,48 +126,58 @@ export class InkContainer extends React.PureComponent<InkContainerOwnProps> {
 
   public readonly continueStory = () => {
     const {
-      bindings,
-      components,
-      dontMergeComponents,
+      inkModule: { getMdxComponent },
     } = this.props;
 
     const story = this.story;
     const refElement = this.getRefElement();
-    const inkContents = [];
+    let index = 0;
     /* Generate story text - loop through available content.
      * Get ink to generate the next paragraph. */
-    const inkResponse = story.ContinueMaximally() || '';
-    const textAndReactElems = parsePlainTextAndReactElements(
-      inkResponse,
-      {
-        bindings,
-        components,
-        dontMergeComponents,
-      },
-    );
+    let inkContents: React.ReactElement[] = [];
+    while (story.canContinue) {
+      const inkResponse = story.Continue() || '';
+      inkContents.push(<span key={index}>{inkResponse}</span>);
+      index += 1;
+      if (getMdxComponent) {
+        assertValid<string[]>(story.currentTags).forEach((tag) => {
+          const match = tag.trim().match(new RegExp(/@mdx ___BESbswy___(.+)___ywsbSEB___/));
+          if (match && match[1]) {
+            const Component =
+              assertValid<MDXComponent>(
+                getMdxComponent(match[1]),
+                `The MDX component, ${match}, ${match[1]}, was not found.`,
+              );
 
-    inkContents.push(...textAndReactElems);
+            inkContents.push(
+              <MDXProvider
+                components={getBaseMarkdownComponents()}
+                key={index}
+              >
+                <Component />
+              </MDXProvider>
+            );
+
+            index += 1;
+          }
+        });
+      }
+    }
 
     const onClick = (index: number, e: Event) => this.clickChoice(index, e);
-
-    const reactElem = (
-      <InkSection
-        onClick={onClick}
-        parseProps={{
-          bindings,
-          components,
-          dontMergeComponents,
-        }}
-
-        story={story}
-      >
-        {inkContents}
-      </InkSection>
-    );
+    this.setState({
+      sections: this.state.sections.concat([
+        <InkSection
+          onClick={onClick}
+          story={story}
+        >
+          {inkContents}
+        </InkSection>
+      ]),
+    });
 
     const container = document.createElement('div');
     refElement.appendChild(container);
-    ReactDOM.render(reactElem, container);
     this.scrollToBottom();
   };
 

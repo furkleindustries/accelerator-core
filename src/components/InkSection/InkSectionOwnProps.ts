@@ -9,9 +9,6 @@ import {
 } from '../../../lib/ink/StoryWithDoneEvent';
 
 export interface InkSectionOwnProps {
-  readonly children?: ReactNodeWithoutNullOrUndefined;
-  readonly parseProps: ParseReactElementsAndTextProps;
-
   readonly onClick: (
     index: number,
     e: Event,
@@ -20,5 +17,6 @@ export interface InkSectionOwnProps {
   ) => void;
 
   readonly story: StoryWithDoneEvent;
+  readonly children?: ReactNodeWithoutNullOrUndefined;
   readonly className?: string;
 }

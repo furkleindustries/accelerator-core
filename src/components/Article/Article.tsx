@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   IArticleOwnProps,
 } from './IArticleOwnProps';
@@ -12,7 +12,7 @@ export const Article = React.forwardRef<HTMLElement, IArticleOwnProps>(({
 }, ref) => (
   <article
     {...props}
-    className={classnames('article', className)}
+    className={classNames(className, 'article')}
     ref={ref}
   >
     {children}

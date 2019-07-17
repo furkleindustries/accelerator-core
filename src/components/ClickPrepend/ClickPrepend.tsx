@@ -1,6 +1,7 @@
+import classNames from 'classnames';
 import {
   Clicker,
-} from '../Clicker/Clicker';
+} from '../Clicker';
 import {
   IClickPrependOwnProps,
 } from './IClickPrependOwnProps';
@@ -13,8 +14,11 @@ export const ClickPrepend: React.FunctionComponent<IClickPrependOwnProps> = ({
   toPrepend,
 }) => (
   <Clicker
-    contentAfterClick={[ toPrepend, children, ]}
-    {...(className ? { className } : {})}
+    className={classNames(className, 'clickPrepend')}
+    contentAfterClick={[
+      toPrepend,
+      children,
+    ]}
   >
     {children}
   </Clicker>

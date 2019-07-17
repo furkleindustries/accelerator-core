@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   IHeaderOwnProps,
 } from './IHeaderOwnProps';
@@ -11,9 +11,9 @@ export const Header = React.forwardRef<HTMLElement, IHeaderOwnProps>(({
   ...props
 }, ref) => (
   <header
-    className={classnames('header', className)}
-    ref={ref}
     {...props}
+    className={classNames('header', className)}
+    ref={ref}
   >
     {children}
   </header>

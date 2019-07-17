@@ -1,6 +1,7 @@
+import classNames from 'classnames';
 import {
   Clicker,
-} from '../Clicker/Clicker';
+} from '../Clicker';
 import {
   IClickReplaceOwnProps,
 } from './IClickReplaceProps';
@@ -13,8 +14,8 @@ export const ClickReplace: React.FunctionComponent<IClickReplaceOwnProps> = ({
   replaceWith,
 }) => (
   <Clicker
+    className={classNames('clickReplace', className)}
     contentAfterClick={replaceWith}
-    {...(className ? { className, } : {})}
   >
     {children}
   </Clicker>

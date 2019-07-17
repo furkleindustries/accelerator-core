@@ -129,12 +129,12 @@ export default {
    * which are usable as rewind points. Important to consider
    * historyStackLimit when changing this. Do not change this unless
    * you know what you're doing, as this setting has complex effects on
-   * rewindability.
+   * rewind semantics.
    */
   historySaveTypes: [
     ActionTypes.Bookmark,
-    ActionTypes.MidrenderSignal,
     ActionTypes.PassageNavigation,
+    ActionTypes.PassageTime,
   ],
 
   /**

@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   IFadeOutOwnProps,
 } from './IFadeOutOwnProps';
@@ -8,12 +8,12 @@ import {
 
 import * as React from 'react';
 
-import styles from './FadeOut.less';
+import styles from './index.less';
 
 export const strings = {
   DURATION_NOT_GREATER_THAN_OR_EQUAL_TO_ZERO_NUMBER:
     'The duration argument passed to a Delay component was not a number ' +
-    'greater than zero.',
+      'greater than zero.',
 };
 
 export const FadeOut: React.FunctionComponent<IFadeOutOwnProps> = ({
@@ -28,10 +28,8 @@ export const FadeOut: React.FunctionComponent<IFadeOutOwnProps> = ({
 
   return (
     <div
-      className={classnames('fadeOut', styles.fadeOut, className)}
-      style={{
-        animationDuration: `${duration}ms`
-      }}
+      className={classNames(styles.fadeOut, 'fadeOut', className)}
+      style={{ animationDuration: `${duration}ms` }}
     >
       {children}
     </div>

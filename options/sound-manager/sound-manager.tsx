@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   IStoryOptionComponentOwnProps,
 } from '../../src/storyOptions/IStoryOptionComponentOwnProps';
@@ -7,29 +7,30 @@ import {
 } from '../../src/storyOptions/IStoryOption';
 import {
   SoundManagerAudioPanel,
-} from '../../src/components/SoundManagerAudioPanel/SoundManagerAudioPanel';
+} from '../../src/components/SoundManagerAudioPanel';
 import {
   StoryOptionsList,
-} from '../../src/components/StoryOptionsList/StoryOptionsList';
+} from '../../src/components/StoryOptionsList';
 
 import * as React from 'react';
 
 import styles from './sound-manager.less';
 
-class SoundManagerOption extends React.PureComponent<
+const SoundManagerOption: React.FunctionComponent<
   IStoryOptionComponentOwnProps
-> {
-  public readonly render = () => (
-    <StoryOptionsList
-      getBreadcrumbProps={this.props.getBreadcrumbProps}
-      className={classnames(styles.soundPanelContainer, 'soundPanelContainer')}
-      title="Sound options"
-      treeSelector={this.props.treeSelector}
-    >{[
-      <SoundManagerAudioPanel key={0} />
-    ]}</StoryOptionsList>
-  );
-}
+> = ({
+  getBreadcrumbProps,
+  treeSelector,
+}) => (
+  <StoryOptionsList
+    getBreadcrumbProps={getBreadcrumbProps}
+    className={classNames(styles.soundPanelContainer, 'soundPanelContainer')}
+    title="Sound options"
+    treeSelector={treeSelector}
+  >{
+    [ <SoundManagerAudioPanel key={0} /> ]
+  }</StoryOptionsList>
+);
 
 const option: IStoryOption = {
   content: SoundManagerOption,

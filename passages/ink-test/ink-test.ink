@@ -3,6 +3,12 @@
 === hello_world ===
 Hi!
 
+/* @mdx
+<button>
+  I am a button.
+</button>
+*/
+
 * foo
   bar!
   -> DONE

@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   IHeader,
 } from '../../passages/IHeader';
@@ -36,7 +36,7 @@ export const PassageHeaders: React.FunctionComponent<
   headers,
   ...passageProps
 }) => (
-  <div className={classnames('passageHeaders')}>
+  <div className={classNames('passageHeaders')}>
     {headers.map(({ content }, index) => {
       const SafeContent = assertValid<React.ComponentType<IPassageProps>>(
         content,

@@ -1,12 +1,9 @@
 import {
+  AppContextConsumerWrapper,
+} from '../AppContextConsumerWrapper';
+import {
   CyclingLinkInternalConnected,
-} from '../CyclingLinkInternal/CyclingLinkInternal';
-import {
-  getPassagesMapAndStartPassageNameContext,
-} from '../../context/getPassagesMapAndStartPassageNameContext';
-import {
-  getPluginsContext,
-} from '../../context/getPluginsContext';
+} from '../CyclingLinkInternal';
 import {
   ICyclingLinkOwnProps,
 } from './ICyclingLinkOwnProps';
@@ -19,29 +16,22 @@ export const strings = {
     'was an empty string.',
 };
 
-const {
-  Consumer: PassagesMapAndStartPassageNameContextConsumer,
-} = getPassagesMapAndStartPassageNameContext();
-
-const { Consumer: PluginContextConsumer } = getPluginsContext();
-
 export const CyclingLink: React.FunctionComponent<ICyclingLinkOwnProps> = ({
   children,
   ...props
 }) => (
-  <PassagesMapAndStartPassageNameContextConsumer>
-    {({ passagesMap }) => (
-      <PluginContextConsumer>
-        {({ plugins }) => (
-          <CyclingLinkInternalConnected
-            passagesMap={passagesMap}
-            plugins={plugins}
-            {...props}
-          >
-            {children}
-          </CyclingLinkInternalConnected>
-        )}
-      </PluginContextConsumer>
+  <AppContextConsumerWrapper>
+    {({
+      passagesMap,
+      plugins,
+    }) => (
+      <CyclingLinkInternalConnected
+        passagesMap={passagesMap}
+        plugins={plugins}
+        {...props}
+      >
+        {children}
+      </CyclingLinkInternalConnected>
     )}
-  </PassagesMapAndStartPassageNameContextConsumer>
+  </AppContextConsumerWrapper>
 );

@@ -42,7 +42,7 @@ export const subsetFont = ({
     if (!fontLoadingObjToSubset) {
       warn('No font loading object could be found for subsetting which ' +
             `matched the family "${fromFamily}".`);
-      return getReturnObject();
+      return resolve(getReturnObject());
     }
   
     const {
@@ -113,13 +113,13 @@ export const subsetFont = ({
       `  unicode-range: ${unicodes};\n` +
       `}`;
 
-    return getReturnObject(fontFaceRule, subsetName);
+    return resolve(getReturnObject(fontFaceRule, subsetName));
   } catch (err) {
     error(err);
     reject(err);
   }
 
-  return getReturnObject();
+  return resolve(getReturnObject());
 });
 
 const getReturnObject = (fontFaceRule, subsetName) => ({

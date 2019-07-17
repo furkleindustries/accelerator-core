@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   ILoadingScreenOwnProps,
 } from './ILoadingScreenOwnProps';
@@ -22,29 +22,29 @@ export const LoadingScreen: React.FunctionComponent<
   ticks,
   title,
 }) => (
-  <article className={classnames('loadingScreen', builtInStyles.loadingScreen)}>
+  <article className={classNames(builtInStyles.loadingScreen, 'loadingScreen')}>
     <h2
-      className={classnames(
-        'loadingScreenTitle',
+      className={classNames(
         builtInStyles.loadingScreenTitle,
+        'loadingScreenTitle',
       )}
     >
       {title}
     </h2>
 
     <p
-      className={classnames(
-        'loadingScreenBodyText',
+      className={classNames(
         builtInStyles.loadingScreenBodyText,
+        'loadingScreenBodyText',
       )}
     >
       {bodyText || 'The story is loading. Thank you for your patience.'}
     </p>
 
     <p
-      className={classnames(
-        'loadingScreenDescription',
+      className={classNames(
         builtInStyles.loadingScreenDescription,
+        'loadingScreenDescription',
       )}
     >
       {Array.isArray(descriptions) && descriptions[ticks] ?

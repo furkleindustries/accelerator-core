@@ -2,14 +2,14 @@ import {
   createStoryResetAction,
 } from '../actions/creators/createStoryResetAction';
 import {
-  IAction,
-} from '../actions/IAction';
-import {
   IPlugin,
 } from '../plugins/IPlugin';
 import {
   IPluginMethodBaseArgs,
 } from '../plugins/IPluginMethodArgs';
+import {
+  IStoryResetAction,
+} from '../actions/IStoryResetAction';
 import {
   Dispatch,
 } from 'redux';
@@ -17,15 +17,14 @@ import {
   ActionCreators,
 } from 'redux-undo';
 
-export function reset(args: IPluginMethodBaseArgs & {
-  readonly dispatch: Dispatch<IAction>,
-  readonly plugins: ReadonlyArray<IPlugin>,
-})
-{
+export const reset = (args: IPluginMethodBaseArgs & {
+  readonly dispatch: Dispatch<IStoryResetAction>;
+  readonly plugins: ReadonlyArray<IPlugin>;
+}) => {
   const {
-    passageObject,
     dispatch,
     lastLinkTags,
+    passageObject,
     plugins,
     storyState,
   } = args;
@@ -33,8 +32,8 @@ export function reset(args: IPluginMethodBaseArgs & {
   plugins.forEach(({ beforeRestart }) => {
     if (typeof beforeRestart === 'function') {
       beforeRestart({
-        passageObject,
         lastLinkTags,
+        passageObject,
         storyState,
       });
     }
@@ -42,4 +41,4 @@ export function reset(args: IPluginMethodBaseArgs & {
 
   dispatch(ActionCreators.clearHistory());
   dispatch(createStoryResetAction());
-}
+};
