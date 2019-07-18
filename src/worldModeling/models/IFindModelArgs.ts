@@ -6,7 +6,7 @@ import {
 } from './ModelType';
 import {
   Tag,
-} from '../tags/Tag';
+} from '../../tags/Tag';
 
 export interface IFindModelArgs<T extends ModelType> {
   readonly ancestors?: string | Array<string | ModelType | IModel<T>>;

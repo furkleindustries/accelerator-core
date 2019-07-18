@@ -12,7 +12,7 @@ import {
 } from './IWorld';
 import {
   Tag,
-} from '../tags/Tag';
+} from '../../tags/Tag';
 
 export interface IModel<T extends ModelType, B extends T = T, K extends T = T> {
   readonly being: IOntology<B> | null;
@@ -21,4 +21,6 @@ export interface IModel<T extends ModelType, B extends T = T, K extends T = T> {
   readonly tags: ReadonlyArray<Tag>;
   readonly type: T;
   readonly world: IWorld;
+  readonly addTag: (tag: Tag) => void;
+  readonly removeTag: (tag: Tag) => void;
 }
