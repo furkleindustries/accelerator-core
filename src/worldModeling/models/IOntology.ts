@@ -14,9 +14,12 @@ import {
   Tag,
 } from '../../tags/Tag';
 
-export interface IOntology<T extends ModelType> {
-  readonly adjacency: IAdjacencyRelation<T>;
-  readonly containment: IContainmentRelation<T>;
+export interface IOntology<B extends ModelType> {
+  readonly adjacency: IAdjacencyRelation<B>;
+  readonly containment: IContainmentRelation<B>;
   readonly tags: ReadonlyArray<Tag>;
   readonly world: IWorld;
+  readonly addTag: (tag: Tag) => void;
+  readonly removeTag: (tag: Tag) => void;
+  readonly clone: () => IOntology<B>;
 }

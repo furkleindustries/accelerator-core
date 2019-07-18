@@ -14,11 +14,12 @@ import {
   Tag,
 } from '../../tags/Tag';
 
-export interface IEpistemology<T extends ModelType> {
-  readonly awareness: IAwarenessRelation<T>;
+export interface IEpistemology<K extends ModelType> {
+  readonly awareness: IAwarenessRelation<K>;
   readonly tags: ReadonlyArray<Tag>;
-  readonly thoughts: IThoughtRelation<T>;
+  readonly thoughts: IThoughtRelation<K>;
   readonly world: IWorld;
   readonly addTag: (tag: Tag) => void;
   readonly removeTag: (tag: Tag) => void;
+  readonly clone: () => IEpistemology<K>;
 }
