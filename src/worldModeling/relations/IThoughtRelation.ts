@@ -8,11 +8,27 @@ import {
   ModelType,
 } from '../models/ModelType';
 
-export interface IThoughtRelation<T extends ModelType> extends IRelation<T> {
-  readonly knows: Readonly<Record<string, IModel<T>>>;
-  readonly wants: Readonly<Record<string, IModel<T>>>;
-  readonly addKnowledge: (model: string | IModel<T>) => void;
-  readonly removeKnowledge: (model: string | IModel<T>) => void;
-  readonly addWant: (model: string | IModel<T>) => void;
-  readonly removeWant: (model: string | IModel<T>) => void;
+export interface IThoughtRelation<
+  Type extends ModelType,
+  Being extends ModelType,
+  Knowledge extends ModelType,
+> extends IRelation<Type> {
+  readonly knows: Readonly<Record<string, IModel<Type, Being, Knowledge>>>;
+  readonly wants: Readonly<Record<string, IModel<Type, Being, Knowledge>>>;
+
+  readonly addKnowledge: (
+    model: string | IModel<Type, Being, Knowledge>,
+  ) => void;
+
+  readonly removeKnowledge: (
+    model: string | IModel<Type, Being, Knowledge>,
+  ) => void;
+
+  readonly addWant: (
+    model: string | IModel<Type, Being, Knowledge>,
+  ) => void;
+
+  readonly removeWant: (
+    model: string | IModel<Type, Being, Knowledge>,
+  ) => void;
 }

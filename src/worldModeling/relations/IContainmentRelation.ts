@@ -1,6 +1,6 @@
 import {
-  IFindModelArgs,
-} from '../models/IFindModelArgs';
+  FindModelArgs,
+} from '../models/FindModelArgs';
 import {
   IModel,
 } from '../models/IModel';
@@ -9,25 +9,39 @@ import {
 } from './IRelation';
 import {
   IWorld,
-} from '../models/IWorld';
+} from '../world/IWorld';
 import {
   ModelType,
 } from '../models/ModelType';
 
-export interface IContainmentRelation<T extends ModelType> extends IRelation<T> {
-  readonly children: Readonly<Record<string, IModel<T>>>;
-  readonly parent: IModel<ModelType> | IWorld;
-  readonly addChild: (model: string | IModel<T>) => void;
-  readonly removeChild: (model: string | IModel<T>) => void;
-  readonly move: (parent: IModel<ModelType> | IWorld) => void;
-  readonly descendants: () => ReadonlyArray<IModel<T>>;
-  readonly findParent: (
-    args: string | IFindModelArgs<ModelType>,
-  ) => IModel<ModelType> | null;
-  
-  readonly findAllParents: (
-    args: string | IFindModelArgs<ModelType>,
-  ) => ReadonlyArray<IModel<ModelType>>;
+export interface IContainmentRelation<
+  Type extends ModelType,
+  Being extends ModelType,
+  Knowledge extends ModelType,
+> extends IRelation<Type> {
+  readonly children: Readonly<Record<string, IModel<Type, Being, Knowledge>>>;
+  readonly parent: IModel<ModelType, ModelType, ModelType> | IWorld;
+  readonly addChild: (model: string | IModel<Exclude<Type, ModelType.Portal>, Being, Knowledge>) => void;
 
-  readonly parents: () => ReadonlyArray<IModel<ModelType> | IWorld>;
+  readonly ancestors: (
+    args: 'world' | string | FindModelArgs<ModelType, ModelType, ModelType>,
+  ) => ReadonlyArray<IWorld | IModel<ModelType, ModelType, ModelType>>;
+
+  readonly descendants: () => ReadonlyArray<IModel<Type, Being, Knowledge>>;
+  readonly findAllParents: (
+    args: 'world' | string | FindModelArgs<ModelType, ModelType, ModelType>,
+  ) => ReadonlyArray<IWorld | IModel<ModelType, ModelType, ModelType>>;
+
+  readonly findParent: (
+    args: 'world' | string | FindModelArgs<ModelType, ModelType, ModelType>,
+  ) => IWorld | IModel<ModelType, ModelType, ModelType> | null;    
+
+  readonly parents: () => ReadonlyArray<
+    IModel<ModelType, ModelType, ModelType> | IWorld
+  >;
+
+  readonly removeChild: (
+    model: string |
+      IModel<Exclude<Type, ModelType.Portal>, Being, Knowledge>,
+  ) => void;
 }

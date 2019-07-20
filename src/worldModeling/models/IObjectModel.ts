@@ -8,8 +8,8 @@ import {
   ModelType,
 } from './ModelType';
 
-export interface IPortalModel<
-  Type extends ModelType.Portal,
+export interface IObjectModel<
+  Type extends ModelType.Object,
   Being extends ModelType,
   Knowledge extends ModelType,
 > extends IModel<Type, Being, ModelType>
@@ -17,7 +17,4 @@ export interface IPortalModel<
   readonly being: IOntology<Type, Being, Knowledge>;
   readonly knowledge: null;
   readonly type: Type;
-  readonly transport: (
-    model: string | IModel<ModelType, ModelType, ModelType>,
-  ) => void;
 }

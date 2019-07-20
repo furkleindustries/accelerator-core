@@ -11,8 +11,17 @@ import {
   ModelType,
 } from '../models/ModelType';
 
-export interface IAdjacencyRelation<T extends ModelType> extends IRelation<T> {
+export interface IAdjacencyRelation<
+  Type extends ModelType,
+  Being extends ModelType,
+  Knowledge extends ModelType,
+> extends IRelation<Type> {
   readonly neighbors: Readonly<Map<BaseAdjacencies, any>>;
-  readonly addNeighbor: (model: string | IModel<T>) => void;
-  readonly removeNeighbor: (tag: string | IModel<T>) => void;
+  readonly addNeighbor: (
+    model: string | IModel<Type, Being, Knowledge>,
+  ) => void;
+
+  readonly removeNeighbor: (
+    tag: string | IModel<Type, Being, Knowledge>,
+  ) => void;
 }

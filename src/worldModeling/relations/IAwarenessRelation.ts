@@ -8,8 +8,19 @@ import {
   ModelType,
 } from '../models/ModelType';
 
-export interface IAwarenessRelation<T extends ModelType> extends IRelation<T> {
-  readonly perceives: Readonly<Record<string, IModel<T>>>;
-  readonly addPerception: (model: string | IModel<T>) => void;
-  readonly removePerception: (tag: string | IModel<T>) => void;
+export interface IAwarenessRelation<
+  Type extends ModelType,
+  Being extends ModelType,
+  Knowledge extends ModelType,
+> extends IRelation<Type>
+{
+  readonly perceives: ReadonlyArray<IModel<Type, Being, Knowledge>>;
+
+  readonly addPerception: (
+    model: string | IModel<Type, Being, Knowledge>,
+  ) => void;
+
+  readonly removePerception: (
+    tag: string | IModel<Type, Being, Knowledge>,
+  ) => void;
 }

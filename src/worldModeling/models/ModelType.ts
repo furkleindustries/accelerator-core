@@ -1,6 +1,7 @@
 export enum ModelType {
   Actor = 'Actor',
-  Door = 'Door',
   Location = 'Location',
   Object = 'Object',
+  Portal = 'Portal',
+  Thought = 'Thought',
 }

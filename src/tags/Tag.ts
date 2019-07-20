@@ -1,4 +1,4 @@
-export type Tag = string | {
-  readonly key: string,
-  readonly value: string,
-};
+export interface Tag {
+  readonly key: string;
+  readonly value: string;
+}
