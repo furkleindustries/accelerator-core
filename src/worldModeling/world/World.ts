@@ -58,7 +58,7 @@ export class World implements IWorld {
   }
 
   private readonly __knowledge: IEpistemology<
-    ModelType,
+    ModelType.Thought,
     ModelType,
     ModelType
   > = new Epistemology();
@@ -96,10 +96,20 @@ export class World implements IWorld {
   constructor(
     name: string,
     models?: Record<string, IModel<ModelType, ModelType, ModelType>>,
+    initializer?: (self: IWorld) => void,
+    finalizer?: (self: IWorld) => void,
   ) {
     this.__name = assertValid(name);
     if (models && typeof models === 'object') {
       this.__models = models;
+    }
+
+    if (typeof initializer === 'function') {
+      this.initialize = initializer;
+    }
+
+    if (typeof finalizer === 'function') {
+      this.finalize = finalizer;
     }
   }
 
@@ -137,7 +147,7 @@ export class World implements IWorld {
     if (typeof ctor === 'function') {
       temp = new ctor(this, args);
     } else if (args.type === ModelType.Actor) {
-      temp = new ActorModel<ModelType.Actor, Being, Knowledge>(
+      temp = new ActorModel<Being, Knowledge>(
         this,
         args as IModelConstructorArgs<ModelType.Actor, Being, Knowledge>,
       );
@@ -159,6 +169,22 @@ export class World implements IWorld {
     };
 
     return temp as IModel<Type, Being, Knowledge>;
+  };
+
+  public readonly initialize = (self: IWorld) => {
+    if (self.knowledge) {
+      self.knowledge.initialize(self.knowledge);
+    }
+
+    this.children().forEach((child) => child.initialize(child));
+  };
+
+  public readonly finalize = (self: IWorld) => {
+    if (self.knowledge) {
+      self.knowledge.finalize(self.knowledge);
+    }
+
+    this.children().forEach((child) => child.finalize(child));
   };
 
   public readonly removeModel = (
@@ -197,6 +223,8 @@ export class World implements IWorld {
   public readonly descendants = () => this.findAll('*');
 
   public readonly destroy = () => {
+    this.finalize(this);
+
     this.descendants().forEach((desc) => {
       desc.destroy();
       this.removeModel(desc);

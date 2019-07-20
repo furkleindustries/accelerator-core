@@ -1,4 +1,7 @@
 import {
+  IAwarenessRelation,
+} from '../relations/IAwarenessRelation';
+import {
   IEpistemology,
 } from '../epistemology/IEpistemology';
 import {
@@ -19,7 +22,11 @@ import {
 
 export interface IWorld {
   readonly being: null;
-  readonly knowledge: IEpistemology<ModelType, ModelType, ModelType> | null;
+  readonly knowledge: Exclude<
+    IEpistemology<ModelType.Thought, ModelType, ModelType>,
+    IAwarenessRelation<any, any, any>
+  >;
+
   readonly models: Readonly<
     Record<string, IModel<ModelType, ModelType, ModelType>>
   >;
@@ -53,6 +60,8 @@ export interface IWorld {
   >;
 
   readonly destroy: () => void;
+
+  readonly finalize: (self: IWorld) => void;
 
   readonly find: <
     Type extends ModelType,

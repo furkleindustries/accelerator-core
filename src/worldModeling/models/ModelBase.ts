@@ -34,13 +34,14 @@ export abstract class ModelBase<
   Type extends ModelType,
   Being extends ModelType,
   Knowledge extends ModelType,
-> implements IModel<Type, Being, Knowledge> {
-  private readonly __being: IOntology<Type, Being, Knowledge> | null = null;
+> implements IModel<Type, Being, Knowledge>
+{
+  protected abstract readonly __being: IOntology<Type, Being, Knowledge> | null;
   public get being() {
     return this.__being;
   }
 
-  private readonly __knowledge: IEpistemology<Type, Being, Knowledge> | null = null;
+  protected abstract readonly __knowledge: IEpistemology<Type, Being, Knowledge> | null;
   public get knowledge() {
     return this.__knowledge;
   }
@@ -80,8 +81,6 @@ export abstract class ModelBase<
     );
 
     const {
-      being,
-      knowledge,
       name,
       tags,
       type,
@@ -102,17 +101,11 @@ export abstract class ModelBase<
     this.__name = name;
     this.__type = type;
 
-    if (being) {
-      this.__being = being;
-    }
-
-    if (knowledge) {
-      this.__knowledge = knowledge;
-    }
-
     if (tags) {
       this.__tags = this.tags.concat(tags);
     }
+
+    this.initialize(this);
   }
 
   public readonly addTag = (tag: string | Tag) => (
@@ -150,6 +143,8 @@ export abstract class ModelBase<
   };
 
   public readonly destroy = () => {
+    this.finalize(this);
+
     if (this.being) {
       this.being.destroy();
       // @ts-ignore
@@ -178,6 +173,18 @@ export abstract class ModelBase<
     delete this.__world;
     // @ts-ignore
     delete this.world;
+  };
+
+  public readonly initialize = (self: IModel<Type, Being, Knowledge>) => {
+    if (this.being) {
+      this.being.initialize(this.being);
+    }
+  };
+
+  public readonly finalize = (self: IModel<Type, Being, Knowledge>) => {
+    if (this.knowledge) {
+      this.knowledge.finalize(this.knowledge);
+    }
   };
 
   public readonly removeTag = (tag: string | Tag) => (

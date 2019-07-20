@@ -20,7 +20,7 @@ import {
   ModelType,
 } from '../models/ModelType';
 import { 
-  assertValid,
+  assertValid, assert,
 } from 'ts-assertions';
 
 function* generate<
@@ -45,6 +45,11 @@ export function* findAllGenerate<
   world: IWorld,
   args: '*' | FindModelArgs<Type, Being, Knowledge>,
 ): IterableIterator<IModel<Type, Being, Knowledge>> {
+  assert(
+    args && (args === '*' || typeof args === 'object'),
+    'The args argument to findAllGenerate was not * or a valid object.',
+  );
+
   const models = world.models as Record<
     string,
     IModel<Type, Being, Knowledge>

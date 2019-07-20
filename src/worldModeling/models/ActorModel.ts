@@ -11,38 +11,45 @@ import {
   IOntology,
 } from '../ontology/IOntology';
 import {
-  ModelBase,
-} from './ModelBase';
-import {
   IWorld,
 } from '../world/IWorld';
 import {
+  ModelBase,
+} from './ModelBase';
+import {
   ModelType,
 } from './ModelType';
+import {
+  Ontology,
+} from '../ontology/Ontology';
 
 export class ActorModel<
-  Type extends ModelType.Actor,
   Being extends ModelType,
   Knowledge extends ModelType,
-> extends ModelBase<Type, Being, Knowledge>
+> extends ModelBase<ModelType.Actor, Being, Knowledge>
 {
-  private __being: IOntology<
-    Type,
+  protected readonly __being: IOntology<
+    ModelType.Actor,
     Being,
     Knowledge
-  > = new Ontology();
+  > | null = new Ontology();
 
   public get being() {
     return this.__being;
   }
 
-  private __knowledge: IEpistemology<Type, Being, Knowledge> = new Epistemology();
+  protected readonly __knowledge: IEpistemology<
+    ModelType.Actor,
+    Being,
+    Knowledge
+  > = new Epistemology();
 
   public get knowledge() {
     return this.__knowledge;
   }
 
-  readonly type: Type;
+  public readonly type = ModelType.Actor;
+
   readonly move: (
     destination: IModel<ModelType, ModelType, ModelType> | IWorld,
   ) => void;

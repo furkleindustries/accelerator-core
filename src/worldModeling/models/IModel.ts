@@ -28,5 +28,7 @@ export interface IModel<
   readonly addTag: (tag: string | Tag) => void;
   readonly clone: () => IModel<Type, Being, Knowledge>;
   readonly destroy: () => void;
+  readonly finalize: (self: IModel<Type, Being, Knowledge>) => void;
+  readonly initialize: (self: IModel<Type, Being, Knowledge>) => void;
   readonly removeTag: (tag: string | Tag) => void;
 }

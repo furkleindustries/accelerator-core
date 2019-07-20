@@ -27,4 +27,6 @@ export interface IEpistemology<
   readonly removeTag: (tag: Tag) => void;
   readonly clone: () => IEpistemology<Type, Being, Knowledge>;
   readonly destroy: () => void;
+  readonly finalize: (self: IEpistemology<Type, Being, Knowledge>) => void;
+  readonly initialize: (self: IEpistemology<Type, Being, Knowledge>) => void;
 }

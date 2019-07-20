@@ -20,8 +20,13 @@ export interface IContainmentRelation<
   Knowledge extends ModelType,
 > extends IRelation<Type> {
   readonly children: Readonly<Record<string, IModel<Type, Being, Knowledge>>>;
-  readonly parent: IModel<ModelType, ModelType, ModelType> | IWorld;
-  readonly addChild: (model: string | IModel<Exclude<Type, ModelType.Portal>, Being, Knowledge>) => void;
+  readonly parent: Type extends ModelType.Location ?
+    IWorld :
+    IModel<ModelType, ModelType, ModelType>;
+
+  readonly addChild: (
+    model: string | IModel<Exclude<Type, ModelType.Portal>, Being, Knowledge>,
+  ) => void;
 
   readonly ancestors: (
     args: 'world' | string | FindModelArgs<ModelType, ModelType, ModelType>,
