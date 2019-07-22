@@ -5,6 +5,9 @@ import {
   ancestorsFilter,
 } from './ancestorsFilter';
 import {
+  BeingNoThoughtsBase,
+} from '../epistemology/BeingNoThoughtsBase';
+import {
   childrenFilter,
 } from './childrenFilter';
 import {
@@ -32,6 +35,9 @@ import {
   ModelType,
 } from '../models/ModelType';
 import {
+  ModelTypeNoThoughts,
+} from '../models/ModelTypeNoThoughts';
+import {
   modelTypeFilter,
 } from './modelTypeFilter';
 import {
@@ -43,10 +49,10 @@ import {
 
 export const filterOntology = <
   Type extends ModelType,
-  Being extends ModelType,
+  Being extends BeingNoThoughtsBase,
   Knowledge extends ModelType,
 >(
-  obj: IOntology<Type, Being, Knowledge>,
+  obj: IOntology<ModelTypeNoThoughts<ModelType>, Being, Knowledge>,
   key: keyof Pick<
     FindModelArgs<Type, Being, Knowledge>,
     'adjacent' |
@@ -65,15 +71,15 @@ export const filterOntology = <
       if (key === 'adjacent' && !adjacentFilter(obj, arg)) {
         return false;
       } else if (key === 'ancestors' && !ancestorsFilter(obj, arg)) {
-        return false;         
+        return false;
       } else if (key === 'children' && !childrenFilter(obj, arg)) {
-        return false;    
+        return false;
       } else if (key === 'connected' && !connectedFilter(obj, arg)) {
         return false;
       } else if (key === 'descendants' && !descendantsFilter(obj, arg)) {
-        return false;         
+        return false;
       } else if (key === 'links' && !linksFilter(obj, arg)) {
-        return false;    
+        return false;
       } else if (key === 'parent' && !parentFilter(obj, arg)) {
         return false;
       } else {
@@ -87,15 +93,15 @@ export const filterOntology = <
       if (key === 'adjacent' && !adjacentFilter(obj, arg.name)) {
         return false;
       } else if (key === 'ancestors' && !ancestorsFilter(obj, arg.name)) {
-        return false;         
+        return false;
       } else if (key === 'children' && !childrenFilter(obj, arg.name)) {
-        return false;    
+        return false;
       } else if (key === 'connected' && !connectedFilter(obj, arg.name)) {
         return false;
       } else if (key === 'descendants' && !descendantsFilter(obj, arg.name)) {
-        return false;         
+        return false;
       } else if (key === 'links' && !linksFilter(obj, arg.name)) {
-        return false;    
+        return false;
       } else if (key === 'parent' && !parentFilter(obj, arg.name)) {
         return false;
       } else {

@@ -11,28 +11,37 @@ import {
   ModelType,
 } from '../models/ModelType';
 import {
+  OnticTypes,
+} from './OnticTypes';
+import {
   Tag,
 } from '../../tags/Tag';
 
 export interface IOntology<
-  Type extends ModelType,
-  Being extends ModelType,
+  Type extends OnticTypes,
+  Being extends OnticTypes,
   Knowledge extends ModelType,
 > {
   readonly adjacency: IAdjacencyRelation<Type, Being, Knowledge>;
 
   readonly containment: Type extends ModelType.Portal ?
-    /* Do not allow portals to contain anything. */
-    never :
-    IContainmentRelation<
-      Type,
-      /* Only allow objects to contain actors and objects. */
-      Being extends ModelType.Object ?
-        ModelType.Actor | ModelType.Object :
-        Being,
+    null :
+    Being extends ModelType.Portal ?
+      /* Do not allow portals to have containment relations. */
+      null :
+      IContainmentRelation<
+        /* Do not allow portals to have containment relations. */
+        Exclude<Type, ModelType.Portal>,
 
-      Knowledge
-    >;
+        /* Only allow objects to contain actors and objects. */
+        Being extends ModelType.Object ?
+          /* Do not allow objects to contain locations or portals. */
+          Exclude<Being, ModelType.Location | ModelType.Portal> :
+          /* Do not allow portals or thoughts to be contained as models. */
+          Being,
+
+        Knowledge
+      >;
 
   readonly tags: ReadonlyArray<string | Tag>;
   readonly world: IWorld;

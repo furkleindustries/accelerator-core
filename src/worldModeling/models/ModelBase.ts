@@ -2,6 +2,12 @@ import {
   addTag,
 } from '../../tags/addTag';
 import {
+  BeingNoThoughtsBase,
+} from '../epistemology/BeingNoThoughtsBase';
+import {
+  EpistemicTypes,
+} from '../epistemology/EpistemicTypes';
+import {
   IEpistemology,
 } from '../epistemology/IEpistemology';
 import {
@@ -20,6 +26,9 @@ import {
   ModelType,
 } from './ModelType';
 import {
+  OnticTypes,
+} from '../ontology/OnticTypes';
+import {
   removeTag,
 } from '../../tags/removeTag';
 import {
@@ -29,19 +38,26 @@ import {
   assert,
   assertValid,
 } from 'ts-assertions';
+import { getTag } from '../../tags/getTag';
 
 export abstract class ModelBase<
   Type extends ModelType,
-  Being extends ModelType,
+  Being extends BeingNoThoughtsBase,
   Knowledge extends ModelType,
 > implements IModel<Type, Being, Knowledge>
 {
-  protected abstract readonly __being: IOntology<Type, Being, Knowledge> | null;
+  protected abstract readonly __being: Type extends OnticTypes ?
+    IOntology<Type, Being, Knowledge> :
+    null;
+
   public get being() {
     return this.__being;
   }
 
-  protected abstract readonly __knowledge: IEpistemology<Type, Being, Knowledge> | null;
+  protected abstract readonly __knowledge: Type extends ModelType.Actor ?
+    IEpistemology<Type, Being, Knowledge> :
+    never;
+
   public get knowledge() {
     return this.__knowledge;
   }
@@ -73,7 +89,10 @@ export abstract class ModelBase<
     world: IWorld,
     args: IModelConstructorArgs<Type, Being, Knowledge>,
   ) {
-    this.__world = assertValid(world);
+    this.__world = assertValid(
+      world,
+      'The world argument was not provided to the ModelBase constructor.',
+    );
 
     assert(
       args,
@@ -176,16 +195,38 @@ export abstract class ModelBase<
   };
 
   public readonly initialize = (self: IModel<Type, Being, Knowledge>) => {
-    if (this.being) {
-      this.being.initialize(this.being);
+    if (self.being) {
+      self.being.initialize(
+        // @ts-ignore
+        self.being as IOntology<OnticTypes, Being, Knowledge>,
+      );
+    }
+
+    if (self.knowledge) {
+      self.knowledge.initialize(
+        self.knowledge as IEpistemology<EpistemicTypes, Being, Knowledge>,
+      );
     }
   };
 
   public readonly finalize = (self: IModel<Type, Being, Knowledge>) => {
-    if (this.knowledge) {
-      this.knowledge.finalize(this.knowledge);
+    if (self.being) {
+      self.being.finalize(
+        // @ts-ignore
+        self.being as IOntology<OnticTypes, Being, Knowledge>,
+      );
+    }
+
+    if (self.knowledge) {
+      self.knowledge.initialize(
+        self.knowledge as IEpistemology<EpistemicTypes, Being, Knowledge>,
+      );
     }
   };
+
+  public readonly getTag = (toSearch: string | Tag) => (
+    getTag(this.tags, toSearch)
+  );
 
   public readonly removeTag = (tag: string | Tag) => (
     void (this.__tags = Object.freeze(removeTag(this.tags, tag)))

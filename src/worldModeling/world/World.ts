@@ -5,6 +5,9 @@ import {
   addTag,
 } from '../../tags/addTag';
 import {
+  BeingNoThoughtsBase,
+} from '../epistemology/BeingNoThoughtsBase';
+import {
   Epistemology,
 } from '../epistemology/Epistemology';
 import {
@@ -16,6 +19,9 @@ import {
 import {
   FindModelArgs,
 } from '../models/FindModelArgs';
+import {
+  getTag,
+} from '../../tags/getTag';
 import {
   IModel,
 } from '../models/IModel';
@@ -50,6 +56,9 @@ import {
   assert,
   assertValid,
 } from 'ts-assertions';
+import {
+  WorldType,
+} from './WorldType';
 
 export class World implements IWorld {
   private readonly __being: null;
@@ -59,16 +68,16 @@ export class World implements IWorld {
 
   private readonly __knowledge: IEpistemology<
     ModelType.Thought,
-    ModelType,
+    never,
     ModelType
-  > = new Epistemology();
+  > = new Epistemology(this);
 
   public get knowledge() {
     return this.__knowledge;
   }
 
   private __models: Readonly<
-    Record<string, IModel<ModelType, ModelType, ModelType>>
+    Record<string, IModel<ModelType, BeingNoThoughtsBase, ModelType>>
   > = Object.freeze({});
 
   public get models() {
@@ -85,6 +94,11 @@ export class World implements IWorld {
     return this.__tags;
   }
 
+  private readonly __type = WorldType;
+  public get type() {
+    return this.__type;
+  }
+
   public readonly addTag = (tag: string | Tag) => (
     void (this.__tags = Object.freeze([ ...addTag(this.tags, tag) ]))
   );
@@ -95,7 +109,11 @@ export class World implements IWorld {
 
   constructor(
     name: string,
-    models?: Record<string, IModel<ModelType, ModelType, ModelType>>,
+    models?: Record<
+      string,
+      IModel<ModelType, BeingNoThoughtsBase, ModelType>
+    >,
+
     initializer?: (self: IWorld) => void,
     finalizer?: (self: IWorld) => void,
   ) {
@@ -115,61 +133,48 @@ export class World implements IWorld {
 
   public readonly addModel = <
     Type extends ModelType,
-    Being extends ModelType,
+    Being extends BeingNoThoughtsBase,
     Knowledge extends ModelType,
   >(
-    args: IModelConstructorArgs<Type, Being, Knowledge>,
+    modelArgs: IModelConstructorArgs<Type, Being, Knowledge>,
     ctor?: new (
       world: IWorld,
       args: IModelConstructorArgs<Type, Being, Knowledge>,
     ) => IModel<Type, Being, Knowledge>,
   ) => {
-    assert(args, 'There were no arguments passed to World.addModel.');
-
-    assert(
-      args.name,
-      'There was no name property in the argument array passed to ' +
-        'World.addModel.',
-    );
-
-    assert(
-      !(args.name in this.models),
-      'There was already a model with the provided name in the models map.', 
-    )
-
-    assert(
-      args.type,
-      'There was no type property in the arguments array passed to ' +
-        'World.addModel.',
-    );
+    this.validateModelArgs<Type, Being, Knowledge>(modelArgs);
 
     let temp: IModel<any, Being, Knowledge>;
     if (typeof ctor === 'function') {
-      temp = new ctor(this, args);
-    } else if (args.type === ModelType.Actor) {
+      temp = new ctor(this, modelArgs);
+    } else if (modelArgs.type === ModelType.Actor) {
       temp = new ActorModel<Being, Knowledge>(
         this,
-        args as IModelConstructorArgs<ModelType.Actor, Being, Knowledge>,
+        modelArgs as IModelConstructorArgs<ModelType.Actor, Being, Knowledge>,
       );
-    } else if (args.type === ModelType.Location) {
-      temp = new LocationModel(this, args); 
-    } else if (args.type === ModelType.Object) {
-      temp = new ObjectModel(this, args);
-    } else if (args.type === ModelType.Portal) {
-      temp = new PortalModel(this, args);
-    } else if (args.type === ModelType.Thought) {
-      temp = new ThoughtModel(this, args);
+    } else if (modelArgs.type === ModelType.Location) {
+      temp = new LocationModel(this, modelArgs); 
+    } else if (modelArgs.type === ModelType.Object) {
+      temp = new ObjectModel(this, modelArgs);
+    } else if (modelArgs.type === ModelType.Portal) {
+      temp = new PortalModel(this, modelArgs);
+    } else if (modelArgs.type === ModelType.Thought) {
+      temp = new ThoughtModel(this, modelArgs);
     } else {
       throw new Error('Type argument not recognized in World.addModel.');
     }
 
     this.__models = {
       ...this.models,
-      [args.name]: temp,
+      [modelArgs.name]: temp,
     };
 
     return temp as IModel<Type, Being, Knowledge>;
   };
+
+  public readonly getTag = (toSearch: string | Tag) => (
+    getTag(this.tags, toSearch)
+  );
 
   public readonly initialize = (self: IWorld) => {
     if (self.knowledge) {
@@ -188,7 +193,7 @@ export class World implements IWorld {
   };
 
   public readonly removeModel = (
-    model: string | IModel<ModelType, ModelType, ModelType>,
+    model: string | IModel<ModelType, BeingNoThoughtsBase, ModelType>,
   ) => {
     if (typeof model === 'string') {
       const copy = { ...this.__models };
@@ -249,7 +254,7 @@ export class World implements IWorld {
 
   public readonly find = <
     Type extends ModelType,
-    Being extends ModelType,
+    Being extends BeingNoThoughtsBase,
     Knowledge extends ModelType,
   >(
     args: string | FindModelArgs<Type, Being, Knowledge>,
@@ -259,7 +264,7 @@ export class World implements IWorld {
 
   public readonly findAll = <
     Type extends ModelType,
-    Being extends ModelType,
+    Being extends BeingNoThoughtsBase,
     Knowledge extends ModelType,
   >(args: '*' | FindModelArgs<Type, Being, Knowledge>) => {
     const ret = [];
@@ -282,10 +287,37 @@ export class World implements IWorld {
 
   public readonly findAllGenerator = ((self: IWorld) => function*<
     Type extends ModelType,
-    Being extends ModelType,
+    Being extends BeingNoThoughtsBase,
     Knowledge extends ModelType,
   > (args: '*' | FindModelArgs<Type, Being, Knowledge>) {
     assert(args, 'The args argument to World.findAllGenerator was not valid.');
     yield* findAllGenerate<Type, Being, Knowledge>(self, args);
   })(this);
+
+  public readonly validateModelArgs = <
+    Type extends ModelType,
+    Being extends BeingNoThoughtsBase,
+    Knowledge extends ModelType,
+  >(args: any): args is IModelConstructorArgs<Type, Being, Knowledge> => {
+    assert(args, 'There were no arguments passed to World.addModel.');
+
+    assert(
+      args.name,
+      'There was no name property in the argument array passed to ' +
+        'World.addModel.',
+    );
+
+    assert(
+      !(args.name in this.models),
+      'There was already a model with the provided name in the models map.', 
+    )
+
+    assert(
+      args.type,
+      'There was no type property in the arguments array passed to ' +
+        'World.addModel.',
+    );
+
+    return true;
+  }
 }

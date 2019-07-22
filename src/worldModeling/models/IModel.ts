@@ -1,4 +1,10 @@
 import {
+  BeingNoThoughtsBase,
+} from '../epistemology/BeingNoThoughtsBase';
+import {
+  EpistemicTypes,
+} from '../epistemology/EpistemicTypes';
+import {
   IEpistemology,
 } from '../epistemology/IEpistemology';
 import {
@@ -11,24 +17,39 @@ import {
   IWorld,
 } from '../world/IWorld';
 import {
+  OnticTypes,
+} from '../ontology/OnticTypes';
+import {
   Tag,
 } from '../../tags/Tag';
 
 export interface IModel<
   Type extends ModelType,
-  Being extends ModelType,
+  Being extends BeingNoThoughtsBase,
   Knowledge extends ModelType,
 > {
-  readonly being: IOntology<Type, Being, Knowledge> | null;
-  readonly knowledge: IEpistemology<Type, Being, Knowledge> | null;
+  readonly being: Type extends OnticTypes ?
+    IOntology<Type, Being, Knowledge> :
+    null;
+
+  /* Note that Thought models are not included in the epistemic types. This is
+   * because thought models are intended to be a thin affordance for globally
+   * generic thoughts or concepts, and these models cannot "know" anything at
+   * all. */
+  readonly knowledge: Type extends EpistemicTypes ?
+    IEpistemology<Type, Being, Knowledge> :
+    null;
+
   readonly name: string;
   readonly tags: ReadonlyArray<string | Tag>;
   readonly type: Type;
   readonly world: IWorld;
+
   readonly addTag: (tag: string | Tag) => void;
   readonly clone: () => IModel<Type, Being, Knowledge>;
   readonly destroy: () => void;
   readonly finalize: (self: IModel<Type, Being, Knowledge>) => void;
+  readonly getTag: (key: string) => any;
   readonly initialize: (self: IModel<Type, Being, Knowledge>) => void;
   readonly removeTag: (tag: string | Tag) => void;
 }

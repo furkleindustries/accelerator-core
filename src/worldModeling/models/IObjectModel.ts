@@ -1,4 +1,7 @@
 import {
+  BeingNoThoughtsBase,
+} from '../epistemology/BeingNoThoughtsBase';
+import {
   IModel,
 } from './IModel';
 import {
@@ -9,12 +12,10 @@ import {
 } from './ModelType';
 
 export interface IObjectModel<
-  Type extends ModelType.Object,
-  Being extends ModelType,
-  Knowledge extends ModelType,
-> extends IModel<Type, Being, ModelType>
+  Being extends BeingNoThoughtsBase,
+> extends IModel<ModelType.Object, Being, never>
 {
-  readonly being: IOntology<Type, Being, Knowledge>;
+  readonly being: IOntology<ModelType.Object, Being, never>;
   readonly knowledge: null;
-  readonly type: Type;
+  readonly type: ModelType.Object;
 }

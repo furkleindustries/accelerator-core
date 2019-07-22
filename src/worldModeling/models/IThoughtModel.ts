@@ -7,9 +7,9 @@ import {
 
 export interface IThoughtModel<
   Type extends ModelType.Thought,
-> extends IModel<Type, ModelType, ModelType>
+> extends IModel<Type, never, never>
 {
-  readonly being: null;
-  readonly knowledge: null;
+  readonly being: never;
+  readonly knowledge: never;
   readonly type: Type;
 }

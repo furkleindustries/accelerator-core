@@ -2,7 +2,13 @@ import {
   awareOfFilter,
 } from './awareOfFilter';
 import {
-  IFindModelArg,
+  BeingNoThoughtsBase,
+} from '../epistemology/BeingNoThoughtsBase';
+import {
+  EpistemicTypes,
+} from '../epistemology/EpistemicTypes';
+import {
+  FindModelArg,
   FindModelArgs,
 } from '../models/FindModelArgs';
 import {
@@ -23,16 +29,16 @@ import {
 
 export const filterEpistemology = <
   Type extends ModelType,
-  Being extends ModelType,
+  Being extends BeingNoThoughtsBase,
   Knowledge extends ModelType,
 >(
-  obj: IEpistemology<Type, Being, Knowledge>,
+  obj: IEpistemology<EpistemicTypes, Being, Knowledge> | null,
   key: keyof Pick<
     FindModelArgs<Type, Being, Knowledge>,
     'awareOf' | 'inAwarenessGraph' | 'thoughts' | 'wants'
   >,
 
-  args: IFindModelArg<Type, Being, Knowledge>,
+  args: FindModelArg<Type, Being, Knowledge>,
 ): boolean => {
   for (const arg of args) {
     if (typeof arg === 'string') {
@@ -41,25 +47,25 @@ export const filterEpistemology = <
       } else if (key === 'inAwarenessGraph' &&
         !inAwarenessGraphFilter(obj, arg))
       {
-        return false;         
+        return false;
       } else if (key === 'thoughts' && !thoughtsFilter(obj, arg)) {
-        return false;    
+        return false;
       } else if (key === 'wants' && !wantsFilter(obj, arg)) {
-        return false;    
+        return false;
       } else {
         throw new Error('Key argument not recognized in filterEpistemology.');
       }
     } else {
       if (key === 'awareOf' && !awareOfFilter(obj, arg)) {
-        return false;    
+        return false;
       } else if (key === 'inAwarenessGraph' &&
         !inAwarenessGraphFilter(obj, arg.name))
       {
-        return false;         
+        return false;
       } else if (key === 'thoughts' && !thoughtsFilter(obj, arg.name)) {
-        return false;    
+        return false;
       } else if (key === 'wants' && !wantsFilter(obj, arg.name)) {
-        return false;    
+        return false;
       } else {
         throw new Error('Key argument not recognized in filterEpistemology.');
       }

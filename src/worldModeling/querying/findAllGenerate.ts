@@ -1,4 +1,7 @@
 import {
+  BeingNoThoughtsBase,
+} from '../epistemology/BeingNoThoughtsBase';
+import {
   filterEpistemology,
 } from './filterEpistemology';
 import {
@@ -25,12 +28,13 @@ import {
 
 function* generate<
   Type extends ModelType,
-  Being extends ModelType,
+  Being extends BeingNoThoughtsBase,
   Knowledge extends ModelType,
 > (
   models: Record<string, IModel<Type, Being, Knowledge>>,
   filter: (model: IModel<Type, Being, Knowledge>) => boolean = () => true,
-): IterableIterator<IModel<Type, Being, Knowledge>> {
+): IterableIterator<IModel<Type, Being, Knowledge>>
+{
   const filtered = Object.values(models).filter(filter);
   for (const model of filtered) {
     yield model;
@@ -39,7 +43,7 @@ function* generate<
 
 export function* findAllGenerate<
   Type extends ModelType,
-  Being extends ModelType,
+  Being extends BeingNoThoughtsBase,
   Knowledge extends ModelType,
 >(
   world: IWorld,
@@ -101,7 +105,7 @@ export function* findAllGenerate<
       name: modelName,
       tags: modelTags,
       type: modelType,
-    }: IModel<Type, Being, Knowledge>): boolean => (
+    }: IModel<ModelType, Being, Knowledge>): boolean => (
       (typeof name === 'boolean' ? modelName === name : true) &&
         (tags ? !tags.find((tag) => !modelTags.includes(tag)) : true) &&
         (type ? modelType === type : true) &&
@@ -148,7 +152,7 @@ export function* findAllGenerate<
       name: modelName,
       tags: modelTags,
       type: modelType,
-    }: IModel<Type, Being, Knowledge>): boolean => (
+    }: IModel<ModelType, Being, Knowledge>): boolean => (
       (name ? modelName === name : false) ||
         (tags ? !tags.find((tag) => !modelTags.includes(tag)) : false) ||
         (type ? modelType === type : false) ||
@@ -204,5 +208,5 @@ export function* findAllGenerate<
     );
   }
 
-  yield* generate(models, filter);
+  yield* generate<Type, Being, Knowledge>(models, filter);
 }

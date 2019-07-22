@@ -1,4 +1,10 @@
 import {
+  BeingNoThoughtsBase,
+} from './BeingNoThoughtsBase';
+import {
+  EpistemicTypes,
+} from './EpistemicTypes';
+import {
   IAwarenessRelation,
 } from '../relations/IAwarenessRelation';
 import {
@@ -15,16 +21,22 @@ import {
 } from '../../tags/Tag';
 
 export interface IEpistemology<
-  Type extends ModelType,
-  Being extends ModelType,
+  Type extends EpistemicTypes | ModelType.Thought,
+  Being extends BeingNoThoughtsBase,
+  /* This reflects knowledge *of*, not types which are capable of knowledge. */
   Knowledge extends ModelType,
 > {
-  readonly awareness: IAwarenessRelation<Type, Being, Knowledge>;
-  readonly tags: ReadonlyArray<Tag>;
+  /* Thoughts may not be "aware" of anything. */
+  readonly awareness: Type extends EpistemicTypes ?
+    IAwarenessRelation<Type, Being, Knowledge> :
+    null;
+
+  readonly tags: ReadonlyArray<string | Tag>;
+  readonly type: Symbol | 'Epistemology';
   readonly thoughts: IThoughtRelation<Type, Being, Knowledge>;
   readonly world: IWorld;
-  readonly addTag: (tag: Tag) => void;
-  readonly removeTag: (tag: Tag) => void;
+  readonly addTag: (tag: string | Tag) => void;
+  readonly removeTag: (tag: string | Tag) => void;
   readonly clone: () => IEpistemology<Type, Being, Knowledge>;
   readonly destroy: () => void;
   readonly finalize: (self: IEpistemology<Type, Being, Knowledge>) => void;

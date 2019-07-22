@@ -1,4 +1,13 @@
 import {
+  BeingNoThoughtsBase,
+} from '../epistemology/BeingNoThoughtsBase';
+import {
+  FindModelArg,
+} from './FindModelArgs';
+import {
+  IEpistemology,
+} from '../epistemology/IEpistemology';
+import {
   IModel,
 } from './IModel';
 import {
@@ -10,17 +19,31 @@ import {
 import {
   ModelType,
 } from './ModelType';
+import {
+  OnticTypes,
+} from '../ontology/OnticTypes';
 
 export interface IActorModel<
-  Type extends ModelType.Actor,
-  Being extends ModelType,
+  Being extends BeingNoThoughtsBase,
   Knowledge extends ModelType,
-> extends IModel<Type, Being, Knowledge>
+> extends IModel<ModelType.Actor, Being, Knowledge>
 {
-  readonly being: IOntology<Type, Being, Knowledge>;
-  readonly knowledge: null;
-  readonly type: Type;
+  readonly being: IOntology<ModelType.Actor, Being, Knowledge>;
+  readonly knowledge: IEpistemology<ModelType.Actor, Being, Knowledge>;
+  readonly type: ModelType.Actor;
+
   readonly move: (
-    destination: IModel<ModelType, ModelType, ModelType> | IWorld,
+    destination: IModel<ModelType.Location, BeingNoThoughtsBase, never> |
+      IWorld,
+  ) => void;
+
+  readonly act?: (
+    target: FindModelArg<
+      OnticTypes,
+      BeingNoThoughtsBase,
+      ModelType
+    >,
+
+    self: this,
   ) => void;
 }

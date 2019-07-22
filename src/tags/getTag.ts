@@ -34,7 +34,7 @@ export const getTag = (
           return toSearch;
         }
       } else if (tagObjAreEqual(tag, toSearch)) {
-        return toSearch;
+        return toSearch.value;
       }
     }
   }

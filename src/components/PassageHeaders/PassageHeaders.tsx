@@ -30,7 +30,7 @@ export const strings = {
 
 export const PassageHeaders: React.FunctionComponent<
   { readonly headers: ReadonlyArray<IHeader> } &
-  Exclude<IPassageContentContainerOwnProps, { passagesMap: any }> &
+  Omit<IPassageContentContainerOwnProps, 'passagesMap'> &
   IPassageContentContainerDispatchProps
 > = ({
   headers,

@@ -1,6 +1,12 @@
 import {
+  BeingNoThoughtsBase,
+} from '../epistemology/BeingNoThoughtsBase';
+import {
   Epistemology,
 } from '../epistemology/Epistemology';
+import {
+  FindModelArg,
+} from './FindModelArgs';
 import {
   IEpistemology,
 } from '../epistemology/IEpistemology';
@@ -20,11 +26,14 @@ import {
   ModelType,
 } from './ModelType';
 import {
+  OnticTypes,
+} from '../ontology/OnticTypes';
+import {
   Ontology,
 } from '../ontology/Ontology';
 
 export class ActorModel<
-  Being extends ModelType,
+  Being extends BeingNoThoughtsBase,
   Knowledge extends ModelType,
 > extends ModelBase<ModelType.Actor, Being, Knowledge>
 {
@@ -32,7 +41,7 @@ export class ActorModel<
     ModelType.Actor,
     Being,
     Knowledge
-  > | null = new Ontology();
+  > = new Ontology();
 
   public get being() {
     return this.__being;
@@ -51,6 +60,17 @@ export class ActorModel<
   public readonly type = ModelType.Actor;
 
   readonly move: (
-    destination: IModel<ModelType, ModelType, ModelType> | IWorld,
+    destination: IModel<ModelType.Location, BeingNoThoughtsBase, never> |
+      IWorld,
+  ) => void;
+
+  readonly act?: (
+    target: FindModelArg<
+      OnticTypes,
+      BeingNoThoughtsBase,
+      ModelType
+    >,
+
+    self: this,
   ) => void;
 }
