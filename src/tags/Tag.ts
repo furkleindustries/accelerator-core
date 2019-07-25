@@ -1,4 +1,5 @@
-export interface Tag {
-  readonly key: string;
-  readonly value: string;
-}
+import {
+  ITag,
+} from './ITag';
+
+export type Tag = ITag | string;

@@ -3,5 +3,5 @@ import {
 } from '../tags/Tag';
 
 export interface ITaggable {
-  readonly tags?: ReadonlyArray<Tag>;
+  readonly tags?: Tag[] | ReadonlyArray<Tag>;
 }

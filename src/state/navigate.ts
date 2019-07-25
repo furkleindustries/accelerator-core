@@ -46,7 +46,7 @@ export function navigate({
 }: {
   dispatch: Dispatch<IAction>,
   passage: IPassage,
-  linkTags?: ReadonlyArray<Tag>,
+  linkTags?: Tag[] | ReadonlyArray<Tag>,
 }): IPassageNavigationAction
 {
   assert(passage, strings.PASSAGE_INVALID);

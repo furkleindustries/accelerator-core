@@ -1,4 +1,7 @@
 import {
+  getStructuredTags,
+} from './getStructuredTags';
+import {
   getTag,
 } from './getTag';
 import {
@@ -9,8 +12,8 @@ import {
 } from 'ts-assertions';
 
 export const removeTag = (
-  tags: Array<string | Tag> | ReadonlyArray<string | Tag>,
-  tag: string | Tag,
+  tags: Tag[] | ReadonlyArray<Tag>,
+  tag: Tag,
 ) => {
   assert(
     Array.isArray(tags),
@@ -44,5 +47,5 @@ export const removeTag = (
 
   const sliced = tags.slice(0, index).concat(tags.slice(index));
 
-  return sliced;
+  return getStructuredTags(sliced);
 };

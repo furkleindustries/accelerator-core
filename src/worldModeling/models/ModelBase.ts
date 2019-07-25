@@ -32,8 +32,8 @@ import {
   removeTag,
 } from '../../tags/removeTag';
 import {
-  Tag,
-} from '../../tags/Tag';
+  ITag,
+} from '../../tags/ITag';
 import {
   assert,
   assertValid,
@@ -67,7 +67,7 @@ export abstract class ModelBase<
     return this.__name;
   }
 
-  private __tags: ReadonlyArray<string | Tag> = Object.freeze<string | Tag>(
+  private __tags: ReadonlyArray<string | ITag> = Object.freeze<string | ITag>(
     [],
   );
 
@@ -127,7 +127,7 @@ export abstract class ModelBase<
     this.initialize(this);
   }
 
-  public readonly addTag = (tag: string | Tag) => (
+  public readonly addTag = (tag: string | ITag) => (
     void (this.__tags = Object.freeze(addTag(this.tags, tag)))
   );
 
@@ -195,14 +195,14 @@ export abstract class ModelBase<
   };
 
   public readonly initialize = (self: IModel<Type, Being, Knowledge>) => {
-    if (self.being) {
+    if (self.being && typeof self.being.initialize === 'function') {
       self.being.initialize(
         // @ts-ignore
-        self.being as IOntology<OnticTypes, Being, Knowledge>,
+        self.being,
       );
     }
 
-    if (self.knowledge) {
+    if (self.knowledge && typeof self.knowledge.initialize === 'function') {
       self.knowledge.initialize(
         self.knowledge as IEpistemology<EpistemicTypes, Being, Knowledge>,
       );
@@ -210,25 +210,25 @@ export abstract class ModelBase<
   };
 
   public readonly finalize = (self: IModel<Type, Being, Knowledge>) => {
-    if (self.being) {
+    if (self.being && typeof self.being.finalize === 'function') {
       self.being.finalize(
         // @ts-ignore
-        self.being as IOntology<OnticTypes, Being, Knowledge>,
+        self.being,
       );
     }
 
-    if (self.knowledge) {
-      self.knowledge.initialize(
+    if (self.knowledge && typeof self.knowledge.finalize === 'function') {
+      self.knowledge.finalize(
         self.knowledge as IEpistemology<EpistemicTypes, Being, Knowledge>,
       );
     }
   };
 
-  public readonly getTag = (toSearch: string | Tag) => (
+  public readonly getTag = (toSearch: string | ITag) => (
     getTag(this.tags, toSearch)
   );
 
-  public readonly removeTag = (tag: string | Tag) => (
+  public readonly removeTag = (tag: string | ITag) => (
     void (this.__tags = Object.freeze(removeTag(this.tags, tag)))
   );
 }

@@ -13,7 +13,7 @@ import {
 
 export interface IPassageRendererWrapperStateProps {
   readonly history: IHistory;
-  readonly lastLinkTags: ReadonlyArray<Tag>;
+  readonly lastLinkTags: Tag[] | ReadonlyArray<Tag>;
   readonly passageObject: IPassage;
   readonly storyState: IStoryStateFrame;
 }

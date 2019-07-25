@@ -15,5 +15,5 @@ export interface ILinkNavigationProps {
   readonly dispatch: Dispatch<IPassageNavigationAction>;
   readonly passage: IPassage;
   readonly passageName?: string;
-  readonly tags?: ReadonlyArray<Tag>;
+  readonly tags?: Tag[] | ReadonlyArray<Tag>;
 }

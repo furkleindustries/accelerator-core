@@ -8,6 +8,9 @@ import {
   IAwarenessRelation,
 } from '../relations/IAwarenessRelation';
 import {
+  ITag,
+} from '../../tags/ITag';
+import {
   IThoughtRelation,
 } from '../relations/IThoughtRelation';
 import {
@@ -31,14 +34,16 @@ export interface IEpistemology<
     IAwarenessRelation<Type, Being, Knowledge> :
     null;
 
-  readonly tags: ReadonlyArray<string | Tag>;
-  readonly type: Symbol | 'Epistemology';
+  readonly modelType: Type;
+  readonly tags: ReadonlyArray<ITag>;
+  readonly type: symbol;
   readonly thoughts: IThoughtRelation<Type, Being, Knowledge>;
   readonly world: IWorld;
-  readonly addTag: (tag: string | Tag) => void;
-  readonly removeTag: (tag: string | Tag) => void;
+  readonly addTag: (tag: Tag) => void;
   readonly clone: () => IEpistemology<Type, Being, Knowledge>;
   readonly destroy: () => void;
-  readonly finalize: (self: IEpistemology<Type, Being, Knowledge>) => void;
-  readonly initialize: (self: IEpistemology<Type, Being, Knowledge>) => void;
+  readonly getTag: (toSearch: Tag) => ITag | null;
+  readonly removeTag: (tag: Tag) => void;
+  readonly finalize?: (self: IEpistemology<Type, Being, Knowledge>) => void;
+  readonly initialize?: (self: IEpistemology<Type, Being, Knowledge>) => void;
 }

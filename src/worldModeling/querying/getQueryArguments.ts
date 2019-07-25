@@ -1,4 +1,7 @@
 import {
+  BeingNoThoughtsBase,
+} from '../epistemology/BeingNoThoughtsBase';
+import {
   FindModelArgs,
 } from '../models/FindModelArgs';
 import {
@@ -11,18 +14,18 @@ import {
   isFindModelArg,
 } from '../models/isFindModelArg';
 import {
+  ITag,
+} from '../../tags/ITag';
+import {
   IWorld,
 } from '../world/IWorld';
 import {
   ModelType,
 } from '../models/ModelType';
-import {
-  Tag,
-} from '../../tags/Tag';
 
 export const getQueryArguments = <
   Type extends ModelType,
-  Being extends ModelType,
+  Being extends BeingNoThoughtsBase,
   Knowledge extends ModelType,
 >(
   args: FindModelArgs<Type, Being, Knowledge>,
@@ -37,7 +40,7 @@ export const getQueryArguments = <
     name = String(args.name);
   }
 
-  let tags: Array<string | Tag> | null = null;
+  let tags: Array<string | ITag> | null = null;
   if (args.tags) {
     tags = [ ...args.tags ];
   }

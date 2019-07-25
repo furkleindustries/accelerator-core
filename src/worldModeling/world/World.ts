@@ -47,8 +47,8 @@ import {
   removeTag,
 } from '../../tags/removeTag';
 import {
-  Tag,
-} from '../../tags/Tag';
+  ITag,
+} from '../../tags/ITag';
 import {
   ThoughtModel,
 } from '../models/ThoughtModel';
@@ -68,9 +68,9 @@ export class World implements IWorld {
 
   private readonly __knowledge: IEpistemology<
     ModelType.Thought,
-    never,
+    BeingNoThoughtsBase,
     ModelType
-  > = new Epistemology(this);
+  > = new Epistemology(this, { modelType: ModelType.Thought });
 
   public get knowledge() {
     return this.__knowledge;
@@ -89,7 +89,7 @@ export class World implements IWorld {
     return this.__name;
   }
 
-  private __tags: ReadonlyArray<string | Tag> = Object.freeze([]);
+  private __tags: ReadonlyArray<string | ITag> = Object.freeze([]);
   public get tags() {
     return this.__tags;
   }
@@ -99,11 +99,11 @@ export class World implements IWorld {
     return this.__type;
   }
 
-  public readonly addTag = (tag: string | Tag) => (
+  public readonly addTag = (tag: string | ITag) => (
     void (this.__tags = Object.freeze([ ...addTag(this.tags, tag) ]))
   );
 
-  public readonly removeTag = (tag: string | Tag) => (
+  public readonly removeTag = (tag: string | ITag) => (
     void (this.__tags = Object.freeze([ ...removeTag(this.tags, tag) ]))
   );
 
@@ -116,6 +116,7 @@ export class World implements IWorld {
 
     initializer?: (self: IWorld) => void,
     finalizer?: (self: IWorld) => void,
+    tags?: Array<string | ITag> | ReadonlyArray<string | ITag>,
   ) {
     this.__name = assertValid(name);
     if (models && typeof models === 'object') {
@@ -128,6 +129,10 @@ export class World implements IWorld {
 
     if (typeof finalizer === 'function') {
       this.finalize = finalizer;
+    }
+
+    if (Array.isArray(tags)) {
+      this.__tags = tags;
     }
   }
 
@@ -172,12 +177,12 @@ export class World implements IWorld {
     return temp as IModel<Type, Being, Knowledge>;
   };
 
-  public readonly getTag = (toSearch: string | Tag) => (
+  public readonly getTag = (toSearch: string | ITag) => (
     getTag(this.tags, toSearch)
   );
 
   public readonly initialize = (self: IWorld) => {
-    if (self.knowledge) {
+    if (self.knowledge && typeof self.knowledge.initialize === 'function') {
       self.knowledge.initialize(self.knowledge);
     }
 
@@ -185,7 +190,7 @@ export class World implements IWorld {
   };
 
   public readonly finalize = (self: IWorld) => {
-    if (self.knowledge) {
+    if (self.knowledge && typeof self.knowledge.finalize === 'function') {
       self.knowledge.finalize(self.knowledge);
     }
 
@@ -210,20 +215,9 @@ export class World implements IWorld {
 
   public readonly clone = (name: string): IWorld => {
     const world: IWorld = new World(name);
-    Object.keys(this.models).forEach((key) => {
-      const {
-        name,
-        ...model
-      } = this.models[key];
-      world.addModel({
-        name,
-        ...model,
-      })
-    });
-
+    this.descendants().forEach((model) => world.addModel({ ...model }));
     return world;
   };
-
 
   public readonly descendants = () => this.findAll('*');
 
@@ -235,21 +229,18 @@ export class World implements IWorld {
       this.removeModel(desc);
     });
 
-    // @ts-ignore
-    delete this.__being;
-    // @ts-ignore
-    delete this.being;
-    // @ts-ignore
-    delete this.__models;
-    // @ts-ignore
-    delete this.models;
-    // @ts-ignore
-    delete this.__knowledge;
-    // @ts-ignore
-    delete this.knowledge;
-    delete this.__tags;
-    // @ts-ignore
-    delete this.tags;
+    ((self: any) => {
+      delete self.__being;
+      delete self.being;
+      delete self.__knowledge;
+      delete self.knowledge;
+      delete self.__models;
+      delete self.models;
+      delete self.__tags;
+      delete self.tags;
+      delete self.__type;
+      delete self.type;
+    })(this);
   };
 
   public readonly find = <
@@ -259,7 +250,9 @@ export class World implements IWorld {
   >(
     args: string | FindModelArgs<Type, Being, Knowledge>,
   ) => this.findAllGenerator(
-    typeof args === 'string' ? { name: args } : args
+    typeof args === 'string' ?
+      { name: args } :
+      args,
   ).next().value || null;
 
   public readonly findAll = <
@@ -319,5 +312,5 @@ export class World implements IWorld {
     );
 
     return true;
-  }
+  };
 }

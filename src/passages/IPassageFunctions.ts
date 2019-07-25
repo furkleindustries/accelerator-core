@@ -9,9 +9,11 @@ import {
 } from '../tags/Tag';
 
 export interface IPassageFunctions {
-  bookmark(): void,
-  navigateTo(passageName: string, linkTags?: ReadonlyArray<Tag>): void,
-  restart(): void,
-  rewind(filter?: HistoryFilter): void,
-  setStoryState(updatedStoryState: Partial<IStoryStateFrame>): void,
+  readonly bookmark: () => void;
+  readonly navigateTo: (passageName: string, linkTags?: Tag[] | ReadonlyArray<Tag>) => void;
+  readonly restart: () => void;
+  readonly rewind: (filter?: HistoryFilter) => void;
+  readonly setStoryState: (
+    updatedStoryState: Partial<IStoryStateFrame>,
+  ) => void;
 }

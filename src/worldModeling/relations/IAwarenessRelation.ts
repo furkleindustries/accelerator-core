@@ -1,4 +1,10 @@
 import {
+  BeingNoThoughtsBase,
+} from '../epistemology/BeingNoThoughtsBase';
+import {
+  EpistemicTypes,
+} from '../epistemology/EpistemicTypes';
+import {
   IModel,
 } from '../models/IModel';
 import {
@@ -9,8 +15,8 @@ import {
 } from '../models/ModelType';
 
 export interface IAwarenessRelation<
-  Type extends ModelType,
-  Being extends ModelType,
+  Type extends EpistemicTypes,
+  Being extends BeingNoThoughtsBase,
   Knowledge extends ModelType,
 > extends IRelation<Type>
 {
@@ -19,6 +25,8 @@ export interface IAwarenessRelation<
   readonly addPerception: (
     model: string | IModel<Type, Being, Knowledge>,
   ) => void;
+
+  readonly clone: () => IAwarenessRelation<Type, Being, Knowledge>;
 
   readonly removePerception: (
     tag: string | IModel<Type, Being, Knowledge>,

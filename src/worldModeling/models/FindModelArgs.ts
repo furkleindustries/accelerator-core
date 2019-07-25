@@ -11,8 +11,8 @@ import {
   ModelType,
 } from './ModelType';
 import {
-  Tag,
-} from '../../tags/Tag';
+  ITag,
+} from '../../tags/ITag';
 
 export type FindModelArg<
   Type extends ModelType,
@@ -36,7 +36,7 @@ export type FindModelArgs<
 export interface IFindBaseArgs<Type extends ModelType> {
   readonly andOrBehavior?: 'and' | 'or';
   readonly name?: string;
-  readonly tags?: Tag[] | ReadonlyArray<Tag>;
+  readonly tags?: ITag[] | ReadonlyArray<ITag>;
   readonly type?: Type;
 }
 

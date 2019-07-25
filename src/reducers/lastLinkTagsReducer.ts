@@ -11,20 +11,29 @@ import {
   IStoryResetAction,
 } from '../actions/IStoryResetAction';
 import {
-  Tag,
-} from '../tags/Tag';
+  ITag,
+} from '../tags/ITag';
 
-const deflt = Object.freeze([ BuiltInTags.Start ]);
-export function lastLinkTagsReducer(
-  previousState: ReadonlyArray<Tag> = [ ...deflt ],
+const deflt: ReadonlyArray<ITag> = Object.freeze([ BuiltInTags.Start ]);
+export const lastLinkTagsReducer = (
+  previousState: ReadonlyArray<ITag> = deflt,
   action: IPassageNavigationAction | IStoryResetAction,
-)
-{
+): ReadonlyArray<ITag> => {
+  let ret;
   if (action.type === ActionTypes.PassageNavigation) {
-    return action.value.tags || [];
+    ret = (action.value.tags || []).map((tag) => (
+      typeof tag === 'string' ?
+        {
+          key: tag,
+          value: true,
+        } :
+        tag
+    ));
   } else if (action.type === ActionTypes.StoryReset) {
-    return [ ...deflt ];
+    ret = [ ...deflt ];
+  } else {
+    ret = previousState;
   }
 
-  return previousState;
-}
+  return Object.freeze(ret);
+};

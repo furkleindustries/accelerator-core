@@ -11,12 +11,12 @@ import {
   Store,
 } from 'redux';
 import {
-  Tag,
-} from '../tags/Tag';
+  ITag,
+} from '../tags/ITag';
 
 export interface ICurrentStoryStateMutationArgs {
-  currentPassageObject: IPassage;
-  store: Store<IState>;
-  lastLinkTags: ReadonlyArray<Tag>;
-  updatedStateProps: Partial<IStoryStateFrame>;
+  readonly currentPassageObject: IPassage;
+  readonly store: Store<IState>;
+  readonly lastLinkTags: ReadonlyArray<ITag>;
+  readonly updatedStateProps: Partial<IStoryStateFrame>;
 }

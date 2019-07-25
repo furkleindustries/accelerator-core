@@ -1,4 +1,7 @@
 import {
+  ITag,
+} from './ITag';
+import {
   Tag,
 } from './Tag';
 
@@ -14,9 +17,9 @@ const tagObjAreEqual = (a: any, b: any) => (
 );
 
 export const getTag = (
-  tags: Array<string | Tag> | ReadonlyArray<string | Tag> | null | undefined,
+  tags: Tag[] | ReadonlyArray<Tag> | null | undefined,
   toSearch: string | Tag,
-) => {
+): ITag | null => {
   if (!Array.isArray(tags)) {
     return null;
   }
@@ -26,15 +29,23 @@ export const getTag = (
   for (const tag of filtered) {
     if (typeof tag === 'string') {
       if (tag === toSearch || tag === (toSearch as any).key) {
-        return toSearch;
+        return typeof toSearch === 'string' ?
+          {
+            key: toSearch,
+            value: true,
+          } :
+          toSearch;
       }
     } else {
       if (typeof toSearch === 'string') {
         if (tag.key === toSearch) {
-          return toSearch;
+          return {
+            key: toSearch,
+            value: true,
+          };
         }
       } else if (tagObjAreEqual(tag, toSearch)) {
-        return toSearch.value;
+        return toSearch;
       }
     }
   }

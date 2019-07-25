@@ -20,8 +20,8 @@ import {
   OnticTypes,
 } from '../ontology/OnticTypes';
 import {
-  Tag,
-} from '../../tags/Tag';
+  ITag,
+} from '../../tags/ITag';
 
 export interface IModel<
   Type extends ModelType,
@@ -41,15 +41,15 @@ export interface IModel<
     null;
 
   readonly name: string;
-  readonly tags: ReadonlyArray<string | Tag>;
+  readonly tags: ReadonlyArray<string | ITag>;
   readonly type: Type;
   readonly world: IWorld;
 
-  readonly addTag: (tag: string | Tag) => void;
+  readonly addTag: (tag: string | ITag) => void;
   readonly clone: () => IModel<Type, Being, Knowledge>;
   readonly destroy: () => void;
   readonly finalize: (self: IModel<Type, Being, Knowledge>) => void;
   readonly getTag: (key: string) => any;
   readonly initialize: (self: IModel<Type, Being, Knowledge>) => void;
-  readonly removeTag: (tag: string | Tag) => void;
+  readonly removeTag: (tag: string | ITag) => void;
 }

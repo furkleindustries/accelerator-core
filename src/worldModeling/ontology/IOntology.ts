@@ -5,6 +5,9 @@ import {
   IContainmentRelation,
 } from '../relations/IContainmentRelation';
 import {
+  ITag,
+} from '../../tags/ITag';
+import {
   IWorld,
 } from '../world/IWorld';
 import {
@@ -27,7 +30,7 @@ export interface IOntology<
   readonly containment: Type extends ModelType.Portal ?
     null :
     Being extends ModelType.Portal ?
-      /* Do not allow portals to have containment relations. */
+      /* Do not allow portals to contain anything. */
       null :
       IContainmentRelation<
         /* Do not allow portals to have containment relations. */
@@ -43,13 +46,14 @@ export interface IOntology<
         Knowledge
       >;
 
-  readonly tags: ReadonlyArray<string | Tag>;
+  readonly tags: ReadonlyArray<string | ITag>;
   readonly world: IWorld;
 
-  readonly addTag: (tag: Tag) => void;
+  readonly addTag: (tag: ITag) => void;
   readonly clone: () => IOntology<Type, Being, Knowledge>;
   readonly destroy: () => void;
-  readonly finalize: (self: IOntology<Type, Being, Knowledge>) => void;
-  readonly initialize: (self: IOntology<Type, Being, Knowledge>) => void;
-  readonly removeTag: (tag: Tag) => void;
+  readonly getTag: (toSearch: Tag) => ITag | null;
+  readonly removeTag: (tag: ITag) => void;
+  readonly finalize?: (self: IOntology<Type, Being, Knowledge>) => void;
+  readonly initialize?: (self: IOntology<Type, Being, Knowledge>) => void;
 }

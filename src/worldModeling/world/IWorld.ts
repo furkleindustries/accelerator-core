@@ -25,14 +25,14 @@ export interface IWorld {
 
   /* Worlds may "possess" generic and/or global thoughts but may not be
    * "aware." */
-  readonly knowledge: IEpistemology<ModelType.Thought, never, ModelType>;
+  readonly knowledge: IEpistemology<ModelType.Thought, BeingNoThoughtsBase, ModelType>;
 
   readonly models: Readonly<
     Record<string, IModel<ModelType, BeingNoThoughtsBase, ModelType>>
   >;
 
   readonly name: string;
-  readonly tags: ReadonlyArray<string | Tag>;
+  readonly tags: ReadonlyArray<Tag>;
   readonly type: Symbol;
 
   readonly addModel: <
@@ -47,7 +47,7 @@ export interface IWorld {
     ) => IModel<Type, Being, Knowledge>,
   ) => IModel<Type, Being, Knowledge>;
 
-  readonly addTag: (tag: string | Tag) => void;
+  readonly addTag: (tag: Tag) => void;
 
   readonly children: () => ReadonlyArray<
     IModel<ModelType, BeingNoThoughtsBase, ModelType>
@@ -86,7 +86,7 @@ export interface IWorld {
     args: FindModelArgs<Type, Being, Knowing>,
   ) => IterableIterator<IModel<Type, Being, Knowing>>;
 
-  readonly getTag: (toSearch: string | Tag) => any;
+  readonly getTag: (toSearch: Tag) => any;
 
   readonly initialize: (self: IWorld) => void;
 
@@ -94,5 +94,5 @@ export interface IWorld {
     model: string | IModel<Type, BeingNoThoughtsBase, ModelType>,
   ) => void;
 
-  readonly removeTag: (key: string | Tag) => void;
+  readonly removeTag: (key: Tag) => void;
 }

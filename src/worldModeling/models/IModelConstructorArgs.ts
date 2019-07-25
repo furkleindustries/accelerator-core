@@ -17,8 +17,8 @@ import {
   OnticTypes,
 } from '../ontology/OnticTypes';
 import {
-  Tag,
-} from '../../tags/Tag';
+  ITag,
+} from '../../tags/ITag';
 
 export interface IModelConstructorArgs<
   Type extends ModelType,
@@ -35,5 +35,5 @@ export interface IModelConstructorArgs<
     IEpistemology<Type, Being, Knowledge> :
     null;
 
-  readonly tags?: Array<string | Tag> | ReadonlyArray<string | Tag>;
+  readonly tags?: Array<string | ITag> | ReadonlyArray<string | ITag>;
 }
