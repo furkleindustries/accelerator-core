@@ -1,12 +1,12 @@
 import {
-  BeingNoThoughtsBase,
-} from '../epistemology/BeingNoThoughtsBase';
-import {
   ContainableTypes,
 } from './ContainableTypes';
 import {
+  ContainmentTypes,
+} from './ContainmentTypes';
+import {
   FindModelArgs,
-} from '../models/FindModelArgs';
+} from '../querying/FindModelArgs';
 import {
   IModel,
 } from '../models/IModel';
@@ -19,52 +19,31 @@ import {
 import {
   ModelType,
 } from '../models/ModelType';
+import {
+  OnticTypes,
+} from '../ontology/OnticTypes';
 
 export interface IContainmentRelation<
-  Type extends ContainableTypes,
-  Being extends BeingNoThoughtsBase,
-  Knowledge extends ModelType,
-> extends IRelation<Type> {
-  readonly children: Readonly<Record<string, IModel<Type, Being, Knowledge>>>;
+  Type extends ContainmentTypes,
+  Being extends OnticTypes,
+> extends IRelation<Type>
+{
+  readonly children: ReadonlyArray<IModel<Type, Being, ModelType>>;
   readonly parent: Type extends ModelType.Location ?
     IWorld :
-    IModel<ModelType, BeingNoThoughtsBase, ModelType>;
+    IModel<ContainmentTypes, ContainableTypes, ModelType>;
 
-  readonly addChild: (
-    model: string | IModel<Type, Being, Knowledge>,
-  ) => void;
+  readonly addChild: (model: IModel<Type, Being, ModelType>) => void;
 
-  readonly ancestors: (
-    args: 'world' |
-      string |
-      FindModelArgs<ModelType, BeingNoThoughtsBase, ModelType>,
+  readonly descendants: () => ReadonlyArray<IModel<Type, Being, ModelType>>;
+
+  readonly parents: (
+    args: string | FindModelArgs<ModelType, OnticTypes, ModelType>,
   ) => ReadonlyArray<
-    IWorld | IModel<ModelType, BeingNoThoughtsBase, ModelType>
-  >;
-
-  readonly descendants: () => ReadonlyArray<IModel<Type, Being, Knowledge>>;
-
-  readonly findAllParents: (
-    args: 'world' |
-      string |
-      FindModelArgs<ModelType, BeingNoThoughtsBase, ModelType>,
-  ) => ReadonlyArray<
-    IWorld | IModel<ModelType, BeingNoThoughtsBase, ModelType>
-  >;
-
-  readonly findParent: (
-    args: 'world' |
-      string |
-      FindModelArgs<ModelType, BeingNoThoughtsBase, ModelType>,
-  ) => IWorld |
-    IModel<ModelType, BeingNoThoughtsBase, ModelType> |
-    null;
-
-  readonly parents: () => ReadonlyArray<
-    IModel<ModelType, BeingNoThoughtsBase, ModelType> | IWorld
+    IModel<ModelType, OnticTypes, ModelType> | IWorld
   >;
 
   readonly removeChild: (
-    model: string | IModel<Type, Being, Knowledge>,
+    model: IModel<Type, Being, ModelType>,
   ) => void;
 }

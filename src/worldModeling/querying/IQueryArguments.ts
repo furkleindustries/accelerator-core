@@ -1,9 +1,6 @@
 import {
-  BeingNoThoughtsBase,
-} from '../epistemology/BeingNoThoughtsBase';
-import {
   FindModelArg,
-} from '../models/FindModelArgs';
+} from './FindModelArgs';
 import {
   IModel,
 } from '../models/IModel';
@@ -17,12 +14,15 @@ import {
   NoStrings,
 } from '../../typeAliases/NoStrings';
 import {
-  Tag,
-} from '../../tags/Tag';
+  ITag,
+} from '../../tags/ITag';
+import {
+  OnticTypes,
+} from '../ontology/OnticTypes';
 
 export interface IQueryArguments<
   Type extends ModelType,
-  Being extends BeingNoThoughtsBase,
+  Being extends OnticTypes,
   Knowledge extends ModelType,
 > {
   readonly adjacent?: NoStrings<FindModelArg<Type, Being, Knowledge>>;
@@ -35,7 +35,7 @@ export interface IQueryArguments<
   readonly links?: NoStrings<FindModelArg<Type, Being, Knowledge>>;
   readonly name?: string;
   readonly parent?: string | IModel<Type, Being, Knowledge> | IWorld;
-  readonly tags?: Array<Tag | string>;
+  readonly tags?: Array<ITag | string>;
   readonly thoughts?: NoStrings<FindModelArg<Type, Being, Knowledge>>;
   readonly type?: Type;
   readonly wants?:  NoStrings<FindModelArg<Type, Being, Knowledge>>;

@@ -7,28 +7,30 @@ import {
 import {
   ModelType,
 } from '../models/ModelType';
+import {
+  OnticTypes,
+} from '../ontology/OnticTypes';
 
 export interface IThoughtRelation<
   Type extends ModelType,
-  Being extends ModelType,
   Knowledge extends ModelType,
 > extends IRelation<Type> {
-  readonly knows: Readonly<Record<string, IModel<Type, Being, Knowledge>>>;
-  readonly wants: Readonly<Record<string, IModel<Type, Being, Knowledge>>>;
+  readonly knows: ReadonlyArray<IModel<Type, OnticTypes, Knowledge>>;
+  readonly wants: ReadonlyArray<IModel<Type, OnticTypes, Knowledge>>;
 
   readonly addKnowledge: (
-    model: string | IModel<Type, Being, Knowledge>,
+    model: IModel<Type, OnticTypes, Knowledge>,
   ) => void;
 
   readonly removeKnowledge: (
-    model: string | IModel<Type, Being, Knowledge>,
+    model: IModel<Type, OnticTypes, Knowledge>,
   ) => void;
 
   readonly addWant: (
-    model: string | IModel<Type, Being, Knowledge>,
+    model: IModel<Type, OnticTypes, Knowledge>,
   ) => void;
 
   readonly removeWant: (
-    model: string | IModel<Type, Being, Knowledge>,
+    model: IModel<Type, OnticTypes, Knowledge>,
   ) => void;
 }

@@ -1,7 +1,4 @@
 import {
-  BeingNoThoughtsBase,
-} from '../epistemology/BeingNoThoughtsBase';
-import {
   EpistemicTypes,
 } from '../epistemology/EpistemicTypes';
 import {
@@ -17,23 +14,20 @@ import {
   OnticTypes,
 } from '../ontology/OnticTypes';
 import {
-  ITag,
-} from '../../tags/ITag';
+  Tag,
+} from '../../tags/Tag';
 
 export interface IModelConstructorArgs<
   Type extends ModelType,
-  Being extends BeingNoThoughtsBase,
-  Knowledge extends ModelType,
+  Being extends OnticTypes,
 > {
   readonly name: string;
   readonly type: Type;
-  readonly being?: Type extends OnticTypes ?
-    IOntology<Type, Being, Knowledge> :
-    null;
 
+  readonly being?: Type extends OnticTypes ? IOntology<Type, Being> : null;
   readonly knowledge?: Type extends EpistemicTypes ?
-    IEpistemology<Type, Being, Knowledge> :
+    IEpistemology<Type, Being> :
     null;
 
-  readonly tags?: Array<string | ITag> | ReadonlyArray<string | ITag>;
+  readonly tags?: Array<Tag> | ReadonlyArray<Tag>;
 }

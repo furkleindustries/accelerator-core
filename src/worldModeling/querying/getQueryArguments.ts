@@ -1,9 +1,6 @@
 import {
-  BeingNoThoughtsBase,
-} from '../epistemology/BeingNoThoughtsBase';
-import {
   FindModelArgs,
-} from '../models/FindModelArgs';
+} from './FindModelArgs';
 import {
   IModel,
 } from '../models/IModel';
@@ -12,7 +9,7 @@ import {
 } from './IQueryArguments';
 import {
   isFindModelArg,
-} from '../models/isFindModelArg';
+} from './isFindModelArg';
 import {
   ITag,
 } from '../../tags/ITag';
@@ -22,10 +19,13 @@ import {
 import {
   ModelType,
 } from '../models/ModelType';
+import {
+  OnticTypes,
+} from '../ontology/OnticTypes';
 
 export const getQueryArguments = <
   Type extends ModelType,
-  Being extends BeingNoThoughtsBase,
+  Being extends OnticTypes,
   Knowledge extends ModelType,
 >(
   args: FindModelArgs<Type, Being, Knowledge>,

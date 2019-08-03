@@ -1,7 +1,4 @@
 import {
-  BeingNoThoughtsBase,
-} from '../epistemology/BeingNoThoughtsBase';
-import {
   filterEpistemology,
 } from './filterEpistemology';
 import {
@@ -9,7 +6,7 @@ import {
 } from './filterOntology';
 import {
   FindModelArgs,
-} from '../models/FindModelArgs';
+} from './FindModelArgs';
 import {
   getQueryArguments,
 } from './getQueryArguments';
@@ -22,13 +19,17 @@ import {
 import {
   ModelType,
 } from '../models/ModelType';
+import {
+  OnticTypes,
+} from '../ontology/OnticTypes';
 import { 
-  assertValid, assert,
+  assert,
+  assertValid,
 } from 'ts-assertions';
 
 function* generate<
   Type extends ModelType,
-  Being extends BeingNoThoughtsBase,
+  Being extends OnticTypes,
   Knowledge extends ModelType,
 > (
   models: Record<string, IModel<Type, Being, Knowledge>>,
@@ -43,7 +44,7 @@ function* generate<
 
 export function* findAllGenerate<
   Type extends ModelType,
-  Being extends BeingNoThoughtsBase,
+  Being extends OnticTypes,
   Knowledge extends ModelType,
 >(
   world: IWorld,

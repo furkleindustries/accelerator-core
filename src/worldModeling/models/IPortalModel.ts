@@ -1,4 +1,7 @@
 import {
+  ContainableTypes,
+} from '../relations/ContainableTypes';
+import {
   IModel,
 } from './IModel';
 import {
@@ -7,17 +10,18 @@ import {
 import {
   ModelType,
 } from './ModelType';
+import {
+  OnticTypes,
+} from '../ontology/OnticTypes';
 
 export interface IPortalModel<
-  Type extends ModelType.Portal,
-  Being extends ModelType,
-  Knowledge extends ModelType,
-> extends IModel<Type, Being, ModelType>
+  Being extends OnticTypes,
+> extends IModel<ModelType.Portal, Being, never>
 {
-  readonly being: IOntology<Type, Being, Knowledge>;
+  readonly being: IOntology<ModelType.Portal, Being>;
   readonly knowledge: null;
-  readonly type: Type;
+  readonly type: ModelType.Portal;
   readonly transport: (
-    model: string | IModel<ModelType, ModelType, ModelType>,
+    model: string | IModel<ContainableTypes, OnticTypes, ModelType>,
   ) => void;
 }

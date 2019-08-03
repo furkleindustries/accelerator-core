@@ -1,9 +1,6 @@
 import {
-  BeingNoThoughtsBase,
-} from '../epistemology/BeingNoThoughtsBase';
-import {
   FindModelArgs,
-} from '../models/FindModelArgs';
+} from '../querying/FindModelArgs';
 import {
   IModel,
 } from '../models/IModel';
@@ -16,35 +13,39 @@ import {
 import {
   ITag,
 } from '../../tags/ITag';
+import {
+  OnticTypes,
+} from '../ontology/OnticTypes';
 
 export interface IRelation<Type extends ModelType> {
-  readonly modelType: Type;
+  readonly modelType: ModelType;
   readonly tags: ReadonlyArray<ITag>;
   readonly world: IWorld;
 
   readonly addTag: (tag: ITag) => void;
-  readonly clone: () => IRelation<Type>;
+  readonly clone: () => any;
   readonly destroy: () => void;
+
   readonly find: <
-    Being extends BeingNoThoughtsBase,
+    Being extends OnticTypes,
     Knowledge extends ModelType,
   >(
-    args: FindModelArgs<Type, Being, Knowledge>
+    args: string | FindModelArgs<Type, Being, Knowledge>,
   ) => IModel<Type, Being, Knowledge> | null;
 
   readonly findAll: <
-    Being extends BeingNoThoughtsBase,
+    Being extends OnticTypes,
     Knowledge extends ModelType,
   >(
-    args: Exclude<FindModelArgs<Type, Being, Knowledge>, string>
+    args: '*' | FindModelArgs<Type, Being, Knowledge>,
   ) => ReadonlyArray<IModel<Type, Being, Knowledge>>;
 
   readonly findAllGenerator: <
-    Being extends BeingNoThoughtsBase,
-    Knowing extends ModelType,
+    Being extends OnticTypes,
+    Knowledge extends ModelType,
   >(
-    args: FindModelArgs<Type, Being, Knowing>,
-  ) => IterableIterator<IModel<Type, Being, Knowing>>;
+    args: '*' | FindModelArgs<Type, Being, Knowledge>,
+  ) => IterableIterator<IModel<Type, Being, Knowledge>>;
 
   readonly removeTag: (tag: ITag) => void;
 }

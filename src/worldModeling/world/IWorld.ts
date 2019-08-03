@@ -1,12 +1,9 @@
 import {
-  BeingNoThoughtsBase,
-} from '../epistemology/BeingNoThoughtsBase';
-import {
   IEpistemology,
 } from '../epistemology/IEpistemology';
 import {
   FindModelArgs,
-} from '../models/FindModelArgs';
+} from '../querying/FindModelArgs';
 import {
   IModel,
 } from '../models/IModel';
@@ -17,6 +14,9 @@ import {
   ModelType,
 } from '../models/ModelType';
 import {
+  OnticTypes,
+} from '../ontology/OnticTypes';
+import {
   Tag,
 } from '../../tags/Tag';
 
@@ -25,10 +25,10 @@ export interface IWorld {
 
   /* Worlds may "possess" generic and/or global thoughts but may not be
    * "aware." */
-  readonly knowledge: IEpistemology<ModelType.Thought, BeingNoThoughtsBase, ModelType>;
+  readonly knowledge: IEpistemology<ModelType.Thought, OnticTypes, ModelType>;
 
   readonly models: Readonly<
-    Record<string, IModel<ModelType, BeingNoThoughtsBase, ModelType>>
+    Record<string, IModel<ModelType, OnticTypes, ModelType>>
   >;
 
   readonly name: string;
@@ -37,7 +37,7 @@ export interface IWorld {
 
   readonly addModel: <
     Type extends ModelType,
-    Being extends BeingNoThoughtsBase,
+    Being extends OnticTypes,
     Knowledge extends ModelType,
   >(
     args: IModelConstructorArgs<Type, Being, Knowledge>,
@@ -50,48 +50,48 @@ export interface IWorld {
   readonly addTag: (tag: Tag) => void;
 
   readonly children: () => ReadonlyArray<
-    IModel<ModelType, BeingNoThoughtsBase, ModelType>
+    IModel<ModelType, OnticTypes, ModelType>
   >;
 
   readonly clone: (name: string) => IWorld;
   readonly descendants: () => ReadonlyArray<
-    IModel<ModelType, BeingNoThoughtsBase, ModelType>
+    IModel<ModelType, OnticTypes, ModelType>
   >;
 
   readonly destroy: () => void;
 
   readonly finalize: (self: IWorld) => void;
 
-  readonly find: <
+  find<
     Type extends ModelType,
-    Being extends BeingNoThoughtsBase,
-    Knowing extends ModelType,
+    Being extends OnticTypes,
+    Knowledge extends ModelType,
   >(
-    args: string | FindModelArgs<Type, Being, Knowing>,
-  ) => IModel<Type, Being, Knowing> | null;
+    args: FindModelArgs<Type, Being, Knowledge>,
+  ): IModel<Type, Being, Knowledge> | null;
 
   readonly findAll: <
     Type extends ModelType,
-    Being extends BeingNoThoughtsBase,
-    Knowing extends ModelType,
+    Being extends OnticTypes,
+    Knowledge extends ModelType,
   >(
-    args: FindModelArgs<Type, Being, Knowing>,
-  ) => ReadonlyArray<IModel<Type, Being, Knowing>>;
+    args: FindModelArgs<Type, Being, Knowledge>,
+  ) => ReadonlyArray<IModel<Type, Being, Knowledge>>;
 
   readonly findAllGenerator: <
     Type extends ModelType,
-    Being extends BeingNoThoughtsBase,
-    Knowing extends ModelType,
+    Being extends OnticTypes,
+    Knowledge extends ModelType,
   >(
-    args: FindModelArgs<Type, Being, Knowing>,
-  ) => IterableIterator<IModel<Type, Being, Knowing>>;
+    args: FindModelArgs<Type, Being, Knowledge>,
+  ) => IterableIterator<IModel<Type, Being, Knowledge>>;
 
   readonly getTag: (toSearch: Tag) => any;
 
   readonly initialize: (self: IWorld) => void;
 
   readonly removeModel: <Type extends ModelType>(
-    model: string | IModel<Type, BeingNoThoughtsBase, ModelType>,
+    model: IModel<Type, OnticTypes, ModelType>,
   ) => void;
 
   readonly removeTag: (key: Tag) => void;

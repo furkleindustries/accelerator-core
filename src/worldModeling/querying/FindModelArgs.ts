@@ -1,22 +1,22 @@
 import {
-  BeingNoThoughtsBase,
-} from '../epistemology/BeingNoThoughtsBase';
-import {
   IModel,
-} from './IModel';
+} from '../models/IModel';
+import {
+  ITag,
+} from '../../tags/ITag';
 import {
   IWorld,
 } from '../world/IWorld';
 import {
   ModelType,
-} from './ModelType';
+} from '../models/ModelType';
 import {
-  ITag,
-} from '../../tags/ITag';
+  OnticTypes,
+} from '../ontology/OnticTypes';
 
 export type FindModelArg<
   Type extends ModelType,
-  Being extends BeingNoThoughtsBase,
+  Being extends OnticTypes,
   Knowledge extends ModelType,
 > =
   string |
@@ -24,7 +24,7 @@ export type FindModelArg<
 
 export type FindModelArgs<
   Type extends ModelType,
-  Being extends BeingNoThoughtsBase,
+  Being extends OnticTypes,
   Knowledge extends ModelType,
 > =
   IFindBaseArgs<Type> &
@@ -42,7 +42,7 @@ export interface IFindBaseArgs<Type extends ModelType> {
 
 export interface IFindAdjacencyArgs<
   Type extends ModelType,
-  Being extends BeingNoThoughtsBase,
+  Being extends OnticTypes,
   Knowledge extends ModelType,
 > {
   readonly adjacent?: FindModelArg<Type, Being, Knowledge>;
@@ -51,7 +51,7 @@ export interface IFindAdjacencyArgs<
 
 export interface IFindAwarenessArgs<
   Type extends ModelType,
-  Being extends BeingNoThoughtsBase,
+  Being extends OnticTypes,
   Knowledge extends ModelType,
 > {
   readonly awareOf?: FindModelArg<Type, Being, Knowledge>;
@@ -60,7 +60,7 @@ export interface IFindAwarenessArgs<
 
 export interface IFindContainmentArgs<
   Type extends ModelType,
-  Being extends BeingNoThoughtsBase,
+  Being extends OnticTypes,
   Knowledge extends ModelType,
 > {
   readonly ancestors?: FindModelArg<Type, Being, Knowledge>;
@@ -71,7 +71,7 @@ export interface IFindContainmentArgs<
 
 export interface IFindThoughtArgs<
   Type extends ModelType,
-  Being extends BeingNoThoughtsBase,
+  Being extends OnticTypes,
   Knowledge extends ModelType,
 > {
   readonly links?: FindModelArg<Type, Being, Knowledge>;

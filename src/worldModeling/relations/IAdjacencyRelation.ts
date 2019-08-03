@@ -1,6 +1,6 @@
 import {
   BaseAdjacencies,
-} from '../models/BaseAdjacencies';
+} from '../ontology/BaseAdjacencies';
 import {
   IModel,
 } from '../models/IModel';
@@ -10,18 +10,26 @@ import {
 import {
   ModelType,
 } from '../models/ModelType';
+import {
+  OnticTypes,
+} from '../ontology/OnticTypes';
 
 export interface IAdjacencyRelation<
-  Type extends ModelType,
-  Being extends ModelType,
-  Knowledge extends ModelType,
-> extends IRelation<Type> {
-  readonly neighbors: Readonly<Map<BaseAdjacencies, any>>;
-  readonly addNeighbor: (
-    model: string | IModel<Type, Being, Knowledge>,
+  Type extends OnticTypes,
+  Being extends OnticTypes,
+> extends IRelation<Type>
+{
+  readonly neighbors: Readonly<
+    Map<BaseAdjacencies, ReadonlyArray<IModel<Type, Being, ModelType>>>
+  >;
+
+  readonly addNeighbor: <T extends BaseAdjacencies = BaseAdjacencies>(
+    adjacency: T,
+    model: IModel<Type, Being, ModelType>,
   ) => void;
 
-  readonly removeNeighbor: (
-    tag: string | IModel<Type, Being, Knowledge>,
+  readonly removeNeighbor: <T extends BaseAdjacencies = BaseAdjacencies>(
+    adjacency: T,
+    model: IModel<Type, Being, ModelType>,
   ) => void;
 }

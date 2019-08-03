@@ -1,9 +1,9 @@
 import {
-  BeingNoThoughtsBase,
-} from '../epistemology/BeingNoThoughtsBase';
-import {
   EpistemicTypes,
 } from '../epistemology/EpistemicTypes';
+import {
+  FindModelArgs,
+} from '../querying/FindModelArgs';
 import {
   IAwarenessRelation,
 } from './IAwarenessRelation';
@@ -14,16 +14,18 @@ import {
   ModelType,
 } from '../models/ModelType';
 import {
+  OnticTypes,
+} from '../ontology/OnticTypes';
+import {
   RelationBase,
 } from './RelationBase';
-import { FindModelArgs } from '../models/FindModelArgs';
 
 export class AwarenessRelation<
-  Type extends EpistemicTypes,
-  Being extends BeingNoThoughtsBase,
+  Type extends EpistemicTypes & OnticTypes,
+  Being extends OnticTypes,
   Knowledge extends ModelType,
 > extends RelationBase<Type>
-  implements IAwarenessRelation<Type, Being, Knowledge>
+  implements IAwarenessRelation<Type, Knowledge>
 {
   private __perceives: ReadonlyArray<
     IModel<Type, Being, Knowledge>
@@ -37,13 +39,12 @@ export class AwarenessRelation<
     perception: IModel<Type, Being, Knowledge>,
   ) => void (this.__perceives = this.__perceives.concat([ perception ]));
 
-  public readonly clone = () => {
-    const copy: IAwarenessRelation<Type, Being, Knowledge> = Object.assign(
+  public readonly clone = (): IAwarenessRelation<Type, Knowledge> => {
+    const copy = Object.assign(
       Object.create(Object.getPrototypeOf(this)),
       this,
     );
 
-    // @ts-ignore
     copy.__perceives = Object.freeze(this.perceives.slice());
 
     return copy;
@@ -61,49 +62,26 @@ export class AwarenessRelation<
     })(this);
   };
 
-  public readonly find = <
-    Being extends BeingNoThoughtsBase,
-    Knowledge extends ModelType,
-  >(
-    args: FindModelArgs<Type, Being, Knowledge>,
-  ): IModel<Type, Being, Knowledge> | null => {
-
-  };
-
-  public readonly findAll = <
-    Being extends BeingNoThoughtsBase,
-    Knowledge extends ModelType,
-  >(
-    args: Exclude<FindModelArgs<Type, Being, Knowledge>, string>,
-  ): ReadonlyArray<IModel<Type, Being, Knowledge>> => {
-
-  };
-
   public readonly findAllGenerator = ((
-    self: IAwarenessRelation<Type, Being, Knowledge>,
+    self: IAwarenessRelation<Type, Knowledge>,
   ) => function* findAllGenerator<
-    Being extends BeingNoThoughtsBase,
-    Knowing extends ModelType,
+    Being extends OnticTypes,
+    Knowledge extends ModelType,
   >(
-    args: FindModelArgs<Type, Being, Knowing>,
-  )/*: IterableIterator<IModel<Type, Being, Knowing>> */ {
+    args: '*' | FindModelArgs<Type, Being, Knowledge>,
+  )/*: IterableIterator<IModel<Type, Being, Knowledge>> */ {
       
   })(this);
 
   public readonly removePerception = (
-    perception: IModel<Type, Being, Knowledge>,
+    { name }: IModel<Type, Being, Knowledge>,
   ) => {
-    let index = 0;
-    for (; index < this.perceives.length; index += 1) {
-      if (this.perceives[index].name === perception.name) {
-        break;
-      }
-    }
+    const index = this.perceives.findIndex((item) => item.name === name);
 
-    if (index < this.perceives.length) {
-      this.__perceives = this.__perceives
+    if (index >= 0) {
+      this.__perceives = this.perceives
         .slice(0, index)
-        .concat(this.__perceives.slice(index + 1));
+        .concat(this.perceives.slice(index + 1));
     }
   };
 }

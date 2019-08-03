@@ -2,11 +2,17 @@ import {
   addTag,
 } from '../../tags/addTag';
 import {
-  BeingNoThoughtsBase,
-} from '../epistemology/BeingNoThoughtsBase';
-import {
   EpistemicTypes,
 } from '../epistemology/EpistemicTypes';
+import {
+  getStructuredTags,
+} from '../../tags/getStructuredTags';
+import {
+  getTag,
+} from '../../tags/getTag';
+import {
+  FindModelArgs,
+} from '../querying/FindModelArgs';
 import {
   IEpistemology,
 } from '../epistemology/IEpistemology';
@@ -38,44 +44,32 @@ import {
   assert,
   assertValid,
 } from 'ts-assertions';
-import { getTag } from '../../tags/getTag';
 
 export abstract class ModelBase<
   Type extends ModelType,
-  Being extends BeingNoThoughtsBase,
-  Knowledge extends ModelType,
+  Being extends OnticTypes = never,
+  Knowledge extends ModelType = never,
 > implements IModel<Type, Being, Knowledge>
 {
-  protected abstract readonly __being: Type extends OnticTypes ?
-    IOntology<Type, Being, Knowledge> :
+  public abstract readonly being: Type extends OnticTypes ?
+    IOntology<Type, Being> :
     null;
 
-  public get being() {
-    return this.__being;
-  }
-
-  protected abstract readonly __knowledge: Type extends ModelType.Actor ?
-    IEpistemology<Type, Being, Knowledge> :
-    never;
-
-  public get knowledge() {
-    return this.__knowledge;
-  }
+  public abstract readonly knowledge: Type extends EpistemicTypes ?
+    IEpistemology<Type, Knowledge> :
+    null;
 
   private readonly __name: string;
   public get name() {
     return this.__name;
   }
 
-  private __tags: ReadonlyArray<string | ITag> = Object.freeze<string | ITag>(
-    [],
-  );
-
+  private __tags: ReadonlyArray<ITag> = Object.freeze<ITag>([]);
   public get tags() {
     return this.__tags;
   }
 
-  private readonly __type: Type;
+  protected readonly __type: Type;
   public get type() {
     return this.__type;
   }
@@ -87,7 +81,7 @@ export abstract class ModelBase<
 
   constructor(
     world: IWorld,
-    args: IModelConstructorArgs<Type, Being, Knowledge>,
+    args: IModelConstructorArgs<Type, Being>,
   ) {
     this.__world = assertValid(
       world,
@@ -121,7 +115,7 @@ export abstract class ModelBase<
     this.__type = type;
 
     if (tags) {
-      this.__tags = this.tags.concat(tags);
+      this.__tags = this.tags.concat(getStructuredTags(tags));
     }
 
     this.initialize(this);
@@ -135,63 +129,64 @@ export abstract class ModelBase<
     world: IWorld = this.world,
     name: string = this.name,
   ): IModel<Type, Being, Knowledge> => {
-    const copy: IModel<Type, Being, Knowledge> = Object.assign(
+    const copy = Object.assign(
       Object.create(Object.getPrototypeOf(this)),
       this,
     );
 
-    // @ts-ignore
     copy.__being = this.being ? this.being.clone() : this.being;
-    // @ts-ignore
     copy.__name = name;
-    // @ts-ignore
     copy.__knowledge = this.knowledge ?
       this.knowledge.clone() :
       this.knowledge;
 
-    // @ts-ignore
     copy.__tags = this.tags.slice();
 
-    // @ts-ignore
     copy.__type = this.type;
 
-    // @ts-ignore
     copy.__world = world;
 
     return copy;
   };
 
-  public readonly destroy = () => {
+  public readonly destroy = ((self: any) => () => {
     this.finalize(this);
 
     if (this.being) {
       this.being.destroy();
-      // @ts-ignore
-      this.__being = null;
     }
 
     if (this.knowledge) {
       this.knowledge.destroy();
-      // @ts-ignore
-      delete this.__knowledge;
-      // @ts-ignore
-      delete this.knowledge;
     }
 
     this.tags.forEach(this.removeTag);
-    delete this.__tags;
-    // @ts-ignore
-    delete this.tags;
 
-    // @ts-ignore
-    delete this.__type;
-    // @ts-ignore
-    delete this.type;
+    delete self.__being;
+    delete self.being;
+    delete self.__knowledge;
+    delete self.knowledge;
+    delete self.__tags;
+    delete self.tags;
+    delete self.__type;
+    delete self.type;
+    delete self.__world;
+    delete self.world;
+  })(this);
 
-    // @ts-ignore
-    delete this.__world;
-    // @ts-ignore
-    delete this.world;
+  public readonly finalize = (self: IModel<Type, Being, Knowledge>) => {
+    if (self.being && typeof self.being.finalize === 'function') {
+      self.being.finalize(
+        // @ts-ignore
+        self.being,
+      );
+    }
+
+    if (self.knowledge && typeof self.knowledge.finalize === 'function') {
+      self.knowledge.finalize(
+        self.knowledge as IEpistemology<EpistemicTypes, Knowledge>,
+      );
+    }
   };
 
   public readonly initialize = (self: IModel<Type, Being, Knowledge>) => {
@@ -204,25 +199,43 @@ export abstract class ModelBase<
 
     if (self.knowledge && typeof self.knowledge.initialize === 'function') {
       self.knowledge.initialize(
-        self.knowledge as IEpistemology<EpistemicTypes, Being, Knowledge>,
+        self.knowledge as IEpistemology<EpistemicTypes, Knowledge>,
       );
     }
   };
 
-  public readonly finalize = (self: IModel<Type, Being, Knowledge>) => {
-    if (self.being && typeof self.being.finalize === 'function') {
-      self.being.finalize(
-        // @ts-ignore
-        self.being,
-      );
+  public readonly find = <
+    Type extends ModelType,
+    Being extends OnticTypes,
+    Knowledge extends ModelType,
+  >(
+    args: string | FindModelArgs<Type, Being, Knowledge>,
+  ) => this.findAllGenerator(
+    typeof args === 'string' ?
+      { name: args } :
+      args,
+  ).next().value || null;
+
+  public readonly findAll = <
+    Type extends ModelType,
+    Being extends OnticTypes,
+    Knowledge extends ModelType,
+  >(args: '*' | FindModelArgs<Type, Being, Knowledge>) => {
+    const ret = [];
+    for (const model of this.findAllGenerator(args)) {
+      ret.push(model);
     }
 
-    if (self.knowledge && typeof self.knowledge.finalize === 'function') {
-      self.knowledge.finalize(
-        self.knowledge as IEpistemology<EpistemicTypes, Being, Knowledge>,
-      );
-    }
+    return ret;
   };
+
+  public abstract readonly findAllGenerator: <
+    Type extends ModelType,
+    Being extends OnticTypes,
+    Knowledge extends ModelType,
+  >(
+    args: '*' | FindModelArgs<Type, Being, Knowledge>,
+  ) => IterableIterator<IModel<Type, Being, Knowledge>>;
 
   public readonly getTag = (toSearch: string | ITag) => (
     getTag(this.tags, toSearch)

@@ -2,11 +2,8 @@ import {
   addTag,
 } from '../../tags/addTag';
 import {
-  BeingNoThoughtsBase
-} from '../epistemology/BeingNoThoughtsBase';
-import {
   FindModelArgs,
-} from '../models/FindModelArgs';
+} from '../querying/FindModelArgs';
 import {
   getTag,
 } from '../../tags/getTag';
@@ -26,31 +23,40 @@ import {
   ModelType,
 } from '../models/ModelType';
 import {
+  OnticTypes,
+} from '../ontology/OnticTypes';
+import {
   removeTag,
 } from '../../tags/removeTag';
 import {
   Tag,
 } from '../../tags/Tag';
 
-export abstract class RelationBase<Type extends ModelType> implements IRelation<Type> {
-  private readonly __modelType: Type;
+export abstract class RelationBase<
+  Type extends ModelType,
+> implements IRelation<Type> {
+  protected readonly __modelType: ModelType;
   public get modelType() {
     return this.__modelType;
   }
 
-  private __tags: ReadonlyArray<ITag> = Object.freeze([]);
+  protected __tags: ReadonlyArray<ITag> = Object.freeze([]);
   public get tags() {
     return this.__tags;
   }
 
-  private __world: IWorld;
+  protected readonly __world: IWorld;
   public get world() {
     return this.__world;
   }
 
-  constructor(world: IWorld, type: Type) {
+  constructor(world: IWorld, type: Type, tags?: Tag[] | ReadonlyArray<Tag>) {
     this.__world = world;
     this.__modelType = type;
+
+    if (Array.isArray(tags)) {
+      tags.forEach(this.addTag);
+    }
   }
 
   public readonly addTag = (tag: Tag) => (
@@ -63,26 +69,39 @@ export abstract class RelationBase<Type extends ModelType> implements IRelation<
     void (this.__tags = removeTag(this.tags, tag))
   );
 
-  abstract readonly clone: () => this;
-  abstract readonly destroy: () => void;
-  abstract readonly find: <
-    Being extends BeingNoThoughtsBase,
+  public readonly find = <
+    Being extends OnticTypes,
     Knowledge extends ModelType,
   >(
     args: FindModelArgs<Type, Being, Knowledge>,
-  ) => IModel<Type, Being, Knowledge> | null;
-
-  abstract readonly findAll: <
-    Being extends BeingNoThoughtsBase,
+  ): IModel<Type, Being, Knowledge> | null => this.findAllGenerator(
+    typeof args === 'string' ?
+      { name: args } :
+      args,
+  ).next().value || null;
+  
+  public readonly findAll = <
+    Being extends OnticTypes,
     Knowledge extends ModelType,
   >(
-    args: Exclude<FindModelArgs<Type, Being, Knowledge>, string>
-  ) => ReadonlyArray<IModel<Type, Being, Knowledge>>;
+    args: '*' | Exclude<FindModelArgs<Type, Being, Knowledge>, string>,
+  ): ReadonlyArray<IModel<Type, Being, Knowledge>> =>
+  {
+    const ret = [];
+    for (const model of this.findAllGenerator(args)) {
+      ret.push(model);
+    }
 
-  abstract readonly findAllGenerator: <
-    Being extends BeingNoThoughtsBase,
-    Knowing extends ModelType,
+    return ret;
+  };
+
+  public abstract readonly findAllGenerator: <
+    Being extends OnticTypes,
+    Knowledge extends ModelType,
   >(
-    args: FindModelArgs<Type, Being, Knowing>,
-  ) => IterableIterator<IModel<Type, Being, Knowing>>;
+    args: '*' | FindModelArgs<Type, Being, Knowledge>,
+  ) => IterableIterator<IModel<Type, Being, Knowledge>>;
+
+  public abstract readonly clone: () => any;
+  public abstract readonly destroy: () => void;
 }

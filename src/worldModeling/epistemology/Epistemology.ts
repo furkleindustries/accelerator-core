@@ -5,9 +5,6 @@ import {
   AwarenessRelation,
 } from '../relations/AwarenessRelation';
 import {
-  BeingNoThoughtsBase,
-} from './BeingNoThoughtsBase';
-import {
   EpistemicTypes,
 } from './EpistemicTypes';
 import {
@@ -29,6 +26,18 @@ import {
   IEpistemologyConstructorArgs,
 } from './IEpistemologyConstructorArgs';
 import {
+  isContainmentType,
+} from '../typeGuards/isContainmentType';
+import {
+  isEpistemicType,
+} from '../typeGuards/isEpistemicType';
+import {
+  isOnticType,
+} from '../typeGuards/isOnticType';
+import {
+  isModelType,
+} from '../typeGuards/isModelType';
+import {
   IThoughtRelation,
 } from '../relations/IThoughtRelation';
 import {
@@ -41,6 +50,9 @@ import {
   ModelType,
 } from '../models/ModelType';
 import {
+  OnticTypes,
+} from '../ontology/OnticTypes';
+import {
   removeTag,
 } from '../../tags/removeTag';
 import {
@@ -52,21 +64,19 @@ import {
 
 export class Epistemology<
   Type extends EpistemicTypes | ModelType.Thought,
-  Being extends BeingNoThoughtsBase,
-  Knowledge extends ModelType
-> implements IEpistemology<Type, Being, Knowledge> {
-  /* Thoughts may not be "aware" of anything. */
-  private readonly __awareness: Type extends EpistemicTypes ?
-    IAwarenessRelation<Type, Being, Knowledge> :
-    null =
-      null as any;
+  Knowledge extends ModelType = ModelType,
+> implements IEpistemology<Type, Knowledge> {
+  /* Thoughts may not be "aware" of anything. Other types need both ontic and
+   * epistemic aspects in order to be aware. */
+  private readonly __awareness: Type extends EpistemicTypes & OnticTypes ?
+    IAwarenessRelation<Type, Knowledge> :
+    null;
 
   public get awareness() {
     return this.__awareness;
   }
 
   private readonly __modelType: Type;
-
   public get modelType() {
     return this.__modelType;
   }
@@ -81,7 +91,7 @@ export class Epistemology<
     return this.__type;
   } 
 
-  private readonly __thoughts: IThoughtRelation<Type, Being, Knowledge>;
+  private readonly __thoughts: IThoughtRelation<Type, Knowledge>;
   public get thoughts() {
     return this.__thoughts;
   }
@@ -91,19 +101,29 @@ export class Epistemology<
     return this.__world;
   }
 
-  constructor(world: IWorld, args: IEpistemologyConstructorArgs<Type, Being, Knowledge>) {
+  constructor(world: IWorld, args: IEpistemologyConstructorArgs<Type, Knowledge>) {
     this.__world = assertValid(world);
 
     const {
-      finalizer,
-      initializer,
+      finalize,
+      initialize,
       modelType,
       tags,
-    } = assertValid<IEpistemologyConstructorArgs<Type, Being, Knowledge>>(args);
+    } = assertValid<IEpistemologyConstructorArgs<Type, Knowledge>>(args);
 
-    this.__modelType = assertValid(modelType);
-    if (this.modelType !== ModelType.Thought) {
-      this.__awareness = new AwarenessRelation();
+    this.__modelType = assertValid<Type>(
+      modelType,
+      'The value of the modelType argument did not meet the isModelType ' +
+        'type guard.',
+
+      isModelType,
+    );
+
+    if (isEpistemicType(this.modelType) && isOnticType(this.modelType)) {
+      this.__awareness = new AwarenessRelation(
+        this.world,
+        this.__modelType as EpistemicTypes & OnticTypes,
+      );
     }
 
     if (tags) {
@@ -114,13 +134,13 @@ export class Epistemology<
       ));
     }
 
-    if (typeof finalizer === 'function') {
-      this.finalize = finalizer;
+    if (typeof finalize === 'function') {
+      this.finalize = finalize;
     }
 
-    if (typeof initializer === 'function') {
-      this.initialize = initializer;
-      this.initialize(this);
+    if (typeof initialize === 'function') {
+      this.initialize = initialize;
+      initialize(this);
     }
   }
 
@@ -128,34 +148,28 @@ export class Epistemology<
     void (this.__tags = Object.freeze(addTag(this.tags, tag)))
   );
 
-  public readonly clone = (): IEpistemology<Type, Being, Knowledge> => {
-    const copy: IEpistemology<Type, Being, Knowledge> = Object.assign(
+  public readonly clone = (): IEpistemology<Type, Knowledge> => {
+    const copy: any = Object.assign(
       Object.create(Object.getPrototypeOf(this)),
       this,
     );
 
-    // @ts-ignore
     copy.__awareness = this.awareness ?
       this.awareness.clone() :
       null;
 
-    // @ts-ignore
     copy.finalize = typeof this.finalize === 'function' ?
       this.finalize.bind(copy) :
       null;
 
-    // @ts-ignore
     copy.initialize = typeof this.initialize === 'function' ?
-      // @ts-ignore
       this.initialize.bind(copy) :
       null;
 
-    // @ts-ignore
     copy.__thoughts = this.thoughts ?
       this.thoughts.clone() :
       null;
 
-    // @ts-ignore
     copy.world = this.world;
 
     return copy;
@@ -192,6 +206,11 @@ export class Epistemology<
     void (this.__tags = Object.freeze(removeTag(this.tags, tag)))
   );
 
-  public readonly finalize?: (self: IEpistemology<Type, Being, Knowledge>) => void;
-  public readonly initialize?: (self: IEpistemology<Type, Being, Knowledge>) => void;
+  public readonly finalize?: (
+    self: IEpistemology<Type, Knowledge>,
+  ) => void;
+
+  public readonly initialize?: (
+    self: IEpistemology<Type, Knowledge>,
+  ) => void;
 }

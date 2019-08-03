@@ -2,7 +2,7 @@ import {
   ModelType,
 } from '../models/ModelType';
 
-export type ContainableTypes = Exclude<
-  ModelType,
-  ModelType.Portal | ModelType.Thought
->;
+export type ContainableTypes =
+  ModelType.Actor |
+    ModelType.Object |
+    ModelType.Portal;

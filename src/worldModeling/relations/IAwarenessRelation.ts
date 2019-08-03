@@ -1,10 +1,4 @@
 import {
-  BeingNoThoughtsBase,
-} from '../epistemology/BeingNoThoughtsBase';
-import {
-  EpistemicTypes,
-} from '../epistemology/EpistemicTypes';
-import {
   IModel,
 } from '../models/IModel';
 import {
@@ -13,22 +7,24 @@ import {
 import {
   ModelType,
 } from '../models/ModelType';
+import {
+  OnticTypes,
+} from '../ontology/OnticTypes';
 
 export interface IAwarenessRelation<
-  Type extends EpistemicTypes,
-  Being extends BeingNoThoughtsBase,
+  Type extends OnticTypes,
   Knowledge extends ModelType,
 > extends IRelation<Type>
 {
-  readonly perceives: ReadonlyArray<IModel<Type, Being, Knowledge>>;
+  readonly perceives: ReadonlyArray<IModel<Type, OnticTypes, Knowledge>>;
 
   readonly addPerception: (
-    model: string | IModel<Type, Being, Knowledge>,
+    model: IModel<Type, OnticTypes, Knowledge>,
   ) => void;
 
-  readonly clone: () => IAwarenessRelation<Type, Being, Knowledge>;
+  readonly clone: () => IAwarenessRelation<Type, Knowledge>;
 
   readonly removePerception: (
-    tag: string | IModel<Type, Being, Knowledge>,
+    tag: IModel<Type, OnticTypes, Knowledge>,
   ) => void;
 }

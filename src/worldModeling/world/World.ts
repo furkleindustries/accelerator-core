@@ -18,7 +18,7 @@ import {
 } from '../querying/findAllGenerate';
 import {
   FindModelArgs,
-} from '../models/FindModelArgs';
+} from '../querying/FindModelArgs';
 import {
   getTag,
 } from '../../tags/getTag';
@@ -59,6 +59,7 @@ import {
 import {
   WorldType,
 } from './WorldType';
+import { OnticTypes } from '../ontology/OnticTypes';
 
 export class World implements IWorld {
   private readonly __being: null;
@@ -82,7 +83,7 @@ export class World implements IWorld {
 
   public get models() {
     return this.__models;
-  };
+  }
   
   private readonly __name: string;
   public get name() {
@@ -114,8 +115,8 @@ export class World implements IWorld {
       IModel<ModelType, BeingNoThoughtsBase, ModelType>
     >,
 
-    initializer?: (self: IWorld) => void,
-    finalizer?: (self: IWorld) => void,
+    initialize?: (self: IWorld) => void,
+    finalize?: (self: IWorld) => void,
     tags?: Array<string | ITag> | ReadonlyArray<string | ITag>,
   ) {
     this.__name = assertValid(name);
@@ -123,12 +124,12 @@ export class World implements IWorld {
       this.__models = models;
     }
 
-    if (typeof initializer === 'function') {
-      this.initialize = initializer;
+    if (typeof initialize === 'function') {
+      this.initialize = initialize;
     }
 
-    if (typeof finalizer === 'function') {
-      this.finalize = finalizer;
+    if (typeof finalize === 'function') {
+      this.finalize = finalize;
     }
 
     if (Array.isArray(tags)) {
@@ -149,6 +150,7 @@ export class World implements IWorld {
   ) => {
     this.validateModelArgs<Type, Being, Knowledge>(modelArgs);
 
+    type _Type<T extends ModelType> = IModelConstructorArgs<T, Being, Knowledge>;
     let temp: IModel<any, Being, Knowledge>;
     if (typeof ctor === 'function') {
       temp = new ctor(this, modelArgs);
@@ -158,21 +160,21 @@ export class World implements IWorld {
         modelArgs as IModelConstructorArgs<ModelType.Actor, Being, Knowledge>,
       );
     } else if (modelArgs.type === ModelType.Location) {
-      temp = new LocationModel(this, modelArgs); 
+      temp = new LocationModel(this, modelArgs as _Type<ModelType.Location>);
     } else if (modelArgs.type === ModelType.Object) {
-      temp = new ObjectModel(this, modelArgs);
+      temp = new ObjectModel(this, modelArgs as _Type<ModelType.Object>);
     } else if (modelArgs.type === ModelType.Portal) {
-      temp = new PortalModel(this, modelArgs);
+      temp = new PortalModel(this, modelArgs as _Type<ModelType.Portal>);
     } else if (modelArgs.type === ModelType.Thought) {
-      temp = new ThoughtModel(this, modelArgs);
+      temp = new ThoughtModel(this, modelArgs as _Type<ModelType.Thought>);
     } else {
       throw new Error('Type argument not recognized in World.addModel.');
     }
 
-    this.__models = {
+    this.__models = Object.freeze({
       ...this.models,
       [modelArgs.name]: temp,
-    };
+    });
 
     return temp as IModel<Type, Being, Knowledge>;
   };
@@ -229,6 +231,8 @@ export class World implements IWorld {
       this.removeModel(desc);
     });
 
+    this.tags.forEach(this.removeTag);
+
     ((self: any) => {
       delete self.__being;
       delete self.being;
@@ -245,7 +249,7 @@ export class World implements IWorld {
 
   public readonly find = <
     Type extends ModelType,
-    Being extends BeingNoThoughtsBase,
+    Being extends OnticTypes,
     Knowledge extends ModelType,
   >(
     args: string | FindModelArgs<Type, Being, Knowledge>,
@@ -257,7 +261,7 @@ export class World implements IWorld {
 
   public readonly findAll = <
     Type extends ModelType,
-    Being extends BeingNoThoughtsBase,
+    Being extends OnticTypes,
     Knowledge extends ModelType,
   >(args: '*' | FindModelArgs<Type, Being, Knowledge>) => {
     const ret = [];
@@ -280,7 +284,7 @@ export class World implements IWorld {
 
   public readonly findAllGenerator = ((self: IWorld) => function*<
     Type extends ModelType,
-    Being extends BeingNoThoughtsBase,
+    Being extends OnticTypes,
     Knowledge extends ModelType,
   > (args: '*' | FindModelArgs<Type, Being, Knowledge>) {
     assert(args, 'The args argument to World.findAllGenerator was not valid.');

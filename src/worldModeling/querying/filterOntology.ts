@@ -5,9 +5,6 @@ import {
   ancestorsFilter,
 } from './ancestorsFilter';
 import {
-  BeingNoThoughtsBase,
-} from '../epistemology/BeingNoThoughtsBase';
-import {
   childrenFilter,
 } from './childrenFilter';
 import {
@@ -18,7 +15,7 @@ import {
 } from './descendantsFilter';
 import {
   FindModelArgs,
-} from '../models/FindModelArgs';
+} from './FindModelArgs';
 import {
   IOntology,
 } from '../ontology/IOntology';
@@ -41,6 +38,9 @@ import {
   modelTypeFilter,
 } from './modelTypeFilter';
 import {
+  OnticTypes,
+} from '../ontology/OnticTypes';
+import {
   parentFilter,
 } from './parentFilter';
 import {
@@ -49,10 +49,10 @@ import {
 
 export const filterOntology = <
   Type extends ModelType,
-  Being extends BeingNoThoughtsBase,
+  Being extends OnticTypes,
   Knowledge extends ModelType,
 >(
-  obj: IOntology<ModelTypeNoThoughts<ModelType>, Being, Knowledge>,
+  obj: IOntology<ModelTypeNoThoughts<ModelType>, Being>,
   key: keyof Pick<
     FindModelArgs<Type, Being, Knowledge>,
     'adjacent' |

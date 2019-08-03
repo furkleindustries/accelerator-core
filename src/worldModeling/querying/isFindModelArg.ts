@@ -3,11 +3,14 @@ import {
 } from './FindModelArgs';
 import {
   ModelType,
-} from './ModelType';
+} from '../models/ModelType';
+import {
+  OnticTypes,
+} from '../ontology/OnticTypes';
 
 export const isFindModelArg = <
   Type extends ModelType,
-  Being extends ModelType,
+  Being extends OnticTypes,
   Knowledge extends ModelType,
 >(
   maybe: any,

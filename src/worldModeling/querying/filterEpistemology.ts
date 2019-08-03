@@ -2,15 +2,12 @@ import {
   awareOfFilter,
 } from './awareOfFilter';
 import {
-  BeingNoThoughtsBase,
-} from '../epistemology/BeingNoThoughtsBase';
-import {
   EpistemicTypes,
 } from '../epistemology/EpistemicTypes';
 import {
   FindModelArg,
   FindModelArgs,
-} from '../models/FindModelArgs';
+} from './FindModelArgs';
 import {
   IEpistemology,
 } from '../epistemology/IEpistemology';
@@ -21,6 +18,9 @@ import {
   ModelType,
 } from '../models/ModelType';
 import {
+  OnticTypes,
+} from '../ontology/OnticTypes';
+import {
   thoughtsFilter,
 } from './thoughtsFilter';
 import {
@@ -29,10 +29,10 @@ import {
 
 export const filterEpistemology = <
   Type extends ModelType,
-  Being extends BeingNoThoughtsBase,
+  Being extends OnticTypes,
   Knowledge extends ModelType,
 >(
-  obj: IEpistemology<EpistemicTypes, Being, Knowledge> | null,
+  obj: IEpistemology<EpistemicTypes, Knowledge> | null,
   key: keyof Pick<
     FindModelArgs<Type, Being, Knowledge>,
     'awareOf' | 'inAwarenessGraph' | 'thoughts' | 'wants'

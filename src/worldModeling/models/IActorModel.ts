@@ -1,18 +1,9 @@
 import {
-  BeingNoThoughtsBase,
-} from '../epistemology/BeingNoThoughtsBase';
-import {
-  FindModelArg,
-} from './FindModelArgs';
-import {
   IEpistemology,
 } from '../epistemology/IEpistemology';
 import {
   IModel,
 } from './IModel';
-import {
-  IWorld,
-} from '../world/IWorld';
 import {
   IOntology,
 } from '../ontology/IOntology';
@@ -24,26 +15,51 @@ import {
 } from '../ontology/OnticTypes';
 
 export interface IActorModel<
-  Being extends BeingNoThoughtsBase,
+  Being extends OnticTypes,
   Knowledge extends ModelType,
 > extends IModel<ModelType.Actor, Being, Knowledge>
 {
-  readonly being: IOntology<ModelType.Actor, Being, Knowledge>;
-  readonly knowledge: IEpistemology<ModelType.Actor, Being, Knowledge>;
+  readonly being: IOntology<ModelType.Actor, Being>;
+  readonly knowledge: IEpistemology<ModelType.Actor, Knowledge>;
   readonly type: ModelType.Actor;
 
+  readonly drop: (
+    target: IModel<ModelType.Object, Being, Knowledge>,
+    self: this,
+  ) => void;
+
   readonly move: (
-    destination: IModel<ModelType.Location, BeingNoThoughtsBase, never> |
-      IWorld,
+    destination: IModel<ModelType.Location, Being, Knowledge>,
+    self: this,
+  ) => void;
+
+  readonly observe: (
+    target: IModel<OnticTypes, Being, Knowledge>,
+    self: this,
+  ) => void;
+
+  readonly take: (
+    target: IModel<ModelType.Object, Being, Knowledge>,
+    self: this,
+  ) => void;
+
+  readonly unobserve: (
+    target: IModel<OnticTypes, Being, Knowledge>,
+    self: this,
+  ) => void;
+
+  readonly unwant: (
+    target: IModel<ModelType, Being, Knowledge>,
+    self: this,
+  ) => void;
+
+  readonly want: (
+    target: IModel<ModelType, Being, Knowledge>,
+    self: this,
   ) => void;
 
   readonly act?: (
-    target: FindModelArg<
-      OnticTypes,
-      BeingNoThoughtsBase,
-      ModelType
-    >,
-
+    target: IModel<OnticTypes, Being, Knowledge>,
     self: this,
   ) => void;
 }
