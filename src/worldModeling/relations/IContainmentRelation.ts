@@ -14,6 +14,9 @@ import {
   IRelation,
 } from './IRelation';
 import {
+  ISerializedContainmentRelation,
+} from './ISerializedContainmentRelation';
+import {
   IWorld,
 } from '../world/IWorld';
 import {
@@ -46,4 +49,13 @@ export interface IContainmentRelation<
   readonly removeChild: (
     model: IModel<Type, Being, ModelType>,
   ) => void;
+
+  readonly serialize: (
+    self: IContainmentRelation<Type, Being>,
+    spaces?: number,
+  ) => string;
+
+  readonly serializeToObject: (
+    self: IContainmentRelation<Type, Being>,
+  ) => ISerializedContainmentRelation;
 }

@@ -26,11 +26,11 @@ import {
   IEpistemologyConstructorArgs,
 } from './IEpistemologyConstructorArgs';
 import {
-  isContainmentType,
-} from '../typeGuards/isContainmentType';
-import {
   isEpistemicType,
 } from '../typeGuards/isEpistemicType';
+import {
+  ISerializedEpistemology,
+} from './ISerializedEpistemology';
 import {
   isOnticType,
 } from '../typeGuards/isOnticType';
@@ -120,9 +120,12 @@ export class Epistemology<
     );
 
     if (isEpistemicType(this.modelType) && isOnticType(this.modelType)) {
-      this.__awareness = new AwarenessRelation(
-        this.world,
-        this.__modelType as EpistemicTypes & OnticTypes,
+      // @ts-ignore
+      this.__awareness = (
+        new AwarenessRelation<any, Knowledge>(
+          this.world,
+          this.__modelType,
+        )
       );
     }
 
@@ -130,7 +133,7 @@ export class Epistemology<
       this.__tags = getStructuredTags(assertValid<Tag[]>(
         tags,
         'The tags argument to the Epistemology constructor was not valid.',
-        (arr) => Array.isArray(arr),
+        Array.isArray,
       ));
     }
 
@@ -149,7 +152,7 @@ export class Epistemology<
   );
 
   public readonly clone = (): IEpistemology<Type, Knowledge> => {
-    const copy: any = Object.assign(
+    const copy = Object.assign(
       Object.create(Object.getPrototypeOf(this)),
       this,
     );
@@ -205,6 +208,23 @@ export class Epistemology<
   public readonly removeTag = (tag: Tag) => (
     void (this.__tags = Object.freeze(removeTag(this.tags, tag)))
   );
+
+  public readonly serialize = (
+    self: IEpistemology<Type, Knowledge>,
+    spaces: number = 0,
+  ) => JSON.stringify(self.serializeToObject(self), null, spaces);
+
+  public readonly serializeToObject = (
+    self: IEpistemology<Type, Knowledge>,
+  ): ISerializedEpistemology => ({
+    awareness: self.awareness ?
+      self.awareness.serializeToObject(self.awareness!) :
+      null,
+
+    modelType: self.modelType,
+    tags: [ ...self.tags ],
+    thoughts: self.thoughts.serializeToObject(self.thoughts),
+  });
 
   public readonly finalize?: (
     self: IEpistemology<Type, Knowledge>,

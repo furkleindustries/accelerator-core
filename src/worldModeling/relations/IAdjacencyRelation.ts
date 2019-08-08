@@ -8,6 +8,9 @@ import {
   IRelation,
 } from './IRelation';
 import {
+  ISerializedAdjacencyRelation,
+} from './ISerializedAdjacencyRelation';
+import {
   ModelType,
 } from '../models/ModelType';
 import {
@@ -19,6 +22,8 @@ export interface IAdjacencyRelation<
   Being extends OnticTypes,
 > extends IRelation<Type>
 {
+  readonly modelType: Type;
+
   readonly neighbors: Readonly<
     Map<BaseAdjacencies, ReadonlyArray<IModel<Type, Being, ModelType>>>
   >;
@@ -32,4 +37,13 @@ export interface IAdjacencyRelation<
     adjacency: T,
     model: IModel<Type, Being, ModelType>,
   ) => void;
+
+  readonly serialize: (
+    self: IAdjacencyRelation<Type, Being>,
+    spaces?: number,
+  ) => string;
+
+  readonly serializeToObject: (
+    self: IAdjacencyRelation<Type, Being>,
+  ) => ISerializedAdjacencyRelation;
 }

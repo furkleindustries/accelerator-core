@@ -25,6 +25,7 @@ import {
 import {
   RelationBase,
 } from './RelationBase';
+import { ISerializedAdjacencyRelation } from './ISerializedAdjacencyRelation';
 
 type Adjacencies<T extends BaseAdjacencies = BaseAdjacencies> = T;
 
@@ -116,5 +117,33 @@ export class AdjacencyRelation<
     }
     
     throw new Error('Adjacency not in AdjacencyRelation.');
+  };
+
+  public readonly serializeToObject = (
+    self: IAdjacencyRelation<Type, Being>,
+  ): ISerializedAdjacencyRelation => {
+    const neighbors: Record<string, string[]> = {};
+    for (const key of self.neighbors.keys()) {
+      const value = self.neighbors.get(key);
+      if (!value) {
+        continue;
+      }
+
+      const names = value.map(({ name }) => name);
+
+      if (typeof key === 'string') {
+        /* Plain direction enum value. */
+        neighbors[key] = names;
+      } else if (typeof key === 'object') {
+        /* Complex directional mapping. */
+        key
+      }
+    }
+
+    return {
+      neighbors,
+      modelType: self.modelType,
+      tags: [ ...self.tags ],
+    };
   };
 }

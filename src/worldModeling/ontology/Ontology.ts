@@ -52,6 +52,7 @@ import {
 import {
   assertValid,
 } from 'ts-assertions';
+import { ISerializedOntology } from './ISerializedOntology';
 
 export class Ontology<
   Type extends OnticTypes,
@@ -156,6 +157,22 @@ export class Ontology<
 
   public readonly getTag = (toSearch: Tag) => getTag(this.tags, toSearch);
   public readonly removeTag = (toSearch: Tag) => removeTag(this.tags, toSearch);
+  public readonly serializeToObject = (
+    self: IOntology<Type, Being>,
+  ): ISerializedOntology => ({
+    adjacency: self.adjacency.serializeToObject(self.adjacency),
+    containment: self.containment ?
+      self.containment.serializeToObject(self.containment!) :
+      null,
+
+    modelType: self.modelType,
+    tags: [ ...this.tags ],
+  });
+
+  public readonly serialize = (
+    self: IOntology<Type, Being>,
+    spaces: number = 0,
+  ) => JSON.stringify(self.serializeToObject(self), null, spaces);
 
   public readonly finalize?: (self: IOntology<Type, Being>) => void;
   public readonly initialize?: (self: IOntology<Type, Being>) => void;

@@ -8,6 +8,9 @@ import {
   IContainmentRelation,
 } from '../relations/IContainmentRelation';
 import {
+  ISerializedOntology,
+} from './ISerializedOntology';
+import {
   ITag,
 } from '../../tags/ITag';
 import {
@@ -53,6 +56,15 @@ export interface IOntology<
   readonly destroy: () => void;
   readonly getTag: (toSearch: Tag) => ITag | null;
   readonly removeTag: (tag: Tag) => void;
+  readonly serialize: (
+    self: IOntology<Type, Being>,
+    spaces?: number,
+  ) => string;
+
+  readonly serializeToObject: (
+    self: IOntology<Type, Being>,
+  ) => ISerializedOntology;
+
   readonly finalize?: (self: IOntology<Type, Being>) => void;
   readonly initialize?: (self: IOntology<Type, Being>) => void;
 }

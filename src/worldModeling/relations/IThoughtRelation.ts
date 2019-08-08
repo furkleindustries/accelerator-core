@@ -5,6 +5,9 @@ import {
   IRelation,
 } from './IRelation';
 import {
+  ISerializedThoughtRelation,
+} from './ISerializedThoughtRelation';
+import {
   ModelType,
 } from '../models/ModelType';
 import {
@@ -14,8 +17,9 @@ import {
 export interface IThoughtRelation<
   Type extends ModelType,
   Knowledge extends ModelType,
-> extends IRelation<Type> {
-  readonly knows: ReadonlyArray<IModel<Type, OnticTypes, Knowledge>>;
+> extends IRelation<Type>
+{
+  readonly knowledge: ReadonlyArray<IModel<Type, OnticTypes, Knowledge>>;
   readonly wants: ReadonlyArray<IModel<Type, OnticTypes, Knowledge>>;
 
   readonly addKnowledge: (
@@ -33,4 +37,8 @@ export interface IThoughtRelation<
   readonly removeWant: (
     model: IModel<Type, OnticTypes, Knowledge>,
   ) => void;
+
+  readonly serializeToObject: (
+    self: IThoughtRelation<Type, Knowledge>,
+  ) => ISerializedThoughtRelation;
 }

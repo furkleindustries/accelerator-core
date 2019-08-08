@@ -5,14 +5,14 @@ import {
   IModel,
 } from '../models/IModel';
 import {
+  ITag,
+} from '../../tags/ITag';
+import {
   IWorld,
 } from '../world/IWorld';
 import {
   ModelType,
 } from '../models/ModelType';
-import {
-  ITag,
-} from '../../tags/ITag';
 import {
   OnticTypes,
 } from '../ontology/OnticTypes';
@@ -48,4 +48,8 @@ export interface IRelation<Type extends ModelType> {
   ) => IterableIterator<IModel<Type, Being, Knowledge>>;
 
   readonly removeTag: (tag: ITag) => void;
+  readonly serialize: (self: IRelation<Type>, spaces?: number) => string;
+  readonly serializeToObject: (
+    self: IRelation<Type>,
+  ) => Readonly<Record<string, any>>;
 }

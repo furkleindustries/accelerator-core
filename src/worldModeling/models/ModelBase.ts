@@ -26,6 +26,12 @@ import {
   IOntology,
 } from '../ontology/IOntology';
 import {
+  ISerializedModel,
+} from './ISerializedModel';
+import {
+  ITag,
+} from '../../tags/ITag';
+import {
   IWorld,
 } from '../world/IWorld';
 import {
@@ -38,17 +44,21 @@ import {
   removeTag,
 } from '../../tags/removeTag';
 import {
-  ITag,
-} from '../../tags/ITag';
+  Tag,
+} from '../../tags/Tag';
 import {
   assert,
   assertValid,
 } from 'ts-assertions';
+import {
+  TypedModelInterfaces,
+} from './TypedModelInterfaces';
 
 export abstract class ModelBase<
   Type extends ModelType,
   Being extends OnticTypes = never,
   Knowledge extends ModelType = never,
+  ModelInterface extends IModel<any, any, any> = TypedModelInterfaces<Being, Knowledge>[Type],
 > implements IModel<Type, Being, Knowledge>
 {
   public abstract readonly being: Type extends OnticTypes ?
@@ -81,7 +91,7 @@ export abstract class ModelBase<
 
   constructor(
     world: IWorld,
-    args: IModelConstructorArgs<Type, Being>,
+    args: IModelConstructorArgs<Type, Being, Knowledge>,
   ) {
     this.__world = assertValid(
       world,
@@ -121,14 +131,14 @@ export abstract class ModelBase<
     this.initialize(this);
   }
 
-  public readonly addTag = (tag: string | ITag) => (
+  public readonly addTag = (tag: Tag) => (
     void (this.__tags = Object.freeze(addTag(this.tags, tag)))
   );
 
   public readonly clone = (
     world: IWorld = this.world,
     name: string = this.name,
-  ): IModel<Type, Being, Knowledge> => {
+  ) => {
     const copy = Object.assign(
       Object.create(Object.getPrototypeOf(this)),
       this,
@@ -229,14 +239,6 @@ export abstract class ModelBase<
     return ret;
   };
 
-  public abstract readonly findAllGenerator: <
-    Type extends ModelType,
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  >(
-    args: '*' | FindModelArgs<Type, Being, Knowledge>,
-  ) => IterableIterator<IModel<Type, Being, Knowledge>>;
-
   public readonly getTag = (toSearch: string | ITag) => (
     getTag(this.tags, toSearch)
   );
@@ -244,4 +246,27 @@ export abstract class ModelBase<
   public readonly removeTag = (tag: string | ITag) => (
     void (this.__tags = Object.freeze(removeTag(this.tags, tag)))
   );
+
+  public readonly serialize = (
+    self: ModelInterface,
+    spaces: number = 0,
+  ) => JSON.stringify(self.serializeToObject(self), null, spaces);
+
+  public readonly serializeToObject = (
+    self: ModelInterface,
+  ): ISerializedModel => ({
+    being: self.being ? self.being.serializeToObject(self.being) : null,
+    knowledge: self.knowledge ? self.knowledge.serializeToObject(self.knowledge) : null,
+    name: self.name,
+    tags: [ ...self.tags ],
+    type: self.type,
+  });
+
+  public abstract readonly findAllGenerator: <
+    Type extends ModelType,
+    Being extends OnticTypes,
+    Knowledge extends ModelType,
+  >(
+    args: '*' | FindModelArgs<Type, Being, Knowledge>,
+  ) => IterableIterator<ModelInterface>;
 }

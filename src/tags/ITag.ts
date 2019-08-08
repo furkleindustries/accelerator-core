@@ -1,4 +1,8 @@
+import {
+  SerializableValue,
+} from '../typeAliases/SerializableValue';
+
 export interface ITag {
-  readonly key: string | symbol;
-  readonly value: any;
+  readonly key: string;
+  readonly value: SerializableValue;
 }

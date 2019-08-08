@@ -1,9 +1,15 @@
 import {
+  EpistemicTypes,
+} from '../epistemology/EpistemicTypes';
+import {
   IModel,
 } from '../models/IModel';
 import {
   IRelation,
 } from './IRelation';
+import {
+  ISerializedAwarenessRelation,
+} from './ISerializedAwarenessRelation';
 import {
   ModelType,
 } from '../models/ModelType';
@@ -12,11 +18,11 @@ import {
 } from '../ontology/OnticTypes';
 
 export interface IAwarenessRelation<
-  Type extends OnticTypes,
+  Type extends EpistemicTypes & OnticTypes,
   Knowledge extends ModelType,
 > extends IRelation<Type>
 {
-  readonly perceives: ReadonlyArray<IModel<Type, OnticTypes, Knowledge>>;
+  readonly perceptions: ReadonlyArray<IModel<Type, OnticTypes, Knowledge>>;
 
   readonly addPerception: (
     model: IModel<Type, OnticTypes, Knowledge>,
@@ -27,4 +33,8 @@ export interface IAwarenessRelation<
   readonly removePerception: (
     tag: IModel<Type, OnticTypes, Knowledge>,
   ) => void;
+
+  readonly serializeToObject: (
+    self: IAwarenessRelation<Type, Knowledge>,
+  ) => ISerializedAwarenessRelation;
 }

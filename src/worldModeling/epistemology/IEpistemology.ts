@@ -5,6 +5,9 @@ import {
   IAwarenessRelation,
 } from '../relations/IAwarenessRelation';
 import {
+  ISerializedEpistemology,
+} from './ISerializedEpistemology';
+import {
   ITag,
 } from '../../tags/ITag';
 import {
@@ -45,6 +48,15 @@ export interface IEpistemology<
   readonly destroy: () => void;
   readonly getTag: (toSearch: Tag) => ITag | null;
   readonly removeTag: (tag: Tag) => void;
+  readonly serialize: (
+    self: IEpistemology<Type, Knowledge>,
+    spaces?: number,
+  ) => string;
+
+  readonly serializeToObject: (
+    self: IEpistemology<Type, Knowledge>,
+  ) => ISerializedEpistemology;
+
   readonly finalize?: (self: IEpistemology<Type, Knowledge>) => void;
   readonly initialize?: (self: IEpistemology<Type, Knowledge>) => void;
 }

@@ -11,6 +11,9 @@ import {
   IModel,
 } from '../models/IModel';
 import {
+  ISerializedAwarenessRelation,
+} from './ISerializedAwarenessRelation';
+import {
   ModelType,
 } from '../models/ModelType';
 import {
@@ -22,22 +25,26 @@ import {
 
 export class AwarenessRelation<
   Type extends EpistemicTypes & OnticTypes,
-  Being extends OnticTypes,
   Knowledge extends ModelType,
 > extends RelationBase<Type>
   implements IAwarenessRelation<Type, Knowledge>
 {
-  private __perceives: ReadonlyArray<
-    IModel<Type, Being, Knowledge>
+  protected readonly __modelType: Type;
+  public get modelType() {
+    return this.__modelType;
+  }
+
+  private __perceptions: ReadonlyArray<
+    IModel<Type, OnticTypes, Knowledge>
   > = Object.freeze([]);
 
-  public get perceives() {
-    return this.__perceives;
+  public get perceptions() {
+    return this.__perceptions;
   }
 
   public readonly addPerception = (
-    perception: IModel<Type, Being, Knowledge>,
-  ) => void (this.__perceives = this.__perceives.concat([ perception ]));
+    perception: IModel<Type, OnticTypes, Knowledge>,
+  ) => void (this.__perceptions = this.__perceptions.concat([ perception ]));
 
   public readonly clone = (): IAwarenessRelation<Type, Knowledge> => {
     const copy = Object.assign(
@@ -45,14 +52,14 @@ export class AwarenessRelation<
       this,
     );
 
-    copy.__perceives = Object.freeze(this.perceives.slice());
+    copy.__perceives = Object.freeze(this.perceptions.slice());
 
     return copy;
   };
 
   public readonly destroy = () => {
     this.tags.forEach(this.removeTag);
-    this.perceives.forEach(this.removePerception);
+    this.perceptions.forEach(this.removePerception);
 
     ((self: any) => {
       delete self.__perceives;
@@ -74,14 +81,22 @@ export class AwarenessRelation<
   })(this);
 
   public readonly removePerception = (
-    { name }: IModel<Type, Being, Knowledge>,
+    { name }: IModel<Type, OnticTypes, Knowledge>,
   ) => {
-    const index = this.perceives.findIndex((item) => item.name === name);
+    const index = this.perceptions.findIndex((item) => item.name === name);
 
     if (index >= 0) {
-      this.__perceives = this.perceives
+      this.__perceptions = this.perceptions
         .slice(0, index)
-        .concat(this.perceives.slice(index + 1));
+        .concat(this.perceptions.slice(index + 1));
     }
   };
+
+  public readonly serializeToObject = (
+    self: IAwarenessRelation<Type, Knowledge>,
+  ): ISerializedAwarenessRelation => ({
+    modelType: this.modelType,
+    perceptions: self.perceptions.map(({ name }) => name),
+    tags: [ ...self.tags ],
+  });
 }

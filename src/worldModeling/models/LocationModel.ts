@@ -25,7 +25,7 @@ import {
 
 export class LocationModel<
   Being extends OnticTypes,
-> extends ModelBase<ModelType.Location, Being, ModelType>
+> extends ModelBase<ModelType.Location, Being>
   implements ILocationModel<Being>
 {
   protected readonly __being: IOntology<ModelType.Location, Being>;

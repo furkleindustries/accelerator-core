@@ -95,6 +95,11 @@ export abstract class RelationBase<
     return ret;
   };
 
+  public readonly serialize = (
+    self: IRelation<Type>,
+    spaces?: number,
+  ): string => JSON.stringify(this.serializeToObject(self), null, spaces);
+
   public abstract readonly findAllGenerator: <
     Being extends OnticTypes,
     Knowledge extends ModelType,
@@ -104,4 +109,7 @@ export abstract class RelationBase<
 
   public abstract readonly clone: () => any;
   public abstract readonly destroy: () => void;
+  public abstract readonly serializeToObject: (
+    self: IRelation<Type>,
+  ) => Readonly<Record<string, any>>;
 }

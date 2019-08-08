@@ -19,14 +19,15 @@ import {
 
 export interface IModelConstructorArgs<
   Type extends ModelType,
-  Being extends OnticTypes,
+  Being extends OnticTypes = never,
+  Knowledge extends ModelType = never,
 > {
   readonly name: string;
   readonly type: Type;
 
   readonly being?: Type extends OnticTypes ? IOntology<Type, Being> : null;
   readonly knowledge?: Type extends EpistemicTypes ?
-    IEpistemology<Type, Being> :
+    IEpistemology<Type, Knowledge> :
     null;
 
   readonly tags?: Array<Tag> | ReadonlyArray<Tag>;

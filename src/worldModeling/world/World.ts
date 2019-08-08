@@ -5,9 +5,6 @@ import {
   addTag,
 } from '../../tags/addTag';
 import {
-  BeingNoThoughtsBase,
-} from '../epistemology/BeingNoThoughtsBase';
-import {
   Epistemology,
 } from '../epistemology/Epistemology';
 import {
@@ -20,6 +17,9 @@ import {
   FindModelArgs,
 } from '../querying/FindModelArgs';
 import {
+  getStructuredTags,
+} from '../../tags/getStructuredTags';
+import {
   getTag,
 } from '../../tags/getTag';
 import {
@@ -28,6 +28,15 @@ import {
 import {
   IModelConstructorArgs,
 } from '../models/IModelConstructorArgs';
+import {
+  IOntology,
+} from '../ontology/IOntology';
+import {
+  ISerializedWorld,
+} from './ISerializedWorld';
+import {
+  ITag,
+} from '../../tags/ITag';
 import {
   IWorld,
 } from './IWorld';
@@ -41,14 +50,17 @@ import {
   ObjectModel,
 } from '../models/ObjectModel';
 import {
+  OnticTypes,
+} from '../ontology/OnticTypes';
+import {
   PortalModel,
 } from '../models/PortalModel';
 import {
   removeTag,
 } from '../../tags/removeTag';
 import {
-  ITag,
-} from '../../tags/ITag';
+  Tag,
+} from '../../tags/Tag';
 import {
   ThoughtModel,
 } from '../models/ThoughtModel';
@@ -57,19 +69,19 @@ import {
   assertValid,
 } from 'ts-assertions';
 import {
+  TypedModelInterfaces,
+} from '../models/TypedModelInterfaces';
+import {
   WorldType,
 } from './WorldType';
-import { OnticTypes } from '../ontology/OnticTypes';
 
 export class World implements IWorld {
-  private readonly __being: null;
   public get being() {
-    return this.__being;
+    return null;
   }
 
   private readonly __knowledge: IEpistemology<
     ModelType.Thought,
-    BeingNoThoughtsBase,
     ModelType
   > = new Epistemology(this, { modelType: ModelType.Thought });
 
@@ -78,7 +90,7 @@ export class World implements IWorld {
   }
 
   private __models: Readonly<
-    Record<string, IModel<ModelType, BeingNoThoughtsBase, ModelType>>
+    Record<string, IModel<ModelType, OnticTypes, ModelType>>
   > = Object.freeze({});
 
   public get models() {
@@ -90,7 +102,7 @@ export class World implements IWorld {
     return this.__name;
   }
 
-  private __tags: ReadonlyArray<string | ITag> = Object.freeze([]);
+  private __tags: ReadonlyArray<ITag> = Object.freeze([]);
   public get tags() {
     return this.__tags;
   }
@@ -101,23 +113,23 @@ export class World implements IWorld {
   }
 
   public readonly addTag = (tag: string | ITag) => (
-    void (this.__tags = Object.freeze([ ...addTag(this.tags, tag) ]))
+    void (this.__tags = Object.freeze(addTag(this.tags, tag)))
   );
 
   public readonly removeTag = (tag: string | ITag) => (
-    void (this.__tags = Object.freeze([ ...removeTag(this.tags, tag) ]))
+    void (this.__tags = Object.freeze(removeTag(this.tags, tag)))
   );
 
   constructor(
     name: string,
     models?: Record<
       string,
-      IModel<ModelType, BeingNoThoughtsBase, ModelType>
+      IModel<ModelType, OnticTypes, ModelType>
     >,
 
     initialize?: (self: IWorld) => void,
     finalize?: (self: IWorld) => void,
-    tags?: Array<string | ITag> | ReadonlyArray<string | ITag>,
+    tags?: Array<Tag> | ReadonlyArray<Tag>,
   ) {
     this.__name = assertValid(name);
     if (models && typeof models === 'object') {
@@ -133,40 +145,74 @@ export class World implements IWorld {
     }
 
     if (Array.isArray(tags)) {
-      this.__tags = tags;
+      this.__tags = getStructuredTags(tags);
     }
   }
 
   public readonly addModel = <
     Type extends ModelType,
-    Being extends BeingNoThoughtsBase,
-    Knowledge extends ModelType,
+    Being extends OnticTypes = never,
+    Knowledge extends ModelType = never,
   >(
-    modelArgs: IModelConstructorArgs<Type, Being, Knowledge>,
+    modelArgs: IModelConstructorArgs<
+      Type,
+      Being,
+      Knowledge
+    >,
+
     ctor?: new (
       world: IWorld,
       args: IModelConstructorArgs<Type, Being, Knowledge>,
     ) => IModel<Type, Being, Knowledge>,
+  ): (
+    Type extends keyof TypedModelInterfaces<Being, Knowledge> ?
+      TypedModelInterfaces<Being, Knowledge>[Type] :
+      IModel<Type, Being, Knowledge>
   ) => {
-    this.validateModelArgs<Type, Being, Knowledge>(modelArgs);
+    this.validateModelArgs<Type, Being>(modelArgs);
 
-    type _Type<T extends ModelType> = IModelConstructorArgs<T, Being, Knowledge>;
-    let temp: IModel<any, Being, Knowledge>;
+    let temp: IModel<ModelType, Being, Knowledge>;
     if (typeof ctor === 'function') {
       temp = new ctor(this, modelArgs);
     } else if (modelArgs.type === ModelType.Actor) {
-      temp = new ActorModel<Being, Knowledge>(
-        this,
-        modelArgs as IModelConstructorArgs<ModelType.Actor, Being, Knowledge>,
-      );
+      temp = new ActorModel<Being, Knowledge>(this, {
+        ...modelArgs,
+        being: modelArgs.being as IOntology<ModelType.Actor, Being>,
+        knowledge: modelArgs.knowledge as IEpistemology<
+          ModelType.Actor,
+          Knowledge
+        >,
+
+        type: modelArgs.type as ModelType.Actor,
+      });
     } else if (modelArgs.type === ModelType.Location) {
-      temp = new LocationModel(this, modelArgs as _Type<ModelType.Location>);
+      temp = new LocationModel(this, {
+        ...modelArgs,
+        being: modelArgs.being as IOntology<ModelType.Location, Being>,
+        knowledge: null,
+        type: modelArgs.type as ModelType.Location,
+      });
     } else if (modelArgs.type === ModelType.Object) {
-      temp = new ObjectModel(this, modelArgs as _Type<ModelType.Object>);
+      temp = new ObjectModel(this, {
+        ...modelArgs,
+        being: modelArgs.being as IOntology<ModelType.Object, Being>,
+        knowledge: null,
+        type: modelArgs.type as ModelType.Object,
+      });
     } else if (modelArgs.type === ModelType.Portal) {
-      temp = new PortalModel(this, modelArgs as _Type<ModelType.Portal>);
+      temp = new PortalModel(this, {
+        ...modelArgs,
+        being: modelArgs.being as IOntology<ModelType.Portal, Being>,
+        knowledge: null,
+        type: modelArgs.type as ModelType.Portal,
+      });
     } else if (modelArgs.type === ModelType.Thought) {
-      temp = new ThoughtModel(this, modelArgs as _Type<ModelType.Thought>);
+      temp = new ThoughtModel(this, {
+        ...modelArgs,
+        being: null,
+        knowledge: null,
+        type: modelArgs.type as ModelType.Thought,
+      });
     } else {
       throw new Error('Type argument not recognized in World.addModel.');
     }
@@ -176,7 +222,11 @@ export class World implements IWorld {
       [modelArgs.name]: temp,
     });
 
-    return temp as IModel<Type, Being, Knowledge>;
+    return temp as (
+      Type extends keyof TypedModelInterfaces<Being, Knowledge> ?
+        TypedModelInterfaces<Being, Knowledge>[Type] :
+        IModel<Type, Being, Knowledge>
+    );
   };
 
   public readonly getTag = (toSearch: string | ITag) => (
@@ -200,17 +250,16 @@ export class World implements IWorld {
   };
 
   public readonly removeModel = (
-    model: string | IModel<ModelType, BeingNoThoughtsBase, ModelType>,
+    model: string | IModel<ModelType, OnticTypes, ModelType>,
   ) => {
+    const copy = { ...this.__models };
     if (typeof model === 'string') {
-      const copy = { ...this.__models };
       delete copy[model];
-      this.__models = Object.freeze(copy);
     } else {
-      const copy = { ...this.__models };
       delete copy[model.name];
-      this.__models = Object.freeze(copy);
     }
+
+    this.__models = Object.freeze(copy);
   };
 
   public readonly children = () => Object.values(this.models);
@@ -293,9 +342,8 @@ export class World implements IWorld {
 
   public readonly validateModelArgs = <
     Type extends ModelType,
-    Being extends BeingNoThoughtsBase,
-    Knowledge extends ModelType,
-  >(args: any): args is IModelConstructorArgs<Type, Being, Knowledge> => {
+    Being extends OnticTypes,
+  >(args: any): args is IModelConstructorArgs<Type, Being> => {
     assert(args, 'There were no arguments passed to World.addModel.');
 
     assert(
@@ -317,4 +365,18 @@ export class World implements IWorld {
 
     return true;
   };
+
+  public readonly serialize = (
+    self: IWorld,
+    spaces: number = 0,
+  ) => JSON.stringify(self.serializeToObject(self), null, spaces);
+
+  public readonly serializeToObject = (
+    self: IWorld,
+  ): ISerializedWorld => ({
+    knowledge: self.knowledge ? self.knowledge.serializeToObject(self.knowledge) : null,
+    name: self.name,
+    tags: [ ...self.tags ],
+    type: self.type,
+  });
 }

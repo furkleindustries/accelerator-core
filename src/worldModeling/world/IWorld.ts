@@ -11,6 +11,9 @@ import {
   IModelConstructorArgs,
 } from '../models/IModelConstructorArgs';
 import {
+  ISerializedWorld,
+} from './ISerializedWorld';
+import {
   ModelType,
 } from '../models/ModelType';
 import {
@@ -19,13 +22,16 @@ import {
 import {
   Tag,
 } from '../../tags/Tag';
+import {
+  TypedModelInterfaces,
+} from '../models/TypedModelInterfaces';
 
 export interface IWorld {
   readonly being: null;
 
   /* Worlds may "possess" generic and/or global thoughts but may not be
    * "aware." */
-  readonly knowledge: IEpistemology<ModelType.Thought, OnticTypes, ModelType>;
+  readonly knowledge: IEpistemology<ModelType.Thought, ModelType>;
 
   readonly models: Readonly<
     Record<string, IModel<ModelType, OnticTypes, ModelType>>
@@ -37,15 +43,19 @@ export interface IWorld {
 
   readonly addModel: <
     Type extends ModelType,
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
+    Being extends OnticTypes = never,
+    Knowledge extends ModelType = never,
   >(
     args: IModelConstructorArgs<Type, Being, Knowledge>,
     ctor?: new (
       world: IWorld,
       args: IModelConstructorArgs<Type, Being, Knowledge>,
     ) => IModel<Type, Being, Knowledge>,
-  ) => IModel<Type, Being, Knowledge>;
+  ) => (
+    Type extends keyof TypedModelInterfaces<Being, Knowledge> ?
+      TypedModelInterfaces<Being, Knowledge>[Type] :
+      IModel<Type, Being, Knowledge>
+  );
 
   readonly addTag: (tag: Tag) => void;
 
@@ -62,13 +72,13 @@ export interface IWorld {
 
   readonly finalize: (self: IWorld) => void;
 
-  find<
+  readonly find: <
     Type extends ModelType,
     Being extends OnticTypes,
     Knowledge extends ModelType,
   >(
     args: FindModelArgs<Type, Being, Knowledge>,
-  ): IModel<Type, Being, Knowledge> | null;
+  ) => IModel<Type, Being, Knowledge> | null;
 
   readonly findAll: <
     Type extends ModelType,
@@ -89,6 +99,13 @@ export interface IWorld {
   readonly getTag: (toSearch: Tag) => any;
 
   readonly initialize: (self: IWorld) => void;
+
+  readonly serialize: (
+    self: IWorld,
+    spaces?: number,
+  ) => string;
+
+  readonly serializeToObject: (self: IWorld) => ISerializedWorld;
 
   readonly removeModel: <Type extends ModelType>(
     model: IModel<Type, OnticTypes, ModelType>,

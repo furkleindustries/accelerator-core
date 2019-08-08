@@ -68,7 +68,7 @@ export class ActorModel<
 
   constructor(
     world: IWorld,
-    args: IModelConstructorArgs<ModelType.Actor, Being>,
+    args: IModelConstructorArgs<ModelType.Actor, Being, Knowledge>,
   ) {
     super(world, args);
 
@@ -96,7 +96,7 @@ export class ActorModel<
       >>(this.world.find(target));
     }
 
-    this.being.containment!.parent.being.containment.addChild(targetModel);
+    this.being.containment!.parent.being!.containment.addChild(targetModel);
   };
 
   public readonly move = (
