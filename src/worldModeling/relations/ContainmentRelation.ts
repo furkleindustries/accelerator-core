@@ -2,8 +2,8 @@ import {
   ContainableTypes,
 } from './ContainableTypes';
 import {
-  ContainmentTypes,
-} from './ContainmentTypes';
+  ContainingTypes,
+} from './ContainingTypes';
 import {
   IContainmentRelation,
 } from './IContainmentRelation';
@@ -12,7 +12,7 @@ import {
 } from './RelationBase';
 
 export class ContainmentRelation<
-  Type extends ContainmentTypes,
+  Type extends (ContainableTypes | ContainingTypes),
   Being extends ContainableTypes,
 > extends RelationBase<Type>
   implements IContainmentRelation<Type, Being>

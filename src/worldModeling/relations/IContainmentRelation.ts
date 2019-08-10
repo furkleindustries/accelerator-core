@@ -2,10 +2,11 @@ import {
   ContainableTypes,
 } from './ContainableTypes';
 import {
-  ContainmentTypes,
-} from './ContainmentTypes';
+  ContainingTypes,
+} from './ContainingTypes';
 import {
-  FindModelArgs,
+  IFindBaseArgs,
+  FindContainmentArgs,
 } from '../querying/FindModelArgs';
 import {
   IModel,
@@ -27,28 +28,40 @@ import {
 } from '../ontology/OnticTypes';
 
 export interface IContainmentRelation<
-  Type extends ContainmentTypes,
+  Type extends (ContainableTypes | ContainingTypes),
   Being extends OnticTypes,
 > extends IRelation<Type>
 {
-  readonly children: ReadonlyArray<IModel<Type, Being, ModelType>>;
   readonly parent: Type extends ModelType.Location ?
     IWorld :
-    IModel<ContainmentTypes, ContainableTypes, ModelType>;
+    IModel<ContainingTypes, ContainableTypes, ModelType>;
 
-  readonly addChild: (model: IModel<Type, Being, ModelType>) => void;
+  readonly find: <Being extends OnticTypes>(
+    args: string |
+      IFindBaseArgs<ModelType> & FindContainmentArgs<ContainableTypes, Being>,
+  ) => IModel<ModelType, Being, ModelType> | null;
 
-  readonly descendants: () => ReadonlyArray<IModel<Type, Being, ModelType>>;
+  readonly findAll: <
+    Being extends OnticTypes,
+    Knowledge extends ModelType,
+  >(
+    args: '*' |
+      IFindBaseArgs<Type> & FindContainmentArgs<ContainableTypes, Being>,
+  ) => ReadonlyArray<IModel<ModelType, Being, Knowledge>>;
+
+  readonly findAllGenerator: <
+    Being extends OnticTypes,
+    Knowledge extends ModelType,
+  >(
+    args: '*' |
+      IFindBaseArgs<Type> & FindContainmentArgs<ContainableTypes, Being>,
+  ) => IterableIterator<IModel<ModelType, Being, Knowledge>>;
 
   readonly parents: (
-    args: string | FindModelArgs<ModelType, OnticTypes, ModelType>,
-  ) => ReadonlyArray<
-    IModel<ModelType, OnticTypes, ModelType> | IWorld
-  >;
-
-  readonly removeChild: (
-    model: IModel<Type, Being, ModelType>,
-  ) => void;
+    args: string |
+      IFindBaseArgs<Type> &
+        FindContainmentArgs<ContainableTypes, OnticTypes>,
+  ) => ReadonlyArray<IModel<ModelType, OnticTypes, ModelType> | IWorld>;
 
   readonly serialize: (
     self: IContainmentRelation<Type, Being>,
@@ -58,4 +71,20 @@ export interface IContainmentRelation<
   readonly serializeToObject: (
     self: IContainmentRelation<Type, Being>,
   ) => ISerializedContainmentRelation;
+
+  readonly children: Type extends ContainingTypes ?
+    ReadonlyArray<IModel<ModelType, Being, ModelType>> :
+    null;
+
+  readonly addChild: Type extends ContainingTypes ?
+    (model: IModel<ModelType, Being, ModelType>) => void :
+    null;
+
+  readonly descendants: Type extends ContainingTypes ?
+    () => ReadonlyArray<IModel<ModelType, Being, ModelType>> :
+    null;
+
+  readonly removeChild: Type extends ContainingTypes ?
+    (model: IModel<Type, Being, ModelType>) => void :
+    null;
 }

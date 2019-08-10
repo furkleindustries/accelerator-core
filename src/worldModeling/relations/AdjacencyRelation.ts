@@ -11,6 +11,9 @@ import {
   IModel,
 } from '../models/IModel';
 import {
+  ISerializedAdjacencyRelation,
+} from './ISerializedAdjacencyRelation';
+import {
   ITag,
 } from '../../tags/ITag';
 import {
@@ -25,7 +28,6 @@ import {
 import {
   RelationBase,
 } from './RelationBase';
-import { ISerializedAdjacencyRelation } from './ISerializedAdjacencyRelation';
 
 type Adjacencies<T extends BaseAdjacencies = BaseAdjacencies> = T;
 
@@ -65,26 +67,6 @@ export class AdjacencyRelation<
     super(world, args.modelType);
   }
 
-  public readonly clone = () => {
-    const copy: IAdjacencyRelation<Type, Being> = Object.assign(
-      Object.create(Object.getPrototypeOf(this)),
-      this,
-    );
-
-    this.neighbors.forEach((value, key) => value.forEach((model) => (
-      copy.addNeighbor(key, model)
-    )));
-  };
-
-  public readonly destroy = ((self: any) => () => {
-    delete self.__modelType;
-    delete self.modelType;
-    this.tags.forEach(this.removeTag);
-    delete self.__tags;
-    delete self.tags;
-    delete self.__world;
-    delete self.world;
-  })(this);
 
   public readonly addNeighbor = <T extends BaseAdjacencies = BaseAdjacencies>(
     adjacency: T,
@@ -101,9 +83,54 @@ export class AdjacencyRelation<
     }
   };
 
-  public readonly findAllGenerator = ((self: any) => function* () {
+  public readonly clone = (
+    self: IAdjacencyRelation<Type, Being>,
+  ): IAdjacencyRelation<Type, Being> => {
+    const copy: IAdjacencyRelation<Type, Being> = Object.assign(
+      Object.create(Object.getPrototypeOf(this)),
+      this,
+    );
 
+    this.neighbors.forEach((value, key) => value.forEach((model) => (
+      copy.addNeighbor(key, model)
+    )));
+
+    return copy;
+  };
+
+  public readonly destroy = ((self: any) => () => {
+    delete self.__modelType;
+    delete self.modelType;
+    this.tags.forEach(this.removeTag);
+    delete self.__tags;
+    delete self.tags;
+    delete self.__world;
+    delete self.world;
   })(this);
+
+  readonly find: <
+    Being extends OnticTypes,
+    Knowledge extends ModelType,
+  >(
+    args: string |
+      IFindBaseArgs<Type> & FindAdjacencyArgs<Type, Being, Knowledge>,
+  ) => IModel<Type, Being, Knowledge> | null;
+
+  readonly findAll: <
+    Being extends OnticTypes,
+    Knowledge extends ModelType,
+  >(
+    args: '*' |
+      IFindBaseArgs<Type> & FindAdjacencyArgs<Type, Being, Knowledge>,
+  ) => ReadonlyArray<IModel<Type, Being, Knowledge>>;
+
+  readonly findAllGenerator: <
+    Being extends OnticTypes,
+    Knowledge extends ModelType,
+  >(
+    args: '*' |
+      IFindBaseArgs<Type> & FindAdjacencyArgs<Type, Being, Knowledge>,
+  ) => IterableIterator<IModel<Type, Being, Knowledge>>;
 
   public readonly removeNeighbor = <T extends BaseAdjacencies = BaseAdjacencies>(
     adjacency: T,

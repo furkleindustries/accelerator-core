@@ -8,6 +8,10 @@ import {
   IContainmentRelation,
 } from '../relations/IContainmentRelation';
 import {
+  FindOnticArgs,
+  IFindBaseArgs,
+} from '../querying/FindModelArgs';
+import {
   ISerializedOntology,
 } from './ISerializedOntology';
 import {
@@ -25,6 +29,8 @@ import {
 import {
   Tag,
 } from '../../tags/Tag';
+import { IModel } from '../models/IModel';
+import { ContainableTypes } from '../relations/ContainableTypes';
 
 export interface IOntology<
   Type extends OnticTypes,
@@ -32,7 +38,7 @@ export interface IOntology<
 > {
   readonly adjacency: IAdjacencyRelation<Type, Being>;
 
-  readonly containment: Type extends ContainmentTypes ?
+  readonly containment: Type extends (ContainableTypes | ContainmentTypes) ?
     IContainmentRelation<
       /* Do not allow portals to have containment relations. */
       ContainmentTypes,
@@ -52,8 +58,22 @@ export interface IOntology<
   readonly world: IWorld;
 
   readonly addTag: (tag: Tag) => void;
-  readonly clone: () => IOntology<Type, Being>;
-  readonly destroy: () => void;
+  readonly clone: (self: IOntology<Type, Being>) => IOntology<Type, Being>;
+  readonly destroy: (self: IOntology<Type, Being>) => void;
+
+  readonly find: <B extends Being, K extends ModelType>(
+    args: string | IFindBaseArgs<OnticTypes> & FindOnticArgs<OnticTypes, B, K>,
+  ) => IModel<OnticTypes, B, ModelType> | null;
+
+  readonly findAll: <B extends Being, K extends ModelType>(
+    args: '*' | IFindBaseArgs<OnticTypes> & FindOnticArgs<OnticTypes, B, K>,
+  ) => ReadonlyArray<IModel<OnticTypes, B, ModelType>>;
+
+  readonly findAllGenerator: <B extends Being, K extends ModelType>(
+    args: '*' |
+      IFindBaseArgs<OnticTypes> & FindOnticArgs<OnticTypes, B, K>,
+  ) => IterableIterator<IModel<OnticTypes, B, ModelType>>;
+
   readonly getTag: (toSearch: Tag) => ITag | null;
   readonly removeTag: (tag: Tag) => void;
   readonly serialize: (

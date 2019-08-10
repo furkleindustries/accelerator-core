@@ -5,8 +5,8 @@ import {
   IEpistemology,
 } from '../epistemology/IEpistemology';
 import {
-  ModelType,
-} from './ModelType';
+  IFindBaseArgs,
+} from '../querying/FindModelArgs';
 import {
   IOntology,
 } from '../ontology/IOntology';
@@ -14,14 +14,17 @@ import {
   ISerializedModel,
 } from './ISerializedModel';
 import {
+  ITag,
+} from '../../tags/ITag';
+import {
   IWorld,
 } from '../world/IWorld';
 import {
+  ModelType,
+} from './ModelType';
+import {
   OnticTypes,
 } from '../ontology/OnticTypes';
-import {
-  ITag,
-} from '../../tags/ITag';
 import {
   Tag,
 } from '../../tags/Tag';
@@ -51,7 +54,11 @@ export interface IModel<
   /**
    * The concrete model type produced by utility methods.
    */
-  ModelInterface extends IModel<any, any, any> = TypedModelInterfaces<Being, Knowledge>[Type],
+  ModelInterface extends IModel<
+    ModelType,
+    OnticTypes,
+    ModelType
+  > = TypedModelInterfaces<Being, Knowledge>[Type],
 > {
   readonly being: Type extends OnticTypes ?
     IOntology<Type, Being> :
@@ -76,6 +83,19 @@ export interface IModel<
   readonly clone: () => ModelInterface;
   readonly destroy: () => void;
   readonly finalize: (self: IModel<Type, Being, Knowledge>) => void;
+
+  readonly find: (
+    args: string | IFindBaseArgs<ModelType>,
+  ) => IModel<ModelType, OnticTypes, ModelType> | null;
+
+  readonly findAll: (
+    args: '*' | IFindBaseArgs<ModelType>,
+  ) => ReadonlyArray<IModel<ModelType, OnticTypes, ModelType>>;
+
+  readonly findAllGenerator: (
+    args: '*' | IFindBaseArgs<ModelType>,
+  ) => IterableIterator<IModel<ModelType, OnticTypes, ModelType>>;
+
   readonly getTag: (toSearch: Tag) => ITag | null;
   readonly initialize: (self: IModel<Type, Being, Knowledge>) => void;
   readonly removeTag: (toSearch: Tag) => void;

@@ -2,7 +2,7 @@ import {
   addTag,
 } from '../../tags/addTag';
 import {
-  FindModelArgs,
+  FindModelArgs, IFindBaseArgs,
 } from '../querying/FindModelArgs';
 import {
   getTag,
@@ -34,7 +34,8 @@ import {
 
 export abstract class RelationBase<
   Type extends ModelType,
-> implements IRelation<Type> {
+> implements IRelation<Type>
+{
   protected readonly __modelType: ModelType;
   public get modelType() {
     return this.__modelType;
@@ -69,23 +70,17 @@ export abstract class RelationBase<
     void (this.__tags = removeTag(this.tags, tag))
   );
 
-  public readonly find = <
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  >(
-    args: FindModelArgs<Type, Being, Knowledge>,
-  ): IModel<Type, Being, Knowledge> | null => this.findAllGenerator(
+  public readonly find = (
+    args: string | IFindBaseArgs<ModelType>,
+  ): IModel<ModelType, OnticTypes, ModelType> | null => this.findAllGenerator(
     typeof args === 'string' ?
       { name: args } :
       args,
   ).next().value || null;
   
-  public readonly findAll = <
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  >(
-    args: '*' | Exclude<FindModelArgs<Type, Being, Knowledge>, string>,
-  ): ReadonlyArray<IModel<Type, Being, Knowledge>> =>
+  public readonly findAll = (
+    args: '*' | IFindBaseArgs<ModelType>,
+  ): ReadonlyArray<IModel<ModelType, OnticTypes, ModelType>> =>
   {
     const ret = [];
     for (const model of this.findAllGenerator(args)) {
@@ -100,12 +95,9 @@ export abstract class RelationBase<
     spaces?: number,
   ): string => JSON.stringify(this.serializeToObject(self), null, spaces);
 
-  public abstract readonly findAllGenerator: <
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  >(
-    args: '*' | FindModelArgs<Type, Being, Knowledge>,
-  ) => IterableIterator<IModel<Type, Being, Knowledge>>;
+  public abstract readonly findAllGenerator: (
+    args: '*' | FindModelArgs<ModelType, OnticTypes, ModelType>,
+  ) => IterableIterator<IModel<ModelType, OnticTypes, ModelType>>;
 
   public abstract readonly clone: () => any;
   public abstract readonly destroy: () => void;

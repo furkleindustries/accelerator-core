@@ -2,6 +2,9 @@ import {
   EpistemicTypes,
 } from '../epistemology/EpistemicTypes';
 import {
+  IActorModelOptionalFunctions,
+} from './IActorModelOptionalFunctions';
+import {
   IEpistemology,
 } from '../epistemology/IEpistemology';
 import {
@@ -25,6 +28,7 @@ export interface IModelConstructorArgs<
   readonly name: string;
   readonly type: Type;
 
+  readonly actorFuncs?: Partial<IActorModelOptionalFunctions<Being, Knowledge>>;
   readonly being?: Type extends OnticTypes ? IOntology<Type, Being> : null;
   readonly knowledge?: Type extends EpistemicTypes ?
     IEpistemology<Type, Knowledge> :

@@ -124,7 +124,7 @@ export class Epistemology<
       this.__awareness = (
         new AwarenessRelation<any, Knowledge>(
           this.world,
-          this.__modelType,
+          this.modelType,
         )
       );
     }

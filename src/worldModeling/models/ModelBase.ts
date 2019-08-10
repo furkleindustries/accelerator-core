@@ -11,11 +11,11 @@ import {
   getTag,
 } from '../../tags/getTag';
 import {
-  FindModelArgs,
-} from '../querying/FindModelArgs';
-import {
   IEpistemology,
 } from '../epistemology/IEpistemology';
+import {
+  IFindBaseArgs,
+} from '../querying/FindModelArgs';
 import {
   IModel,
 } from './IModel';
@@ -214,23 +214,17 @@ export abstract class ModelBase<
     }
   };
 
-  public readonly find = <
-    Type extends ModelType,
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  >(
-    args: string | FindModelArgs<Type, Being, Knowledge>,
-  ) => this.findAllGenerator(
+  public readonly find = (
+    args: string | IFindBaseArgs<ModelType>,
+  ): IModel<ModelType, OnticTypes, ModelType> | null => this.findAllGenerator(
     typeof args === 'string' ?
       { name: args } :
       args,
   ).next().value || null;
 
-  public readonly findAll = <
-    Type extends ModelType,
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  >(args: '*' | FindModelArgs<Type, Being, Knowledge>) => {
+  public readonly findAll = (
+    args: '*' | IFindBaseArgs<ModelType>,
+  ) => {
     const ret = [];
     for (const model of this.findAllGenerator(args)) {
       ret.push(model);
@@ -239,11 +233,11 @@ export abstract class ModelBase<
     return ret;
   };
 
-  public readonly getTag = (toSearch: string | ITag) => (
+  public readonly getTag = (toSearch: Tag) => (
     getTag(this.tags, toSearch)
   );
 
-  public readonly removeTag = (tag: string | ITag) => (
+  public readonly removeTag = (tag: Tag) => (
     void (this.__tags = Object.freeze(removeTag(this.tags, tag)))
   );
 
@@ -262,11 +256,7 @@ export abstract class ModelBase<
     type: self.type,
   });
 
-  public abstract readonly findAllGenerator: <
-    Type extends ModelType,
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  >(
-    args: '*' | FindModelArgs<Type, Being, Knowledge>,
-  ) => IterableIterator<ModelInterface>;
+  public abstract readonly findAllGenerator: (
+    args: '*' | IFindBaseArgs<ModelType>,
+  ) => IterableIterator<IModel<ModelType, OnticTypes, ModelType>>;
 }

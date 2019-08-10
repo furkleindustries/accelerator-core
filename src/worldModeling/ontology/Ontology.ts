@@ -5,11 +5,18 @@ import {
   AdjacencyRelation,
 } from '../relations/AdjacencyRelation';
 import {
+  ContainableTypes,
+} from '../relations/ContainableTypes';
+import {
   ContainmentRelation,
 } from '../relations/ContainmentRelation';
 import {
   ContainmentTypes,
 } from '../relations/ContainmentTypes';
+import {
+  FindOnticArgs,
+  IFindBaseArgs,
+} from '../querying/FindModelArgs';
 import {
   getStructuredTags,
 } from '../../tags/getStructuredTags';
@@ -23,11 +30,17 @@ import {
   IContainmentRelation,
 } from '../relations/IContainmentRelation';
 import {
+  IModel,
+} from '../models/IModel';
+import {
   IOntology,
 } from './IOntology';
 import {
   IOntologyConstructorArgs,
 } from './IOntologyConstructorArgs';
+import {
+  ISerializedOntology,
+} from './ISerializedOntology';
 import {
   ITag,
 } from '../../tags/ITag';
@@ -52,7 +65,6 @@ import {
 import {
   assertValid,
 } from 'ts-assertions';
-import { ISerializedOntology } from './ISerializedOntology';
 
 export class Ontology<
   Type extends OnticTypes,
@@ -61,7 +73,7 @@ export class Ontology<
 {
   public readonly adjacency: IAdjacencyRelation<Type, Being>;
 
-  readonly containment: Type extends ContainmentTypes ?
+  readonly containment: Type extends (ContainableTypes | ContainmentTypes) ?
     IContainmentRelation<
       /* Do not allow portals to have containment relations. */
       ContainmentTypes,
@@ -110,15 +122,19 @@ export class Ontology<
       this.__tags = Object.freeze(getStructuredTags(tags));
     }
 
-    this.adjacency = new AdjacencyRelation(this.world, { modelType });
+    this.adjacency = new AdjacencyRelation<Type, Being>(
+      this.world,
+      { modelType },
+    );
+
     if (modelType === ModelType.Actor ||
         modelType === ModelType.Location ||
         modelType === ModelType.Object)
     {
-      this.containment = new ContainmentRelation(
+      this.containment = new ContainmentRelation<Type, Being>(
         this.world,
-        modelType as ContainmentTypes,
-      ) as any;
+        modelType,
+      );
     }
 
     if (typeof finalize === 'function') {
@@ -132,18 +148,23 @@ export class Ontology<
   }
 
   public readonly addTag = (tag: Tag) => addTag(this.tags, tag);
-  public readonly clone: () => IOntology<Type, Being>;
-  public readonly destroy = () => {
-    if (typeof this.finalize === 'function') {
-      this.finalize(this);
+  public readonly clone = (
+    self: IOntology<Type, Being>,
+  ): IOntology<Type, Being> => {
+
+  };
+
+  public readonly destroy = (self: IOntology<Type, Being>): void => {
+    if (typeof self.finalize === 'function') {
+      self.finalize(self);
     }
 
-    this.adjacency.destroy();
-    if (this.containment && typeof this.containment.destroy === 'function') {
-      this.containment.destroy();
+    self.adjacency.destroy(self.adjacency);
+    if (self.containment && typeof self.containment.destroy === 'function') {
+      self.containment.destroy(self.containment);
     }
 
-    this.tags.forEach(this.removeTag);
+    self.tags.forEach(this.removeTag);
 
     ((self: any) => {
       delete self.__adjacency;
@@ -152,10 +173,41 @@ export class Ontology<
       delete self.containment;
       delete self.__tags;
       delete self.tags;
-    })(this);
+    })(self);
   };
 
   public readonly getTag = (toSearch: Tag) => getTag(this.tags, toSearch);
+
+  public readonly find = <B extends Being, K extends ModelType>(
+    args: string | IFindBaseArgs<OnticTypes> & FindOnticArgs<OnticTypes, B, K>,
+  ): IModel<OnticTypes, B, ModelType> | null => this.findAllGenerator(
+    typeof args === 'string' ?
+      { name: args } :
+      args,
+  ).next().value || null;
+
+  public readonly findAll = <B extends Being, K extends ModelType>(
+    args: '*' | IFindBaseArgs<OnticTypes> & FindOnticArgs<OnticTypes, B, K>,
+  ): ReadonlyArray<IModel<OnticTypes, B, ModelType>> => {
+    const ret = [];
+    for (const model of this.findAllGenerator(args)) {
+      ret.push(model);
+    }
+
+    return ret;
+  };
+
+  readonly findAllGenerator = ((self: IOntology<Type, Being>) => function* <
+    B extends Being,
+    K extends ModelType,
+  >(
+    args: '*' |
+      IFindBaseArgs<OnticTypes> & FindOnticArgs<OnticTypes, B, K>,
+  ): IterableIterator<IModel<OnticTypes, B, K>>
+  {
+    
+  })(this);
+
   public readonly removeTag = (toSearch: Tag) => removeTag(this.tags, toSearch);
   public readonly serializeToObject = (
     self: IOntology<Type, Being>,

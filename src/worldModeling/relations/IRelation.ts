@@ -1,5 +1,5 @@
 import {
-  FindModelArgs,
+  IFindBaseArgs,
 } from '../querying/FindModelArgs';
 import {
   IModel,
@@ -23,29 +23,20 @@ export interface IRelation<Type extends ModelType> {
   readonly world: IWorld;
 
   readonly addTag: (tag: ITag) => void;
-  readonly clone: () => any;
-  readonly destroy: () => void;
+  readonly clone: (self: IRelation<Type>) => any;
+  readonly destroy: (self: IRelation<Type>) => void;
 
-  readonly find: <
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  >(
-    args: string | FindModelArgs<Type, Being, Knowledge>,
-  ) => IModel<Type, Being, Knowledge> | null;
+  readonly find: (
+    args: string | IFindBaseArgs<ModelType>,
+  ) => IModel<ModelType, OnticTypes, ModelType> | null;
 
-  readonly findAll: <
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  >(
-    args: '*' | FindModelArgs<Type, Being, Knowledge>,
-  ) => ReadonlyArray<IModel<Type, Being, Knowledge>>;
+  readonly findAll: (
+    args: '*' | IFindBaseArgs<ModelType>,
+  ) => ReadonlyArray<IModel<ModelType, OnticTypes, ModelType>>;
 
-  readonly findAllGenerator: <
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  >(
-    args: '*' | FindModelArgs<Type, Being, Knowledge>,
-  ) => IterableIterator<IModel<Type, Being, Knowledge>>;
+  readonly findAllGenerator: (
+    args: '*' | IFindBaseArgs<ModelType>,
+  ) => IterableIterator<IModel<ModelType, OnticTypes, ModelType>>;
 
   readonly removeTag: (tag: ITag) => void;
   readonly serialize: (self: IRelation<Type>, spaces?: number) => string;

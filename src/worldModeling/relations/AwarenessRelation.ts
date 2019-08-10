@@ -2,7 +2,11 @@ import {
   EpistemicTypes,
 } from '../epistemology/EpistemicTypes';
 import {
-  FindModelArgs,
+  findAllGenerate,
+} from '../querying/findAllGenerate';
+import {
+  FindAwarenessArgs,
+  IFindBaseArgs,
 } from '../querying/FindModelArgs';
 import {
   IAwarenessRelation,
@@ -69,15 +73,44 @@ export class AwarenessRelation<
     })(this);
   };
 
+  public readonly find: <
+    Being extends OnticTypes,
+    Knowledge extends ModelType,
+  >(
+    args: string |
+      IFindBaseArgs<OnticTypes> &
+        FindAwarenessArgs<EpistemicTypes & OnticTypes, Being>,
+  ) => IModel<OnticTypes, Being, Knowledge> | null;
+
+  public readonly findAll: <
+    Being extends OnticTypes,
+    Knowledge extends ModelType,
+  >(
+    args: '*' |
+      IFindBaseArgs<OnticTypes> &
+        FindAwarenessArgs<EpistemicTypes & OnticTypes, Being>,
+  ) => ReadonlyArray<IModel<OnticTypes, Being, Knowledge>>;
+
   public readonly findAllGenerator = ((
     self: IAwarenessRelation<Type, Knowledge>,
   ) => function* findAllGenerator<
     Being extends OnticTypes,
     Knowledge extends ModelType,
   >(
-    args: '*' | FindModelArgs<Type, Being, Knowledge>,
-  )/*: IterableIterator<IModel<Type, Being, Knowledge>> */ {
-      
+    args: '*' |
+      IFindBaseArgs<OnticTypes> &
+        FindAwarenessArgs<EpistemicTypes & OnticTypes, Being>,
+  ): IterableIterator<IModel<OnticTypes, Being, Knowledge>> {
+    if (args === '*') {
+      for (const perception of self.perceptions) {
+        yield perception as IModel<OnticTypes, Being, any>;
+      }
+    }
+
+    yield* findAllGenerate<OnticTypes, Being, Knowledge>(
+      self.perceptions as IModel<OnticTypes, Being, any>[],
+      args,
+    );
   })(this);
 
   public readonly removePerception = (

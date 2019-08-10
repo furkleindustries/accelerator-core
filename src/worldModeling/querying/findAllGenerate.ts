@@ -14,9 +14,6 @@ import {
   IModel,
 } from '../models/IModel';
 import {
-  IWorld,
-} from '../world/IWorld';
-import {
   ModelType,
 } from '../models/ModelType';
 import {
@@ -26,17 +23,19 @@ import {
   assert,
   assertValid,
 } from 'ts-assertions';
+import { getTag } from '../../tags/getTag';
+import { MaybeReadonlyArray } from '../../typeAliases/MaybeReadonlyArray';
 
 function* generate<
   Type extends ModelType,
   Being extends OnticTypes,
   Knowledge extends ModelType,
 > (
-  models: Record<string, IModel<Type, Being, Knowledge>>,
+  models: MaybeReadonlyArray<IModel<Type, Being, Knowledge>>,
   filter: (model: IModel<Type, Being, Knowledge>) => boolean = () => true,
 ): IterableIterator<IModel<Type, Being, Knowledge>>
 {
-  const filtered = Object.values(models).filter(filter);
+  const filtered = models.filter(filter);
   for (const model of filtered) {
     yield model;
   }
@@ -47,18 +46,13 @@ export function* findAllGenerate<
   Being extends OnticTypes,
   Knowledge extends ModelType,
 >(
-  world: IWorld,
+  models: MaybeReadonlyArray<IModel<Type, Being, Knowledge>>,
   args: '*' | FindModelArgs<Type, Being, Knowledge>,
 ): IterableIterator<IModel<Type, Being, Knowledge>> {
   assert(
     args && (args === '*' || typeof args === 'object'),
     'The args argument to findAllGenerate was not * or a valid object.',
   );
-
-  const models = world.models as Record<
-    string,
-    IModel<Type, Being, Knowledge>
-  >;
 
   if (args === '*') {
     yield* generate(models);
@@ -108,43 +102,60 @@ export function* findAllGenerate<
       type: modelType,
     }: IModel<ModelType, Being, Knowledge>): boolean => (
       (typeof name === 'boolean' ? modelName === name : true) &&
-        (tags ? !tags.find((tag) => !modelTags.includes(tag)) : true) &&
-        (type ? modelType === type : true) &&
+        tags ?
+          !tags.find((tag) => !modelTags.includes(getTag([ tag ], tag)!)) :
+          true &&
 
-        modelKnowledge ? (() => (
-          (awareOf ? filterEpistemology(modelKnowledge, 'awareOf', awareOf) : true) &&
-          (inAwarenessGraph ?
-            filterEpistemology(modelKnowledge, 'inAwarenessGraph', inAwarenessGraph) :
-            true) &&
+        type ? modelType === type : true &&
 
-          (thoughts ? filterEpistemology(modelKnowledge, 'thoughts', thoughts) : true) &&
-          (wants ? filterEpistemology(modelKnowledge, 'wants', wants) : true)
-        ))() : true &&
+        modelKnowledge ?
+          (
+            awareOf ?
+              filterEpistemology(modelKnowledge, 'awareOf', awareOf) :
+              true &&
 
-        modelBeing ? (() => (
-          (adjacent ?
-            filterOntology(modelBeing, 'adjacent', adjacent) :
-            true) &&
+            inAwarenessGraph ?
+              filterEpistemology(
+                modelKnowledge,
+                'inAwarenessGraph',
+                inAwarenessGraph,
+              ) :
+              true &&
 
-          (connected ?
-            filterOntology(modelBeing, 'connected', connected) :
-            true) &&
+            thoughts ?
+              filterEpistemology(modelKnowledge, 'thoughts', thoughts) :
+              true &&
 
-          (ancestors ?
-            filterOntology(modelBeing, 'ancestors', ancestors) :
-            true) &&
+            wants ? filterEpistemology(modelKnowledge, 'wants', wants) : true
+          ) :
+          true &&
 
-          (children ?
-            filterOntology(modelBeing, 'children', children) :
-            true) &&
+        modelBeing ?
+          (
+            adjacent ?
+              filterOntology(modelBeing, 'adjacent', adjacent) :
+              true &&
 
-          (descendants ?
-            filterOntology(modelBeing, 'descendants', descendants) :
-            true) &&
+            connected ?
+              filterOntology(modelBeing, 'connected', connected) :
+              true &&
 
-          (parent ? filterOntology(modelBeing, 'parent', [ parent ]) : true) &&
-          (links ? filterOntology(modelBeing, 'links', links) : true)
-        ))() : true
+            ancestors ?
+              filterOntology(modelBeing, 'ancestors', ancestors) :
+              true &&
+
+            children ?
+              filterOntology(modelBeing, 'children', children) :
+              true &&
+
+            descendants ?
+              filterOntology(modelBeing, 'descendants', descendants) :
+              true &&
+
+            parent ? filterOntology(modelBeing, 'parent', [ parent ]) : true &&
+            links ? filterOntology(modelBeing, 'links', links) : true
+          ) :
+          true
     );
   } else {
     filter = ({
@@ -154,58 +165,68 @@ export function* findAllGenerate<
       tags: modelTags,
       type: modelType,
     }: IModel<ModelType, Being, Knowledge>): boolean => (
-      (name ? modelName === name : false) ||
-        (tags ? !tags.find((tag) => !modelTags.includes(tag)) : false) ||
-        (type ? modelType === type : false) ||
+      name ? modelName === name : false ||
+        tags ?
+          !tags.find((tag) => !modelTags.includes(getTag([ tag ], tag)!)) :
+          false ||
 
-        modelKnowledge ? (() => (
-          (awareOf ?
-            filterEpistemology(
-              modelKnowledge!,
-              'awareOf',
-              awareOf,
-            ) :
-            false) ||
+        type ? modelType === type : false ||
 
-          (inAwarenessGraph ?
-            filterEpistemology(
-              modelKnowledge!,
-              'inAwarenessGraph',
-              inAwarenessGraph,
-            ) :
-            false) ||
+        modelKnowledge ?
+          (
+            awareOf ?
+              filterEpistemology(
+                modelKnowledge!,
+                'awareOf',
+                awareOf,
+              ) :
+              false ||
 
-          (thoughts ?
-            filterEpistemology(modelKnowledge!, 'thoughts', thoughts) :
-            false) ||
+            inAwarenessGraph ?
+              filterEpistemology(
+                modelKnowledge!,
+                'inAwarenessGraph',
+                inAwarenessGraph,
+              ) :
+              false ||
 
-          (wants ? filterEpistemology(modelKnowledge!, 'wants', wants) : false)
-        ))() : false ||
+            thoughts ?
+              filterEpistemology(modelKnowledge!, 'thoughts', thoughts) :
+              false ||
 
-        modelBeing ? (() => (
-          (adjacent ?
-            filterOntology(modelBeing, 'adjacent', adjacent) :
-            false) ||
+            wants ? filterEpistemology(modelKnowledge!, 'wants', wants) : false
+          ) :
+          false ||
 
-          (connected ?
-            filterOntology(modelBeing, 'connected', connected) :
-            false) ||
+        modelBeing ?
+          (
+            adjacent ?
+              filterOntology(modelBeing, 'adjacent', adjacent) :
+              false ||
 
-          (ancestors ?
-            filterOntology(modelBeing, 'ancestors', ancestors) :
-            false) ||
+            connected ?
+              filterOntology(modelBeing, 'connected', connected) :
+              false ||
 
-          (children ?
-            filterOntology(modelBeing, 'children', children) :
-            false) ||
+            ancestors ?
+              filterOntology(modelBeing, 'ancestors', ancestors) :
+              false ||
 
-          (descendants ?
-            filterOntology(modelBeing, 'descendants', descendants) :
-            false) ||
+            children ?
+              filterOntology(modelBeing, 'children', children) :
+              false ||
 
-          (parent ? filterOntology(modelBeing, 'parent', [ parent ]) : false) ||
-          (links ? filterOntology(modelBeing, 'links', links) : false)
-        ))() : true
+            descendants ?
+              filterOntology(modelBeing, 'descendants', descendants) :
+              false ||
+
+            parent ?
+              filterOntology(modelBeing, 'parent', [ parent ]) :
+              false ||
+
+            links ? filterOntology(modelBeing, 'links', links) : false
+          ) :
+          true
     );
   }
 
