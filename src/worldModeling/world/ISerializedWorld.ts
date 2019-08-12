@@ -9,8 +9,8 @@ import {
 } from '../../tags/ITag';
 
 export interface ISerializedWorld {
-  readonly being: null;
   readonly knowledge: ISerializedEpistemology;
+  readonly name: string;
   readonly models: ISerializedModel[];
   readonly tags: ITag[];
 }

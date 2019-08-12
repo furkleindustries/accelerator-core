@@ -2,6 +2,9 @@ import {
   ContainableTypes,  
 } from '../relations/ContainableTypes';
 import {
+  ContainmentTypes,
+} from '../relations/ContainmentTypes';
+import {
   EpistemicTypes,
 } from '../epistemology/EpistemicTypes';
 import {
@@ -102,8 +105,8 @@ export type FindAwarenessArgs<
 >;
 
 export type FindContainmentArgs<
-  Type extends ContainableTypes,
-  Being extends OnticTypes,
+  Type extends ContainmentTypes,
+  Being extends ContainableTypes,
 > = Pick<
   FindModelArgs<Type, Being, ModelType>,
   'ancestors' | 'children' | 'descendants' | 'parent'
@@ -121,13 +124,16 @@ export type FindEpistemicArgs<
   Type extends EpistemicTypes,
   Being extends OnticTypes,
   Knowledge extends ModelType,
-> = FindAwarenessArgs<Type, Being> &
-  FindThoughtArgs<Type, Knowledge>;
+> = FindAwarenessArgs<Type, Being> & FindThoughtArgs<Type, Knowledge>;
 
 export type FindOnticArgs<
   Type extends OnticTypes,
   Being extends OnticTypes,
   Knowledge extends ModelType,
 > = FindAdjacencyArgs<Type, Being, Knowledge> &
-  (Type extends ContainableTypes ? FindContainmentArgs<Type, Being> : {});
+  (Type extends ContainmentTypes ?
+    Being extends ContainableTypes ?
+      FindContainmentArgs<Type, Being> :
+      object :
+    object);
 

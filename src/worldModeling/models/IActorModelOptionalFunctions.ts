@@ -13,24 +13,14 @@ import {
 import {
   OnticTypes,
 } from '../ontology/OnticTypes';
-import {
-  TypedModelInterfaces,
-} from './TypedModelInterfaces';
 
 export interface IActorModelOptionalFunctions<
   Being extends OnticTypes,
   Knowledge extends ModelType,
 > {
-  readonly [ActorModelOptionalFunctionNames.act]?: <
-    Type extends ModelType,
-    ModelInterface extends IModel<ModelType, OnticTypes, ModelType> = (
-      Type extends keyof TypedModelInterfaces ?
-        TypedModelInterfaces<Being, Knowledge>[Type] :
-        IModel<Type, Being, Knowledge>
-    ),
-  >(
+  readonly [ActorModelOptionalFunctionNames.act]?: (
     self: IActorModel<Being, Knowledge>,
-    target: ModelInterface,
+    target: IModel<OnticTypes, Being, Knowledge>,
   ) => void;
 
   readonly [ActorModelOptionalFunctionNames.canAct]?: (

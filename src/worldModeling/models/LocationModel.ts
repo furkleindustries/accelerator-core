@@ -1,6 +1,13 @@
 import {
+  FindOnticArgs,
+  IFindBaseArgs,
+} from '../querying/FindModelArgs';
+import {
   ILocationModel,
 } from './ILocationModel';
+import {
+  IModel,
+} from './IModel';
 import {
   IModelConstructorArgs,
 } from './IModelConstructorArgs';
@@ -53,4 +60,19 @@ export class LocationModel<
       Being
     >(world, { modelType: args.type });
   }
+
+  readonly find: (
+    args: string |
+      IFindBaseArgs<OnticTypes> & FindOnticArgs<OnticTypes, Being, ModelType>,
+  ) => IModel<OnticTypes, Being, ModelType> | null;
+
+  readonly findAll: (
+    args: '*' |
+      IFindBaseArgs<OnticTypes> & FindOnticArgs<OnticTypes, Being, ModelType>,
+  ) => ReadonlyArray<IModel<OnticTypes, Being, ModelType>>;
+
+  readonly findAllGenerator: (
+    args: '*' |
+      IFindBaseArgs<OnticTypes> & FindOnticArgs<OnticTypes, Being, ModelType>,
+  ) => IterableIterator<IModel<OnticTypes, Being, ModelType>>;
 }

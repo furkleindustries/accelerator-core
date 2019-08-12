@@ -1,14 +1,13 @@
 import {
-  OnticTypes,
-} from '../ontology/OnticTypes';
+  ContainableTypes,
+} from '../relations/ContainableTypes';
 import {
   ModelType,
 } from '../models/ModelType';
 
-export const isOnticType = (maybe: any): maybe is OnticTypes => {
+export const isContainableType = (maybe: any): maybe is ContainableTypes => {
   return Boolean(
     maybe === ModelType.Actor ||
-      maybe === ModelType.Location ||
       maybe === ModelType.Object ||
       maybe === ModelType.Portal
   );

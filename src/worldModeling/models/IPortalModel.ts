@@ -16,7 +16,7 @@ import {
 
 export interface IPortalModel<
   Being extends OnticTypes,
-> extends IModel<ModelType.Portal, Being, never>
+> extends IModel<ModelType.Portal, Being>
 {
   readonly being: IOntology<ModelType.Portal, Being>;
   readonly knowledge: null;

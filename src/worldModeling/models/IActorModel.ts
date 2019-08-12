@@ -22,9 +22,6 @@ import {
 import {
   OnticTypes,
 } from '../ontology/OnticTypes';
-import {
-  TypedModelInterfaces,
-} from './TypedModelInterfaces';
 
 export interface IActorModel<
   Being extends OnticTypes,
@@ -46,16 +43,9 @@ export interface IActorModel<
     destination: ILocationModel<Being>,
   ) => void;
 
-  readonly observe: <
-    Type extends OnticTypes,
-    ModelInterface extends IModel<ModelType, OnticTypes, ModelType> = (
-      Type extends keyof TypedModelInterfaces ?
-        TypedModelInterfaces<Being, Knowledge>[Type] :
-        IModel<Type, Being, Knowledge>
-    ),
-  >(
+  readonly observe: (
     self: IActorModel<Being, Knowledge>,
-    target: ModelInterface,
+    target: IModel<OnticTypes, Being, Knowledge>,
   ) => void;
 
   readonly take: (
@@ -63,39 +53,18 @@ export interface IActorModel<
     target: IObjectModel<Being>,
   ) => void;
 
-  readonly unobserve: <
-    Type extends OnticTypes,
-    ModelInterface extends IModel<ModelType, OnticTypes, ModelType> = (
-      Type extends keyof TypedModelInterfaces ?
-        TypedModelInterfaces<Being, Knowledge>[Type] :
-        IModel<Type, Being, Knowledge>
-    ),
-  >(
+  readonly unobserve: (
     self: IActorModel<Being, Knowledge>,
-    target: ModelInterface,
+    target: IModel<OnticTypes, Being, Knowledge>,
   ) => void;
 
-  readonly unwant: <
-    Type extends ModelType,
-    ModelInterface extends IModel<ModelType, OnticTypes, ModelType> = (
-      Type extends keyof TypedModelInterfaces ?
-        TypedModelInterfaces<Being, Knowledge>[Type] :
-        IModel<Type, Being, Knowledge>
-    ),
-  >(
+  readonly unwant: (
     self: IActorModel<Being, Knowledge>,
-    target: ModelInterface,
+    target: IModel<ModelType, Being, Knowledge>,
   ) => void;
 
-  readonly want: <
-    Type extends ModelType,
-    ModelInterface extends IModel<ModelType, OnticTypes, ModelType> = (
-      Type extends keyof TypedModelInterfaces ?
-        TypedModelInterfaces<Being, Knowledge>[Type] :
-        IModel<Type, Being, Knowledge>
-    ),
-  >(
+  readonly want: (
     self: IActorModel<Being, Knowledge>,
-    target: ModelInterface,
+    target: IModel<ModelType, Being, Knowledge>,
   ) => void;
 }

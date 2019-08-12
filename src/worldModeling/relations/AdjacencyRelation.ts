@@ -5,9 +5,6 @@ import {
   IAdjacencyRelation,
 } from './IAdjacencyRelation';
 import {
-  IAdjacencyRelationConstructorArgs,
-} from './IAdjacencyRelationConstructorArgs';
-import {
   IModel,
 } from '../models/IModel';
 import {
@@ -28,6 +25,7 @@ import {
 import {
   RelationBase,
 } from './RelationBase';
+import { IFindBaseArgs, FindAdjacencyArgs } from '../querying/FindModelArgs';
 
 type Adjacencies<T extends BaseAdjacencies = BaseAdjacencies> = T;
 
@@ -60,14 +58,6 @@ export class AdjacencyRelation<
     return this.__world;
   }
 
-  constructor(
-    world: IWorld,
-    args: IAdjacencyRelationConstructorArgs<Type>,
-  ) {
-    super(world, args.modelType);
-  }
-
-
   public readonly addNeighbor = <T extends BaseAdjacencies = BaseAdjacencies>(
     adjacency: T,
     model: IModel<Type, Being, ModelType>,
@@ -98,15 +88,28 @@ export class AdjacencyRelation<
     return copy;
   };
 
-  public readonly destroy = ((self: any) => () => {
-    delete self.__modelType;
-    delete self.modelType;
-    this.tags.forEach(this.removeTag);
-    delete self.__tags;
-    delete self.tags;
-    delete self.__world;
-    delete self.world;
-  })(this);
+  public readonly destroy = (self: IAdjacencyRelation<Type, Being>) => {
+    if (typeof self.finalize === 'function') {
+      self.finalize(self);
+    }
+
+    for (const key of self.neighbors.keys()) {
+      self.neighbors.get(key)!.forEach((neighbor) => (
+        self.removeNeighbor(key, neighbor))
+      );
+    }
+
+    self.tags.forEach(self.removeTag);
+
+    ((self: any) => {
+      delete self.__modelType;
+      delete self.modelType;
+      delete self.__tags;
+      delete self.tags;
+      delete self.__world;
+      delete self.world;
+    })(self)
+  };
 
   readonly find: <
     Being extends OnticTypes,

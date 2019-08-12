@@ -5,6 +5,9 @@ import {
   AwarenessRelation,
 } from '../relations/AwarenessRelation';
 import {
+  AwareTypes,
+} from '../relations/AwareTypes';
+import {
   EpistemicTypes,
 } from './EpistemicTypes';
 import {
@@ -26,26 +29,31 @@ import {
   IEpistemologyConstructorArgs,
 } from './IEpistemologyConstructorArgs';
 import {
-  isEpistemicType,
-} from '../typeGuards/isEpistemicType';
+  FindEpistemicArgs,
+  IFindBaseArgs,
+  FindAwarenessArgs,
+} from '../querying/FindModelArgs';
+import {
+  IModel,
+} from '../models/IModel';
+import {
+  isAwareType,
+} from '../typeGuards/isAwareType';
 import {
   ISerializedEpistemology,
 } from './ISerializedEpistemology';
 import {
-  isOnticType,
-} from '../typeGuards/isOnticType';
+  isEpistemicType,
+} from '../typeGuards/isEpistemicType';
 import {
-  isModelType,
-} from '../typeGuards/isModelType';
+  ITag,
+} from '../../tags/ITag';
 import {
   IThoughtRelation,
 } from '../relations/IThoughtRelation';
 import {
   IWorld,
 } from '../world/IWorld';
-import {
-  ITag,
-} from '../../tags/ITag';
 import {
   ModelType,
 } from '../models/ModelType';
@@ -64,7 +72,7 @@ import {
 
 export class Epistemology<
   Type extends EpistemicTypes | ModelType.Thought,
-  Knowledge extends ModelType = ModelType,
+  Knowledge extends ModelType,
 > implements IEpistemology<Type, Knowledge> {
   /* Thoughts may not be "aware" of anything. Other types need both ontic and
    * epistemic aspects in order to be aware. */
@@ -116,15 +124,15 @@ export class Epistemology<
       'The value of the modelType argument did not meet the isModelType ' +
         'type guard.',
 
-      isModelType,
+      isEpistemicType,
     );
 
-    if (isEpistemicType(this.modelType) && isOnticType(this.modelType)) {
+    if (isAwareType(this.modelType)) {
       // @ts-ignore
       this.__awareness = (
-        new AwarenessRelation<any, Knowledge>(
+        new AwarenessRelation<AwareTypes, Knowledge>(
           this.world,
-          this.modelType,
+          { modelType: this.modelType },
         )
       );
     }
@@ -143,7 +151,7 @@ export class Epistemology<
 
     if (typeof initialize === 'function') {
       this.initialize = initialize;
-      initialize(this);
+      this.initialize(this);
     }
   }
 
@@ -151,45 +159,47 @@ export class Epistemology<
     void (this.__tags = Object.freeze(addTag(this.tags, tag)))
   );
 
-  public readonly clone = (): IEpistemology<Type, Knowledge> => {
+  public readonly clone = (
+    self: IEpistemology<Type, Knowledge>,
+  ): IEpistemology<Type, Knowledge> => {
     const copy = Object.assign(
-      Object.create(Object.getPrototypeOf(this)),
-      this,
+      Object.create(Object.getPrototypeOf(self)),
+      self,
     );
 
-    copy.__awareness = this.awareness ?
-      this.awareness.clone() :
+    copy.__awareness = self.awareness ?
+      self.awareness.clone(self.awareness!) :
       null;
 
-    copy.finalize = typeof this.finalize === 'function' ?
-      this.finalize.bind(copy) :
+    copy.finalize = typeof self.finalize === 'function' ? self.finalize : null;
+
+    copy.initialize = typeof self.initialize === 'function' ?
+      self.initialize :
       null;
 
-    copy.initialize = typeof this.initialize === 'function' ?
-      this.initialize.bind(copy) :
+    copy.__thoughts = self.thoughts ?
+      self.thoughts.clone(self.thoughts) :
       null;
 
-    copy.__thoughts = this.thoughts ?
-      this.thoughts.clone() :
-      null;
-
-    copy.world = this.world;
+    copy.world = self.world;
 
     return copy;
   };
 
-  public readonly destroy = () => {
-    if (typeof this.finalize === 'function') {
-      this.finalize(this);
+  public readonly destroy = (
+    self: IEpistemology<Type, Knowledge>,
+  ) => {
+    if (typeof self.finalize === 'function') {
+      self.finalize(self);
     }
 
-    if (this.awareness) {
-      this.awareness.destroy();
+    if (self.awareness) {
+      self.awareness.destroy(self.awareness!);
     }
 
-    this.thoughts.destroy();
+    self.thoughts.destroy(self.thoughts);
 
-    this.tags.forEach(this.removeTag);
+    self.tags.forEach(self.removeTag);
 
     ((self: any) => {
       delete self.__awareness;
@@ -200,8 +210,52 @@ export class Epistemology<
       delete self.thoughts;
       delete self.__tags;
       delete self.tags;
-    })(this);
+    })(self);
   };
+  
+  
+  public readonly find = (
+    args: string |
+      (IFindBaseArgs<ModelType> &
+        FindEpistemicArgs<EpistemicTypes, OnticTypes, Knowledge>),
+  ): IModel<ModelType, OnticTypes, Knowledge> | null => this.findAllGenerator(
+    typeof args === 'string' ?
+      {
+        name: args,
+      } as IFindBaseArgs<ModelType> &
+        FindEpistemicArgs<EpistemicTypes, OnticTypes, Knowledge> :
+
+      args,
+  ).next().value || null;
+
+  public readonly findAll = (
+    args: '*' |
+      (IFindBaseArgs<ModelType> &
+          FindEpistemicArgs<EpistemicTypes, OnticTypes, Knowledge>),
+  ): ReadonlyArray<IModel<ModelType, OnticTypes, Knowledge>> => {
+    const ret = [];
+    for (const model of this.findAllGenerator(args)) {
+      ret.push(model);
+    }
+
+    return ret;
+  };
+
+  readonly findAllGenerator = ((self: IEpistemology<Type, Knowledge>) => function* (
+    args: '*' |
+      (IFindBaseArgs<ModelType> &
+        FindEpistemicArgs<EpistemicTypes, OnticTypes, Knowledge>),
+  ): IterableIterator<IModel<ModelType, OnticTypes, Knowledge>>
+  {
+    if (self.awareness && isAwareType(self.modelType)) {
+      yield* self.awareness.findAllGenerator(
+        args as IFindBaseArgs<OnticTypes> &
+          FindAwarenessArgs<AwareTypes, OnticTypes>,
+      );
+    }
+
+    yield* self.thoughts.findAllGenerator(args);
+  })(this);
 
   public readonly getTag = (toSearch: Tag) => getTag(this.tags, toSearch);
 

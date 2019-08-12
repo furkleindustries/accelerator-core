@@ -2,7 +2,7 @@ import {
   ModelType,
 } from './ModelType';
 import {
-  ModelTypeNoThoughts,
-} from './ModelTypeNoThoughts';
+  NoThought,
+} from './NoThought';
 
-export type ModelTypeNoThoughtsBase = ModelTypeNoThoughts<ModelType>;
+export type ModelTypeNoThoughtsBase = NoThought<ModelType>;

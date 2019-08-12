@@ -1,9 +1,19 @@
 import {
+  AwareTypes,
+} from '../relations/AwareTypes';
+import {
   EpistemicTypes,
 } from './EpistemicTypes';
 import {
   IAwarenessRelation,
 } from '../relations/IAwarenessRelation';
+import {
+  FindEpistemicArgs,
+  IFindBaseArgs,
+} from '../querying/FindModelArgs';
+import {
+  IModel,
+} from '../models/IModel';
 import {
   ISerializedEpistemology,
 } from './ISerializedEpistemology';
@@ -29,12 +39,12 @@ import {
 export interface IEpistemology<
   Type extends EpistemicTypes | ModelType.Thought,
   /* This reflects knowledge *of*, not types which are capable of knowledge. */
-  Knowledge extends ModelType = ModelType,
+  Knowledge extends ModelType,
 > {
   /* Thoughts may not be "aware" of anything. Models must have ontology in
    * order to be aware and for something to be aware of them, given that
    * awareness is considered an epistemic perspective of ontic aspects. */
-  readonly awareness: Type extends EpistemicTypes & OnticTypes ?
+  readonly awareness: Type extends AwareTypes ?
     IAwarenessRelation<Type, Knowledge> :
     null;
 
@@ -44,8 +54,32 @@ export interface IEpistemology<
   readonly type: symbol;
   readonly world: IWorld;
   readonly addTag: (tag: Tag) => void;
-  readonly clone: () => IEpistemology<Type, Knowledge>;
-  readonly destroy: () => void;
+  readonly clone: (
+    self: IEpistemology<Type, Knowledge>,
+  ) => IEpistemology<Type, Knowledge>;
+
+  readonly destroy: (
+    self: IEpistemology<Type, Knowledge>,
+  ) => void;
+
+  readonly find: (
+    args: string |
+      (IFindBaseArgs<ModelType> &
+        FindEpistemicArgs<EpistemicTypes, OnticTypes, Knowledge>),
+  ) => IModel<ModelType, OnticTypes, Knowledge> | null;
+
+  readonly findAll: (
+    args: '*' |
+      (IFindBaseArgs<ModelType> &
+        FindEpistemicArgs<EpistemicTypes, OnticTypes, Knowledge>),
+  ) => ReadonlyArray<IModel<ModelType, OnticTypes, Knowledge>>;
+
+  readonly findAllGenerator: (
+    args: '*' |
+      (IFindBaseArgs<ModelType> &
+        FindEpistemicArgs<EpistemicTypes, OnticTypes, Knowledge>),
+  ) => IterableIterator<IModel<ModelType, OnticTypes, Knowledge>>;
+
   readonly getTag: (toSearch: Tag) => ITag | null;
   readonly removeTag: (tag: Tag) => void;
   readonly serialize: (

@@ -22,8 +22,8 @@ import {
 
 export interface IModelConstructorArgs<
   Type extends ModelType,
-  Being extends OnticTypes = never,
-  Knowledge extends ModelType = never,
+  Being extends OnticTypes = any,
+  Knowledge extends ModelType = any,
 > {
   readonly name: string;
   readonly type: Type;

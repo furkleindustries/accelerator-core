@@ -2,7 +2,8 @@ import {
   addTag,
 } from '../../tags/addTag';
 import {
-  FindModelArgs, IFindBaseArgs,
+  FindModelArgs,
+  IFindBaseArgs,
 } from '../querying/FindModelArgs';
 import {
   getTag,
@@ -13,6 +14,9 @@ import {
 import {
   IRelation,
 } from './IRelation';
+import {
+  IRelationConstructorArgs,
+} from './IRelationConstructorArgs';
 import {
   ITag,
 } from '../../tags/ITag';
@@ -51,12 +55,16 @@ export abstract class RelationBase<
     return this.__world;
   }
 
-  constructor(world: IWorld, type: Type, tags?: Tag[] | ReadonlyArray<Tag>) {
+  constructor(world: IWorld, args: IRelationConstructorArgs<Type>) {
     this.__world = world;
-    this.__modelType = type;
+    this.__modelType = args.modelType;
 
-    if (Array.isArray(tags)) {
-      tags.forEach(this.addTag);
+    if (Array.isArray(args.tags)) {
+      args.tags.forEach(this.addTag);
+    }
+
+    if (typeof this.initialize === 'function') {
+      this.initialize(this);
     }
   }
 
@@ -64,11 +72,7 @@ export abstract class RelationBase<
     void (this.__tags = addTag(this.tags, tag))
   );
 
-  public readonly getTag = (tag: Tag) => getTag(this.tags, tag);
-
-  public readonly removeTag = (tag: Tag) => (
-    void (this.__tags = removeTag(this.tags, tag))
-  );
+  public readonly initialize?: (self: IRelation<Type>) => void; 
 
   public readonly find = (
     args: string | IFindBaseArgs<ModelType>,
@@ -90,6 +94,14 @@ export abstract class RelationBase<
     return ret;
   };
 
+  public readonly finalize?: (self: IRelation<Type>) => void; 
+
+  public readonly getTag = (tag: Tag) => getTag(this.tags, tag);
+
+  public readonly removeTag = (tag: Tag) => (
+    void (this.__tags = removeTag(this.tags, tag))
+  );
+
   public readonly serialize = (
     self: IRelation<Type>,
     spaces?: number,
@@ -99,8 +111,8 @@ export abstract class RelationBase<
     args: '*' | FindModelArgs<ModelType, OnticTypes, ModelType>,
   ) => IterableIterator<IModel<ModelType, OnticTypes, ModelType>>;
 
-  public abstract readonly clone: () => any;
-  public abstract readonly destroy: () => void;
+  public abstract readonly clone: (self: IRelation<Type>) => any;
+  public abstract readonly destroy: (self: IRelation<Type>) => void;
   public abstract readonly serializeToObject: (
     self: IRelation<Type>,
   ) => Readonly<Record<string, any>>;

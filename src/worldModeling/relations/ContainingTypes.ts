@@ -2,7 +2,7 @@ import {
   ModelType,
 } from '../models/ModelType';
 
-export type ContainmentTypes =
+export type ContainingTypes =
   ModelType.Actor |
     ModelType.Location |
     ModelType.Object;

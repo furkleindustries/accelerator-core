@@ -14,6 +14,9 @@ import {
   ISerializedWorld,
 } from './ISerializedWorld';
 import {
+  ITag,
+} from '../../tags/ITag';
+import {
   ModelType,
 } from '../models/ModelType';
 import {
@@ -38,13 +41,13 @@ export interface IWorld {
   >;
 
   readonly name: string;
-  readonly tags: ReadonlyArray<Tag>;
-  readonly type: Symbol;
+  readonly tags: ReadonlyArray<ITag>;
+  readonly type: symbol;
 
   readonly addModel: <
     Type extends ModelType,
-    Being extends OnticTypes = never,
-    Knowledge extends ModelType = never,
+    Being extends OnticTypes = any,
+    Knowledge extends ModelType = any,
   >(
     args: IModelConstructorArgs<Type, Being, Knowledge>,
     ctor?: new (
@@ -72,29 +75,17 @@ export interface IWorld {
 
   readonly finalize: (self: IWorld) => void;
 
-  readonly find: <
-    Type extends ModelType,
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  >(
-    args: FindModelArgs<Type, Being, Knowledge>,
-  ) => IModel<Type, Being, Knowledge> | null;
+  readonly find: (
+    args: FindModelArgs<ModelType, OnticTypes, ModelType>,
+  ) => IModel<ModelType, OnticTypes, ModelType> | null;
 
-  readonly findAll: <
-    Type extends ModelType,
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  >(
-    args: FindModelArgs<Type, Being, Knowledge>,
-  ) => ReadonlyArray<IModel<Type, Being, Knowledge>>;
+  readonly findAll: (
+    args: FindModelArgs<ModelType, OnticTypes, ModelType>,
+  ) => ReadonlyArray<IModel<ModelType, OnticTypes, ModelType>>;
 
-  readonly findAllGenerator: <
-    Type extends ModelType,
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  >(
-    args: FindModelArgs<Type, Being, Knowledge>,
-  ) => IterableIterator<IModel<Type, Being, Knowledge>>;
+  readonly findAllGenerator: (
+    args: FindModelArgs<ModelType, OnticTypes, ModelType>,
+  ) => IterableIterator<IModel<ModelType, OnticTypes, ModelType>>;
 
   readonly getTag: (toSearch: Tag) => any;
 

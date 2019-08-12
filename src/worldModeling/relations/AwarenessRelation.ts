@@ -1,4 +1,7 @@
 import {
+  AwareTypes,
+} from './AwareTypes';
+import {
   EpistemicTypes,
 } from '../epistemology/EpistemicTypes';
 import {
@@ -50,20 +53,24 @@ export class AwarenessRelation<
     perception: IModel<Type, OnticTypes, Knowledge>,
   ) => void (this.__perceptions = this.__perceptions.concat([ perception ]));
 
-  public readonly clone = (): IAwarenessRelation<Type, Knowledge> => {
+  public readonly clone = (
+    self: IAwarenessRelation<Type, Knowledge>,
+  ): IAwarenessRelation<Type, Knowledge> => {
     const copy = Object.assign(
-      Object.create(Object.getPrototypeOf(this)),
-      this,
+      Object.create(Object.getPrototypeOf(self)),
+      self,
     );
 
-    copy.__perceives = Object.freeze(this.perceptions.slice());
+    self.perceptions.forEach(copy.addPerception);
 
     return copy;
   };
 
-  public readonly destroy = () => {
-    this.tags.forEach(this.removeTag);
-    this.perceptions.forEach(this.removePerception);
+  public readonly destroy = (
+    self: IAwarenessRelation<Type, Knowledge>,
+  ) => {
+    this.tags.forEach(self.removeTag);
+    this.perceptions.forEach(self.removePerception);
 
     ((self: any) => {
       delete self.__perceives;
@@ -73,42 +80,27 @@ export class AwarenessRelation<
     })(this);
   };
 
-  public readonly find: <
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  >(
+  public readonly find: (
     args: string |
       IFindBaseArgs<OnticTypes> &
-        FindAwarenessArgs<EpistemicTypes & OnticTypes, Being>,
-  ) => IModel<OnticTypes, Being, Knowledge> | null;
+        FindAwarenessArgs<AwareTypes, OnticTypes>,
+  ) => IModel<OnticTypes, OnticTypes, Knowledge> | null;
 
-  public readonly findAll: <
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  >(
+  public readonly findAll: (
     args: '*' |
       IFindBaseArgs<OnticTypes> &
-        FindAwarenessArgs<EpistemicTypes & OnticTypes, Being>,
-  ) => ReadonlyArray<IModel<OnticTypes, Being, Knowledge>>;
+        FindAwarenessArgs<AwareTypes, OnticTypes>,
+  ) => ReadonlyArray<IModel<OnticTypes, OnticTypes, Knowledge>>;
 
   public readonly findAllGenerator = ((
     self: IAwarenessRelation<Type, Knowledge>,
-  ) => function* findAllGenerator<
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  >(
+  ) => function* (
     args: '*' |
       IFindBaseArgs<OnticTypes> &
-        FindAwarenessArgs<EpistemicTypes & OnticTypes, Being>,
-  ): IterableIterator<IModel<OnticTypes, Being, Knowledge>> {
-    if (args === '*') {
-      for (const perception of self.perceptions) {
-        yield perception as IModel<OnticTypes, Being, any>;
-      }
-    }
-
-    yield* findAllGenerate<OnticTypes, Being, Knowledge>(
-      self.perceptions as IModel<OnticTypes, Being, any>[],
+        FindAwarenessArgs<AwareTypes, OnticTypes>,
+  ): IterableIterator<IModel<OnticTypes, OnticTypes, Knowledge>> {
+    yield* findAllGenerate<OnticTypes, OnticTypes, Knowledge>(
+      self.perceptions,
       args,
     );
   })(this);

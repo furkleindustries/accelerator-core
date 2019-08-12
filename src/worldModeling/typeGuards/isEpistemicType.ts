@@ -1,11 +1,11 @@
 import {
-  ContainmentTypes,
-} from '../relations/ContainmentTypes';
+  ContainingTypes,
+} from '../relations/ContainingTypes';
 import {
   ModelType,
 } from '../models/ModelType';
 
-export const isEpistemicType = (maybe: any): maybe is ContainmentTypes => {
+export const isEpistemicType = (maybe: any): maybe is ContainingTypes => {
   return Boolean(
     maybe === ModelType.Actor
   );

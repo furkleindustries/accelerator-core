@@ -43,4 +43,7 @@ export interface IRelation<Type extends ModelType> {
   readonly serializeToObject: (
     self: IRelation<Type>,
   ) => Readonly<Record<string, any>>;
+
+  readonly finalize?: (self: IRelation<Type>) => void;
+  readonly initialize?: (self: IRelation<Type>) => void;
 }

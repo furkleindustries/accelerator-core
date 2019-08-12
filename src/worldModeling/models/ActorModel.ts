@@ -1,3 +1,7 @@
+/**
+ * @todo Fix all the dang `as any` casts.
+ */
+
 import {
   ActorModelOptionalFunctionNames,
 } from './ActorModelOptionalFunctionNames';
@@ -49,9 +53,6 @@ import {
 import {
   assertValid,
 } from 'ts-assertions';
-import {
-  TypedModelInterfaces,
-} from './TypedModelInterfaces';
 
 export class ActorModel<
   Being extends OnticTypes,
@@ -59,20 +60,12 @@ export class ActorModel<
 > extends ModelBase<ModelType.Actor, Being, Knowledge>
   implements IActorModel<Being, Knowledge>
 {
-  protected readonly __being: IOntology<
-    ModelType.Actor,
-    Being
-  >;
-
+  protected readonly __being: IOntology<ModelType.Actor, Being>;
   public get being() {
     return this.__being;
   }
 
-  protected readonly __knowledge: IEpistemology<
-    ModelType.Actor,
-    Knowledge
-  >;
-
+  protected readonly __knowledge: IEpistemology<ModelType.Actor, Knowledge>;
   public get knowledge() {
     return this.__knowledge;
   }
@@ -124,18 +117,15 @@ export class ActorModel<
       targetModel = assertValid<typeof target>(self.world.find(target));
     }
 
-    self.being.containment!.parent.being!.containment.addChild(targetModel);
+    self.being.containment!.parent.being!.containment.addChild(targetModel as any);
   };
 
-  public readonly findAllGenerator = ((self: IActorModel<Being, Knowledge>) => function* <
-    B extends Being,
-    K extends Knowledge,
-  >(args: '*' | FindModelArgs<ModelType, B, K>)
+  public readonly findAllGenerator = ((self: IActorModel<Being, Knowledge>) => function* (
+    args: '*' | FindModelArgs<ModelType, Being, Knowledge>,
+  ): IterableIterator<IModel<ModelType, Being, Knowledge>>
   {
-    if (args === '*') {
-      /* Output all the basic relations. */
-      const beingGen = self.being.findAllGenerator<any, any>(args)
-    }
+    yield* self.being.findAllGenerator(args as any) as any;
+    yield* self.knowledge.findAllGenerator(args) as any;
   })(this);
  
   public readonly move = (
@@ -144,78 +134,43 @@ export class ActorModel<
   ): void => {
     const parent = self.being.containment.parent;
     if (parent.being) {
-      parent.being.containment.removeChild(self);
+      parent.being.containment.removeChild(self as any);
     }
 
-    destination.being.containment.addChild(self);
+    destination.being.containment.addChild(self as any);
   };
 
-  readonly observe = <
-    Type extends OnticTypes,
-    ModelInterface extends IModel<ModelType, OnticTypes, ModelType> = (
-      Type extends keyof TypedModelInterfaces ?
-        TypedModelInterfaces<Being, Knowledge>[Type] :
-        IModel<Type, Being, Knowledge>
-    ),
-  >(
+  readonly observe = (
     self: IActorModel<Being, Knowledge>,
-    target: ModelInterface,
-  ): void => self.knowledge.awareness.addPerception(target);
+    target: IModel<OnticTypes, Being, Knowledge>,
+  ): void => self.knowledge.awareness.addPerception(target as any);
 
   readonly take = (
     self: IActorModel<Being, Knowledge>,
     target: IObjectModel<Being>,
   ) => {
-    target.being.containment.parent.being!.containment.removeChild(self);
-    target.being.containment.addChild(self);
+    target.being.containment.parent.being!.containment.removeChild(self as any);
+    target.being.containment.addChild(self as any);
   };
 
-  readonly unobserve = <
-    Type extends OnticTypes,
-    ModelInterface extends IModel<ModelType, OnticTypes, ModelType> = (
-      Type extends keyof TypedModelInterfaces ?
-        TypedModelInterfaces<Being, Knowledge>[Type] :
-        IModel<Type, Being, Knowledge>
-    ),
-  >(
+  readonly unobserve = (
     self: IActorModel<Being, Knowledge>,
-    target: ModelInterface,
-  ): void => self.knowledge.awareness.removePerception(target);
+    target: IModel<OnticTypes, Being, Knowledge>,
+  ): void => self.knowledge.awareness.removePerception(target as any);
 
-  readonly unwant = <
-    Type extends ModelType,
-    ModelInterface extends IModel<ModelType, OnticTypes, ModelType> = (
-      Type extends keyof TypedModelInterfaces ?
-        TypedModelInterfaces<Being, Knowledge>[Type] :
-        IModel<Type, Being, Knowledge>
-    ),
-  >(
+  readonly unwant = (
     self: IActorModel<Being, Knowledge>,
-    target: ModelInterface,
-  ): void => self.knowledge.thoughts.removeWant(target);
+    target: IModel<ModelType, Being, Knowledge>,
+  ): void => self.knowledge.thoughts.removeWant(target as any);
 
-  readonly want = <
-    Type extends ModelType,
-    ModelInterface extends IModel<ModelType, OnticTypes, ModelType> = (
-      Type extends keyof TypedModelInterfaces ?
-        TypedModelInterfaces<Being, Knowledge>[Type] :
-        IModel<Type, Being, Knowledge>
-    ),
-  >(
+  readonly want = (
     self: IActorModel<Being, Knowledge>,
-    target: ModelInterface,
-  ): void => self.knowledge.thoughts.addWant(target);
+    target: IModel<ModelType, Being, Knowledge>,
+  ): void => self.knowledge.thoughts.addWant(target as any);
 
-  readonly act?: <
-    Type extends ModelType,
-    ModelInterface extends IModel<ModelType, OnticTypes, ModelType> = (
-      Type extends keyof TypedModelInterfaces ?
-        TypedModelInterfaces<Being, Knowledge>[Type] :
-        IModel<Type, Being, Knowledge>
-    ),
-  >(
+  readonly act?: (
     self: IActorModel<Being, Knowledge>,
-    target: ModelInterface,
+    target: IModel<OnticTypes, Being, Knowledge>,
   ) => void;
 
   readonly canAct?: (self: IActorModel<Being, Knowledge>) => boolean;

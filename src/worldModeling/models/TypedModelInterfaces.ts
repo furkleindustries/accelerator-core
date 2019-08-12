@@ -21,8 +21,8 @@ import {
 } from '../ontology/OnticTypes';
 
 export type TypedModelInterfaces<
-  Being extends OnticTypes = never,
-  Knowledge extends ModelType = never,
+  Being extends OnticTypes = any,
+  Knowledge extends ModelType = any,
 > = {
   readonly [ModelType.Actor]: IActorModel<Being, Knowledge>,
   readonly [ModelType.Location]: ILocationModel<Being>,

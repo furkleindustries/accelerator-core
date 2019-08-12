@@ -1,1 +1,1 @@
-export const WorldType: Symbol = Symbol('World');
+export const WorldType: symbol = Symbol('World');

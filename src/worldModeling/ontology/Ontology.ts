@@ -5,14 +5,17 @@ import {
   AdjacencyRelation,
 } from '../relations/AdjacencyRelation';
 import {
-  ContainableTypes,
-} from '../relations/ContainableTypes';
-import {
   ContainmentRelation,
 } from '../relations/ContainmentRelation';
 import {
   ContainmentTypes,
 } from '../relations/ContainmentTypes';
+import {
+  ContainingTypes,
+} from '../relations/ContainingTypes';
+import {
+  findAllGenerate,
+} from '../querying/findAllGenerate';
 import {
   FindOnticArgs,
   IFindBaseArgs,
@@ -39,6 +42,9 @@ import {
   IOntologyConstructorArgs,
 } from './IOntologyConstructorArgs';
 import {
+  isContainmentType,
+} from '../typeGuards/isContainmentType';
+import {
   ISerializedOntology,
 } from './ISerializedOntology';
 import {
@@ -50,6 +56,9 @@ import {
 import {
   ModelType,
 } from '../models/ModelType';
+import {
+  NoLocation,
+} from './NoLocation';
 import {
   OnticTypes,
 } from './OnticTypes';
@@ -73,18 +82,9 @@ export class Ontology<
 {
   public readonly adjacency: IAdjacencyRelation<Type, Being>;
 
-  readonly containment: Type extends (ContainableTypes | ContainmentTypes) ?
-    IContainmentRelation<
-      /* Do not allow portals to have containment relations. */
-      ContainmentTypes,
-
-      Being extends ModelType.Object ?
-        /* Do not allow objects to contain locations or portals. */
-        Exclude<Being, ModelType.Location | ModelType.Portal> :
-        /* Do not allow portals or thoughts to be contained as models. */
-        Being
-    > :
-    null = null as any;
+  readonly containment: Type extends ContainmentTypes ?
+    IContainmentRelation<ContainingTypes, NoLocation<Being>> :
+    null;
 
   private readonly __modelType: Type;
   public get modelType() {
@@ -127,13 +127,13 @@ export class Ontology<
       { modelType },
     );
 
-    if (modelType === ModelType.Actor ||
-        modelType === ModelType.Location ||
-        modelType === ModelType.Object)
-    {
-      this.containment = new ContainmentRelation<Type, Being>(
-        this.world,
-        modelType,
+    if (isContainmentType(modelType)) {
+      // @ts-ignore
+      this.containment = (
+        new ContainmentRelation<Type, NoLocation<Being>>(
+          this.world,
+          { modelType },
+        )
       );
     }
 
@@ -151,7 +151,17 @@ export class Ontology<
   public readonly clone = (
     self: IOntology<Type, Being>,
   ): IOntology<Type, Being> => {
+    const copy = Object.assign(
+      Object.create(Object.getPrototypeOf(self)),
+      self,
+    );
 
+    copy.adjacency = Object.freeze(self.adjacency.clone(self.adjacency))
+    copy.containment = self.containment ?
+      Object.freeze(self.containment.clone(self.containment)) :
+      null;
+
+    return copy;
   };
 
   public readonly destroy = (self: IOntology<Type, Being>): void => {
@@ -178,17 +188,23 @@ export class Ontology<
 
   public readonly getTag = (toSearch: Tag) => getTag(this.tags, toSearch);
 
-  public readonly find = <B extends Being, K extends ModelType>(
-    args: string | IFindBaseArgs<OnticTypes> & FindOnticArgs<OnticTypes, B, K>,
-  ): IModel<OnticTypes, B, ModelType> | null => this.findAllGenerator(
+  public readonly find = (
+    args: string |
+      (IFindBaseArgs<OnticTypes> & FindOnticArgs<OnticTypes, Being, ModelType>),
+  ): IModel<OnticTypes, Being, ModelType> | null => this.findAllGenerator(
     typeof args === 'string' ?
-      { name: args } :
+      {
+        name: args,
+      } as IFindBaseArgs<OnticTypes> &
+        FindOnticArgs<OnticTypes, Being, ModelType> :
+
       args,
   ).next().value || null;
 
-  public readonly findAll = <B extends Being, K extends ModelType>(
-    args: '*' | IFindBaseArgs<OnticTypes> & FindOnticArgs<OnticTypes, B, K>,
-  ): ReadonlyArray<IModel<OnticTypes, B, ModelType>> => {
+  public readonly findAll = (
+    args: '*' |
+      (IFindBaseArgs<OnticTypes> & FindOnticArgs<OnticTypes, Being, ModelType>),
+  ): ReadonlyArray<IModel<OnticTypes, Being, ModelType>> => {
     const ret = [];
     for (const model of this.findAllGenerator(args)) {
       ret.push(model);
@@ -197,15 +213,21 @@ export class Ontology<
     return ret;
   };
 
-  readonly findAllGenerator = ((self: IOntology<Type, Being>) => function* <
-    B extends Being,
-    K extends ModelType,
-  >(
+  readonly findAllGenerator = ((self: IOntology<Type, Being>) => function* (
     args: '*' |
-      IFindBaseArgs<OnticTypes> & FindOnticArgs<OnticTypes, B, K>,
-  ): IterableIterator<IModel<OnticTypes, B, K>>
+      (IFindBaseArgs<OnticTypes> & FindOnticArgs<OnticTypes, Being, ModelType>),
+  ): IterableIterator<IModel<OnticTypes, Being, ModelType>>
   {
-    
+    const models: IModel<OnticTypes, Being, ModelType>[] = [];
+    for (const _models of self.adjacency.neighbors.values()) {
+      models.push(..._models);
+    }
+
+    models.push(
+      ...(self.containment ? self.containment.children : []),
+    );
+
+    yield* findAllGenerate<OnticTypes, Being, ModelType>(models, args);
   })(this);
 
   public readonly removeTag = (toSearch: Tag) => removeTag(this.tags, toSearch);

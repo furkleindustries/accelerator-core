@@ -11,8 +11,14 @@ import {
   getQueryArguments,
 } from './getQueryArguments';
 import {
+  getTag,
+} from '../../tags/getTag';
+import {
   IModel,
 } from '../models/IModel';
+import {
+  MaybeReadonlyArray,
+} from '../../typeAliases/MaybeReadonlyArray';
 import {
   ModelType,
 } from '../models/ModelType';
@@ -23,8 +29,6 @@ import {
   assert,
   assertValid,
 } from 'ts-assertions';
-import { getTag } from '../../tags/getTag';
-import { MaybeReadonlyArray } from '../../typeAliases/MaybeReadonlyArray';
 
 function* generate<
   Type extends ModelType,

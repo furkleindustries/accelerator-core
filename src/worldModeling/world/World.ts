@@ -151,8 +151,8 @@ export class World implements IWorld {
 
   public readonly addModel = <
     Type extends ModelType,
-    Being extends OnticTypes = never,
-    Knowledge extends ModelType = never,
+    Being extends OnticTypes = any,
+    Knowledge extends ModelType = any,
   >(
     modelArgs: IModelConstructorArgs<
       Type,
@@ -191,7 +191,7 @@ export class World implements IWorld {
         being: modelArgs.being as IOntology<ModelType.Location, Being>,
         knowledge: null,
         type: modelArgs.type as ModelType.Location,
-      });
+      }) as any;
     } else if (modelArgs.type === ModelType.Object) {
       temp = new ObjectModel(this, {
         ...modelArgs,
@@ -238,7 +238,7 @@ export class World implements IWorld {
       self.knowledge.initialize(self.knowledge);
     }
 
-    this.children().forEach((child) => child.initialize(child));
+    this.children().forEach((child) => child.initialize(child as any));
   };
 
   public readonly finalize = (self: IWorld) => {
@@ -246,7 +246,7 @@ export class World implements IWorld {
       self.knowledge.finalize(self.knowledge);
     }
 
-    this.children().forEach((child) => child.finalize(child));
+    this.children().forEach((child) => child.finalize(child as any));
   };
 
   public readonly removeModel = (
@@ -276,7 +276,7 @@ export class World implements IWorld {
     this.finalize(this);
 
     this.descendants().forEach((desc) => {
-      desc.destroy();
+      desc.destroy(desc as any);
       this.removeModel(desc);
     });
 
@@ -331,14 +331,12 @@ export class World implements IWorld {
     return ret;
   };
 
-  public readonly findAllGenerator = ((self: IWorld) => function*<
-    Type extends ModelType,
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  > (args: '*' | FindModelArgs<Type, Being, Knowledge>) {
-    assert(args, 'The args argument to World.findAllGenerator was not valid.');
-    yield* findAllGenerate<Type, Being, Knowledge>(self, args);
-  })(this);
+  public readonly findAllGenerator = ((self: IWorld) => (
+    function* (args: '*' | FindModelArgs<ModelType, OnticTypes, ModelType>) {
+      assert(args, 'The args argument to World.findAllGenerator was not valid.');
+      yield* findAllGenerate(Object.values(self.models), args);
+    }
+  ))(this);
 
   public readonly validateModelArgs = <
     Type extends ModelType,
@@ -374,9 +372,9 @@ export class World implements IWorld {
   public readonly serializeToObject = (
     self: IWorld,
   ): ISerializedWorld => ({
-    knowledge: self.knowledge ? self.knowledge.serializeToObject(self.knowledge) : null,
+    knowledge: self.knowledge.serializeToObject(self.knowledge),
     name: self.name,
+    models: Object.values(self.models).map((model) => model.serializeToObject(model)),
     tags: [ ...self.tags ],
-    type: self.type,
   });
 }

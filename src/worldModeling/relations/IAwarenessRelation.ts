@@ -1,4 +1,7 @@
 import {
+  AwareTypes,
+} from './AwareTypes';
+import {
   EpistemicTypes,
 } from '../epistemology/EpistemicTypes';
 import {
@@ -32,34 +35,28 @@ export interface IAwarenessRelation<
     model: IModel<OnticTypes, OnticTypes, Knowledge>,
   ) => void;
 
-  readonly clone: () => IAwarenessRelation<Type, Knowledge>;
+  readonly clone: (
+    self: IAwarenessRelation<Type, Knowledge>,
+  ) => IAwarenessRelation<Type, Knowledge>;
 
-  readonly find: <
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  >(
+  readonly destroy: (
+    self: IAwarenessRelation<Type, Knowledge>,
+  ) => void;
+
+  readonly find: (
     args: string |
-      IFindBaseArgs<OnticTypes> &
-        FindAwarenessArgs<EpistemicTypes & OnticTypes, Being>,
-  ) => IModel<OnticTypes, Being, Knowledge> | null;
+      IFindBaseArgs<OnticTypes> & FindAwarenessArgs<AwareTypes, OnticTypes>,
+  ) => IModel<OnticTypes, OnticTypes, Knowledge> | null;
 
-  readonly findAll: <
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  >(
+  readonly findAll: (
     args: '*' |
-      IFindBaseArgs<OnticTypes> &
-        FindAwarenessArgs<EpistemicTypes & OnticTypes, Being>,
-  ) => ReadonlyArray<IModel<OnticTypes, Being, Knowledge>>;
+      IFindBaseArgs<OnticTypes> & FindAwarenessArgs<AwareTypes, OnticTypes>,
+  ) => ReadonlyArray<IModel<OnticTypes, OnticTypes, Knowledge>>;
 
-  readonly findAllGenerator: <
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  >(
+  readonly findAllGenerator: (
     args: '*' |
-      IFindBaseArgs<OnticTypes> &
-        FindAwarenessArgs<EpistemicTypes & OnticTypes, Being>,
-  ) => IterableIterator<IModel<OnticTypes, Being, Knowledge>>;
+      IFindBaseArgs<OnticTypes> & FindAwarenessArgs<AwareTypes, OnticTypes>,
+  ) => IterableIterator<IModel<OnticTypes, OnticTypes, Knowledge>>;
 
   readonly removePerception: (
     tag: IModel<OnticTypes, OnticTypes, Knowledge>,

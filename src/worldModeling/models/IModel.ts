@@ -28,9 +28,6 @@ import {
 import {
   Tag,
 } from '../../tags/Tag';
-import {
-  TypedModelInterfaces,
-} from './TypedModelInterfaces';
 
 export interface IModel<
   /**
@@ -43,22 +40,13 @@ export interface IModel<
    * The types to which the model will be able to ontically relate, assuming
    * its type permits any given relation.
    */
-  Being extends OnticTypes = never,
+  Being extends OnticTypes = any,
 
   /**
    * The types to which the model will be able to epistemically relate,
    * assuming its type permits any given relation.
    */
-  Knowledge extends ModelType = never,
-
-  /**
-   * The concrete model type produced by utility methods.
-   */
-  ModelInterface extends IModel<
-    ModelType,
-    OnticTypes,
-    ModelType
-  > = TypedModelInterfaces<Being, Knowledge>[Type],
+  Knowledge extends ModelType = any,
 > {
   readonly being: Type extends OnticTypes ?
     IOntology<Type, Being> :
@@ -80,28 +68,30 @@ export interface IModel<
   readonly world: IWorld;
 
   readonly addTag: (tag: Tag) => void;
-  readonly clone: () => ModelInterface;
-  readonly destroy: () => void;
-  readonly finalize: (self: IModel<Type, Being, Knowledge>) => void;
+  readonly clone: (
+    self: IModel<Type, Being, Knowledge>,
+  ) => IModel<Type, Being, Knowledge>;
 
+  readonly destroy: (self: IModel<Type, Being, Knowledge>) => void;
+  readonly finalize: (self: IModel<Type, Being, Knowledge>) => void;
   readonly find: (
     args: string | IFindBaseArgs<ModelType>,
-  ) => IModel<ModelType, OnticTypes, ModelType> | null;
+  ) => IModel<ModelType, Being, Knowledge> | null;
 
   readonly findAll: (
     args: '*' | IFindBaseArgs<ModelType>,
-  ) => ReadonlyArray<IModel<ModelType, OnticTypes, ModelType>>;
+  ) => ReadonlyArray<IModel<ModelType, Being, Knowledge>>;
 
   readonly findAllGenerator: (
     args: '*' | IFindBaseArgs<ModelType>,
-  ) => IterableIterator<IModel<ModelType, OnticTypes, ModelType>>;
+  ) => IterableIterator<IModel<ModelType, Being, Knowledge>>;
 
   readonly getTag: (toSearch: Tag) => ITag | null;
   readonly initialize: (self: IModel<Type, Being, Knowledge>) => void;
   readonly removeTag: (toSearch: Tag) => void;
 
   readonly serialize: (
-    self: IModel<Type, Being, Knowledge>,
+    self: IModel<Type, Being, Knowledge>,    
     spaces?: number,
   ) => string;
 
