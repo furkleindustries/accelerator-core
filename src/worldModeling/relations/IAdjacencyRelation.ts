@@ -4,6 +4,7 @@ import {
 import {
   FindAdjacencyArgs,
   IFindBaseArgs,
+  FindAdjacencyArg,
 } from '../querying/FindModelArgs';
 import {
   IModel,
@@ -20,6 +21,7 @@ import {
 import {
   OnticTypes,
 } from '../ontology/OnticTypes';
+import { ContainmentTypes } from './ContainmentTypes';
 
 export interface IAdjacencyRelation<
   Type extends OnticTypes,
@@ -43,29 +45,26 @@ export interface IAdjacencyRelation<
 
   readonly destroy: (self: IAdjacencyRelation<Type, Being>) => void;
 
-  readonly find: <
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  >(
+  readonly find: (
     args: string |
-      IFindBaseArgs<Type> & FindAdjacencyArgs<Type, Being, Knowledge>,
-  ) => IModel<Type, Being, Knowledge> | null;
+      FindAdjacencyArg<OnticTypes, OnticTypes, ModelType> |
+      (IFindBaseArgs<ContainmentTypes> &
+        FindAdjacencyArgs<ContainmentTypes, Being, ModelType>),
+  ) => IModel<ContainmentTypes, Being, ModelType> | null;
 
-  readonly findAll: <
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  >(
+  readonly findAll: (
     args: '*' |
-      IFindBaseArgs<Type> & FindAdjacencyArgs<Type, Being, Knowledge>,
-  ) => ReadonlyArray<IModel<Type, Being, Knowledge>>;
+      FindAdjacencyArg<OnticTypes, OnticTypes, ModelType> |
+      (IFindBaseArgs<ContainmentTypes> &
+        FindAdjacencyArgs<ContainmentTypes, Being, ModelType>),
+  ) => ReadonlyArray<IModel<ContainmentTypes, Being, ModelType>>;
 
-  readonly findAllGenerator: <
-    Being extends OnticTypes,
-    Knowledge extends ModelType,
-  >(
+  readonly findAllGenerator: (
     args: '*' |
-      IFindBaseArgs<Type> & FindAdjacencyArgs<Type, Being, Knowledge>,
-  ) => IterableIterator<IModel<Type, Being, Knowledge>>;
+      FindAdjacencyArg<OnticTypes, OnticTypes, ModelType> |
+      IFindBaseArgs<ContainmentTypes> &
+        FindAdjacencyArgs<ContainmentTypes, Being, ModelType>,
+  ) => IterableIterator<IModel<ContainmentTypes, Being, ModelType>>;
 
   readonly removeNeighbor: <T extends BaseAdjacencies = BaseAdjacencies>(
     adjacency: T,

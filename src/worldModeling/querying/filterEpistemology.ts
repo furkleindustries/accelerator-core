@@ -28,14 +28,17 @@ import {
 } from './wantsFilter';
 
 export const filterEpistemology = <
-  Type extends ModelType,
+  Type extends EpistemicTypes,
   Being extends OnticTypes,
   Knowledge extends ModelType,
 >(
-  obj: IEpistemology<EpistemicTypes, Knowledge> | null,
+  obj: IEpistemology<EpistemicTypes, Knowledge>,
   key: keyof Pick<
     FindModelArgs<Type, Being, Knowledge>,
-    'awareOf' | 'inAwarenessGraph' | 'thoughts' | 'wants'
+    'awareOf' |
+      'inAwarenessGraph' |
+      'thoughts' |
+      'wants'
   >,
 
   args: FindModelArg<Type, Being, Knowledge>,

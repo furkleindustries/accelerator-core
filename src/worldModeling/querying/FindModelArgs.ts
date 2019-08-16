@@ -1,4 +1,10 @@
 import {
+  AwareTypes,
+} from '../relations/AwareTypes';
+import {
+  BaseAdjacencies,
+} from '../ontology/BaseAdjacencies';
+import {
   ContainableTypes,  
 } from '../relations/ContainableTypes';
 import {
@@ -38,22 +44,21 @@ export interface FindModelArgs<
 > extends IFindBaseArgs<Type>
 {
   readonly adjacent?: Type extends OnticTypes ?
-    FindModelArg<Type, Being, Knowledge> :
+    FindAdjacencyArg<Type, Being, Knowledge> :
     undefined;
 
   readonly connected?:  Type extends OnticTypes ?
-    FindModelArg<Type, Being, Knowledge> :
+    FindAdjacencyArg<Type, Being, Knowledge> :
     undefined;
 
-    
-  readonly awareOf?: Type extends EpistemicTypes & OnticTypes ?
+  readonly awareOf?: Type extends AwareTypes ?
     FindModelArg<Type, Being> :
     undefined;
 
-  readonly inAwarenessGraph?: Type extends EpistemicTypes & OnticTypes ?
+  readonly inAwarenessGraph?: Type extends AwareTypes ?
     FindModelArg<Type, Being> :
     undefined;
-    
+
   readonly ancestors?: Type extends ContainableTypes ?
     FindModelArg<Type, Being, ModelType> :
     undefined;
@@ -91,17 +96,27 @@ export interface IFindBaseArgs<Type extends ModelType> {
 }
 
 export type FindAdjacencyArgs<
-  Type extends ModelType,
+  Type extends OnticTypes,
   Being extends OnticTypes,
   Knowledge extends ModelType,
 > = Pick<FindModelArgs<Type, Being, Knowledge>, 'adjacent' | 'connected'>;
 
+export type FindAdjacencyArg<
+  Type extends OnticTypes,
+  Being extends OnticTypes,
+  Knowledge extends ModelType,
+> = [
+  BaseAdjacencies,
+  FindModelArg<Type, Being, Knowledge>,
+];
+
 export type FindAwarenessArgs<
-  Type extends EpistemicTypes & OnticTypes,
+  Type extends AwareTypes,
   Being extends OnticTypes,
 > = Pick<
   FindModelArgs<Type, Being, ModelType>,
-  'awareOf' | 'inAwarenessGraph'
+  'awareOf' |
+    'inAwarenessGraph'
 >;
 
 export type FindContainmentArgs<
@@ -109,15 +124,20 @@ export type FindContainmentArgs<
   Being extends ContainableTypes,
 > = Pick<
   FindModelArgs<Type, Being, ModelType>,
-  'ancestors' | 'children' | 'descendants' | 'parent'
+  'ancestors' |
+    'children' |
+    'descendants' |
+    'parent'
 >;
 
 export type FindThoughtArgs<
-  Type extends ModelType,
+  Type extends EpistemicTypes,
   Knowledge extends ModelType,
 > = Pick<
   FindModelArgs<Type, OnticTypes, Knowledge>,
-  'links' | 'thoughts' | 'wants'
+  'links' |
+    'thoughts' |
+    'wants'
 >;
 
 export type FindEpistemicArgs<
@@ -136,4 +156,3 @@ export type FindOnticArgs<
       FindContainmentArgs<Type, Being> :
       object :
     object);
-

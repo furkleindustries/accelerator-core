@@ -14,23 +14,35 @@ import {
   descendantsFilter,
 } from './descendantsFilter';
 import {
+  FilterArrayArg,
+} from './FilterArrayArg';
+import {
   FindModelArgs,
 } from './FindModelArgs';
-import {
-  IModel,
-} from '../models/IModel';
 import {
   IOntology,
 } from '../ontology/IOntology';
 import {
+  isFindAdjacencyArg,
+} from '../typeGuards/isFindAdjacencyArg';
+import {
+  isModel,
+} from '../typeGuards/isModel';
+import {
   isModelType,
 } from '../typeGuards/isModelType';
+import {
+  isWorld,
+} from '../typeGuards/isWorld';
 import {
   IWorld,
 } from '../world/IWorld';
 import {
   linksFilter,
 } from './linksFilter';
+import {
+  MaybeReadonlyArray,
+} from '../../typeAliases/MaybeReadonlyArray';
 import {
   ModelType,
 } from '../models/ModelType';
@@ -49,12 +61,9 @@ import {
 import {
   worldFilter,
 } from './worldFilter';
-import {
-  WorldType,
-} from '../world/WorldType';
 
 export const filterOntology = <
-  Type extends ModelType,
+  Type extends OnticTypes,
   Being extends OnticTypes,
   Knowledge extends ModelType,
 >(
@@ -70,9 +79,13 @@ export const filterOntology = <
       'parent'
   >,
 
-  args: Array<string | ModelType | IWorld | IModel<Type, Being, Knowledge>>,
+  args: MaybeReadonlyArray<FilterArrayArg<Type, Being, Knowledge>> | IWorld,
 ): boolean => {
-  for (const arg of args) {
+  if (isWorld(args)) {
+    return worldFilter(obj, args);
+  }
+
+  for (const arg of args as Exclude<typeof args, IWorld>) {
     if (typeof arg === 'string') {
       if (key === 'adjacent' && adjacentFilter(obj, arg)) {
         return true;
@@ -91,12 +104,15 @@ export const filterOntology = <
       } else {
         throw new Error('Key argument not recognized in filterEpistemology.');
       }
-    } else if (arg.type === WorldType) {
-      return worldFilter(obj, arg);
     } else if (isModelType(arg)) {
       return modelTypeFilter(obj, arg);
-    } else {
-      if (key === 'adjacent' && adjacentFilter(obj, arg.name)) {
+    } else if (isWorld(arg)) {
+      return worldFilter(obj, arg);
+    } else if (isModel(arg)) {
+      if (key === 'adjacent' &&
+        isFindAdjacencyArg(arg) &&
+        adjacentFilter(obj, arg))
+      {
         return true;
       } else if (key === 'ancestors' && ancestorsFilter(obj, arg.name)) {
         return true;
@@ -113,6 +129,8 @@ export const filterOntology = <
       } else {
         throw new Error('Key argument not recognized in filterEpistemology.');
       }
+    } else {
+      throw new Error('Argument to filterOntology not recognized.');
     }
   }
 

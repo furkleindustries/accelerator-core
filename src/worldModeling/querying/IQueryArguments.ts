@@ -1,9 +1,13 @@
 import {
+  FindAdjacencyArg,
   FindModelArg,
 } from './FindModelArgs';
 import {
   IModel,
 } from '../models/IModel';
+import {
+  ITag,
+} from '../../tags/ITag';
 import {
   IWorld,
 } from '../world/IWorld';
@@ -14,8 +18,8 @@ import {
   NoStrings,
 } from '../../typeAliases/NoStrings';
 import {
-  ITag,
-} from '../../tags/ITag';
+  NoThought,
+} from '../models/NoThought';
 import {
   OnticTypes,
 } from '../ontology/OnticTypes';
@@ -25,7 +29,7 @@ export interface IQueryArguments<
   Being extends OnticTypes,
   Knowledge extends ModelType,
 > {
-  readonly adjacent?: NoStrings<FindModelArg<Type, Being, Knowledge>>;
+  readonly adjacent?: FindAdjacencyArg<NoThought<Type>, Being, Knowledge>;
   readonly ancestors?: Array<string | IModel<Type, Being, Knowledge> | IWorld>;
   readonly awareOf?: NoStrings<FindModelArg<Type, Being, Knowledge>>;
   readonly children?: NoStrings<FindModelArg<Type, Being, Knowledge>>;

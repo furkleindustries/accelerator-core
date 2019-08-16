@@ -1,3 +1,7 @@
+/**
+ * @todo Finish implementing angular directions and get(Reverse)Direction.
+ */
+
 export type BaseAdjacencies =
   CardinalDirections |
     IntercardinalDirections |

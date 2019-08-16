@@ -5,7 +5,7 @@ import {
   filterOntology,
 } from './filterOntology';
 import {
-  FindModelArgs,
+  FindModelArgs, FindAdjacencyArg,
 } from './FindModelArgs';
 import {
   getQueryArguments,
@@ -25,10 +25,16 @@ import {
 import {
   OnticTypes,
 } from '../ontology/OnticTypes';
+import {
+  shouldEndQueryEarly,
+} from './shouldEndQueryEarly';
 import { 
   assert,
   assertValid,
 } from 'ts-assertions';
+import { AwareTypes } from '../relations/AwareTypes';
+import { EpistemicTypes } from '../epistemology/EpistemicTypes';
+import { ContainmentTypes } from '../relations/ContainmentTypes';
 
 function* generate<
   Type extends ModelType,
@@ -39,11 +45,12 @@ function* generate<
   filter: (model: IModel<Type, Being, Knowledge>) => boolean = () => true,
 ): IterableIterator<IModel<Type, Being, Knowledge>>
 {
-  const filtered = models.filter(filter);
-  for (const model of filtered) {
-    yield model;
+  for (const model of models) {
+    if (filter(model)) {
+      yield model;
+    }
   }
-};
+}
 
 export function* findAllGenerate<
   Type extends ModelType,
@@ -67,7 +74,6 @@ export function* findAllGenerate<
     andOrBehavior: tempAndOr,
     ...tempArgs
   } = args;
-
   
   let andOrBehavior: 'and' | 'or' = 'and';
   if (/^and|or$/.test(String(tempAndOr))) {
@@ -96,142 +102,159 @@ export function* findAllGenerate<
     wants,
   } = getQueryArguments(safeArgs);
 
-  let filter;
-  if (andOrBehavior === 'and') {
-    filter = ({
-      being: modelBeing,
-      knowledge: modelKnowledge,
-      name: modelName,
-      tags: modelTags,
-      type: modelType,
-    }: IModel<ModelType, Being, Knowledge>): boolean => (
-      (typeof name === 'boolean' ? modelName === name : true) &&
-        tags ?
-          !tags.find((tag) => !modelTags.includes(getTag([ tag ], tag)!)) :
-          true &&
+  const filter = ({
+    being: modelBeing,
+    knowledge: modelKnowledge,
+    name: modelName,
+    tags: modelTags,
+    type: modelType,
+  }: IModel<ModelType, Being, Knowledge>): boolean => {
+    const results: boolean[] = [];
 
-        type ? modelType === type : true &&
+    if (typeof name === 'boolean') {
+      results.push(modelName === 'name');
+      if (shouldEndQueryEarly(andOrBehavior, results)) {
+        return false;
+      }
+    }
 
-        modelKnowledge ?
-          (
-            awareOf ?
-              filterEpistemology(modelKnowledge, 'awareOf', awareOf) :
-              true &&
+    if (tags) {
+      results.push(
+        !tags.find((tag) => !modelTags.includes(getTag([ tag ], tag)!)),
+      );
 
-            inAwarenessGraph ?
-              filterEpistemology(
-                modelKnowledge,
-                'inAwarenessGraph',
-                inAwarenessGraph,
-              ) :
-              true &&
+      if (shouldEndQueryEarly(andOrBehavior, results)) {
+        return false;
+      }
+    }
 
-            thoughts ?
-              filterEpistemology(modelKnowledge, 'thoughts', thoughts) :
-              true &&
+    if (type) {
+      results.push(modelType === type);
+      if (shouldEndQueryEarly(andOrBehavior, results)) {
+        return false;
+      }
+    }
 
-            wants ? filterEpistemology(modelKnowledge, 'wants', wants) : true
-          ) :
-          true &&
+    if (modelKnowledge) {
+      if (awareOf) {
+        results.push(
+          filterEpistemology(
+            modelKnowledge,
+            'awareOf',
+            awareOf as IModel<AwareTypes, OnticTypes, ModelType>[],
+          ),
+        );
 
-        modelBeing ?
-          (
-            adjacent ?
-              filterOntology(modelBeing, 'adjacent', adjacent) :
-              true &&
+        if (shouldEndQueryEarly(andOrBehavior, results)) {
+          return false;
+        }
+      }
 
-            connected ?
-              filterOntology(modelBeing, 'connected', connected) :
-              true &&
+      if (inAwarenessGraph) {
+        results.push(
+          filterEpistemology(
+            modelKnowledge,
+            'inAwarenessGraph',
+            inAwarenessGraph as IModel<AwareTypes, Being, Knowledge>[],
+          ),
+        );
 
-            ancestors ?
-              filterOntology(modelBeing, 'ancestors', ancestors) :
-              true &&
+        if (shouldEndQueryEarly(andOrBehavior, results)) {
+          return false;
+        }
+      }
 
-            children ?
-              filterOntology(modelBeing, 'children', children) :
-              true &&
+      if (thoughts) {
+        results.push(
+          filterEpistemology(
+            modelKnowledge,
+            'thoughts',
+            thoughts as IModel<AwareTypes, Being, Knowledge>[],
+          ),
+        );
+        if (shouldEndQueryEarly(andOrBehavior, results)) {
+          return false;
+        }
+      }
 
-            descendants ?
-              filterOntology(modelBeing, 'descendants', descendants) :
-              true &&
+      if (wants) {
+        results.push(
+          filterEpistemology(
+            modelKnowledge,
+            'wants',
+            wants as IModel<EpistemicTypes, Being, Knowledge>[],
+          ),
+        );
 
-            parent ? filterOntology(modelBeing, 'parent', [ parent ]) : true &&
-            links ? filterOntology(modelBeing, 'links', links) : true
-          ) :
-          true
-    );
-  } else {
-    filter = ({
-      being: modelBeing,
-      knowledge: modelKnowledge,
-      name: modelName,
-      tags: modelTags,
-      type: modelType,
-    }: IModel<ModelType, Being, Knowledge>): boolean => (
-      name ? modelName === name : false ||
-        tags ?
-          !tags.find((tag) => !modelTags.includes(getTag([ tag ], tag)!)) :
-          false ||
+        if (shouldEndQueryEarly(andOrBehavior, results)) {
+          return false;
+        }
+      }
+    }
 
-        type ? modelType === type : false ||
+    if (modelBeing) {
+      if (adjacent) {
+        results.push(
+          filterOntology(
+            modelBeing,
+            'adjacent',
+            adjacent as FindAdjacencyArg<ContainmentTypes, Being, Knowledge>,
+          ),
+        );
 
-        modelKnowledge ?
-          (
-            awareOf ?
-              filterEpistemology(
-                modelKnowledge!,
-                'awareOf',
-                awareOf,
-              ) :
-              false ||
+        if (shouldEndQueryEarly(andOrBehavior, results)) {
+          return false;
+        }
+      }
 
-            inAwarenessGraph ?
-              filterEpistemology(
-                modelKnowledge!,
-                'inAwarenessGraph',
-                inAwarenessGraph,
-              ) :
-              false ||
+      if (ancestors) {
+        results.push(filterOntology(modelBeing, 'ancestors', ancestors));
+        if (shouldEndQueryEarly(andOrBehavior, results)) {
+          return false;
+        }
+      }
 
-            thoughts ?
-              filterEpistemology(modelKnowledge!, 'thoughts', thoughts) :
-              false ||
+      if (children) {
+        results.push(filterOntology(modelBeing, 'children', children));
+        if (shouldEndQueryEarly(andOrBehavior, results)) {
+          return false;
+        }
+      }
 
-            wants ? filterEpistemology(modelKnowledge!, 'wants', wants) : false
-          ) :
-          false ||
+      if (connected) {
+        results.push(filterOntology(modelBeing, 'connected', connected)); 
+        if (shouldEndQueryEarly(andOrBehavior, results)) {
+          return false;
+        }
+      }
 
-        modelBeing ?
-          (
-            adjacent ?
-              filterOntology(modelBeing, 'adjacent', adjacent) :
-              false ||
+      if (descendants) {
+        results.push(filterOntology(modelBeing, 'descendants', descendants));
+        if (shouldEndQueryEarly(andOrBehavior, results)) {
+          return false;
+        }
+      }
 
-            connected ?
-              filterOntology(modelBeing, 'connected', connected) :
-              false ||
+      if (parent) {
+        results.push(filterOntology(modelBeing, 'parent', [ parent ]));
+        if (shouldEndQueryEarly(andOrBehavior, results)) {
+          return false;
+        }
+      }
 
-            ancestors ?
-              filterOntology(modelBeing, 'ancestors', ancestors) :
-              false ||
+      if (links) {
+        results.push(filterOntology(modelBeing, 'links', links));        
+        if (shouldEndQueryEarly(andOrBehavior, results)) {
+          return false;
+        }
+      }
+    }
 
-            children ?
-              filterOntology(modelBeing, 'children', children) :
-              false ||
-
-            descendants ?
-              filterOntology(modelBeing, 'descendants', descendants) :
-              false ||
-
-            parent ?
-              filterOntology(modelBeing, 'parent', [ parent ]) :
-              false ||
-
-            links ? filterOntology(modelBeing, 'links', links) : false
-          ) :
-          true
-    );
+    if (andOrBehavior === 'and') {
+      return results.filter(Boolean).length === results.length;
+    } else {
+      return Boolean(results.filter(Boolean).length);
+    }
   }
 
   yield* generate<Type, Being, Knowledge>(models, filter);
