@@ -102,7 +102,7 @@
     "fork-ts-checker-webpack-plugin": "^0.5.2",
     "fs-extra": "^7.0.1",
     "glob": "^7.1.4",
-    "handlebars": "^4.1.2",
+    "handlebars": "^4.5.3",
     "html-webpack-plugin": "^4.0.0-beta.7",
     "identity-obj-proxy": "^3.0.0",
     "inklecate-loader": "^1.1.19",
