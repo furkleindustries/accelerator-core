@@ -3,7 +3,7 @@ import {
 } from '../configuration/IAcceleratorConfigNormalized';
 
 export interface InitializationHandlerOptions {
-  appSelector: string;
-  config: IAcceleratorConfigNormalized;
-  loadSelector: string;
+  readonly appSelector: string;
+  readonly config: IAcceleratorConfigNormalized;
+  readonly loadSelector: string;
 }

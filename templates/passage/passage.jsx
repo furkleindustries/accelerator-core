@@ -7,7 +7,19 @@ import classnames from 'classnames';
  * destructure this as you see fit but watch out that you don't get mixed up
  * between bundle props and component props with the same name (e.g. tags). */
 import * as components from '../../bundles/componentsBundle';
-import * as tagsBundle from '../../bundles/tagsBundle';
+
+/* You may leave the @ts-ignore directive here, remove it if you want compiler
+ * errors should you not remove it from a passage which does not use the
+ * passages bundle, or remove both if you have no intention of ever using the
+ * bundle. */
+// @ts-ignore
+import * as passages from '../../bundles/passagesBundle';
+
+/* You may leave the @ts-ignore directive here, remove it if you want compiler
+ * errors should you not remove it from a passage which does not use the tags
+ * bundle, or remove both if you have no intention of ever using tags. */
+// @ts-ignore
+import * as tags from '../../bundles/tagsBundle';
 
 /**
  * The authoring passage is imported and rendered into the React passage.
@@ -20,41 +32,30 @@ import styles from './{{{name}}}.less';
 const Passage = ({
   children,
   ...props
-}) => {
-  const {
-    lastLinkTags,
-    passageObject,
-    navigateTo,
-    restart,
-    setStoryState,
-    storyState,
-  } = props;
-
-  return (
-    <components.Article
-      className={classnames(
-        'passage',
-        styles['{{{name}}}'],
-        builtInStyles.passage,
-      )}
-    >
-      <components.AuthoringPassageContainer>
-        <AuthoringPassage />
-      </components.AuthoringPassageContainer>
-    </components.Article>
-  );
-};
+}) => (
+  <components.Article
+    className={classnames(
+      'passage',
+      styles['{{{name}}}'],
+      builtInStyles.passage,
+    )}
+  >
+    <components.AuthoringPassageContainer passageProps={{ ...props }}>
+      <AuthoringPassage />
+    </components.AuthoringPassageContainer>
+  </components.Article>
+);
 
 export default {
   /* string: the story-unique name of the passage. */
   name: '{{{name}}}',
-  
+
   /* array: an optional collection of either plain strings or
    * { key: string, value: string } (Tag) objects. */
   tags: [],
 
-  /* React.ComponentType<IPassageProps>: the content that should be displayed,
-   * or, in the case of noRender passages, a component that can be imported.
-   * Should be formatted in JSX style. */
+  /* React component with a props signature of IPassageProps: the content that
+   * should be displayed, or, in the case of noRender passages, a component
+   * that can be imported. Should be formatted in JSX style. */
   content: Passage,
 };

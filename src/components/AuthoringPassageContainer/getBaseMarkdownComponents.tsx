@@ -1,10 +1,4 @@
 import {
-  Article,
-} from '../Article';
-import {
-  Button,
-} from '../Button';
-import {
   Checkbox,
 } from '../Checkbox';
 import {
@@ -12,14 +6,8 @@ import {
 } from '../CircularProgress';
 import * as componentsBundle from '../../../bundles/componentsBundle';
 import {
-  Dialog,
-} from '../Dialog';
-import {
-  Footer,
-} from '../Footer';
-import {
-  Header,
-} from '../Header';
+  getReactMarkdownComponentKeyValuePair,
+} from './getReactMarkdownComponentKeyValuePair';
 import {
   ICircularProgressOwnProps,
 } from '../CircularProgress/ICircularProgressOwnProps';
@@ -38,9 +26,6 @@ import {
 import {
   List,
 } from '../List';
-import {
-  Section,
-} from '../Section/Section';
 import {
   TypographyClassKey,
 } from '@material-ui/core/Typography';
@@ -124,18 +109,42 @@ export const getTypography = (key: React.ElementType | 'body2') => {
 const typeCompList = typographies.map(getTypography);
 
 const baseComponents = Object.freeze({
-  ...componentsBundle,
+  ...Object.keys(componentsBundle).reduce((retObj, key) => ({
+    ...retObj,
+    ...getReactMarkdownComponentKeyValuePair(key, componentsBundle[key]), 
+  }), {}),
 
   ...typeCompList.reduce((obj, val, index) => (
     Object.assign(obj, { [typographies[index] as string]: val })
   ), {}),
 
-  a: UrlLink,
-  article: Article,
-  button: Button,
-  dialog: Dialog,
-  footer: Footer,
-  header: Header,
+  a: ({
+    href,
+    ...props
+  }: Record<string, any>) => {
+    /* Return an UrlLink which opens links in a new tab by default if and only
+     * if the href value is a string which begins with `https?://`. If you
+     * don't like this for any reason, either import and use UrlLink directly,
+     * or edit this code in your own codebase. */
+    if (typeof href === 'string' && /^https?:\/\//.test(href)) {
+      return (
+        <UrlLink
+          href={href}
+          /* Force links to open in a new tab. May be overridden by props. */
+          target="_blank"
+          {...props}
+        />
+      ) 
+    }
+
+    return (
+      <componentsBundle.Link
+        /* Overridden by props if passageName was provided. */
+        passageName={href}
+        {...props}
+      />
+    );
+  },
 
   input: ({
     children,
@@ -154,8 +163,6 @@ const baseComponents = Object.freeze({
     children,
     ...props
   }: IListOwnProps) => <List {...props}>{children}</List>,
-
-  section: Section,
 
   progress: ({
     orientation,

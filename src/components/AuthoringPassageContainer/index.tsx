@@ -16,18 +16,16 @@ const baseMarkdownComponents = getBaseMarkdownComponents();
 export const AuthoringPassageContainer: React.FunctionComponent<IAuthoringPassageContainerOwnProps> = ({
   children,
   components,
-  replaceComponents,
+  noBuiltInComponents,
   passageProps,
 }) => {
-  const ContextWrapper = ({
-    children
-  }: { children: (...args: any[]) => React.ReactElement }) => children({
-    ...passageProps,
-  });
-
-  const comps = replaceComponents === true ?
+  type Val = { children: (...args: any[]) => React.ReactElement };
+  const ContextWrapper = ({ children }: Val) => children({ ...passageProps });
+  const comps = noBuiltInComponents ?
     {
       ContextWrapper,
+      /* Note for users of noBuiltInComponents: this, for better and worse,
+       * allows you to override ContextWrapper as well. */
       ...components,
     } :
     {

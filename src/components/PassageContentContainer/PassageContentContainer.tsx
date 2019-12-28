@@ -47,6 +47,7 @@ export const PassageContentContainer: React.FunctionComponent<
     content,
     tags,
   },
+
   ...passageProps
 }) => {
   const SafeContent = assertValid<React.ComponentType<IPassageProps>>(

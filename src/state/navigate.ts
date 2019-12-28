@@ -39,7 +39,7 @@ export const strings = {
     'or was empty.',
 };
 
-export function navigate({
+export const navigate = ({
   dispatch,
   passage,
   linkTags,
@@ -47,7 +47,7 @@ export function navigate({
   dispatch: Dispatch<IAction>,
   passage: IPassage,
   linkTags?: Tag[] | ReadonlyArray<Tag>,
-}): IPassageNavigationAction
+}): IPassageNavigationAction =>
 {
   assert(passage, strings.PASSAGE_INVALID);
 
@@ -58,4 +58,4 @@ export function navigate({
 
   /* Update the current passage. */
   return dispatch(createPassageNavigationAction(passage, linkTags));
-}
+};

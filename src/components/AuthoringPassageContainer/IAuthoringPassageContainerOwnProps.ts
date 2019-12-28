@@ -9,6 +9,6 @@ import {
 export interface IAuthoringPassageContainerOwnProps {
   readonly children: ReactElement;
   readonly passageProps: IPassageProps;
-  readonly components?: Record<keyof JSX.IntrinsicElements, ComponentType<any>>;
-  readonly replaceComponents?: boolean;
+  readonly components?: Record<string, ComponentType<any>>;
+  readonly noBuiltInComponents?: boolean;
 }

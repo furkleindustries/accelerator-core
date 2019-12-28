@@ -56,6 +56,13 @@ export {
   Dialog,
 } from '../src/components/Dialog';
 export {
+  Else,
+} from '../src/components/Else';
+export {
+  ElseIf,
+  ElseIf as Elif,
+} from '../src/components/ElseIf';
+export {
   FadeIn,
 } from '../src/components/FadeIn';
 export {
@@ -68,8 +75,17 @@ export {
   Header,
 } from '../src/components/Header';
 export {
+  If,
+} from '../src/components/If';
+export {
   InkContainer,
 } from '../src/components/InkContainer';
+export {
+  Iterated,
+} from '../src/components/Iterated';
+export {
+  Iterator,
+} from '../src/components/Iterator';
 export {
   LinearProgress,
 } from '../src/components/LinearProgress';
@@ -104,6 +120,9 @@ export {
   Section,
 } from '../src/components/Section';
 export {
+  SetVariable,
+} from '../src/components/SetVariable';
+export {
   SoundManagerAudioPanel,
 } from '../src/components/SoundManagerAudioPanel';
 export {
@@ -112,3 +131,7 @@ export {
 export {
   Typography,
 } from '../src/components/Typography';
+export {
+  Variable,
+  Variable as Var,
+} from '../src/components/Variable';
