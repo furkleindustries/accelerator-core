@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   IGridOwnProps,
 } from './IGridOwnProps';
@@ -13,7 +13,7 @@ export const Grid: React.FunctionComponent<IGridOwnProps> = ({
 }) => (
   <MuiGrid
     {...props}
-    className={classnames('grid', className)}
+    className={classNames('grid', className)}
   >
     {children}
   </MuiGrid>

@@ -1,4 +1,5 @@
-export type Tag = string | {
-  readonly key: string,
-  readonly value: string,
-};
+import {
+  ITag,
+} from './ITag';
+
+export type Tag = ITag | string;

@@ -1,5 +1,5 @@
 import {
-  FunctionComponent,
+  ComponentType,
 } from 'react';
 
-export type MDXComponent = FunctionComponent;
+export type MDXComponent = ComponentType<any>;

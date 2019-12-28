@@ -1,15 +1,14 @@
 import {
+  INoChildren,
+} from '../../interfaces/INoChildren';
+import {
   IPassagesMap,
 } from '../../passages/IPassagesMap';
 import {
   IPlugin,
 } from '../../plugins/IPlugin';
-import {
-  ReactNoOutput,
-} from '../../typeAliases/ReactNoOutput';
 
-export interface IPassageRendererWrapperOwnProps {
+export interface IPassageRendererWrapperOwnProps extends INoChildren {
   readonly passagesMap: IPassagesMap;
-  readonly plugins: ReadonlyArray<IPlugin>;
-  readonly children?: ReactNoOutput;
+  readonly plugins: IPlugin[] | ReadonlyArray<IPlugin>;
 }

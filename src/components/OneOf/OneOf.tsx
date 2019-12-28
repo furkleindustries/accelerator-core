@@ -3,7 +3,7 @@ import {
 } from './IOneOfOwnProps';
 import {
   NOf
-} from '../NOf/NOf';
+} from '../NOf';
 
 import * as React from 'react';
 

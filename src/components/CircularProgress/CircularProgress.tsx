@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   ICircularProgressOwnProps,
 } from './ICircularProgressOwnProps';
@@ -6,15 +6,18 @@ import MuiCircularProgress from '@material-ui/core/CircularProgress';
 
 import * as React from 'react';
 
-import styles from './CircularProgress.less';
+import styles from './index.less';
 
-export const CircularProgress: React.FunctionComponent<ICircularProgressOwnProps> = (props) => (
-  <MuiCircularProgress {...{
-    ...props,
-    className: classnames(
-      'circularProgress',
+export const CircularProgress: React.FunctionComponent<ICircularProgressOwnProps> = ({
+  className,
+  ...props
+}) => (
+  <MuiCircularProgress
+    {...props}
+    className={classNames(
       styles.circularProgress,
-      props.className,
-    ),
-  }} />
+      'circularProgress',
+      className,
+    )}
+  />
 );

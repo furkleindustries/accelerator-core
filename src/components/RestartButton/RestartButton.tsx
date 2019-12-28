@@ -1,13 +1,10 @@
 import {
+  AppContextConsumerWrapper,
+} from '../AppContextConsumerWrapper';
+import {
   Button,
-} from '../Button/Button';
-import classnames from 'classnames';
-import {
-  getPassagesMapAndStartPassageNameContext,
-} from '../../context/getPassagesMapAndStartPassageNameContext';
-import {
-  getPluginsContext,
-} from '../../context/getPluginsContext';
+} from '../Button';
+import classNames from 'classnames';
 import {
   IPassagesMap,
 } from '../../passages/IPassagesMap';
@@ -46,59 +43,50 @@ export const strings = {
     'name in the passages map.',
 };
 
-const {
-  Consumer: PassagesMapAndStartPassageNameContextConsumer,
-} = getPassagesMapAndStartPassageNameContext();
-
-const { Consumer: PluginsContextConsumer } = getPluginsContext();
-
 export class RestartButtonUnconnected extends React.PureComponent<
   IRestartButtonOwnProps & IRestartButtonStateProps & IRestartButtonDispatchProps
 >
 {
-  constructor(props: any) {
-    super(props);
-    this.restart = this.restart.bind(this);
-  }
-  
-  public render() {
+  public render = () => {
     const {
       children,
       className,
     } = this.props;
 
-    
     return (
-      <PassagesMapAndStartPassageNameContextConsumer>
-        {({ passagesMap }) => (
-          <PluginsContextConsumer>
-            {({ plugins }) => {
-              const boundRestart = this.restart.bind(
-                this,
-                passagesMap,
-                plugins,
-              );
+      <AppContextConsumerWrapper>
+        {({
+          passagesMap,
+          plugins,
+        }) => {
+          const boundRestart = this.restart.bind(
+            this,
+            passagesMap,
+            plugins,
+          );
 
-              return (
-                <Button
-                  className={classnames(
-                    'resetButton',
-                    'navigationButton',
-                    className
-                  )}
-                  onClick={boundRestart}
-                >
-                  {children}
-                </Button>
-              );
-            }}
-          </PluginsContextConsumer>
-        )}
-      </PassagesMapAndStartPassageNameContextConsumer>
+          return (
+            <Button
+              className={classNames(
+                'navigationButton',
+                'resetButton',
+                className,
+              )}
+
+              onClick={boundRestart}
+            >
+              {children}
+            </Button>
+          );
+        }}
+      </AppContextConsumerWrapper>
     );
-  }
+  };
 
-  private restart(passagesMap: IPassagesMap, plugins: ReadonlyArray<IPlugin>) {
+  private restart = (
+    passagesMap: IPassagesMap,
+    plugins: ReadonlyArray<IPlugin>,
+  ) => {
     const {
       passageName,
       storyState,

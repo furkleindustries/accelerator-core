@@ -3,10 +3,10 @@ import {
 } from '../src/renderers/IPassageRendererOwnProps';
 import {
   PassageContainer,
-} from '../src/components/PassageContainer/PassageContainer';
+} from '../src/components/PassageContainer';
 import {
   SkipToContentLinkDestination,
-} from '../src/components/SkipToContentLinkDestination/SkipToContentLinkDestination';
+} from '../src/components/SkipToContentLinkDestination';
 
 import * as React from 'react';
 

@@ -116,7 +116,7 @@ checkBrowsers(paths.appPath, isTTY)
     },
     (err) => {
       error('Failed to compile.\n');
-      printBuildError(err ? err.stack || err.message ||  err : err);
+      printBuildError(err ? err.stack || err.message || err : err);
       exit(1);
     },
   ).catch((err) => {

@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   getSoundManagerContext,
 } from '../../context/getSoundManagerContext';
@@ -35,7 +35,7 @@ export class SoundManagerAudioPanel extends React.PureComponent<ISoundManagerAud
 
     return (
       <SoundManagerAudioPanelRefForwarded
-        className={classnames(className)}
+        className={classNames('soundManagerAudioPanelComponent', className)}
         ref={this.ref}
       />
     );
@@ -60,7 +60,7 @@ export const SoundManagerAudioPanelRefForwarded = React.forwardRef((
   ref: React.RefObject<HTMLDivElement>,
 ) => (
   <div
-    className={classnames('soundManagerAudioPanel', className)}
+    className={classNames('soundManagerAudioPanel', className)}
     ref={ref}
   >
   </div>

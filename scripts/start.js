@@ -6,25 +6,24 @@ import {
 } from 'react-dev-utils/browsersHelper';
 import chalk from 'chalk';
 import checkRequiredFiles from 'react-dev-utils/checkRequiredFiles';
-//import clearConsole from 'react-dev-utils/clearConsole');
 import {
   error,
   log,
 } from 'colorful-logging';
 import config from '../config/webpack/webpack.config';
 import createDevServerConfig from '../config/webpack/webpackDevServer.config';
+import {
+  choosePort,
+  createCompiler,
+  prepareProxy,
+  prepareUrls,
+} from '../lib/react-dev-utils/FixedWebpackDevServerUtils';
 import openBrowser from 'react-dev-utils/openBrowser';
 import {
   paths,
 } from '../config/paths';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
-import {
-  choosePort,
-  createCompiler,
-  prepareProxy,
-  prepareUrls,
-} from 'react-dev-utils/WebpackDevServerUtils';
 
 const packageJson = require(paths.appPackageJson);
 
@@ -39,8 +38,14 @@ const {
   stdout: { isTty: isInteractive },
 } = process;
 
-// Warn and crash if required files are missing
-if (!checkRequiredFiles([ paths.htmlTemplate, paths.appIndex, paths.appPackageJson ])) {
+const filesMissing = !checkRequiredFiles([
+  paths.htmlTemplate,
+  paths.appIndex,
+  paths.appPackageJson,
+]);
+
+/* Warn and crash if required files are missing. */
+if (filesMissing) {
   exit(1);
 }
 
@@ -50,17 +55,10 @@ const host = HOST || '0.0.0.0';
 
 if (HOST) {
   log(
-    `Attempting to bind to HOST environment variable: ${chalk.yellow(
-      chalk.bold(host)
-    )}`
-  );
-
-  log(
-    `If this was unintentional, check that you haven't mistakenly set it in your shell.`
-  );
-
-  log(
-    `Learn more here: ${chalk.bold('http://bit.ly/CRA-advanced-config')}\n`
+    `Attempting to bind to HOST environment variable: ` +
+      `${chalk.yellow(chalk.bold(host))}\nIf this was unintentional, check ` +
+      `that you haven't mistakenly set it in your shell.\nLearn more here: ` +
+      `${chalk.bold('http://bit.ly/CRA-advanced-config')}.\n`
   );
 }
 
@@ -77,7 +75,7 @@ checkBrowsers(paths.appPath, isInteractive)
     }
 
     const protocol = HTTPS === 'true' ? 'https' : 'http';
-    const appName = require(paths.appPackageJson).name;
+    const appName = packageJson.name;
 
     const urls = prepareUrls(protocol, host, port);
     const {
@@ -86,7 +84,13 @@ checkBrowsers(paths.appPath, isInteractive)
     } = urls;
 
     // Create a webpack compiler that is configured with custom messages.
-    const compiler = createCompiler(webpack, config, appName, urls);
+    const compiler = createCompiler({
+      appName,
+      config,
+      urls,
+      webpack,
+    });
+
     // Load proxy config
     const proxySetting = packageJson.proxy;
     const proxyConfig = prepareProxy(proxySetting, paths.appPublic);
@@ -97,14 +101,11 @@ checkBrowsers(paths.appPath, isInteractive)
     );
 
     const devServer = new WebpackDevServer(compiler, serverConfig);
-    // Launch WebpackDevServer.
+    /* Launch WebpackDevServer. */
     devServer.listen(port, host, (err) => {
       if (err) {
-        console.log(err);
-        error(err.stack || err.message || err);
+        error(err);
         return;
-      } else if (isInteractive) {
-        //clearConsole();
       }
 
       log(chalk.cyan('Starting the development server...\n'));
@@ -114,13 +115,11 @@ checkBrowsers(paths.appPath, isInteractive)
     [
       'SIGINT',
       'SIGTERM',
-    ].forEach((sig) => {
-      process.on(sig, () => {
-        devServer.close();
-        exit(0);
-      });
-    });
+    ].forEach((sig) => process.on(sig, () => {
+      devServer.close();
+      exit(0);
+    }));
   }).catch((err) => {
-    error(err.stack || err.message || err);
+    error(err);
     exit(1);
   });

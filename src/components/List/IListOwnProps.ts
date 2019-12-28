@@ -11,13 +11,18 @@ import {
   ListSubheaderProps,
 } from '@material-ui/core/ListSubheader';
 import {
+  ComponentType,
   ReactElement,
 } from 'react';
+import {
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export interface IListOwnProps extends ListProps {
-  readonly children: ReadonlyArray<any>;
+  readonly children: ReactNodeWithoutNullOrUndefined;
+  readonly component?: ListProps['component'] | ComponentType;
+  readonly dontWrapInListItem?: boolean;
   readonly listItemProps?: ListItemProps;
-  readonly listItemTextProps?: ListItemTextProps;
   readonly subheader?: ReactElement;
   readonly subheaderProps?: ListSubheaderProps;
 }

@@ -1,10 +1,10 @@
 import {
   AppContextConsumerWrapper,
-} from '../AppContextConsumerWrapper/AppContextConsumerWrapper';
+} from '../AppContextConsumerWrapper';
 import {
   bookmark as doBookmark,
 } from '../../state/bookmark';
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   getNormalizedAcceleratorConfig,
 } from '../../configuration/getNormalizedAcceleratorConfig';
@@ -75,8 +75,8 @@ const {
 
 export class PassageRendererWrapper extends React.PureComponent<
   IPassageRendererWrapperOwnProps &
-  IPassageRendererWrapperStateProps &
-  IPassageRendererDispatchProps
+    IPassageRendererWrapperStateProps &
+    IPassageRendererDispatchProps
 > {
   public readonly render = () => (
     <AppContextConsumerWrapper>
@@ -84,7 +84,7 @@ export class PassageRendererWrapper extends React.PureComponent<
         PassageRendererComponent,
         ...contextWithoutRenderer
       }) => (
-        <div className={classnames(
+        <div className={classNames(
           builtIns.passageRendererWrapper,
           'passageRendererWrapper',
           rendererName,
@@ -107,7 +107,7 @@ export class PassageRendererWrapper extends React.PureComponent<
 
   private readonly bookmark = () => doBookmark(this.props.dispatch);
 
-  private navigateTo(passageName: string, tags?: ReadonlyArray<Tag>) {
+  private navigateTo(passageName: string, tags?: Tag[] | ReadonlyArray<Tag>) {
     const {
       dispatch,
       passagesMap: { [passageName]: passage },

@@ -7,7 +7,7 @@ import classnames from 'classnames';
  * destructure this as you see fit. */
 import * as components from '../../bundles/componentsBundle'; 
 import * as passages from '../../bundles/passagesBundle';
-import * as tags from '../../bundles/tagsBundle';
+//import * as tags from '../../bundles/tagsBundle';
 
 /**
  * The authoring passage is imported and rendered into the React passage.

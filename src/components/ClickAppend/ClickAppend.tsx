@@ -1,6 +1,7 @@
+import classNames from 'classnames';
 import {
   Clicker,
-} from '../Clicker/Clicker';
+} from '../Clicker';
 import {
   IClickAppendOwnProps,
 } from './IClickAppendOwnProps';
@@ -13,8 +14,11 @@ export const ClickAppend: React.FunctionComponent<IClickAppendOwnProps> = ({
   toAppend,
 }) => (
   <Clicker
-    {...(className ? { className } : {})}
-    contentAfterClick={[ children, toAppend, ]}
+    className={classNames('clickAppend', className)}
+    contentAfterClick={[
+      children,
+      toAppend,
+    ]}
   >
     {children}
   </Clicker>

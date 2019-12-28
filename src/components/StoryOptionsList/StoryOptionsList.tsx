@@ -3,37 +3,40 @@ import {
 } from './argumentsAreValid';
 import {
   Button,
-} from '../Button/Button';
+} from '../Button';
 import {
   childIsShownInVisibilityTree,
 } from './childIsShownInVisibilityTree';
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   IGetBreadcrumbPropsReturn,
-} from '../BreadcrumbTrail/IGetBreadcrumbPropsReturn';
+} from '../BreadcrumbTrail';
 import {
   IStoryOptionsListOwnProps,
 } from './IStoryOptionsListOwnProps';
 import {
   IVisibilityTree,
-} from '../BreadcrumbTrail/IVisibilityTree';
+} from '../BreadcrumbTrail';
+import {
+  List,
+} from '../List';
 import {
   assertValid,
 } from 'ts-assertions';
 import {
   Typography,
-} from '../Typography/Typography';
+} from '../Typography';
 
 import * as React from 'react';
 
-import styles from './StoryOptionsList.less';
+import styles from './index.less';
 
 /**
  * Allow both <StoryOption /> and <StoryOptionsList /> children.
  * A StoryOptionsList inside a StoryOptionsList becomes a nested breadcrumb
  * branch.
  */
-export class StoryOptionsList extends React.Component<
+export class StoryOptionsList extends React.PureComponent<
   IStoryOptionsListOwnProps
 > {
   public readonly render = () => {
@@ -71,14 +74,14 @@ export class StoryOptionsList extends React.Component<
       });
 
       content = (
-        <ul className={classnames(
-          'storyOptionsList',
+        <List className={classNames(
           styles.storyOptionsList,
+          'storyOptionsList',
           className,
         )}>
           {title ?
             <Typography
-              className={classnames('storyOptionsListButton')}
+              className={classNames('storyOptionsListButton')}
               component="h4"
             >{
               title
@@ -104,27 +107,25 @@ export class StoryOptionsList extends React.Component<
             } else {
               childContent = React.cloneElement(child, {
                 treeSelector: treeSelector!.concat([ key ]),
-                getBreadcrumbProps() {
-                  return { 
-                    addBreadcrumb,
-                    breadcrumbTrail,
-                    removeBreadcrumb,
-                    visibilityTree: vizTree.children[key],
-                  };
-                },
+                getBreadcrumbProps: () => ({
+                  addBreadcrumb,
+                  breadcrumbTrail,
+                  removeBreadcrumb,
+                  visibilityTree: vizTree.children[key],
+                }),
               });
             }
 
             return (
               <li
-                className={classnames('storyOptionListItem')}
+                className={classNames('storyOptionListItem')}
                 key={key}
               >{
                 childContent
               }</li>
             );
           })}
-        </ul>
+        </List>
       );
     } else {
       content = (
@@ -135,7 +136,7 @@ export class StoryOptionsList extends React.Component<
     }
 
     return (
-      <div className={classnames('storyOptionsListContainer')}>
+      <div className={classNames('storyOptionsListContainer')}>
         {content}
       </div>
     );
@@ -154,4 +155,4 @@ export class StoryOptionsList extends React.Component<
       });
     }
   };
-};
+}

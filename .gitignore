@@ -11,6 +11,9 @@
 /build*/
 /.zips/
 
+# building
+.cache/
+
 # fonts
 public/fonts/
 

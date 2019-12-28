@@ -1,10 +1,14 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   log,
 } from 'colorful-logging';
 import {
+  Article,
   Typography,
 } from '../../bundles/componentsBundle';
+import {
+  getNiceValueString,
+} from '../functions/getNiceValueString';
 import {
   IPlugin,
 } from './IPlugin';
@@ -28,7 +32,7 @@ export class DebugPlugin implements IPlugin {
     log('The story is initializing.');
     log(`Current passage is: ${passageObject.name}`);
     log('The previous link tags after story initialization were:\n' +
-        JSON.stringify(lastLinkTags, null, 2));
+        getNiceValueString(lastLinkTags));
   };
 
   public readonly beforePassageChange = ({
@@ -50,7 +54,9 @@ export class DebugPlugin implements IPlugin {
     log('---- beforeRender ----');
     log(`PassageContainer is rendering the passage named ${name}.`);
     log('The passage\'s tags are:');
-    log(JSON.stringify(tags, null, 2));
+
+    log(getNiceValueString(tags))
+
     log('The story state before render is:');
     log(JSON.stringify(currentStoryState, null, 2));
 
@@ -59,19 +65,19 @@ export class DebugPlugin implements IPlugin {
         {children}
 
         {/* Inject the debug widget at the bottom of the page. */}
-        <article className={classnames(
+        <Article className={classNames(
           styles.debugContainer,
           'debugContainer',
         )}>
           <Typography
-            className={classnames(
+            className={classNames(
               styles.debugStateTitleContainer,
               'debugStateTitle',
             )}
             paragraph={true}
           >
             <Typography
-              className={classnames(styles.debugStateTitle)}
+              className={classNames(styles.debugStateTitle)}
               component="strong"
             >
               Current story state:
@@ -79,23 +85,23 @@ export class DebugPlugin implements IPlugin {
           </Typography>
 
           <Typography
-            className={classnames(
+            className={classNames(
               styles.debugReadoutContainer,
               'debugReadoutContainer',
             )}
-            component="div"
+            paragraph={true}
           >
             <Typography
-              className={classnames(
+              className={classNames(
                 styles.debugStateReadout,
                 'debugStateReadout',
               )}
               component="code"
             >
-              {JSON.stringify(currentStoryState, null, 2)}
+              {getNiceValueString(currentStoryState)}
             </Typography>
           </Typography>
-        </article>
+        </Article>
       </>
     );
   };
@@ -114,12 +120,12 @@ export class DebugPlugin implements IPlugin {
   }: IPluginMethodBaseArgs & IPluginMethodStateChangingArgs) => {
     log('---- afterStoryStateChange ----');
     log('The following modifications to the story state are being made:');
-    log(JSON.stringify(updatedStateProps, null, 2));
+    log(getNiceValueString(updatedStateProps));
 
     if (document && typeof document.querySelector === 'function') {
       const readout = document.querySelector('.debugStateReadout');
       if (readout) {
-        readout.textContent = JSON.stringify(storyState, null, 2);
+        readout.textContent = getNiceValueString(storyState);
       }
     }
   };
@@ -132,7 +138,7 @@ export class DebugPlugin implements IPlugin {
     log('The story is restarting.');
     log(`The passage on which the user restarted was named ${name}.`);
     log('The story state at restart was:');
-    log(JSON.stringify(storyState, null, 2));
+    log(getNiceValueString(storyState));
 
     if (document &&
         typeof document.querySelector === 'function')

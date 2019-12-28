@@ -1,19 +1,19 @@
 import {
   AppBar,
-} from '../components/AppBar/AppBar';
-import classnames from 'classnames';
+} from '../components/AppBar';
+import classNames from 'classnames';
 import {
   RestartButton,
-} from '../components/RestartButton/RestartButton';
+} from '../components/RestartButton';
 import {
   RewindButton,
-} from '../components/RewindButton/RewindButton';
+} from '../components/RewindButton';
 import {
   StoryOptionsConnected,
-} from '../components/StoryOptions/StoryOptions';
+} from '../components/StoryOptions';
 import {
   Toolbar,
-} from '../components/Toolbar/Toolbar';
+} from '../components/Toolbar';
 
 import * as React from 'react';
 
@@ -22,25 +22,21 @@ import styles from './MenuPlugin.less';
 
 export const MenuPluginComponent: React.FunctionComponent = () => (
   <AppBar
-    className={classnames('header', styles.menu, builtInStyles.header)}
+    className={classNames(builtInStyles.header, styles.menu, 'header')}
     position="relative"
   >
-    <Toolbar className={classnames('toolbar', styles.toolbar)}>
-      <div className={classnames('rewindContainer', styles.rewindContainer)}>
-        <RewindButton>
-          Rewind
-        </RewindButton>
+    <Toolbar className={classNames(styles.toolbar, 'toolbar')}>
+      <div className={classNames(styles.rewindContainer, 'rewindContainer')}>
+        <RewindButton>Rewind</RewindButton>
       </div>
 
-      <div className={classnames('restartContainer', styles.restartContainer)}>
-        <RestartButton>
-          Restart
-        </RestartButton>
+      <div className={classNames(styles.restartContainer, 'restartContainer')}>
+        <RestartButton>Restart</RestartButton>
       </div>
 
-      <div className={classnames(
-        'storyOptionsContainer',
+      <div className={classNames(
         styles.storyOptionsContainer,
+        'storyOptionsContainer',
       )}>
         <StoryOptionsConnected />
       </div>

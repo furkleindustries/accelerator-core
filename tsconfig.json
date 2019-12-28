@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "build-web/",
     "module": "esnext",
-    "target": "es5",
+    "target": "es6",
     "lib": [
       "esnext",
       "dom",
@@ -37,8 +37,12 @@
     "build*/",
     "config/",
     "coverage/",
+    "documentation/",
+    "lib/",
+    "!lib/ink/",
+    "node_modules/",
+    "public/",
     "scripts/",
-    "templates/",
     "acceptance-tests",
     "**/*.test.*"
   ]

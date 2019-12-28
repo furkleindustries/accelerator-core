@@ -1,9 +1,10 @@
+import classNames from 'classnames';
 import {
   Clicker,
-} from '../Clicker/Clicker';
+} from '../Clicker';
 import {
   FadeOut,
-} from '../FadeOut/FadeOut';
+} from '../FadeOut';
 import {
   IClickDisappearOwnProps,
 } from './IClickDisappearOwnProps';
@@ -15,7 +16,6 @@ export const ClickDisappear: React.FunctionComponent<IClickDisappearOwnProps> = 
   className,
   fadeOutDuration,
 }) => {
-  const maybeClassName = className ? { className, } : {};
   const after = fadeOutDuration! > 0 && fadeOutDuration! % 1 === 0 ?
     <FadeOut duration={fadeOutDuration!}>
       {children}
@@ -24,7 +24,7 @@ export const ClickDisappear: React.FunctionComponent<IClickDisappearOwnProps> = 
 
   return (
     <Clicker
-      {...maybeClassName}
+      className={classNames('clickDisappear', className)}
       contentAfterClick={after}
     >
       {children}

@@ -23,7 +23,7 @@ import {
 export interface IPluginMethodBaseArgs {
   readonly passageObject: IPassage;
   readonly storyState: IStoryStateFrame;
-  readonly lastLinkTags: ReadonlyArray<Tag>;
+  readonly lastLinkTags: Tag[] | ReadonlyArray<Tag>;
 }
 
 export interface IPluginMethodChildArgs {
@@ -32,7 +32,9 @@ export interface IPluginMethodChildArgs {
 
 export interface IPluginMethodStateMutationArgs {
   readonly store: Store<IState>;
-  setStoryState(updatedStateProps: Partial<IStoryStateFrame>): IStoryStateAction;
+  readonly setStoryState: (
+    updatedStateProps: Partial<IStoryStateFrame>,
+  ) => IStoryStateAction;
 }
 
 export interface IPluginMethodStateChangingArgs {

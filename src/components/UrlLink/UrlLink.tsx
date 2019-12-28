@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   IUrlLinkOwnProps,
 } from './IUrlLinkOwnProps';
@@ -6,15 +6,21 @@ import MuiLink from '@material-ui/core/Link';
 
 import * as React from 'react';
 
-import styles from './UrlLink.less';
+import styles from './index.less';
 
-export const UrlLink: React.FunctionComponent<IUrlLinkOwnProps> = (props) => (
-  <MuiLink {...{
-    ...props,
-    className: classnames(
-      'urlLink',
+export const UrlLink: React.FunctionComponent<IUrlLinkOwnProps> = ({
+  children,
+  className,
+  ...props
+}) => (
+  <MuiLink
+    {...props}
+    className={classNames(
       styles.urlLink,
-      props.className,
-    ),
-  }} />
+      'urlLink',
+      className,
+    )}
+  >{
+    children
+  }</MuiLink>
 );

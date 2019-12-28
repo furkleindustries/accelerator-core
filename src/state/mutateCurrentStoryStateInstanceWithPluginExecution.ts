@@ -26,7 +26,7 @@ export const strings = {
     'correspond to any passage in the passages map.',
 };
 
-/* Do NOT call this from within a plugin -- there is a very high chance you'll
+/* Do NOT call this from within a plugin -- there is a high chance you'll
  * cause an infinite loop, then a stack overflow. */
 export function mutateCurrentStoryStateInstanceWithPluginExecution({
   dispatch,

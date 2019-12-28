@@ -17,20 +17,17 @@ import {
   IStoryStateFrame,
 } from '../../state/IStoryStateFrame';
 import {
-  Omit,
-} from '../../typeAliases/Omit';
-import {
   Tag,
 } from '../../tags/Tag';
 
 export interface IPassageContentContainerOwnProps {
   readonly config: Omit<IAcceleratorConfigNormalized, 'rendererName'>;
-  readonly lastLinkTags: ReadonlyArray<Tag>;
+  readonly lastLinkTags: Tag[] | ReadonlyArray<Tag>;
   readonly passageObject: IPassage;
   readonly soundManager: IManager;
   readonly storyState: IStoryStateFrame;
   bookmark(): void;
-  navigateTo(passageName: string, tags?: ReadonlyArray<Tag>): void;
+  navigateTo(passageName: string, tags?: Tag[] | ReadonlyArray<Tag>): void;
   restart(): void;
   rewind(filter?: HistoryFilter): void;
   setStoryState(updatedStateProps: Partial<IStateFrame>): void;

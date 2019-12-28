@@ -1,10 +1,11 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   IListOwnProps,
 } from './IListOwnProps';
+import {
+  ListItem,
+} from '../ListItem';
 import MuiList from '@material-ui/core/List';
-import MuiListItem from '@material-ui/core/ListItem';
-import MuiListItemText from '@material-ui/core/ListItemText';
 import MuiListSubheader from '@material-ui/core/ListSubheader';
 
 import * as React from 'react';
@@ -12,26 +13,50 @@ import * as React from 'react';
 export const List: React.FunctionComponent<IListOwnProps> = ({
   children,
   className,
+  component,
+  dontWrapInListItem,
   listItemProps,
-  listItemTextProps,
   subheader,
   subheaderProps,
   ...props
 }) => (
   <MuiList
     {...props}
-    className={classnames('list', className)}
+    className={classNames('list', className)}
   >
     {subheader ?
       <MuiListSubheader {...subheaderProps}>{subheader}</MuiListSubheader> :
       null}
 
-    {children.map((child) => (
-      <MuiListItem {...listItemProps}>
-        <MuiListItemText {...listItemTextProps}>
+    {React.Children.toArray(children).map((child, key) => {
+      const theComponent = component || ListItem;
+
+      if (!component &&
+          (React.isValidElement(child) && child.type === 'li'))
+      {
+        /* Replace the li rather than containing it inside another li. */ 
+        const {
+          children: childChildren,
+          ...childProps
+        } = child.props;
+
+        return (
+          <ListItem {...childProps}>
+            {childChildren}
+          </ListItem>
+        );
+      }
+
+      return React.createElement(
+        theComponent,
+        {
+          key,
+          ...listItemProps,
+        },
+        <ListItem>
           {child}
-        </MuiListItemText>
-      </MuiListItem>
-    ))}
+        </ListItem>,
+      );
+    })}
   </MuiList>
 );

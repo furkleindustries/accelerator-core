@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   IDialogOwnProps,
 } from './IDialogOwnProps';
@@ -9,12 +9,12 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 
 import * as React from 'react';
 
-import styles from './Dialog.less';
+import styles from './index.less';
 
 export const Dialog: React.FunctionComponent<IDialogOwnProps> = (props) => {
   const {
     children,
-    className: propClassName,
+    className,
     dialogActions: propDialogActions,
     includeTitle,
   } = props;
@@ -25,11 +25,13 @@ export const Dialog: React.FunctionComponent<IDialogOwnProps> = (props) => {
     if (typeof includeTitle === 'string') {
       title = <MuiDialogTitle id={id}>{includeTitle}</MuiDialogTitle>;
     } else {
-      title = <MuiDialogTitle
-        id={id}
-        key={0}
-        {...includeTitle}
-      />;
+      title = (
+        <MuiDialogTitle
+          id={id}
+          key={0}
+          {...includeTitle}
+        />
+      );
     }
   }
 
@@ -46,20 +48,20 @@ export const Dialog: React.FunctionComponent<IDialogOwnProps> = (props) => {
     'includeTitle',
   ].forEach((key) => delete copiedProps[key]);
 
-  const className = classnames(
-    'dialog',
-    styles.dialog,
-    propClassName,
-  );
-
   return (
-    <MuiDialog {...{
-      ...copiedProps,
-      className,
-      'aria-labelledby': id,
-    }}>
+    <MuiDialog
+      {...copiedProps}
+      className={classNames(
+        styles.dialog,
+        'dialog',
+        className,
+      )}
+      aria-labelledby={id}
+    >
       {title}
+
       <MuiDialogContent>{children}</MuiDialogContent>
+
       {actions ? <MuiDialogActions>{actions}</MuiDialogActions> : null}
     </MuiDialog>
   );

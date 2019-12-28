@@ -6,7 +6,13 @@ import classnames from 'classnames';
 /* Accelerator components, interfaces, styles, functions, etc. Feel free to
  * destructure this as you see fit. */
 import * as components from '../../bundles/componentsBundle'; 
+
 import * as passages from '../../bundles/passagesBundle';
+
+/* You may leave the @ts-ignore directive here, remove it if you want compiler
+ * errors should you not remove it from a passage which does not use the tags
+ * bundle, or remove both if you have no intention of ever using tags. */
+// @ts-ignore
 import * as tags from '../../bundles/tagsBundle';
 
 /**
@@ -17,30 +23,19 @@ import AuthoringPassage from './{{{name}}}.mdx';
 import builtInStyles from '../_global-styles/built-ins.less';
 import styles from './{{{name}}}.less';
 
-const Passage: React.FunctionComponent<passages.IPassageProps> = (props) => {
-  const {
-    lastLinkTags,
-    passageObject,
-    navigateTo,
-    restart,
-    setStoryState,
-    storyState,
-  } = props;
-
-  return (
-    <components.Article
-      className={classnames(
-        builtInStyles.passage,
-        styles['{{{name}}}'],
-        'passage',
-      )}
-    >
-      <components.AuthoringPassageContainer value={props}>
-        <AuthoringPassage />
-      </components.AuthoringPassageContainer>
-    </components.Article>
-  );
-};
+const Passage: React.FunctionComponent<passages.IPassageProps> = (props) => (
+  <components.Article
+    className={classnames(
+      builtInStyles.passage,
+      styles['{{{name}}}'],
+      'passage',
+    )}
+  >
+    <components.AuthoringPassageContainer passageProps={{ ...props }}>
+      <AuthoringPassage />
+    </components.AuthoringPassageContainer>
+  </components.Article>
+);
 
 const passage: passages.IPassage = {
   /* string: the story-unique name of the passage. */

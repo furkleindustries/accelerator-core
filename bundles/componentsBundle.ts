@@ -1,120 +1,137 @@
 export {
   AppBar,
-} from '../src/components/AppBar/AppBar';
+} from '../src/components/AppBar';
+export {
+  AppContextConsumerWrapper,
+} from '../src/components/AppContextConsumerWrapper';
 export {
   Article,
-} from '../src/components/Article/Article';
+} from '../src/components/Article';
 export {
   AuthoringPassageContainer,
-} from '../src/components/AuthoringPassageContainer/AuthoringPassageContainer';
-export {
-  AuthoringPassageContextConsumerWrapper,
-} from '../src/components/AuthoringPassageContextConsumerWrapper/AuthoringPassageConsumerWrapper';
-export {
-  AuthoringPassageContextProviderWrapper,
-} from '../src/components/AuthoringPassageContextProviderWrapper/AuthoringPassageContextProviderWrapper';
+} from '../src/components/AuthoringPassageContainer';
 export {
   Button,
-} from '../src/components/Button/Button';
+} from '../src/components/Button';
 export {
   Card,
-} from '../src/components/Card/Card';
+} from '../src/components/Card';
 export {
   Checkbox,
-} from '../src/components/Checkbox/Checkbox';
+} from '../src/components/Checkbox';
 export {
   Chip,
-} from '../src/components/Chip/Chip';
+} from '../src/components/Chip';
 export {
   CircularProgress,
-} from '../src/components/CircularProgress/CircularProgress';
+} from '../src/components/CircularProgress';
 export {
   ClickAppend,
-} from '../src/components/ClickAppend/ClickAppend';
+} from '../src/components/ClickAppend';
 export {
   ClickDisappear,
-} from '../src/components/ClickDisappear/ClickDisappear';
+} from '../src/components/ClickDisappear';
 export {
   Clicker,
-} from '../src/components/Clicker/Clicker';
+} from '../src/components/Clicker';
 export {
   ClickPrepend,
-} from '../src/components/ClickPrepend/ClickPrepend';
+} from '../src/components/ClickPrepend';
 export {
   ClickReplace,
-} from '../src/components/ClickReplace/ClickReplace';
+} from '../src/components/ClickReplace';
 export {
   Combination,
-} from '../src/components/Combination/Combination';
+} from '../src/components/Combination';
 export {
   Cycler,
-} from '../src/components/Cycler/Cycler';
+} from '../src/components/Cycler';
 export {
   CyclingLink,
-} from '../src/components/CyclingLink/CyclingLink';
+} from '../src/components/CyclingLink';
 export {
   Delay,
-} from '../src/components/Delay/Delay';
+} from '../src/components/Delay';
 export {
   Dialog,
-} from '../src/components/Dialog/Dialog';
+} from '../src/components/Dialog';
+export {
+  Else,
+} from '../src/components/Else';
+export {
+  ElseIf,
+  ElseIf as Elif,
+} from '../src/components/ElseIf';
 export {
   FadeIn,
-} from '../src/components/FadeIn/FadeIn';
+} from '../src/components/FadeIn';
 export {
   FadeOut,
-} from '../src/components/FadeOut/FadeOut';
+} from '../src/components/FadeOut';
 export {
   Footer,
-} from '../src/components/Footer/Footer';
+} from '../src/components/Footer';
 export {
   Header,
-} from '../src/components/Header/Header';
+} from '../src/components/Header';
+export {
+  If,
+} from '../src/components/If';
 export {
   InkContainer,
-} from '../src/components/InkContainer/InkContainer';
+} from '../src/components/InkContainer';
+export {
+  Iterated,
+} from '../src/components/Iterated';
+export {
+  Iterator,
+} from '../src/components/Iterator';
 export {
   LinearProgress,
-} from '../src/components/LinearProgress/LinearProgress';
+} from '../src/components/LinearProgress';
 export {
   Link,
-} from '../src/components/Link/Link';
+} from '../src/components/Link';
 export {
   List,
-} from '../src/components/List/List';
-export {
-  ListItem,
-} from '../src/components/ListItem/ListItem';
+} from '../src/components/List';
 export {
   LoadingScreen,
-} from '../src/components/LoadingScreen/LoadingScreen';
+} from '../src/components/LoadingScreen';
 export {
   NOf,
-} from '../src/components/NOf/NOf';
+} from '../src/components/NOf';
 export {
   OneOf,
-} from '../src/components/OneOf/OneOf';
+} from '../src/components/OneOf';
 export {
   Paper,
-} from '../src/components/Paper/Paper';
+} from '../src/components/Paper';
 export {
   Permutation,
-} from '../src/components/Permutation/Permutation';
+} from '../src/components/Permutation';
 export {
   RestartButton,
-} from '../src/components/RestartButton/RestartButton';
+} from '../src/components/RestartButton';
 export {
   RewindButton,
-} from '../src/components/RewindButton/RewindButton';
+} from '../src/components/RewindButton';
 export {
   Section,
-} from '../src/components/Section/Section';
+} from '../src/components/Section';
+export {
+  SetVariable,
+} from '../src/components/SetVariable';
 export {
   SoundManagerAudioPanel,
-} from '../src/components/SoundManagerAudioPanel/SoundManagerAudioPanel';
+} from '../src/components/SoundManagerAudioPanel';
 export {
   Toolbar,
-} from '../src/components/Toolbar/Toolbar';
+} from '../src/components/Toolbar';
 export {
   Typography,
-} from '../src/components/Typography/Typography';
+} from '../src/components/Typography';
+export {
+  Variable,
+  Variable as Var,
+} from '../src/components/Variable';

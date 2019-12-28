@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   IHeader,
 } from '../../passages/IHeader';
@@ -30,13 +30,13 @@ export const strings = {
 
 export const PassageHeaders: React.FunctionComponent<
   { readonly headers: ReadonlyArray<IHeader> } &
-  Exclude<IPassageContentContainerOwnProps, { passagesMap: any }> &
+  Omit<IPassageContentContainerOwnProps, 'passagesMap'> &
   IPassageContentContainerDispatchProps
 > = ({
   headers,
   ...passageProps
 }) => (
-  <div className={classnames('passageHeaders')}>
+  <div className={classNames('passageHeaders')}>
     {headers.map(({ content }, index) => {
       const SafeContent = assertValid<React.ComponentType<IPassageProps>>(
         content,

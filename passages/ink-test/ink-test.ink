@@ -1,6 +1,20 @@
--> hello-world
+-> hello_world
 
-=== hello-world ===
+=== hello_world ===
 Hi!
 
--> DONE
+/* @mdx
+<button>
+  I am a button.
+</button>
+*/
+
+* foo
+  bar!
+  -> DONE
+* baz
+  bux!
+  -> DONE
+* quux
+  bif!
+  -> DONE

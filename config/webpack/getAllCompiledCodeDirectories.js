@@ -7,7 +7,7 @@ export function getAllCompiledCodeDirectories() {
     paths.appSrc,
     paths.footers,
     paths.headers,
-    paths.lib,
+    paths.inkLib,
     paths.passages,
     paths.plugins,
     paths.renderers,

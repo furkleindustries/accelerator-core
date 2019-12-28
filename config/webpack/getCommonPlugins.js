@@ -20,23 +20,26 @@ import webpack from 'webpack';
 export function getCommonPlugins(mode, config) {
   return [
     getHtmlPlugin(mode),
-    /* Handlebars plugin *must* come after HTML plugin. */
+    /* Handlebars plugin *must* come after HTML plugin in the array order. */
     new HandlebarsPlugin(config, HtmlWebpackPlugin),
 
-    // This gives some necessary context to module not found errors, such as
-    // the requesting resource.
+    /* This gives some necessary context to module not found errors, such as
+     * the requesting resource. */
     new ModuleNotFoundPlugin(paths.appPath),
-    // Makes NODE_ENV available to the JS code, for example:
-    // if (process.env.NODE_ENV === 'development') { ... }..
+
+    /* Makes NODE_ENV available to the JS code, for example:
+     * if (process.env.NODE_ENV === 'development') { ... } */
     new webpack.EnvironmentPlugin([ 'NODE_ENV' ]),
-    // Moment.js is an extremely popular library that bundles large locale files
-    // by default due to how Webpack interprets its code. This is a practical
-    // solution that requires the user to opt into importing specific locales.
-    // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
-    // You can remove this if you don't use Moment.js.
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+
+    /* Provides ReactDOM on the global object for Ink React injection.
+    new webpack.ProvidePlugin({ ReactDOM: 'react-dom' }),*/
+
+    /* Produces a manifest from the compiled files. */
     getManifestPlugin(),
-    // TypeScript type checking
+
+    /* TypeScript type-checking. Executes on a forked process and cancels the
+     * build after the fact if it fails, rather than waiting to start the build
+     * until after type-checking passes. */
     getForkTsChecker(),
   ];
 }

@@ -11,7 +11,7 @@ export function getBabelLoaders(mode) {
     // Process application JS with Babel.
     // The preset includes JSX, Flow, and some ESnext features.
     {
-      test: /\.m?[jt]sx?$/,
+      test: /\.m?jsx?$/,
       include: moduleShouldBeTranspiled,
 
       loader: require.resolve('babel-loader'),
@@ -49,7 +49,7 @@ export function getBabelLoaders(mode) {
     // Process any JS outside of the app with Babel.
     // Unlike the application JS, we only compile the standard ES features.
     {
-      test: /\.(js|mjs)$/,
+      test: /\.m?js$/,
       include(fp) {
         const filepath = slash(fp);
         if (/@babel(?:\/|\\{1,2})runtime/.test(filepath)) {

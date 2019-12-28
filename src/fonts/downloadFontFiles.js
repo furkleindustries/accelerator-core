@@ -16,7 +16,7 @@ import {
 
 const apiUrl = getFontApiUrl();
 
-export function downloadFontFiles(
+export const downloadFontFiles = (
   {
     formats,
     styles,
@@ -27,7 +27,7 @@ export function downloadFontFiles(
     variants,
   },
   downloadDirectory,
-) {
+) => {
   const flatFormats = Array.isArray(formats) ? formats : [ formats ];
   return Promise.all(flatFormats.reduce((formatsArr, format) => {
     const flatStyles = Array.isArray(styles) ? styles : [ styles ];
@@ -73,7 +73,7 @@ export function downloadFontFiles(
           } catch (err) {
             allReject(err);
           }
-          
+
           allResolve(filepath);
         }));
 
@@ -81,4 +81,4 @@ export function downloadFontFiles(
       }, []));
     }, []));
   }, []));
-}
+};

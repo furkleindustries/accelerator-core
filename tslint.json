@@ -4,6 +4,7 @@
     "tslint-react",
     "tslint-config-prettier"
   ],
+
   "linterOptions": {
     "exclude": [
       "build*/",
@@ -13,10 +14,10 @@
       "headers/",
       "passages/",
       "plugins/",
-      "node_modules/",
       "templates/"
     ]
   },
+
   "rules": {
     "interface-name": false,
     "jsx-self-close": false,
@@ -27,6 +28,7 @@
     "object-literal-sort-keys": false,
     "ordered-imports": false
   },
+
   "jsRules": {
     "interface-name": false,
     "jsx-self-close": false,

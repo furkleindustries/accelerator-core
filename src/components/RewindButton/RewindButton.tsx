@@ -1,10 +1,7 @@
 import {
   Button,
-} from '../Button/Button';
-import classnames from 'classnames';
-import {
-  getUnfilteredRewindIndex,
-} from '../../state/getUnfilteredRewindIndex';
+} from '../Button';
+import classNames from 'classnames';
 import {
   IRewindButtonOwnProps,
 } from './IRewindButtonOwnProps';
@@ -32,12 +29,7 @@ export class RewindButtonUnconnected extends React.PureComponent<
   IRewindButtonOwnProps & IRewindButtonStateProps & IRewindButtonDispatchProps
 >
 {
-  constructor(props: any) {
-    super(props);
-    this.rewind = this.rewind.bind(this);
-  }
-  
-  public render() {
+  public render = () => {
     const {
       canRewind,
       children,
@@ -50,19 +42,19 @@ export class RewindButtonUnconnected extends React.PureComponent<
 
     return (
       <Button
-        className={classnames(
-          'rewindButton',
+        {...statefulProps}
+        className={classNames(
           'navigationButton',
+          'rewindButton',
           className,
         )}
-        {...statefulProps}
       >
         {children}
       </Button>
     );
   }
 
-  private rewind() {
+  private rewind = () => {
     const {
       dispatch,
       history: {
@@ -72,7 +64,7 @@ export class RewindButtonUnconnected extends React.PureComponent<
     } = this.props;
 
     rewind(dispatch, present, past);
-  }
+  };
 }
 
 export const mapStateToProps: MapStateToProps<
@@ -81,20 +73,13 @@ export const mapStateToProps: MapStateToProps<
   IState
 > = ({
   history,
-  history: {
-    past,
-    present,
-  },
-}, { filter }) => {
-  return {
-    history,
-    canRewind: (
-      typeof filter === 'function' ?
-        past.filter(filter).length > 0 :
-        getUnfilteredRewindIndex(past, present) > 0
-    ),
-  };
-};
+  history: { past },
+}, { filter }) => ({
+  history,
+  canRewind: Boolean(
+    typeof filter === 'function' ? past.filter(filter).length : past.length
+  ),
+});
 
 export const mapDispatchToProps: MapDispatchToProps<
   IRewindButtonDispatchProps,

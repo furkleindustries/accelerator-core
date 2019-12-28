@@ -1,15 +1,15 @@
 import {
   AppContextProviderWrapper,
-} from '../AppContextProviderWrapper/AppContextProviderWrapper';
+} from '../AppContextProviderWrapper';
 import {
   AppJssProvider,
-} from '../AppJssProvider/AppJssProvider';
+} from '../AppJssProvider';
 import {
   hot,
 } from 'react-hot-loader/root';
 import {
   RenderingContainerConnected,
-} from '../RenderingContainer/RenderingContainer';
+} from '../RenderingContainer';
 
 import * as React from 'react';
 

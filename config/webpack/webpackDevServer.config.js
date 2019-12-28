@@ -11,6 +11,7 @@ const host = process.env.HOST || '0.0.0.0';
 
 export default function(proxy, allowedHost) {
   return {
+    stats: 'verbose',
     // WebpackDevServer 2.4.3 introduced a security fix that prevents remote
     // websites from potentially accessing local content through DNS rebinding:
     // https://github.com/webpack/webpack-dev-server/issues/887

@@ -11,9 +11,6 @@ import {
   lastLinkTagsReducer,
 } from './lastLinkTagsReducer';
 import {
-  midrenderSignalCounterReducer,
-} from './midrenderSignalCounterReducer';
-import {
   passageTimeReducer,
 } from './passageTimeReducer';
 import {
@@ -45,7 +42,6 @@ export const historyReducer: Reducer<IHistory, IAction> = undoable(
     bookmarkCounter: bookmarkCounterReducer,
     passageName: passageNameReducer,
     lastLinkTags: lastLinkTagsReducer,
-    midrenderSignalCounter: midrenderSignalCounterReducer,
     passageTimeCounter: passageTimeReducer,
     storyState: storyStateReducer,
   }),

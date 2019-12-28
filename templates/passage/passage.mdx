@@ -1,16 +1,4 @@
-import * as components from '../../src/passages/componentsBundle';
-
-<components.AuthoringPassageContextConsumer>
-{({
-  lastLinkTags,
-  passageObject,
-  navigateTo,
-  restart,
-  setStoryState,
-  storyState,
-}) => (
-<>
-{/* Insert normal markdown content and JSX here. */}
-</>
-)}
-</components.AuthoringPassageContextConsumer>
+import {
+  AuthoringPassageContextConsumer,
+  * as components,
+} from '../../src/passages/componentsBundle';

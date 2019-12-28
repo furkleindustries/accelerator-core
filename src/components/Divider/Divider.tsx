@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import MuiDivider from '@material-ui/core/Divider';
 import {
   IDividerOwnProps,
@@ -13,7 +13,7 @@ export const Divider: React.FunctionComponent<IDividerOwnProps> = ({
 }) => (
   <MuiDivider
     {...props}
-    className={classnames('divider', className)}
+    className={classNames('divider', className)}
   >
     {children}
   </MuiDivider>

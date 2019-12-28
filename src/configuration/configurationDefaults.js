@@ -11,7 +11,6 @@ export const configurationDefaults = Object.freeze({
     ActionTypes.Bookmark,
     ActionTypes.PassageNavigation,
     ActionTypes.PassageTime,
-    ActionTypes.MidrenderSignal,
   ],
   
   historyStackLimit: 500,

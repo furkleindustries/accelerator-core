@@ -11,15 +11,13 @@ import {
   Tag,
 } from '../../tags/Tag';
 
-export function createPassageNavigationAction(
+export const createPassageNavigationAction = (
   passage: IPassage,
-  linkTags: ReadonlyArray<Tag> = [],
-): IPassageNavigationAction {
-  return Object.freeze({
-    type: ActionTypes.PassageNavigation,
-    value: {
-      linkTags,
-      passage,
-    },
-  }) as IPassageNavigationAction;
-}
+  linkTags: Tag[] | ReadonlyArray<Tag> = [],
+): IPassageNavigationAction => Object.freeze({
+  type: ActionTypes.PassageNavigation,
+  value: {
+    linkTags,
+    passage,
+  },
+});

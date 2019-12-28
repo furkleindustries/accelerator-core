@@ -1,53 +1,57 @@
 import {
   Button,
-} from '../Button/Button';
+} from '../Button';
 import classNames from 'classnames';
 import {
   InkSectionOwnProps,
 } from './InkSectionOwnProps';
 import {
   List,
-} from '../List/List';
-import {
-  ListItem,
-} from '../ListItem/ListItem';
-import {
-  parsePlainTextAndReactElements,
-} from '../../functions/parsePlainTextAndReactElements';
+} from '../List';
 import {
   Section,
-} from '../Section/Section';
+} from '../Section';
 
 import * as React from 'react'
 
-import styles from './InkSection.less';
+import styles from './index.less';
 
 export const InkSection: React.FunctionComponent<InkSectionOwnProps> = ({
-  parseProps: childProps,
+  children,
   className,
   onClick,
   story,
-}) => {
-  return (
-    <Section
-      className={classNames(
-        styles.choicesSection,
-        'choicesSection',
-        className,
-      )}
-    >
-      <List className={classNames(styles.choiceList, 'choiceList')}>
-        {story.currentChoices.map(({ text }, index) => (
-          <ListItem className={classNames(styles.choice, 'choice')}>
-            <Button
-              className={classNames(styles.choiceButton, 'choiceButton')}
-              onClick={onClick.bind(index)}
+}) => (
+  <Section
+    className={classNames(
+      styles.choicesSection,
+      'choicesSection',
+      className,
+    )}
+  >
+    {children}
+
+    <List className={classNames(styles.choiceList, 'choiceList')}>
+      {story.currentChoices.map(({ text }, key) => (
+        <div
+          className={classNames(styles.choice, 'choice')}
+          key={key}
+        >
+          <Button
+            className={classNames(styles.choiceButton, 'choiceButton')}
+            onClick={onClick.bind(null, key)}
+          >
+            <div
+              className={classNames(
+                styles.choiceContainer,
+                'choiceContainer',
+              )}
             >
-              {parsePlainTextAndReactElements(text, { ...childProps })}
-            </Button>
-          </ListItem>
-        ))}
-      </List>
-    </Section>
-  );
-};
+              {text}
+            </div>
+          </Button>
+        </div>
+      ))}
+    </List>
+  </Section>
+);

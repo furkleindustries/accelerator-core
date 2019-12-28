@@ -1,21 +1,20 @@
 import { log } from 'colorful-logging'; 
 
-import * as components from '../../bundles/componentsBundle';
+import {
+  InkContainer,
+} from '../../bundles/componentsBundle';
 
-import inkStoryContent from './ink-test.ink';
+import inkModule from './ink-test.ink';
 
-<components.AuthoringPassageContextConsumer>
-{({
-  lastLinkTags,
-  passageObject,
-  navigateTo,
-  restart,
-  setStoryState,
-  storyState,
-}) => (
-<>
-  {<components.InkContainer
-  />}
-</>
-)}
-</components.AuthoringPassageContextConsumer>
+### This is an MDX passage.
+
+#### It illustrates Markdown React with inclusion of Ink components.
+
+1. Here
+2. is
+3. a
+4. list!
+
+<div>
+  {<InkContainer inkModule={inkModule} />}
+</div>

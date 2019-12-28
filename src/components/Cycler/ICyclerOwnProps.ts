@@ -8,4 +8,5 @@ import {
 export interface ICyclerOwnProps extends IButtonProps {
   readonly children: ReadonlyArray<ReactNodeWithoutNullOrUndefined>;
   callback?(current: ReactNodeWithoutNullOrUndefined, index?: number): void;
+  startIndex?: number;
 }

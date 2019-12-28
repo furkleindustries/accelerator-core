@@ -2,11 +2,11 @@ import {
   IStoryStateFrame,
 } from '../../state/IStoryStateFrame';
 import {
-  Tag,
-} from '../../tags/Tag';
+  ITag,
+} from '../../tags/ITag';
 
 export interface IRestartButtonStateProps {
   readonly passageName: string;
   readonly storyState: IStoryStateFrame;
-  readonly lastLinkTags: ReadonlyArray<Tag>;
+  readonly lastLinkTags: ReadonlyArray<ITag>;
 }

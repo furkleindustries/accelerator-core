@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   warn,
 } from 'colorful-logging';
@@ -7,13 +7,13 @@ import {
 } from '../src/renderers/IPassageRendererOwnProps';
 import {
   PassageContainer,
-} from '../src/components/PassageContainer/PassageContainer';
+} from '../src/components/PassageContainer';
 import {
   ReactNodeWithoutNullOrUndefined,
 } from '../src/typeAliases/ReactNodeWithoutNullOrUndefined';
 import {
   SkipToContentLinkDestination,
-} from '../src/components/SkipToContentLinkDestination/SkipToContentLinkDestination';
+} from '../src/components/SkipToContentLinkDestination';
 
 import * as React from 'react';
 
@@ -65,7 +65,7 @@ export class ScrollRenderer extends React.PureComponent<IPassageRendererOwnProps
               const doRewind = () => this.doRewind(index);
               return (
                 <div
-                  className={classnames('pastScrollPassage', styles.pastScrollPassage)}
+                  className={classNames(styles.pastScrollPassage, 'pastScrollPassage')}
                   key={index}
                   onClick={doRewind}
                 >
@@ -77,9 +77,9 @@ export class ScrollRenderer extends React.PureComponent<IPassageRendererOwnProps
             <SkipToContentLinkDestination />
           </>}
 
-        <div className={classnames(
-          'currentScrollPassage',
+        <div className={classNames(
           styles.currentScrollPassage,
+          'currentScrollPassage',
         )}>
           {this.elementBuffer[this.elementBuffer.length - 1]}
         </div>
@@ -136,7 +136,7 @@ export class ScrollRenderer extends React.PureComponent<IPassageRendererOwnProps
     this.unsubscribe = this.props.context.store.subscribe(this.subscription)
   );
 
-  public readonly componentWillUnmount = () => this.unsubscribe();;
+  public readonly componentWillUnmount = () => this.unsubscribe();
 
   private readonly maintainBuffer = (
     buffer: ReactNodeWithoutNullOrUndefined[],
@@ -167,7 +167,11 @@ export class ScrollRenderer extends React.PureComponent<IPassageRendererOwnProps
   };
 
   private readonly doRewind = (index: number) => {
+    const {
+      passageFunctions: { rewind },
+    } = this.props;
+
     let counter = 0;
-    this.props.passageFunctions.rewind(() => (counter += 1) < index);
+    rewind(() => (counter += 1) < index);
   };
 }

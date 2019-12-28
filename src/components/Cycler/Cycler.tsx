@@ -1,19 +1,44 @@
 import {
   Button,
-} from '../Button/Button';
-import classnames from 'classnames';
+} from '../Button';
+import classNames from 'classnames';
 import {
   ICyclerOwnProps,
 } from './ICyclerOwnProps';
 import {
   ICyclerState,
 } from './ICyclerState';
+import {
+  assert,
+  assertValid,
+} from 'ts-assertions';
 
 import * as React from 'react';
-import { assertValid } from 'ts-assertions';
 
 export class Cycler extends React.PureComponent<ICyclerOwnProps, ICyclerState> {
   public readonly state = { index: 0 };
+
+  constructor(props: ICyclerOwnProps) {
+    super(props);
+
+    const startIndex = props.startIndex!;
+    assert(
+      !(startIndex < 0),
+      'The startIndex prop passed to the Cycler component was below 0.',
+    );
+
+    if (startIndex > 0 && startIndex % 1 === 0) {
+      assert(
+        startIndex < props.children.length,
+        'The startIndex prop passed to the Cycler component was greater ' +
+          'than the highest index in the child array.',
+      );
+    }
+
+    if (startIndex) {
+      this.state = { index: startIndex };
+    }
+  } 
   
   public readonly render = () => {
     const {
@@ -25,7 +50,7 @@ export class Cycler extends React.PureComponent<ICyclerOwnProps, ICyclerState> {
 
     return (
       <Button 
-        className={classnames('cycler', className)}
+        className={classNames('cycler', className)}
         onClick={this.advance}
       >
         {React.Children.toArray(children)[index]}

@@ -2,9 +2,6 @@ import {
   createStoryRewindAction,
 } from '../actions/creators/createStoryRewindAction';
 import {
-  getUnfilteredRewindIndex,
-} from './getUnfilteredRewindIndex';
-import {
   HistoryFilter,
 } from '../reducers/IHistoryFilter';
 import {
@@ -46,7 +43,7 @@ export function rewind(
   
     assert(found);
   } else {
-    index = getUnfilteredRewindIndex(past, present);
+    index = past.length - 1;
     assert(index > -1);
   }
 

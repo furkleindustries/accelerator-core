@@ -1,6 +1,6 @@
 import {
   Chip,
-} from '../Chip/Chip';
+} from '../Chip';
 import {
   IBreadcrumbOwnProps,
 } from './IBreadcrumbOwnProps';

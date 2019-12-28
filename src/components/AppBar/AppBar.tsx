@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   IAppBarOwnProps,
 } from './IAppBarOwnProps';
@@ -6,15 +6,18 @@ import MuiAppBar from '@material-ui/core/AppBar';
 
 import * as React from 'react';
 
-import styles from './AppBar.less';
+import styles from './index.less';
 
-export const AppBar: React.FunctionComponent<IAppBarOwnProps> = (props) => (
-  <MuiAppBar {...{
-    ...props,
-    className: classnames(
-      'appBar',
+export const AppBar: React.FunctionComponent<IAppBarOwnProps> = ({
+  className,
+  ...props
+}) => (
+  <MuiAppBar
+    {...props}
+    className={classNames(
       styles.appBar,
-      props.className,
-    ),
-  }} />
+      'appBar',
+      className,
+    )}
+  />
 );

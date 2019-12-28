@@ -40,7 +40,7 @@ export const paths = {
   headers: resolveApp('headers/'),
   htmlTemplate: resolveApp('templates/index.hbs'),
   indexHtml: resolveApp('build-web/index.html'),
-  lib: resolveApp('lib'),
+  inkLib: resolveApp('lib/ink/'),
   passages: resolveApp('passages/'),
   plugins: resolveApp('plugins/'),
   proxySetup: resolveApp('src/setupProxy.ts'),
@@ -48,4 +48,5 @@ export const paths = {
   renderers: resolveApp('renderers/'),
   storyOptions: resolveApp('options/'),
   testsSetup: resolveApp('src/setupTests.ts'),
+  tslintConfig: resolveApp('tslint.json'),
 };
