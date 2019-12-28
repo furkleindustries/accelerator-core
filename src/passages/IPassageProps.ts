@@ -24,7 +24,7 @@ import {
 } from '../tags/Tag';
 
 export interface IPassageProps extends IPassageFunctions {
-  readonly config: Omit<IAcceleratorConfigNormalized, 'rendererName'>;
+  readonly config: IAcceleratorConfigNormalized;
   readonly dispatch: Dispatch<IAction>;
   readonly lastLinkTags: Tag[] | ReadonlyArray<Tag>;
   readonly passageObject: IPassage;
