@@ -16,7 +16,7 @@ export function getEntry(mode) {
        * if you prefer the stock client:
        * require.resolve('webpack-dev-server/client') + '?/',
        * require.resolve('webpack/hot/dev-server'), */
-      require.resolve('react-dev-utils/webpackHotDevClient'),
+      require.resolve('../../lib/react-dev-utils/fixedWebpackHotDevClient'),
       /* Finally, this is the story's code entry point.
        * We include the app code last so that if there is a runtime error
        * during initialization, it doesn't blow up the WebpackDevServer client,

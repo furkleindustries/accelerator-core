@@ -5,9 +5,12 @@ import {
 import passage from './sample-passage';
 
 import {
+  IPassageProps,
+} from '../../bundles/passagesBundle';
+import {
   BuiltInTags,
+  ITag,
   getTag,
-  Tag,
 } from '../../bundles/tagsBundle';
 
 import * as React from 'react';
@@ -18,29 +21,13 @@ const {
   content: Component,
 } = passage;
 
-const testFactory = (options?: { [key: string]: any}) => (
-  <Component
-    bookmark={jest.fn()}
-    dispatch={jest.fn()}
-    lastLinkTags={[]}
-    navigateTo={jest.fn()}
-    passageObject={{ name: 'test' } as any}
-    restart={jest.fn()}
-    rewind={jest.fn()}
-    setStoryState={jest.fn()}
-    soundManager={{} as any}
-    storyState={{}}
-    {...options}
-  />
-);
-
-describe('Tests for the sample-passage passage.', () => {
+describe('Tests for the my-first-passage passage.', () => {
   it('Has a non-empty name string.', () => {
     expect(name && typeof name === 'string').toBe(true);
   });
 
   it('If it has tags, they are either non-empty strings or key-value objects.', () => {
-    expect(!tags || tags.filter((aa: Tag) => {
+    expect(!tags || tags.filter((aa: ITag) => {
       if (aa) {
         if (typeof aa === 'string') {
           return true;
@@ -62,7 +49,21 @@ describe('Tests for the sample-passage passage.', () => {
   it('Renders shallowly without crashing.', () => {
     /* Don't test if it's a noRender passage. */
     if (getTag(tags, BuiltInTags.NoRender)) {
-      shallow(testFactory());
+      shallow(<Component {...getPassageMockArgs()} />);
     }
   });
+});
+
+const getPassageMockArgs = (): IPassageProps => ({
+  config: {} as any,
+  dispatch: jest.fn(),
+  lastLinkTags: [],
+  passageObject: {} as any,
+  soundManager: {} as any,
+  storyState: {},
+  bookmark: jest.fn(),
+  navigateTo: jest.fn(),
+  restart: jest.fn(),
+  rewind: jest.fn(),
+  setStoryState: jest.fn(),
 });

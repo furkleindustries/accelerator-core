@@ -18,15 +18,6 @@ import builtInStyles from '../_global-styles/built-ins.less';
 import styles from './ink-test.less';
 
 const Passage: React.FunctionComponent<passages.IPassageProps> = (props) => {
-  const {
-    lastLinkTags,
-    passageObject,
-    navigateTo,
-    restart,
-    setStoryState,
-    storyState,
-  } = props;
-
   return (
     <components.Article
       className={classnames(
@@ -35,7 +26,7 @@ const Passage: React.FunctionComponent<passages.IPassageProps> = (props) => {
         'passage',
       )}
     >
-      <components.AuthoringPassageContainer value={props}>
+      <components.AuthoringPassageContainer passageProps={props}>
         <AuthoringPassage />
       </components.AuthoringPassageContainer>
     </components.Article>

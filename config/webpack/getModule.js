@@ -4,7 +4,6 @@ import {
 import {
   getBabelLoaders,
 } from './getBabelLoaders';
-import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
 import {
   getStyleLoaders,
 } from './getStyleLoaders';
@@ -158,7 +157,6 @@ export const getModule = (mode, publicPath, shouldUseSourceMap) => ({
           test: cssRegex,
           use: getStyleLoaders({
             cssOptions: {
-              getLocalIdent: getCSSModuleLocalIdent,
               importLoaders: 1,
               modules: true,
             },
@@ -175,7 +173,6 @@ export const getModule = (mode, publicPath, shouldUseSourceMap) => ({
             cssOptions: {
               importLoaders: 2,
               modules: true,
-              getLocalIdent: getCSSModuleLocalIdent,
             },
 
             mode,

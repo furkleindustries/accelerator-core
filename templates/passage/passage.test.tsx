@@ -1,14 +1,16 @@
 import {
   shallow,
 } from 'enzyme';
-
-import passage from './{{{name}}}';
-
+import {
+  IPassageProps,
+} from '../../bundles/passagesBundle';
 import {
   BuiltInTags,
+  ITag,
   getTag,
-  Tag,
-} from '../../src/passages/tagsBundle';
+} from '../../bundles/tagsBundle';
+
+import passage from './{{{name}}}';
 
 import * as React from 'react';
 
@@ -24,7 +26,7 @@ describe('Tests for the {{{name}}} passage.', () => {
   });
 
   it('If it has tags, they are either non-empty strings or key-value objects.', () => {
-    expect(!tags || tags.filter((aa: Tag) => {
+    expect(!tags || tags.filter((aa: ITag) => {
       if (aa) {
         if (typeof aa === 'string') {
           return true;
@@ -46,7 +48,21 @@ describe('Tests for the {{{name}}} passage.', () => {
   it('Renders shallowly without crashing.', () => {
     /* Don't test if it's a noRender passage. */
     if (getTag(tags, BuiltInTags.NoRender)) {
-      shallow(<Component />);
+      shallow(<Component {...getPassageMockArgs()} />);
     }
   });
+});
+
+const getPassageMockArgs = (): IPassageProps => ({
+  config: {} as any,
+  dispatch: jest.fn(),
+  lastLinkTags: [],
+  passageObject: {} as any,
+  soundManager: {} as any,
+  storyState: {},
+  bookmark: jest.fn(),
+  navigateTo: jest.fn(),
+  restart: jest.fn(),
+  rewind: jest.fn(),
+  setStoryState: jest.fn(),
 });

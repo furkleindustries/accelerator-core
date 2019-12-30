@@ -1,9 +1,6 @@
 import {
-  AppContextConsumerWrapper,
-} from '../AppContextConsumerWrapper';
-import {
-  createStoryStateAction,
-} from '../../actions/creators/createStoryStateAction';
+  GetState,
+} from '../GetState';
 import {
   ISetVariableProps,
 } from './ISetVariableProps';
@@ -14,17 +11,15 @@ export const SetVariable: React.FunctionComponent<ISetVariableProps> = ({
   name,
   value,
 }) => (
-  <AppContextConsumerWrapper>
-    {({ store }) => {
+  <GetState>
+    {({}, { setStoryState }) => {
       if (!name || typeof name !== 'string') {
         throw new Error(`The provided name argument ${name} was out of band.`);
       }
 
-      store.dispatch(
-        createStoryStateAction({ [name]: value })
-      );
+      setStoryState({ [name]: value });
 
       return null;
     }}
-  </AppContextConsumerWrapper>
+  </GetState>
 );

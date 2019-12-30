@@ -1,4 +1,4 @@
-import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import ForkTsCheckerWebpackPlugin from 'react-dev-utils/ForkTsCheckerWebpackPlugin';
 import {
   getAllCompiledCodeDirectories,
 } from './getAllCompiledCodeDirectories';
@@ -15,7 +15,8 @@ export function getForkTsChecker() {
     }),
 
     tslint: true,
-    async: true,
+    async: process.env.NODE_ENV === 'development',
+    useTypescriptIncrementalApi: true,
     checkSyntacticErrors: true,
     tsconfig: paths.appTsConfig,
     compilerOptions: {
@@ -39,6 +40,7 @@ export function getForkTsChecker() {
 
     watch: getAllCompiledCodeDirectories(),
     silent: true,
-    formatter: typescriptFormatter,
+    // The formatter is invoked directly in WebpackDevServerUtils during development
+    formatter: process.env.NODE_ENV === 'development' ? undefined : typescriptFormatter,
   });
 }

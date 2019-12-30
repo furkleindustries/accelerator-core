@@ -4,21 +4,24 @@ import {
 import {
   IVariableProps,
 } from './IVariableProps';
-import {
-  Print,
-} from '../Print';
 
 import * as React from 'react';
+import { Print } from '../Print';
 
 export const Variable: React.FunctionComponent<IVariableProps> = ({
   name,
-  noError,
+  doError,
 }) => (
   <AppContextConsumerWrapper>
     {({ store }) => {
-      const storyState = store.getState().history.present.storyState;
+      const {
+        history: {
+          present: { storyState },
+        },
+      } = store.getState();
+
       if (!(name in storyState)) {
-        if (noError) {
+        if (!doError) {
           return null;
         }
 
@@ -27,9 +30,7 @@ export const Variable: React.FunctionComponent<IVariableProps> = ({
         );
       }
 
-      return (
-        <Print>{storyState[name]}</Print>
-      );
+      return <Print>{storyState[name]}</Print>;
     }}
   </AppContextConsumerWrapper>
 );

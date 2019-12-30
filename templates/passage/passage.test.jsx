@@ -1,15 +1,15 @@
 import {
   shallow,
 } from 'enzyme';
+import {
+  BuiltInTags,
+  getTag,
+} from '../../bundles/tagsBundle';
 
 import * as React from 'react';
 
 import passage from './{{{name}}}';
 
-import {
-  BuiltInTags,
-  getTag,
-} from '../../src/passages/tagsBundle';
 
 const {
   name,
@@ -44,8 +44,22 @@ describe('Tests for the {{{name}}} passage.', () => {
 
   it('Renders shallowly without crashing.', () => {
     /* Don't test if it's a noRender passage. */
-    if (!getTag(tags, BuiltInTags.NoRender)) {
-      shallow(<Component />);
+    if (getTag(tags, BuiltInTags.NoRender)) {
+      shallow(<Component {...getPassageMockArgs()} />);
     }
   });
+});
+
+const getPassageMockArgs = () => ({
+  config: {},
+  dispatch: jest.fn(),
+  lastLinkTags: [],
+  passageObject: {},
+  soundManager: {},
+  storyState: {},
+  bookmark: jest.fn(),
+  navigateTo: jest.fn(),
+  restart: jest.fn(),
+  rewind: jest.fn(),
+  setStoryState: jest.fn(),
 });

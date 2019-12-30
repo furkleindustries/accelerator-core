@@ -1,31 +1,154 @@
+/**
+ * Do NOT do the below.
+ *  
+ * `import * as componentsBundle from '../../../bundles/componentsBundle';`
+ * 
+ * Importing the components bundle in this file will almost certainly produce,
+ * especially in testing, cyclic dependencies which will result in undefined
+ * modules at runtime. Rather, import each as needed. 
+ */
+
+import {
+  Article,
+} from '../Article';
+import {
+  Button,
+} from '../Button';
+import {
+  Card,
+} from '../Card';
 import {
   Checkbox,
 } from '../Checkbox';
 import {
+  Chip,
+} from '../Chip';
+import {
   CircularProgress,
 } from '../CircularProgress';
-import * as componentsBundle from '../../../bundles/componentsBundle';
-import {
-  getReactMarkdownComponentKeyValuePair,
-} from './getReactMarkdownComponentKeyValuePair';
 import {
   ICircularProgressOwnProps,
 } from '../CircularProgress/ICircularProgressOwnProps';
 import {
-  ILinearProgressOwnProps,
-} from '../LinearProgress/ILinearProgressOwnProps';
+  ClickAppend,
+} from '../ClickAppend';
 import {
-  IListOwnProps,
-} from '../List/IListOwnProps';
+  ClickDisappear,
+} from '../ClickDisappear';
 import {
-  ITypographyOwnProps,
-} from '../Typography/ITypographyOwnProps';
+  ClickPrepend,
+} from '../ClickPrepend';
+import {
+  ClickReplace,
+} from '../ClickReplace';
+import {
+  Clicker,
+} from '../Clicker';
+import {
+  Combination,
+} from '../Combination';
+import {
+  Cycler,
+} from '../Cycler';
+import {
+  CyclingLink,
+} from '../CyclingLink';
+import {
+  Delay,
+} from '../Delay';
+import {
+  Dialog,
+} from '../Dialog';
+import {
+  Divider,
+} from '../Divider';
+import {
+  Else,
+} from '../Else';
+import {
+  ElseIf,
+} from '../ElseIf';
+import {
+  FadeIn,
+} from '../FadeIn';
+import {
+  FadeOut,
+} from '../FadeOut';
+import {
+  Footer,
+} from '../Footer';
+import {
+  GetSound,
+} from '../GetSound';
+import {
+  GetState,
+} from '../GetState'
+import {
+  Grid,
+} from '../Grid';
+import {
+  Header
+} from '../Header';
+import {
+  If,
+} from '../If';
+import {
+  InkContainer
+} from '../InkContainer';
+import {
+  InkSection,
+} from '../InkSection';
+import {
+  Iterated,
+} from '../Iterated';
+import {
+  Iterator,
+} from '../Iterator';
 import {
   LinearProgress,
 } from '../LinearProgress';
 import {
+  ILinearProgressOwnProps,
+} from '../LinearProgress/ILinearProgressOwnProps';
+import {
+  Link,
+} from '../Link';
+import {
   List,
 } from '../List';
+import {
+  IListOwnProps,
+} from '../List/IListOwnProps';
+import {
+  NOf,
+} from '../NOf';
+import {
+  OneOf,
+} from '../OneOf';
+import {
+  Paper,
+} from '../Paper';
+import {
+  Permutation,
+} from '../Permutation';
+import {
+  Print,
+} from '../Print';
+import {
+  RestartButton,
+} from '../RestartButton';
+import {
+  RewindButton,
+} from '../RewindButton';
+import {
+  Section,
+} from '../Section';
+import {
+  SetVariable,
+} from '../SetVariable';
+import {
+  Toolbar,
+} from '../Toolbar';
 import {
   TypographyClassKey,
 } from '@material-ui/core/Typography';
@@ -33,8 +156,14 @@ import {
   Typography,
 } from '../Typography';
 import {
+  ITypographyOwnProps,
+} from '../Typography/ITypographyOwnProps';
+import {
   UrlLink,
 } from '../UrlLink';
+import {
+  Variable,
+} from '../Variable';
 
 import * as React from 'react';
 
@@ -109,11 +238,6 @@ export const getTypography = (key: React.ElementType | 'body2') => {
 const typeCompList = typographies.map(getTypography);
 
 const baseComponents = Object.freeze({
-  ...Object.keys(componentsBundle).reduce((retObj, key) => ({
-    ...retObj,
-    ...getReactMarkdownComponentKeyValuePair(key, componentsBundle[key]), 
-  }), {}),
-
   ...typeCompList.reduce((obj, val, index) => (
     Object.assign(obj, { [typographies[index] as string]: val })
   ), {}),
@@ -138,13 +262,42 @@ const baseComponents = Object.freeze({
     }
 
     return (
-      <componentsBundle.Link
+      <Link
         /* Overridden by props if passageName was provided. */
         passageName={href}
         {...props}
       />
     );
   },
+
+  article: Article,
+  button: Button,
+  card: Card,
+  chip: Chip,
+  'click-append': ClickAppend,
+  'click-disappear': ClickDisappear,
+  'click-prepend': ClickPrepend,
+  'click-replace': ClickReplace,
+  clicker: Clicker,
+  combination: Combination,
+  cycler: Cycler,
+  'cycling-link': CyclingLink,
+  delay: Delay,
+  dialog: Dialog,
+  divider: Divider,
+  else: Else,
+  'else-if': ElseIf,
+  elif: ElseIf,
+  'fade-in': FadeIn,
+  'fade-out': FadeOut,
+  footer: Footer,
+  'get-sound': GetSound,
+  'get-state': GetState,
+  grid: Grid,
+  header: Header,
+  if: If,
+  'ink-container': InkContainer,
+  'ink-section': InkSection,
 
   input: ({
     children,
@@ -159,10 +312,19 @@ const baseComponents = Object.freeze({
     return <input {...props} />;
   },
 
+  iterated: Iterated,
+  iterator: Iterator,
+  'n-of': NOf,
+
   ol: ({
     children,
     ...props
   }: IListOwnProps) => <List {...props}>{children}</List>,
+
+  'one-of': OneOf,
+  paper: Paper,
+  permutation: Permutation,
+  print: Print,
 
   progress: ({
     orientation,
@@ -173,10 +335,21 @@ const baseComponents = Object.freeze({
       <LinearProgress {...props as ILinearProgressOwnProps} />
   ),
 
+  'restart-button': RestartButton,
+  'rewind-button': RewindButton,
+  section: Section,
+  'set-var': SetVariable,
+  'set-variable': SetVariable,
+  toolbar: Toolbar,
+
   ul: ({
     children,
     ...props
   }: IListOwnProps) => <List {...props}>{children}</List>,
+
+  'url-link': UrlLink,
+  var: Variable,
+  variable: Variable,
 });
 
 export const getBaseMarkdownComponents = () => ({ ...baseComponents });

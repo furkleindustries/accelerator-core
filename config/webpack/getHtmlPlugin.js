@@ -4,7 +4,7 @@ import {
 } from '../paths';
 
 // Generates an `index.html` file with the <script> injected.
-export function getHtmlPlugin(mode) {
+export const getHtmlPlugin = (mode) => {
   const base = {
     inject: true,
     template: paths.htmlTemplate,
@@ -27,4 +27,4 @@ export function getHtmlPlugin(mode) {
   };
 
   return new HtmlWebpackPlugin(opts);
-}
+};

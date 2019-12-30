@@ -1,9 +1,9 @@
 import {
+  IAction,
+} from '../../actions/IAction';
+import {
   IPassage,
 } from '../../passages/IPassage';
-import {
-  IPassageNavigationAction,
-} from '../../actions/IPassageNavigationAction';
 import {
   Dispatch,
 } from 'redux';
@@ -12,7 +12,7 @@ import {
 } from '../../tags/Tag';
 
 export interface ILinkNavigationProps {
-  readonly dispatch: Dispatch<IPassageNavigationAction>;
+  readonly dispatch: Dispatch<IAction>;
   readonly passage: IPassage;
   readonly passageName?: string;
   readonly tags?: Tag[] | ReadonlyArray<Tag>;

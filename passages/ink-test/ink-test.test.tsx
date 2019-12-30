@@ -5,10 +5,13 @@ import {
 import passage from './ink-test';
 
 import {
+  IPassageProps,
+} from '../../bundles/passagesBundle';
+import {
   BuiltInTags,
+  ITag,
   getTag,
-  Tag,
-} from '../../src/passages/tagsBundle';
+} from '../../bundles/tagsBundle';
 
 import * as React from 'react';
 
@@ -18,13 +21,13 @@ const {
   content: Component,
 } = passage;
 
-describe('Tests for the ink-test passage.', () => {
+describe('Tests for the my-first-passage passage.', () => {
   it('Has a non-empty name string.', () => {
     expect(name && typeof name === 'string').toBe(true);
   });
 
   it('If it has tags, they are either non-empty strings or key-value objects.', () => {
-    expect(!tags || tags.filter((aa: Tag) => {
+    expect(!tags || tags.filter((aa: ITag) => {
       if (aa) {
         if (typeof aa === 'string') {
           return true;
@@ -46,7 +49,21 @@ describe('Tests for the ink-test passage.', () => {
   it('Renders shallowly without crashing.', () => {
     /* Don't test if it's a noRender passage. */
     if (getTag(tags, BuiltInTags.NoRender)) {
-      shallow(<Component />);
+      shallow(<Component {...getPassageMockArgs()} />);
     }
   });
+});
+
+const getPassageMockArgs = (): IPassageProps => ({
+  config: {} as any,
+  dispatch: jest.fn(),
+  lastLinkTags: [],
+  passageObject: {} as any,
+  soundManager: {} as any,
+  storyState: {},
+  bookmark: jest.fn(),
+  navigateTo: jest.fn(),
+  restart: jest.fn(),
+  rewind: jest.fn(),
+  setStoryState: jest.fn(),
 });

@@ -1,5 +1,2 @@
-export function getNodeModulesToAlwaysTranspile() {
-  return [
-    'inkjs',
-  ];
-}
+export const getNodeModulesToAlwaysTranspile = () => [
+];

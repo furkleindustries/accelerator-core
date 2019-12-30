@@ -1,15 +1,30 @@
 export {
+  App,
+} from '../src/components/App';
+export {
   AppBar,
 } from '../src/components/AppBar';
 export {
   AppContextConsumerWrapper,
 } from '../src/components/AppContextConsumerWrapper';
 export {
+  AppContextProviderWrapper,
+} from '../src/components/AppContextProviderWrapper';
+export {
+  AppJssProvider,
+} from '../src/components/AppJssProvider';
+export {
   Article,
 } from '../src/components/Article';
 export {
   AuthoringPassageContainer,
 } from '../src/components/AuthoringPassageContainer';
+export {
+  Breadcrumb,
+} from '../src/components/Breadcrumb';
+export {
+  BreadcrumbTrail,
+} from '../src/components/BreadcrumbTrail';
 export {
   Button,
 } from '../src/components/Button';
@@ -56,6 +71,9 @@ export {
   Dialog,
 } from '../src/components/Dialog';
 export {
+  Divider,
+} from '../src/components/Divider';
+export {
   Else,
 } from '../src/components/Else';
 export {
@@ -72,6 +90,13 @@ export {
   Footer,
 } from '../src/components/Footer';
 export {
+  GetState,
+  GetStateUnconnected,
+} from '../src/components/GetState';
+export {
+  Grid,
+} from '../src/components/Grid';
+export {
   Header,
 } from '../src/components/Header';
 export {
@@ -80,6 +105,9 @@ export {
 export {
   InkContainer,
 } from '../src/components/InkContainer';
+export {
+  InkSection,
+} from '../src/components/InkSection';
 export {
   Iterated,
 } from '../src/components/Iterated';
@@ -96,6 +124,9 @@ export {
   List,
 } from '../src/components/List';
 export {
+  ListItem,
+} from '../src/components/ListItem';
+export {
   LoadingScreen,
 } from '../src/components/LoadingScreen';
 export {
@@ -110,6 +141,13 @@ export {
 export {
   Permutation,
 } from '../src/components/Permutation';
+export {
+  PassageContainer,
+} from '../src/components/PassageContainer';
+export {
+  PassageContentContainer,
+  PassageContentContainerConnected,
+} from '../src/components/PassageContentContainer';
 export {
   RestartButton,
 } from '../src/components/RestartButton';
