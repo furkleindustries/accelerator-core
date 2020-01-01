@@ -9,164 +9,165 @@
  */
 
 import {
+  Anchor,
+} from '../components/Anchor';
+import {
   Article,
-} from '../Article';
+} from '../components/Article';
 import {
   Button,
-} from '../Button';
+} from '../components/Button';
 import {
   Card,
-} from '../Card';
-import {
-  Checkbox,
-} from '../Checkbox';
+} from '../components/Card';
 import {
   Chip,
-} from '../Chip';
-import {
-  CircularProgress,
-} from '../CircularProgress';
-import {
-  ICircularProgressOwnProps,
-} from '../CircularProgress/ICircularProgressOwnProps';
+} from '../components/Chip';
 import {
   ClickAppend,
-} from '../ClickAppend';
+} from '../components/ClickAppend';
 import {
   ClickDisappear,
-} from '../ClickDisappear';
+} from '../components/ClickDisappear';
 import {
   ClickPrepend,
-} from '../ClickPrepend';
+} from '../components/ClickPrepend';
 import {
   ClickReplace,
-} from '../ClickReplace';
+} from '../components/ClickReplace';
 import {
   Clicker,
-} from '../Clicker';
+} from '../components/Clicker';
 import {
   Combination,
-} from '../Combination';
+} from '../components/Combination';
 import {
   Cycler,
-} from '../Cycler';
+} from '../components/Cycler';
 import {
   CyclingLink,
-} from '../CyclingLink';
+} from '../components/CyclingLink';
 import {
   Delay,
-} from '../Delay';
+} from '../components/Delay';
 import {
   Dialog,
-} from '../Dialog';
+} from '../components/Dialog';
 import {
   Divider,
-} from '../Divider';
+} from '../components/Divider';
 import {
   Else,
-} from '../Else';
+} from '../components/Else';
 import {
   ElseIf,
-} from '../ElseIf';
+} from '../components/ElseIf';
 import {
   FadeIn,
-} from '../FadeIn';
+} from '../components/FadeIn';
 import {
   FadeOut,
-} from '../FadeOut';
+} from '../components/FadeOut';
 import {
   Footer,
-} from '../Footer';
+} from '../components/Footer';
 import {
   GetSound,
-} from '../GetSound';
+} from '../components/GetSound';
 import {
   GetState,
-} from '../GetState'
+} from '../components/GetState'
 import {
   Grid,
-} from '../Grid';
+} from '../components/Grid';
 import {
   Header
-} from '../Header';
+} from '../components/Header';
 import {
   If,
-} from '../If';
+} from '../components/If';
 import {
   InkContainer
-} from '../InkContainer';
+} from '../components/InkContainer';
 import {
   InkSection,
-} from '../InkSection';
+} from '../components/InkSection';
+import {
+  Input,
+} from '../components/Input';
 import {
   Iterated,
-} from '../Iterated';
+} from '../components/Iterated';
 import {
   Iterator,
-} from '../Iterator';
+} from '../components/Iterator';
 import {
-  LinearProgress,
-} from '../LinearProgress';
-import {
-  ILinearProgressOwnProps,
-} from '../LinearProgress/ILinearProgressOwnProps';
-import {
-  Link,
-} from '../Link';
-import {
-  List,
-} from '../List';
-import {
-  IListOwnProps,
-} from '../List/IListOwnProps';
+  ListItem,
+} from '../components/ListItem';
 import {
   NOf,
-} from '../NOf';
+} from '../components/NOf';
 import {
   OneOf,
-} from '../OneOf';
+} from '../components/OneOf';
+import {
+  OrderedList,
+} from '../components/OrderedList';
 import {
   Paper,
-} from '../Paper';
+} from '../components/Paper';
 import {
   Permutation,
-} from '../Permutation';
+} from '../components/Permutation';
 import {
   Print,
-} from '../Print';
+} from '../components/Print';
+import {
+  Progress,
+} from '../components/Progress';
 import {
   RestartButton,
-} from '../RestartButton';
+} from '../components/RestartButton';
 import {
   RewindButton,
-} from '../RewindButton';
+} from '../components/RewindButton';
 import {
   Section,
-} from '../Section';
+} from '../components/Section';
 import {
   SetVariable,
-} from '../SetVariable';
+} from '../components/SetVariable';
 import {
   Toolbar,
-} from '../Toolbar';
+} from '../components/Toolbar';
 import {
   TypographyClassKey,
 } from '@material-ui/core/Typography';
 import {
   Typography,
-} from '../Typography';
+} from '../components/Typography';
 import {
   ITypographyOwnProps,
-} from '../Typography/ITypographyOwnProps';
+} from '../components/Typography/ITypographyOwnProps';
+import {
+  UnorderedList,
+} from '../components/UnorderedList';
 import {
   UrlLink,
-} from '../UrlLink';
+} from '../components/UrlLink';
 import {
   Variable,
-} from '../Variable';
+} from '../components/Variable';
+
+/**
+ * See note at top before adding any new imports.
+ */
 
 import * as React from 'react';
 
+/**
+ * @todo Make these real, named components.
+ */
 export const typographies: React.ElementType[] = [
   'address',
   'b',
@@ -192,6 +193,9 @@ export const typographies: React.ElementType[] = [
   'time',
 ];
 
+/**
+ * @todo Make these real, named components.
+ */
 export const body1Tags: React.ElementType[] = [
   'address',
   'b',
@@ -242,34 +246,7 @@ const baseComponents = Object.freeze({
     Object.assign(obj, { [typographies[index] as string]: val })
   ), {}),
 
-  a: ({
-    href,
-    ...props
-  }: Record<string, any>) => {
-    /* Return an UrlLink which opens links in a new tab by default if and only
-     * if the href value is a string which begins with `https?://`. If you
-     * don't like this for any reason, either import and use UrlLink directly,
-     * or edit this code in your own codebase. */
-    if (typeof href === 'string' && /^https?:\/\//.test(href)) {
-      return (
-        <UrlLink
-          href={href}
-          /* Force links to open in a new tab. May be overridden by props. */
-          target="_blank"
-          {...props}
-        />
-      ) 
-    }
-
-    return (
-      <Link
-        /* Overridden by props if passageName was provided. */
-        passageName={href}
-        {...props}
-      />
-    );
-  },
-
+  a: Anchor,
   article: Article,
   button: Button,
   card: Card,
@@ -298,58 +275,31 @@ const baseComponents = Object.freeze({
   if: If,
   'ink-container': InkContainer,
   'ink-section': InkSection,
-
-  input: ({
-    children,
-    orientation,
-    type,
-    ...props
-  }: Record<any, any> & { type?: string }) => {
-    if (type === 'checkbox') {
-      return <Checkbox {...props}>{children}</Checkbox>;
-    }
-
-    return <input {...props} />;
-  },
-
+  input: Input,
   iterated: Iterated,
   iterator: Iterator,
+  li: ListItem,
   'n-of': NOf,
-
-  ol: ({
-    children,
-    ...props
-  }: IListOwnProps) => <List {...props}>{children}</List>,
-
+  ol: OrderedList,
   'one-of': OneOf,
   paper: Paper,
   permutation: Permutation,
   print: Print,
-
-  progress: ({
-    orientation,
-    ...props
-  }: (ICircularProgressOwnProps | ILinearProgressOwnProps) & { orientation?: 'circular' | 'linear' }) => (
-    orientation === 'circular' ?
-      <CircularProgress {...props as ICircularProgressOwnProps} /> :
-      <LinearProgress {...props as ILinearProgressOwnProps} />
-  ),
-
+  progress: Progress,
   'restart-button': RestartButton,
   'rewind-button': RewindButton,
   section: Section,
   'set-var': SetVariable,
   'set-variable': SetVariable,
   toolbar: Toolbar,
-
-  ul: ({
-    children,
-    ...props
-  }: IListOwnProps) => <List {...props}>{children}</List>,
-
+  ul: UnorderedList,
   'url-link': UrlLink,
   var: Variable,
   variable: Variable,
 });
 
-export const getBaseMarkdownComponents = () => ({ ...baseComponents });
+export type TComponentMapShape = typeof baseComponents;
+
+export const getTagNameToComponentMap = () => {
+  return { ...baseComponents };
+};

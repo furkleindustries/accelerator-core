@@ -1,0 +1,36 @@
+/**
+ * Unused and unfinished at present. Largely replaced by inkJsxMutator.
+ */
+
+import {
+  InkMutatorObject,
+} from '../src/mutators/InkMutatorObject';
+
+const signal = '>< ink-mdx ><';
+
+import * as React from 'react';
+
+const mutatorObject: InkMutatorObject = {
+  content: ({
+    inkModule,
+    lines,
+  }) => {
+    const text = lines.map(({ text }) => text).join('\n');
+    if (text.startsWith(signal)) {
+      const id = text.slice(signal.length).trim();
+      const Component = inkModule.getMdxComponent(id);
+      if (Component) {
+        return (
+          <Component />
+        );
+      }
+    }
+
+    return text;
+  },
+
+  name: 'ink-mdx-mutator',
+  precedence: Number.MAX_SAFE_INTEGER,
+};
+
+export default mutatorObject;

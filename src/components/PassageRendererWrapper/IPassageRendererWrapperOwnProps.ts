@@ -7,8 +7,11 @@ import {
 import {
   IPlugin,
 } from '../../plugins/IPlugin';
+import {
+  MaybeReadonlyArray,
+} from '../../typeAliases/MaybeReadonlyArray';
 
 export interface IPassageRendererWrapperOwnProps extends INoChildren {
   readonly passagesMap: IPassagesMap;
-  readonly plugins: IPlugin[] | ReadonlyArray<IPlugin>;
+  readonly plugins: MaybeReadonlyArray<IPlugin>;
 }

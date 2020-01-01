@@ -1,10 +1,22 @@
 import {
+  addTag,
+} from '../../tags/addTag';
+import {
   Article,
 } from '../Article';
 import classNames from 'classnames';
 import {
-  getBaseMarkdownComponents,
-} from '../AuthoringPassageContainer/getBaseMarkdownComponents';
+  createStoryStateAction,
+} from '../../actions/creators/createStoryStateAction';
+import {
+  getInkMutators,
+} from '../../mutators/getInkMutators';
+import {
+  InkContainerDispatchProps,
+} from './InkContainerDispatchProps';
+import {
+  InkContainerStateProps,
+} from './InkContainerStateProps';
 import {
   InkContainerOwnProps,
 } from './InkContainerOwnProps';
@@ -12,18 +24,25 @@ import {
   InkContainerState,
 } from './InkContainerState';
 import {
+  InkLineObject,
+} from '../InkSection/InkLineObject';
+import {
   InkSection,
 } from '../InkSection';
 import {
-  MDXComponent,
-} from '../../typeAliases/MDXComponent';
+  IState,
+} from '../../state/IState';
 import {
-  MDXProvider,
-// @ts-ignore
-} from '@mdx-js/react';
+  IStoryStateFrame,
+} from '../../state/IStoryStateFrame';
 import {
-  Story,
-} from '../../../lib/ink/inkjs/src/Story';
+  mergeInkStateWithStoryState,
+} from './mergeInkStateWithStoryState';
+import {
+  connect,
+  MapDispatchToProps,
+  MapStateToProps,
+} from 'react-redux';
 import {
   StoryWithDoneEvent,
 } from '../../../lib/ink/StoryWithDoneEvent';
@@ -35,8 +54,14 @@ import * as React from 'react';
 
 import styles from './index.less';
 
-export class InkContainer extends React.PureComponent<InkContainerOwnProps, InkContainerState> {
-  public readonly state: InkContainerState = { sections: [] };
+export class InkContainerUnconnected extends React.PureComponent<
+  InkContainerOwnProps & InkContainerStateProps & InkContainerDispatchProps,
+  InkContainerState
+> {
+  public readonly state: InkContainerState = {
+    choiceCounter: 0,
+    sections: [],
+  };
 
   private ref: React.RefObject<HTMLDivElement>;
   private story: StoryWithDoneEvent;
@@ -44,10 +69,22 @@ export class InkContainer extends React.PureComponent<InkContainerOwnProps, InkC
   public readonly render = () => {
     const {
       className,
+      inkModule,
+      mutatorObjects,
       ref,
     } = this.props;
 
-    const { sections } = this.state;
+    const {
+      choiceCounter,
+      sections,
+    } = this.state;
+
+    const story = this.story;
+
+    const mergedMutatorsObjects = [
+      ...getInkMutators(),
+      ...(Array.isArray(mutatorObjects) ? mutatorObjects : []),
+    ];
 
     this.ref = ref || this.ref || React.createRef();
 
@@ -56,7 +93,34 @@ export class InkContainer extends React.PureComponent<InkContainerOwnProps, InkC
         className={classNames(styles.inkContainer, 'inkContainer', className)}
         ref={this.ref}
       >
-        {sections.map((section, key) => React.cloneElement(section, { key }))}
+        {sections.map(
+          (
+            {
+              choices,
+              lines,
+            },
+            key,
+          ) => (
+            <InkSection
+              choices={choices}
+              choicesVisible={choiceCounter === key}
+              onClick={this.clickChoice}
+              key={key}
+            >
+              {mergedMutatorsObjects.reduce<React.ReactNode>((
+                currentNode,
+                { content: mutator },
+              ) => (
+                mutator({
+                  currentNode,
+                  inkModule,
+                  story,
+                  lines,
+                })
+              ), lines.map(({ text }) => text).join('\n'))}
+            </InkSection>
+          )
+        )}
       </Article>
     );
   };
@@ -64,29 +128,31 @@ export class InkContainer extends React.PureComponent<InkContainerOwnProps, InkC
   public readonly componentDidMount = async () => {
     const {
       doneCallback,
-      inputVariables,
       inkModule: { storyContent },
-      variablesToObserve,
+      setStoryState,
+      storyState,
     } = this.props;
 
     const story = new StoryWithDoneEvent(storyContent);
 
     if (typeof doneCallback === 'function') {
+      story.__registerDoneCallback(this.defaultDoneCallback);
       story.__registerDoneCallback(doneCallback);
     }
 
     this.story = story;
 
-    if (inputVariables) {
-      Object.keys(inputVariables).forEach((key) => (
-        story.variablesState.SetGlobal(key, inputVariables[key])
-      ));
-    }
+    const mergedStoryState = {
+      ...storyState,
+      ...story.state.variablesState.jsonToken,
+    };
 
-    if (Array.isArray(variablesToObserve)) {
-      variablesToObserve.forEach(this.observeVariable);
-    }
+    Object.keys(mergedStoryState).forEach((key) => {
+      story.variablesState.SetGlobal(key, storyState[key]);
+      story.ObserveVariable(key, this.observeVariable);
+    });
 
+    setStoryState(mergedStoryState);
     this.continueStory();
   };
 
@@ -125,80 +191,38 @@ export class InkContainer extends React.PureComponent<InkContainerOwnProps, InkC
   };
 
   public readonly continueStory = () => {
-    const {
-      inkModule: { getMdxComponent },
-    } = this.props;
+    const { sections } = this.state;
 
     const story = this.story;
-    const refElement = this.getRefElement();
-    let index = 0;
     /* Generate story text - loop through available content.
      * Get ink to generate the next paragraph. */
-    let inkContents: React.ReactElement[] = [];
+    const lines: InkLineObject[] = [];
     while (story.canContinue) {
       const inkResponse = story.Continue() || '';
-      inkContents.push(<span key={index}>{inkResponse}</span>);
-      index += 1;
-      if (getMdxComponent) {
-        assertValid<string[]>(story.currentTags).forEach((tag) => {
-          const match = tag.trim().match(new RegExp(/@mdx ___BESbswy___(.+)___ywsbSEB___/));
-          if (match && match[1]) {
-            const Component =
-              assertValid<MDXComponent>(
-                getMdxComponent(match[1]),
-                `The MDX component, ${match}, ${match[1]}, was not found.`,
-              );
+      lines.push({
+        tags: (story.currentTags || []).map((val) => (
+          addTag(val)[0]
+        )),
 
-            inkContents.push(
-              <MDXProvider
-                components={getBaseMarkdownComponents()}
-                key={index}
-              >
-                <Component />
-              </MDXProvider>
-            );
-
-            index += 1;
-          }
-        });
-      }
+        text: inkResponse,
+      });
     }
 
-    const onClick = (index: number, e: Event) => this.clickChoice(index, e);
+    const choices = story.currentChoices;
     this.setState({
-      sections: this.state.sections.concat([
-        <InkSection
-          onClick={onClick}
-          story={story}
-        >
-          {inkContents}
-        </InkSection>
+      sections: sections.concat([
+        {
+          choices,
+          lines,
+        },
       ]),
     });
 
-    const container = document.createElement('div');
-    refElement.appendChild(container);
     this.scrollToBottom();
   };
 
-  public readonly clickChoice = async (
-    index: number,
-    e: Event,
-  ) => {
-    const choices = assertValid<HTMLButtonElement[]>(
-      this.getRefElement().querySelectorAll('.choiceButton'),
-      'The clicked choice could not be found in InkContainer.clickChoice.',
-    );
-
-    choices.forEach((choice) => {
-      if (choice === e.currentTarget) {
-        choice.blur();
-        choice.classList.add('clicked');
-      } else {
-        choice.classList.add('hidden');
-      }
-    });
-
+  public readonly clickChoice = (index: number) => {
+    this.setState({ choiceCounter: this.state.choiceCounter + 1 });
     this.story.ChooseChoiceIndex(index);
     this.continueStory();
   };
@@ -208,13 +232,39 @@ export class InkContainer extends React.PureComponent<InkContainerOwnProps, InkC
     'The ref element could not be found in InkContainer.getRefElement.',
   );
 
-  public readonly observeVariable = (key: string) => this.story.ObserveVariable(
-    key,
-    assertValid<Story.VariableObserver>(
-      this.props.observerCallback,
-      'InkContainer.observeVariable was called but props.observerCallback ' +
-        'is not a function.',
-      (val) => typeof val === 'function',
-    ),
-  );
+  public readonly observeVariable = (variableName: string, newValue: any) => {
+    this.props.setStoryState({ [variableName]: newValue });
+    if (typeof this.props.observerCallback === 'function') {
+      this.props.observerCallback(variableName, newValue);
+    }
+  };
+
+  public readonly defaultDoneCallback = (
+    story: StoryWithDoneEvent,
+    setStoryState: (updatedStoryState: IStoryStateFrame) => void,
+  ) => void mergeInkStateWithStoryState(story, setStoryState);
 };
+
+export const mapStateToProps: MapStateToProps<
+  InkContainerStateProps,
+  InkContainerOwnProps,
+  IState
+> = ({
+  history: {
+    present: { storyState },
+  },
+}) => ({ storyState });
+
+export const mapDispatchToProps: MapDispatchToProps<
+  InkContainerDispatchProps,
+  InkContainerOwnProps
+> = (dispatch) => ({
+  setStoryState: (updatedStoryState) => (
+    dispatch(createStoryStateAction(updatedStoryState))
+  ),
+});
+
+export const InkContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(InkContainerUnconnected)

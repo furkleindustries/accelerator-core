@@ -13,6 +13,6 @@ export function getHelperVariant({
 }: {
   readonly family: string,
   readonly style: FontStyles,
-  readonly variants: ReadonlyArray<IFontHelperVariant>,
+  readonly variants: readonly IFontHelperVariant[],
   readonly weight: number,
 }): IFontHelperVariant;

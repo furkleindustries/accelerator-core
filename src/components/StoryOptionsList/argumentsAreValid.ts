@@ -7,7 +7,7 @@ import {
 
 export function argumentsAreValid<
   T extends Record<any, any> & {
-    readonly breadcrumbTrail: ReadonlyArray<IBreadcrumbItem>,
+    readonly breadcrumbTrail: readonly IBreadcrumbItem[],
     readonly treeSelector: TreeSelector,
     addBreadcrumb(crumb: IBreadcrumbItem): any,
     removeBreadcrumb(): any,

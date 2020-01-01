@@ -1,4 +1,12 @@
-export interface ISetVariableProps {
-  readonly name: string;
-  readonly value: any;
+import {
+  INamed,
+} from '../../interfaces/INamed';
+import {
+  IValued,
+} from '../../interfaces/IValued';
+
+export interface ISetVariableProps extends
+  INamed,
+  IValued
+{
 }

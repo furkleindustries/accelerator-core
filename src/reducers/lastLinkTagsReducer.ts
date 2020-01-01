@@ -5,20 +5,20 @@ import {
   BuiltInTags,
 } from '../tags/BuiltInTags';
 import {
+  ILastLinkTagsAware,
+} from '../interfaces/ILastLinkTagsAware';
+import {
   IPassageNavigationAction,
 } from '../actions/IPassageNavigationAction';
 import {
   IStoryResetAction,
 } from '../actions/IStoryResetAction';
-import {
-  ITag,
-} from '../tags/ITag';
 
-const deflt: ReadonlyArray<ITag> = Object.freeze([ BuiltInTags.Start ]);
+const deflt: ILastLinkTagsAware['lastLinkTags'] = Object.freeze([ BuiltInTags.Start ]);
 export const lastLinkTagsReducer = (
-  previousState: ReadonlyArray<ITag> = deflt,
+  previousState: ILastLinkTagsAware['lastLinkTags'] = deflt,
   action: IPassageNavigationAction | IStoryResetAction,
-): ReadonlyArray<ITag> => {
+): ILastLinkTagsAware['lastLinkTags'] => {
   let ret;
   if (action.type === ActionTypes.PassageNavigation) {
     ret = (action.value.tags || []).map((tag) => (

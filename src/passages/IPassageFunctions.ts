@@ -10,7 +10,7 @@ import {
 
 export interface IPassageFunctions {
   readonly bookmark: () => void;
-  readonly navigateTo: (passageName: string, linkTags?: Tag[] | ReadonlyArray<Tag>) => void;
+  readonly navigateTo: (passageName: string, linkTags?: Tag[] | readonly Tag[]) => void;
   readonly restart: () => void;
   readonly rewind: (filter?: HistoryFilter) => void;
   readonly setStoryState: (

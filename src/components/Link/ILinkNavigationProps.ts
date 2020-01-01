@@ -5,15 +5,20 @@ import {
   IPassage,
 } from '../../passages/IPassage';
 import {
+  IPassageNamed,
+} from '../../interfaces/IPassageNamed';
+import {
+  ITaggable,
+} from '../../interfaces/ITaggable';
+import {
   Dispatch,
 } from 'redux';
-import {
-  Tag,
-} from '../../tags/Tag';
 
-export interface ILinkNavigationProps {
+export interface ILinkNavigationProps
+  extends
+    IPassageNamed,
+    ITaggable
+{
   readonly dispatch: Dispatch<IAction>;
   readonly passage: IPassage;
-  readonly passageName?: string;
-  readonly tags?: Tag[] | ReadonlyArray<Tag>;
 }

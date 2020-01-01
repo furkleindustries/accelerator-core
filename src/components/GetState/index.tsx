@@ -27,7 +27,7 @@ export const GetStateUnconnected: React.FunctionComponent<
   children,
   storyState,
   setStoryState,
-}) => children(storyState, { setStoryState });
+}) => <>{children(storyState, { setStoryState })}</>;
 
 export const mapStateToProps: MapStateToProps<
   IGetStatePropsForState,

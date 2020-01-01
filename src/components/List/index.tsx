@@ -29,34 +29,23 @@ export const List: React.FunctionComponent<IListOwnProps> = ({
       null}
 
     {React.Children.toArray(children).map((child, key) => {
-      const theComponent = component || ListItem;
-
-      if (!component &&
-          (React.isValidElement(child) && child.type === 'li'))
-      {
-        /* Replace the li rather than containing it inside another li. */ 
-        const {
-          children: childChildren,
-          ...childProps
-        } = child.props;
-
-        return (
-          <ListItem {...childProps}>
-            {childChildren}
-          </ListItem>
+      if (component) {
+        return React.createElement(
+          component,
+          {
+            key,
+            ...listItemProps,
+          },
+          child,
         );
-      }
-
-      return React.createElement(
-        theComponent,
-        {
+      } else if (React.isValidElement(child)) {
+        return React.cloneElement(child, {
           key,
           ...listItemProps,
-        },
-        <ListItem>
-          {child}
-        </ListItem>,
-      );
+        });
+      }
+
+      return child;
     })}
   </MuiList>
 );

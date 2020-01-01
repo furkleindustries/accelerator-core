@@ -195,12 +195,7 @@ interface IAcceleratorConfig extends Record<string, any> {
   readonly coreVersion: string;
   readonly debug: boolean;
   readonly historyStackLimit: number;
-  readonly historySaveTypes:
-    ActionTypes |
-    ReadonlyArray<ActionTypes> |
-    string |
-    ReadonlyArray<string>;
-
+  readonly historySaveTypes: OneOrMaybeReadonlyArray<string | ActionTypes>
   readonly historySynchronizeUnrewindableStateWithPresent: boolean;
   readonly publicUrl: string;
   readonly rendererName: BuiltInRenderers | string;
@@ -208,7 +203,7 @@ interface IAcceleratorConfig extends Record<string, any> {
   readonly storyDescription: string;
   readonly storyTitle: string;
   readonly toolVersion: string;
-  readonly fontsToLoad?: ReadonlyArray<IFontLoadingDetails | string>;
+  readonly fontsToLoad?: OneOrMaybeReadonlyArray<IFontLoadingDetails | string>;
   readonly subsetFont?: IFontSubsettingDetails | string;
 }
 ```

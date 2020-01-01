@@ -2,7 +2,7 @@ import {
   shallow,
 } from 'enzyme';
 
-import passage from './ink-test';
+import passage from './ink-testing';
 
 import {
   IPassageProps,
@@ -21,7 +21,7 @@ const {
   content: Component,
 } = passage;
 
-describe('Tests for the my-first-passage passage.', () => {
+describe('Tests for the ink-testing passage.', () => {
   it('Has a non-empty name string.', () => {
     expect(name && typeof name === 'string').toBe(true);
   });

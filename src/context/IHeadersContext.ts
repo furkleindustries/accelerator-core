@@ -3,5 +3,5 @@ import {
 } from '../passages/IHeader';
 
 export interface IHeadersContext {
-  readonly headers: ReadonlyArray<IHeader>;
+  readonly headers: readonly IHeader[];
 }

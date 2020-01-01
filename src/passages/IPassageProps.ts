@@ -5,29 +5,31 @@ import {
   IAction,
 } from '../actions/IAction';
 import {
-  IPassageFunctions,
-} from './IPassageFunctions';
+  ILastLinkTagsAware,
+} from '../interfaces/ILastLinkTagsAware';
 import {
   IManager,
 } from 'sound-manager';
 import {
+  IPassageFunctions,
+} from './IPassageFunctions';
+import {
   IPassage,
 } from './IPassage';
 import {
-  IStoryStateFrame,
-} from '../state/IStoryStateFrame';
+  IStoryStateAware,
+} from '../interfaces/IStoryStateAware';
 import {
   Dispatch,
 } from 'redux';
-import {
-  Tag,
-} from '../tags/Tag';
 
-export interface IPassageProps extends IPassageFunctions {
+export interface IPassageProps extends
+  ILastLinkTagsAware,
+  IPassageFunctions,
+  IStoryStateAware
+{
   readonly config: IAcceleratorConfigNormalized;
   readonly dispatch: Dispatch<IAction>;
-  readonly lastLinkTags: Tag[] | ReadonlyArray<Tag>;
   readonly passageObject: IPassage;
   readonly soundManager: IManager;
-  readonly storyState: IStoryStateFrame;
 }

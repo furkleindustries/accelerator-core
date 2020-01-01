@@ -5,6 +5,9 @@ import {
   IAcceleratorConfigNormalized,
 } from '../../configuration/IAcceleratorConfigNormalized';
 import {
+  ILastLinkTagsAware,
+} from '../../interfaces/ILastLinkTagsAware';
+import {
   IManager,
 } from 'sound-manager';
 import {
@@ -17,18 +20,24 @@ import {
   IStoryStateFrame,
 } from '../../state/IStoryStateFrame';
 import {
+  MaybeReadonlyArray,
+} from '../../typeAliases/MaybeReadonlyArray';
+import {
   Tag,
 } from '../../tags/Tag';
 
-export interface IPassageContentContainerOwnProps {
-  readonly config: Omit<IAcceleratorConfigNormalized, 'rendererName'>;
-  readonly lastLinkTags: Tag[] | ReadonlyArray<Tag>;
+export interface IPassageContentContainerOwnProps extends ILastLinkTagsAware {
+  readonly config: IAcceleratorConfigNormalized;
   readonly passageObject: IPassage;
   readonly soundManager: IManager;
   readonly storyState: IStoryStateFrame;
-  bookmark(): void;
-  navigateTo(passageName: string, tags?: Tag[] | ReadonlyArray<Tag>): void;
-  restart(): void;
-  rewind(filter?: HistoryFilter): void;
-  setStoryState(updatedStateProps: Partial<IStateFrame>): void;
+  readonly bookmark: () => void;
+  readonly navigateTo: (
+    passageName: string,
+    tags?: MaybeReadonlyArray<Tag>,
+  ) => void;
+
+  readonly restart: () => void;
+  readonly rewind: (filter?: HistoryFilter) => void;
+  readonly setStoryState: (updatedStateProps: Partial<IStateFrame>) => void;
 }

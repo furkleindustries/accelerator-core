@@ -1,14 +1,14 @@
 import {
-  OneOrArray,
-} from '../../typeAliases/OneOrArray';
+  MaybeReadonlyArray,
+} from '../../typeAliases/MaybeReadonlyArray'
 import {
   ReactElement,
   ReactNode,
 } from 'react';
 
 export interface IteratorProps {
-  readonly collection: ReactNode[];
-  readonly children: OneOrArray<ReactElement>;
+  readonly collection: MaybeReadonlyArray<ReactNode>;
+  readonly children: ReactElement | MaybeReadonlyArray<ReactElement>;
   readonly mapper?: (child: ReactNode) => ReactNode;
   readonly filter?: (child: ReactNode) => boolean;
 }

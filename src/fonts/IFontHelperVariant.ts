@@ -10,7 +10,7 @@ export interface IFontHelperVariant {
 
   readonly fontStyle: FontStyles;
   readonly fontWeight: number;
-  readonly local: [ string, string ],
+  readonly local: readonly [ string, string ],
 
   /* URLs */
   readonly eot: string;

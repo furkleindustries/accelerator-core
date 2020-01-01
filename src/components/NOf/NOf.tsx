@@ -69,7 +69,7 @@ export class NOf extends React.PureComponent<INOfOwnProps, INOfState> {
 
     return (
       shuffle === true ?
-        assertValid<ReadonlyArray<ReactNodeWithoutNullOrUndefined>>(
+        assertValid<readonly ReactNodeWithoutNullOrUndefined[]>(
           shuffled,
           strings.SHUFFLED_INVALID,
         ) :

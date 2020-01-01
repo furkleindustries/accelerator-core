@@ -41,9 +41,11 @@ export class AwarenessRelation<
     return this.__modelType;
   }
 
-  private __perceptions: ReadonlyArray<
-    IModel<Type, OnticTypes, Knowledge>
-  > = Object.freeze([]);
+  private __perceptions: readonly IModel<
+    Type,
+    OnticTypes,
+    Knowledge
+  >[] = Object.freeze([]);
 
   public get perceptions() {
     return this.__perceptions;
@@ -90,7 +92,7 @@ export class AwarenessRelation<
     args: '*' |
       IFindBaseArgs<OnticTypes> &
         FindAwarenessArgs<AwareTypes, OnticTypes>,
-  ) => ReadonlyArray<IModel<OnticTypes, OnticTypes, Knowledge>>;
+  ) => readonly IModel<OnticTypes, OnticTypes, Knowledge>[];
 
   public readonly findAllGenerator = ((
     self: IAwarenessRelation<Type, Knowledge>,

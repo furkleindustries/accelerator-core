@@ -6,8 +6,8 @@ import {
 } from './FontLoadingStrategies';
 
 export interface IFontSubsettingDetails {
-  readonly formats: FontFormats | ReadonlyArray<FontFormats>;
+  readonly formats: FontFormats | readonly FontFormats[];
   readonly fromFamily: string;
   readonly loadingStrategy: FontLoadingStrategies;
-  readonly subsetRange: 'US_ASCII' | 'LATIN' | string | ReadonlyArray<string>;
+  readonly subsetRange: 'US_ASCII' | 'LATIN' | string | readonly string[];
 }

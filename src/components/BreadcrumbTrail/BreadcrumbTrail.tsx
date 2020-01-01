@@ -32,7 +32,7 @@ export class BreadcrumbTrail extends React.PureComponent<
     index: number,
   ): IVisibilityTree => ({
     children: React.Children.map(children, (child) => {
-      let treeChildren: ReadonlyArray<IVisibilityTree> = [];
+      let treeChildren: readonly IVisibilityTree[] = [];
       if (React.isValidElement(child)) {
         if (Array.isArray((child as any).props.children)) {
           treeChildren = React.Children.map(
@@ -132,14 +132,16 @@ export class BreadcrumbTrail extends React.PureComponent<
   });
 
   private readonly setVisibilityTreePropsAt = (
-    treeSelector: ReadonlyArray<number>,
+    treeSelector: readonly number[],
     updatedProps: Partial<IVisibilityTree>,
   ) => {
     const updatedVizTree = { ...this.state.visibilityTree };
     let last = updatedVizTree;
     let treeToSet = updatedVizTree;
     for (const item of treeSelector) {
-      treeToSet.children = treeToSet.children.map((child) => ({ ...child }));
+      treeToSet.children = (treeToSet.children as IVisibilityTree[]).map(
+        (child) => ({ ...child })
+      );
 
       treeToSet = treeToSet.children[item];
       if (!treeToSet) {
@@ -189,7 +191,7 @@ export class BreadcrumbTrail extends React.PureComponent<
     }
 
     return {
-      children: tree.children.map((tree) => (
+      children: (tree.children as IVisibilityTree[]).map((tree) => (
         this.trimVisibilityTree(tree, trimIndex, depthIndex + 1)
       )),
 

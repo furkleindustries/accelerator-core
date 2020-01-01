@@ -6,28 +6,28 @@ import {
 } from './IStoryOption';
 import {
   precedenceSort,
-} from '../passages/precedenceSort';
+} from '../functions/precedenceSort';
 import {
   assert,
 } from 'ts-assertions';
 
-import manifest from '../../options/storyOptions-manifest';
+import manifest from '../../options/options-manifest';
 
 export const strings = {
   STORY_OPTIONS_MANIFEST_INVALID:
-    'The storyOptions-manifest.ts file was not parseable into an array.',
+    'The options-manifest.ts file was not parseable into an array.',
 
   STORY_OPTION_OBJECT_INVALID:
     'One of the story option objects, found at %FILEPATH%, was invalid. ' +
-    '%REASON%.',
+      '%REASON%',
 };
 
 assert(Array.isArray(manifest), strings.STORY_OPTIONS_MANIFEST_INVALID);
 
 /* Memoize results and return them without computation on repeat calls. */
-let storyOptionsList: ReadonlyArray<IStoryOption> | null = null;
+let storyOptionsList: readonly IStoryOption[] | null = null;
 
-export function getStoryOptionsList(): ReadonlyArray<IStoryOption> {
+export const getStoryOptionsList = (): readonly IStoryOption[] => {
   if (storyOptionsList) {
     return storyOptionsList;
   }
@@ -66,4 +66,4 @@ export function getStoryOptionsList(): ReadonlyArray<IStoryOption> {
   storyOptionsList = precedenceSort(storyOptionsPrecedenceMap);
 
   return storyOptionsList;
-}
+};

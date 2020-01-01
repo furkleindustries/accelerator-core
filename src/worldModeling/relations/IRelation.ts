@@ -17,14 +17,17 @@ import {
   OnticTypes,
 } from '../ontology/OnticTypes';
 
-export interface IRelation<Type extends ModelType> {
+export interface IRelation<
+  Type extends ModelType,
+  T extends IRelation<Type, any>
+> {
   readonly modelType: ModelType;
-  readonly tags: ReadonlyArray<ITag>;
+  readonly tags: readonly ITag[];
   readonly world: IWorld;
 
   readonly addTag: (tag: ITag) => void;
-  readonly clone: (self: IRelation<Type>) => any;
-  readonly destroy: (self: IRelation<Type>) => void;
+  readonly clone: (self: T) => T;
+  readonly destroy: (self: T) => void;
 
   readonly find: (
     args: string | IFindBaseArgs<ModelType>,
@@ -32,18 +35,16 @@ export interface IRelation<Type extends ModelType> {
 
   readonly findAll: (
     args: '*' | IFindBaseArgs<ModelType>,
-  ) => ReadonlyArray<IModel<ModelType, OnticTypes, ModelType>>;
+  ) => readonly IModel<ModelType, OnticTypes, ModelType>[];
 
   readonly findAllGenerator: (
     args: '*' | IFindBaseArgs<ModelType>,
   ) => IterableIterator<IModel<ModelType, OnticTypes, ModelType>>;
 
   readonly removeTag: (tag: ITag) => void;
-  readonly serialize: (self: IRelation<Type>, spaces?: number) => string;
-  readonly serializeToObject: (
-    self: IRelation<Type>,
-  ) => Readonly<Record<string, any>>;
+  readonly serialize: (self: T, spaces?: number) => string;
+  readonly serializeToObject: (self: T) => Readonly<Record<string, any>>;
 
-  readonly finalize?: (self: IRelation<Type>) => void;
-  readonly initialize?: (self: IRelation<Type>) => void;
+  readonly finalize?: (self: T) => void;
+  readonly initialize?: (self: T) => void;
 }

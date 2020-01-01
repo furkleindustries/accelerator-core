@@ -8,6 +8,7 @@ export const getAllCompiledCodeDirectories = () => [
   paths.footers,
   paths.headers,
   paths.inkLib,
+  paths.mutators,
   paths.passages,
   paths.plugins,
   paths.renderers,

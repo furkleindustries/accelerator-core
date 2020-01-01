@@ -69,7 +69,7 @@ export class LocationModel<
   readonly findAll: (
     args: '*' |
       IFindBaseArgs<OnticTypes> & FindOnticArgs<OnticTypes, Being, ModelType>,
-  ) => ReadonlyArray<IModel<OnticTypes, Being, ModelType>>;
+  ) => readonly IModel<OnticTypes, Being, ModelType>[];
 
   readonly findAllGenerator: (
     args: '*' |

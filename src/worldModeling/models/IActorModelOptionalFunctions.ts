@@ -18,31 +18,31 @@ export interface IActorModelOptionalFunctions<
   Being extends OnticTypes,
   Knowledge extends ModelType,
 > {
-  readonly [ActorModelOptionalFunctionNames.act]?: (
+  readonly [ActorModelOptionalFunctionNames.Act]?: (
     self: IActorModel<Being, Knowledge>,
     target: IModel<OnticTypes, Being, Knowledge>,
   ) => void;
 
-  readonly [ActorModelOptionalFunctionNames.canAct]?: (
+  readonly [ActorModelOptionalFunctionNames.CanAct]?: (
     self: IActorModel<Being, Knowledge>,
   ) => boolean;
 
-  readonly [ActorModelOptionalFunctionNames.canActOn]?: (
+  readonly [ActorModelOptionalFunctionNames.CanActOn]?: (
     self: IActorModel<Being, Knowledge>,
     target: IModel<OnticTypes, Being, Knowledge>,
   ) => boolean;
 
-  readonly [ActorModelOptionalFunctionNames.getActionTargets]?: (self: IActorModel<Being, Knowledge>) => ReadonlyArray<
-    IModel<OnticTypes, Being, Knowledge>
-  >;
+  readonly [ActorModelOptionalFunctionNames.GetActionTargets]?: (
+    self: IActorModel<Being, Knowledge>,
+  ) => readonly IModel<OnticTypes, Being, Knowledge>[];
 
-  readonly [ActorModelOptionalFunctionNames.selectActionTarget]?: (
+  readonly [ActorModelOptionalFunctionNames.SelectActionTarget]?: (
     self: IActorModel<Being, Knowledge>,
     targets: IModel<OnticTypes, Being, Knowledge> |
-      ReadonlyArray<IModel<OnticTypes, Being, Knowledge>>,
+      readonly IModel<OnticTypes, Being, Knowledge>[],
   ) => IModel<OnticTypes, Being, Knowledge>;
 
-  readonly [ActorModelOptionalFunctionNames.willAct]?: (
+  readonly [ActorModelOptionalFunctionNames.WillAct]?: (
     self: IActorModel<Being, Knowledge>,
   ) => boolean;
 }

@@ -85,7 +85,7 @@ export class RestartButtonUnconnected extends React.PureComponent<
 
   private restart = (
     passagesMap: IPassagesMap,
-    plugins: ReadonlyArray<IPlugin>,
+    plugins: readonly IPlugin[],
   ) => {
     const {
       passageName,
@@ -111,13 +111,12 @@ export class RestartButtonUnconnected extends React.PureComponent<
 export const mapStateToProps: MapStateToProps<IRestartButtonStateProps, IRestartButtonOwnProps, IState> = ({
   history: {
     present: {
-      passageName: passageName,
       lastLinkTags,
+      passageName,
       storyState,
     },
   },
-}) =>
-({
+}) => ({
   passageName,
   storyState,
   lastLinkTags,

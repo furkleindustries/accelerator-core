@@ -102,7 +102,7 @@ export class World implements IWorld {
     return this.__name;
   }
 
-  private __tags: ReadonlyArray<ITag> = Object.freeze([]);
+  private __tags: readonly ITag[] = Object.freeze([]);
   public get tags() {
     return this.__tags;
   }
@@ -113,7 +113,7 @@ export class World implements IWorld {
   }
 
   public readonly addTag = (tag: string | ITag) => (
-    void (this.__tags = Object.freeze(addTag(this.tags, tag)))
+    void (this.__tags = Object.freeze(addTag(tag, this.tags)))
   );
 
   public readonly removeTag = (tag: string | ITag) => (
@@ -129,7 +129,7 @@ export class World implements IWorld {
 
     initialize?: (self: IWorld) => void,
     finalize?: (self: IWorld) => void,
-    tags?: Array<Tag> | ReadonlyArray<Tag>,
+    tags?: Tag[] | readonly Tag[],
   ) {
     this.__name = assertValid(name);
     if (models && typeof models === 'object') {
@@ -312,8 +312,10 @@ export class World implements IWorld {
     Type extends ModelType,
     Being extends OnticTypes,
     Knowledge extends ModelType,
-  >(args: '*' | FindModelArgs<Type, Being, Knowledge>) => {
-    const ret = [];
+  >(
+    args: '*' | FindModelArgs<Type, Being, Knowledge>,
+  ): readonly IModel<Type, Being, Knowledge>[] => {
+    const ret: IModel<Type, Being, Knowledge>[] = [];
     const gen = this.findAllGenerator(args);
     while (true) {
       const {
@@ -321,14 +323,18 @@ export class World implements IWorld {
         value,
       } = gen.next();
 
-      if (done) {
+      if (done || !value) {
         break;
       }
 
-      ret.push(value);
+      if (!value) {
+        break;
+      }
+
+      ret.push(value as IModel<Type, Being, Knowledge>);
     }
 
-    return ret;
+    return Object.freeze(ret);
   };
 
   public readonly findAllGenerator = ((self: IWorld) => (

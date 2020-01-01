@@ -2,6 +2,16 @@ import {
   BaseAdjacencies,
 } from '../ontology/BaseAdjacencies';
 import {
+  ContainmentTypes,
+} from './ContainmentTypes';
+import {
+  findAllGenerate,
+} from '../querying/findAllGenerate';
+import {
+  FindAdjacencyArgs,
+  IFindBaseArgs,
+} from '../querying/FindModelArgs';
+import {
   IAdjacencyRelation,
 } from './IAdjacencyRelation';
 import {
@@ -25,17 +35,15 @@ import {
 import {
   RelationBase,
 } from './RelationBase';
-import { IFindBaseArgs, FindAdjacencyArgs } from '../querying/FindModelArgs';
-import { findAllGenerate } from '../querying/findAllGenerate';
-import { ContainmentTypes } from './ContainmentTypes';
 
 type Adjacencies<T extends BaseAdjacencies = BaseAdjacencies> = T;
 
 export class AdjacencyRelation<
   Type extends OnticTypes,
   Being extends OnticTypes,
+  T extends IAdjacencyRelation<Type, Being, any>
 > extends RelationBase<Type>
-  implements IAdjacencyRelation<Type, Being>
+  implements IAdjacencyRelation<Type, Being, any>
 {
   protected readonly __modelType: Type;
   public get modelType() {
@@ -43,14 +51,14 @@ export class AdjacencyRelation<
   }
 
   protected readonly __neighbors: Readonly<
-    Map<Adjacencies, ReadonlyArray<IModel<Type, Being, ModelType>>>
+    Map<Adjacencies, readonly IModel<Type, Being, ModelType>[]>
   > = Object.freeze(new Map());
 
   public get neighbors() {
     return this.__neighbors;
   }
 
-  protected __tags: ReadonlyArray<ITag> = Object.freeze([]);
+  protected __tags: readonly ITag[] = Object.freeze([]);
   public get tags() {
     return this.__tags;
   }
@@ -75,12 +83,10 @@ export class AdjacencyRelation<
     }
   };
 
-  public readonly clone = (
-    self: IAdjacencyRelation<Type, Being>,
-  ): IAdjacencyRelation<Type, Being> => {
-    const copy: IAdjacencyRelation<Type, Being> = Object.assign(
-      Object.create(Object.getPrototypeOf(this)),
-      this,
+  public readonly clone = (self: T): T => {
+    const copy: T = Object.assign(
+      Object.create(Object.getPrototypeOf(self)),
+      self,
     );
 
     this.neighbors.forEach((value, key) => value.forEach((model) => (
@@ -90,7 +96,7 @@ export class AdjacencyRelation<
     return copy;
   };
 
-  public readonly destroy = (self: IAdjacencyRelation<Type, Being>) => {
+  public readonly destroy = (self: T) => {
     if (typeof self.finalize === 'function') {
       self.finalize(self);
     }
@@ -123,9 +129,9 @@ export class AdjacencyRelation<
     args: '*' |
       IFindBaseArgs<ContainmentTypes> &
         FindAdjacencyArgs<ContainmentTypes, Being, ModelType>,
-  ) => ReadonlyArray<IModel<ContainmentTypes, Being, ModelType>>;
+  ) => readonly IModel<ContainmentTypes, Being, ModelType>[];
 
-  readonly findAllGenerator = ((self: IAdjacencyRelation<Type, Being>) => function *(
+  readonly findAllGenerator = ((self: T) => function *(
     args: '*' |
       IFindBaseArgs<ContainmentTypes> &
         FindAdjacencyArgs<ContainmentTypes, Being, ModelType>,
@@ -153,7 +159,7 @@ export class AdjacencyRelation<
   };
 
   public readonly serializeToObject = (
-    self: IAdjacencyRelation<Type, Being>,
+    self: T,
   ): ISerializedAdjacencyRelation => {
     const neighbors: Record<string, string[]> = {};
     for (const key of self.neighbors.keys()) {

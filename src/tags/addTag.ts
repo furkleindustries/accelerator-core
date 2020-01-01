@@ -15,8 +15,8 @@ import {
 } from 'ts-assertions';
 
 export const addTag = (
-  tags: Tag[] | ReadonlyArray<Tag>,
   tag: Tag,
+  tags: Tag[] | readonly Tag[] = [],
 ): ITag[] => {
   assert(
     Array.isArray(tags),

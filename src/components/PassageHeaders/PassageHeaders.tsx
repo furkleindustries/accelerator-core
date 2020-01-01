@@ -15,6 +15,9 @@ import {
   mapDispatchToProps,
 } from '../PassageContentContainer/PassageContentContainer';
 import {
+  MaybeReadonlyArray,
+} from '../../typeAliases/MaybeReadonlyArray';
+import {
   connect,
 } from 'react-redux';
 import {
@@ -29,15 +32,15 @@ export const strings = {
 };
 
 export const PassageHeaders: React.FunctionComponent<
-  { readonly headers: ReadonlyArray<IHeader> } &
-  Omit<IPassageContentContainerOwnProps, 'passagesMap'> &
+  { readonly headers: MaybeReadonlyArray<IHeader> } &
+  IPassageContentContainerOwnProps &
   IPassageContentContainerDispatchProps
 > = ({
   headers,
   ...passageProps
 }) => (
   <div className={classNames('passageHeaders')}>
-    {headers.map(({ content }, index) => {
+    {(headers as IHeader[]).map(({ content }, index) => {
       const SafeContent = assertValid<React.ComponentType<IPassageProps>>(
         content,
         strings.COMPONENT_CONSTRUCTOR_NOT_FOUND,

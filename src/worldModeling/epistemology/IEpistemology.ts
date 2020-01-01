@@ -49,7 +49,7 @@ export interface IEpistemology<
     null;
 
   readonly modelType: Type;
-  readonly tags: ReadonlyArray<ITag>;
+  readonly tags: readonly ITag[];
   readonly thoughts: IThoughtRelation<Type, Knowledge>;
   readonly type: symbol;
   readonly world: IWorld;
@@ -72,7 +72,7 @@ export interface IEpistemology<
     args: '*' |
       (IFindBaseArgs<ModelType> &
         FindEpistemicArgs<EpistemicTypes, OnticTypes, Knowledge>),
-  ) => ReadonlyArray<IModel<ModelType, OnticTypes, Knowledge>>;
+  ) => readonly IModel<ModelType, OnticTypes, Knowledge>[];
 
   readonly findAllGenerator: (
     args: '*' |

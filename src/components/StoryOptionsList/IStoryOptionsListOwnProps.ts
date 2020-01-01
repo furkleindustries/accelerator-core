@@ -14,6 +14,9 @@ import {
   IVisibilityTreeAware,
 } from '../BreadcrumbTrail/IVisibilityTreeAware';
 import {
+  OneOrMaybeReadonlyArray,
+} from '../../typeAliases/OneOrMaybeReadonlyArray';
+import {
   ReactElement,
 } from 'react';
 
@@ -28,9 +31,9 @@ export interface IStoryOptionsListOwnProps
    * Allow both <StoryOption /> and <StoryOptionList /> children.
    * An OptionList inside an OptionList becomes a nested menu.
    */
-  readonly children: ReadonlyArray<
-    ReactElement<IStoryOptionComponentOwnProps | IStoryOptionsListOwnProps>
-  >;
+  readonly children: OneOrMaybeReadonlyArray<ReactElement<
+    IStoryOptionComponentOwnProps | IStoryOptionsListOwnProps
+  >>;
 
   readonly open?: boolean;
   readonly root?: boolean;

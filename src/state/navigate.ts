@@ -46,7 +46,7 @@ export const navigate = ({
 }: {
   dispatch: Dispatch<IAction>,
   passage: IPassage,
-  linkTags?: Tag[] | ReadonlyArray<Tag>,
+  linkTags?: Tag[] | readonly Tag[],
 }): IPassageNavigationAction =>
 {
   assert(passage, strings.PASSAGE_INVALID);

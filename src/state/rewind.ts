@@ -20,7 +20,7 @@ import {
 export function rewind(
   dispatch: Dispatch<IStoryRewindAction>,
   present: IStateFrame,
-  past: ReadonlyArray<IStateFrame>,
+  past: readonly IStateFrame[],
   filter?: HistoryFilter,
 ): IStoryRewindAction
 {

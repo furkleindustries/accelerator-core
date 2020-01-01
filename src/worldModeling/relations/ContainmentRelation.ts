@@ -109,7 +109,7 @@ export class ContainmentRelation<
   public readonly findAll: (
     args: '*' |
       IFindBaseArgs<ContainableTypes> & FindContainmentArgs<ContainableTypes, Being>,
-  ) => ReadonlyArray<IModel<ContainableTypes, Being, ModelType>>;
+  ) => readonly IModel<ContainableTypes, Being, ModelType>[];
 
   public readonly findAllGenerator = ((
     self: IContainmentRelation<Type, Being>,
@@ -131,7 +131,10 @@ export class ContainmentRelation<
     args: string |
       IFindBaseArgs<ContainingTypes> &
         FindContainmentArgs<ContainingTypes, ContainableTypes>,
-  ) => ReadonlyArray<IModel<ContainingTypes, ContainableTypes, ModelType> | IWorld>;
+  ) => (
+    readonly IModel<ContainingTypes, ContainableTypes, ModelType>[] |
+      readonly IWorld[]
+  );
 
   public readonly serialize: (
     self: IContainmentRelation<Type, Being>,
@@ -143,7 +146,7 @@ export class ContainmentRelation<
   ) => ISerializedContainmentRelation;
 
   protected readonly __children: Type extends ContainingTypes ?
-    ReadonlyArray<IModel<ContainableTypes, Being, ModelType>> :
+    readonly IModel<ContainableTypes, Being, ModelType>[] :
     null;
 
   public get children() {
@@ -155,7 +158,7 @@ export class ContainmentRelation<
     null;
 
   readonly descendants: Type extends ContainingTypes ?
-    () => ReadonlyArray<IModel<ContainableTypes, Being, ModelType>> :
+    () => readonly IModel<ContainableTypes, Being, ModelType>[] :
     null;
 
   readonly removeChild: Type extends ContainingTypes ?

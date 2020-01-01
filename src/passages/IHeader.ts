@@ -8,4 +8,9 @@ import {
   IPrecedenceWeighted,
 } from '../interfaces/IPrecedenceWeighted';
 
-export interface IHeader extends IContentfulAsset<IPassageProps>, IPrecedenceWeighted {}
+export interface IHeader
+  extends
+    IContentfulAsset<IPassageProps>,
+    IPrecedenceWeighted
+{
+}

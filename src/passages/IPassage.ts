@@ -5,4 +5,6 @@ import {
   IPassageProps,
 } from './IPassageProps';
 
-export interface IPassage extends IContentfulAsset<IPassageProps> {}
+export interface IPassage extends IContentfulAsset<IPassageProps>
+{
+}

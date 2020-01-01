@@ -29,7 +29,7 @@ export interface IAwarenessRelation<
   Knowledge extends ModelType,
 > extends IRelation<Type>
 {
-  readonly perceptions: ReadonlyArray<IModel<OnticTypes, OnticTypes, Knowledge>>;
+  readonly perceptions: readonly IModel<OnticTypes, OnticTypes, Knowledge>[];
 
   readonly addPerception: (
     model: IModel<OnticTypes, OnticTypes, Knowledge>,
@@ -51,7 +51,7 @@ export interface IAwarenessRelation<
   readonly findAll: (
     args: '*' |
       IFindBaseArgs<OnticTypes> & FindAwarenessArgs<AwareTypes, OnticTypes>,
-  ) => ReadonlyArray<IModel<OnticTypes, OnticTypes, Knowledge>>;
+  ) => readonly IModel<OnticTypes, OnticTypes, Knowledge>[];
 
   readonly findAllGenerator: (
     args: '*' |

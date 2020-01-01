@@ -196,9 +196,11 @@ export const getModule = (mode, publicPath, shouldUseSourceMap) => ({
         {
           test: /\.ink$/,
           use: [
-            require.resolve('./InkMdxResolverWebpackLoader'),
+            // Used for ink-mdx, which is not fully implemented.
+            //require.resolve('./InkMdxResolverWebpackLoader'),
             require.resolve('inklecate-loader'),
-            require.resolve('./InkMdxAliasWebpackLoader'),
+            // Used for ink-mdx, which is not fully implemented.
+            //require.resolve('./InkMdxAliasWebpackLoader'),
           ],
         },
 

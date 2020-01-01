@@ -3,10 +3,6 @@ export function getUnlintedAuthoredDirectories() {
     /* accelerator-build-include-src */
     'bundles/',
     'config/',
-    'footers/',
-    'headers/',
-    'passages/',
-    'plugins/',
     'templates/',
   ];
 }

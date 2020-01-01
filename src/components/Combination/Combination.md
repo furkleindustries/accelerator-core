@@ -18,5 +18,5 @@ A component which presents a combination of the source input.
 
 ## Property arguments
 
-* `children (ReadonlyArray<ReactNodeWithoutNullOrUndefined>)`: A list of content to be presented in shuffled order.
+* `children (MaybeReadonlyArray<ReactNodeWithoutNullOrUndefined>)`: A list of content to be presented in shuffled order.
 * `pick? (number)`: The number of items in the list that should be displayed.

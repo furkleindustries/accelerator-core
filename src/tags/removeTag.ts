@@ -12,7 +12,7 @@ import {
 } from 'ts-assertions';
 
 export const removeTag = (
-  tags: Tag[] | ReadonlyArray<Tag>,
+  tags: Tag[] | readonly Tag[],
   tag: Tag,
 ) => {
   assert(

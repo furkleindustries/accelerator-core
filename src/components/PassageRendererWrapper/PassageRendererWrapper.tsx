@@ -9,6 +9,9 @@ import {
   getNormalizedAcceleratorConfig,
 } from '../../configuration/getNormalizedAcceleratorConfig';
 import {
+  getStructuredTags,
+} from '../../tags/getStructuredTags';
+import {
   HistoryFilter,
 } from '../../reducers/IHistoryFilter';
 import {
@@ -32,6 +35,9 @@ import {
 import {
   IStoryStateFrame,
 } from '../../state/IStoryStateFrame';
+import {
+  MaybeReadonlyArray,
+} from '../../typeAliases/MaybeReadonlyArray';
 import {
   mutateCurrentStoryStateInstanceWithPluginExecution,
 } from '../../state/mutateCurrentStoryStateInstanceWithPluginExecution';
@@ -90,7 +96,11 @@ export class PassageRendererWrapper extends React.PureComponent<
           rendererName,
         )}>
           <PassageRendererComponent
-            config={configWithoutRendererName}
+            config={{
+              rendererName,
+              ...configWithoutRendererName,
+            }}
+
             context={contextWithoutRenderer}
             passageFunctions={{
               bookmark: this.bookmark,
@@ -107,7 +117,7 @@ export class PassageRendererWrapper extends React.PureComponent<
 
   private readonly bookmark = () => doBookmark(this.props.dispatch);
 
-  private navigateTo(passageName: string, tags?: Tag[] | ReadonlyArray<Tag>) {
+  private navigateTo(passageName: string, tags?: MaybeReadonlyArray<Tag>) {
     const {
       dispatch,
       passagesMap: { [passageName]: passage },
@@ -128,12 +138,13 @@ export class PassageRendererWrapper extends React.PureComponent<
   private readonly restart = () => {
     const {
       dispatch,
-      lastLinkTags,
+      lastLinkTags: unstructured,
       passageObject,
       plugins,
       storyState,
     } = this.props;
 
+    const lastLinkTags = getStructuredTags(unstructured);
     reset({
       dispatch,
       lastLinkTags,

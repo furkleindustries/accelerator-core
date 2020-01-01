@@ -50,10 +50,8 @@ export interface IOntology<
     null;
 
   readonly modelType: Type;
-
-  readonly tags: ReadonlyArray<ITag>;
+  readonly tags: readonly ITag[];
   readonly world: IWorld;
-
   readonly addTag: (tag: Tag) => void;
   readonly clone: (self: IOntology<Type, Being>) => IOntology<Type, Being>;
   readonly destroy: (self: IOntology<Type, Being>) => void;
@@ -66,7 +64,7 @@ export interface IOntology<
   readonly findAll: (
     args: '*' |
       (IFindBaseArgs<OnticTypes> & FindOnticArgs<OnticTypes, Being, ModelType>),
-  ) => ReadonlyArray<IModel<OnticTypes, Being, ModelType>>;
+  ) => readonly IModel<OnticTypes, Being, ModelType>[];
 
   readonly findAllGenerator: (
     args: '*' |

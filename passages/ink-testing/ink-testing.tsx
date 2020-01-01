@@ -12,17 +12,17 @@ import * as passages from '../../bundles/passagesBundle';
 /**
  * The authoring passage is imported and rendered into the React passage.
  */
-import AuthoringPassage from './ink-test.mdx';
+import AuthoringPassage from './ink-testing.mdx';
 
 import builtInStyles from '../_global-styles/built-ins.less';
-import styles from './ink-test.less';
+import styles from './ink-testing.less';
 
 const Passage: React.FunctionComponent<passages.IPassageProps> = (props) => {
   return (
     <components.Article
       className={classnames(
         builtInStyles.passage,
-        styles['ink-test'],
+        styles['ink-testing'],
         'passage',
       )}
     >
@@ -35,7 +35,7 @@ const Passage: React.FunctionComponent<passages.IPassageProps> = (props) => {
 
 const passage: passages.IPassage = {
   /* string: the story-unique name of the passage. */
-  name: 'ink-test',
+  name: 'ink-testing',
   
   /* Tag[]: an optional collection of either plain strings or
    * { key: string, value: string } (Tag) objects. */

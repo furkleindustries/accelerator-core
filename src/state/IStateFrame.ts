@@ -1,14 +1,18 @@
 import {
-  IStoryStateFrame,
-} from './IStoryStateFrame';
+  IPassageNamed,
+} from '../interfaces/IPassageNamed';
 import {
-  ITag,
-} from '../tags/ITag';
+  IStoryStateAware,
+} from '../interfaces/IStoryStateAware';
+import {
+  ILastLinkTagsAware,
+} from '../interfaces/ILastLinkTagsAware';
 
-export interface IStateFrame {
+export interface IStateFrame extends
+  ILastLinkTagsAware,
+  IPassageNamed,
+  IStoryStateAware
+{
   readonly bookmarkCounter: number;
-  readonly lastLinkTags: ReadonlyArray<ITag>;
-  readonly passageName: string;
   readonly passageTimeCounter: number;
-  readonly storyState: IStoryStateFrame;
 }

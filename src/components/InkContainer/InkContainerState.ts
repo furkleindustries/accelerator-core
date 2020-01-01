@@ -1,10 +1,8 @@
 import {
-  InkSectionOwnProps,
-} from '../InkSection/InkSectionOwnProps';
-import {
-  ReactElement,
-} from 'react';
+  InkSectionObject,
+} from '../InkSection/InkSectionObject';
 
 export interface InkContainerState {
-  readonly sections: ReactElement<InkSectionOwnProps>[];
+  readonly choiceCounter: number;
+  readonly sections: Array<InkSectionObject>;
 }

@@ -1,3 +1,7 @@
+/**
+ * Unused at present.
+ */
+
 import {
   transformAsync,
 } from '@babel/core';

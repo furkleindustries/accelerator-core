@@ -8,7 +8,7 @@
     "url": "https://github.com/furkleindustries/accelerator-core/issues"
   },
   "scripts": {
-    "start": "npm run build:common start:script",
+    "start": "npm-run-all build:common start:script",
     "start:script": "node -r esm scripts/start.js",
     "build": "npm-run-all build:clean build:common build:script build:prerender",
     "build:common": "npm-run-all -p build:generate-manifests build:download-fonts-and-subset",
@@ -24,6 +24,7 @@
     "build:generate-manifest-plugins": "node -r esm scripts/generatePluginsManifest.js",
     "build:generate-manifest-headers": "node -r esm scripts/generateHeadersManifest.js",
     "build:generate-manifest-footers": "node -r esm scripts/generateFootersManifest.js",
+    "build:generate-manifest-mutators": "node -r esm scripts/generateInkMutatorsManifest.js",
     "build:generate-manifest-story-options": "node -r esm scripts/generateStoryOptionsManifest.js",
     "build:get-electron-redists": "node -r esm scripts/getElectronRedists.js",
     "build:install": "npm install",
@@ -33,7 +34,7 @@
     "build:script": "node -r esm scripts/build.js",
     "build:shrinkwrap": "npm shrinkwrap",
     "build:webpack-debug": "cross-env NODE_ENV=development node -r esm node_modules/webpack/bin/webpack.js --config config/webpack/webpack.config.js --verbose",
-    "prepublishOnly": "npm run build:publish",
+    "prepublishOnly": "npm-run-all build:publish",
     "test": "npm-run-all build:generate-manifests test:script",
     "test:coverage": "npm-run-all build:generate-manifests test:script-coverage",
     "test:nowatch": "npm-run-all build:generate-manifests test:script-nowatch",
@@ -162,6 +163,7 @@
     "react-app-polyfill": "^0.2.0",
     "react-dom": "^16.12.0",
     "react-jss": "^8.6.1",
+    "react-jsx-parser": "^1.21.0",
     "react-redux": "^7.1.3",
     "redux": "^4.0.5",
     "redux-undo": "^1.0.0-beta9-9-7",
@@ -182,11 +184,8 @@
     "hypertext fiction"
   ],
   "eslintIgnore": [
-    "bundles",
-    "config",
-    "footers",
-    "headers",
-    "passages",
-    "plugins"
+    "bundles/",
+    "config/",
+    "templates/"
   ]
 }

@@ -46,7 +46,7 @@ export interface IContainmentRelation<
     args: '*' |
       IFindBaseArgs<ContainableTypes> &
         FindContainmentArgs<ContainableTypes, Being & ModelType.Portal>,
-  ) => ReadonlyArray<IModel<ContainableTypes, Being, ModelType>>;
+  ) => readonly IModel<ContainableTypes, Being, ModelType>[];
 
   readonly findAllGenerator: (
     args: '*' |
@@ -58,7 +58,9 @@ export interface IContainmentRelation<
     args: string |
       IFindBaseArgs<ContainingTypes> &
         FindContainmentArgs<ContainingTypes, ContainableTypes>,
-  ) => ReadonlyArray<IModel<ContainingTypes, ContainableTypes, ModelType> | IWorld>;
+  ) => readonly (
+    IModel<ContainingTypes, ContainableTypes, ModelType> | IWorld
+  )[];
 
   readonly serialize: (
     self: IContainmentRelation<Type, Being>,
@@ -72,7 +74,7 @@ export interface IContainmentRelation<
   /* The following properties are not usable for models which are themselves
    * contained but which may not contain other models. */
   readonly children: Type extends ContainingTypes ?
-    ReadonlyArray<IModel<ContainableTypes, Being, ModelType>> :
+    readonly IModel<ContainableTypes, Being, ModelType>[] :
     null;
 
   readonly addChild: Type extends ContainingTypes ?
@@ -80,7 +82,7 @@ export interface IContainmentRelation<
     null;
 
   readonly descendants: Type extends ContainingTypes ?
-    () => ReadonlyArray<IModel<ContainableTypes, Being, ModelType>> :
+    () => readonly IModel<ContainableTypes, Being, ModelType>[] :
     null;
 
   readonly removeChild: Type extends ContainingTypes ?

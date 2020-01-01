@@ -17,16 +17,14 @@ const tagObjAreEqual = (a: any, b: any) => (
 );
 
 export const getTag = (
-  tags: Tag[] | ReadonlyArray<Tag> | null | undefined,
+  tags: Tag[] | readonly Tag[] | null | undefined,
   toSearch: string | Tag,
 ): ITag | null => {
   if (!Array.isArray(tags)) {
     return null;
   }
 
-  const filtered = tags.filter(Boolean);
-
-  for (const tag of filtered) {
+  for (const tag of tags.filter(Boolean)) {
     if (typeof tag === 'string') {
       if (tag === toSearch || tag === (toSearch as any).key) {
         return typeof toSearch === 'string' ?

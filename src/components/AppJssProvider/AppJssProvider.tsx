@@ -5,6 +5,7 @@ import {
   createGenerateClassName,
   jssPreset,
 } from '@material-ui/core/styles';
+// @ts-ignore
 import JssProvider from 'react-jss/lib/JssProvider';
 import {
   assertValid,

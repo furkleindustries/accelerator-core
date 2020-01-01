@@ -14,11 +14,14 @@ import {
   EpistemicTypes,
 } from '../epistemology/EpistemicTypes';
 import {
+  INamed,
+} from '../../interfaces/INamed';
+import {
   IModel,
 } from '../models/IModel';
 import {
-  ITag,
-} from '../../tags/ITag';
+  ITaggable,
+} from '../../interfaces/ITaggable';
 import {
   IWorld,
 } from '../world/IWorld';
@@ -88,10 +91,11 @@ export interface FindModelArgs<
     undefined;
 }
 
-export interface IFindBaseArgs<Type extends ModelType> {
+export interface IFindBaseArgs<Type extends ModelType> extends
+  Partial<INamed>,
+  ITaggable
+{
   readonly andOrBehavior?: 'and' | 'or';
-  readonly name?: string;
-  readonly tags?: ITag[] | ReadonlyArray<ITag>;
   readonly type?: Type;
 }
 

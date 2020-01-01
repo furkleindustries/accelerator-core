@@ -7,13 +7,16 @@ import {
 import {
   IPlugin,
 } from '../../plugins/IPlugin';
+import {
+  MaybeReadonlyArray,
+} from '../../typeAliases/MaybeReadonlyArray';
 
 export interface ICyclingLinkInternalOwnProps extends IClassNameable {
-  readonly children: ReadonlyArray<string>;
+  readonly children: MaybeReadonlyArray<string>;
   readonly dontCallbackOnMount?: boolean;
   readonly dontSetVariableOnMount?: boolean;
   readonly passagesMap: IPassagesMap;
-  readonly plugins: ReadonlyArray<IPlugin>;
+  readonly plugins: MaybeReadonlyArray<IPlugin>;
   readonly variableToSet?: string;
-  callback?(current?: string): void;
+  readonly callback?: (current?: string) => void;
 }

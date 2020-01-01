@@ -10,17 +10,21 @@ import {
 import {
   IFontSubsettingDetails,
 } from '../fonts/IFontSubsettingDetails';
+import {
+  ITaggable,
+} from '../interfaces/ITaggable';
+import {
+  MaybeReadonlyArray,
+} from '../typeAliases/MaybeReadonlyArray';
 
-export interface IAcceleratorConfig extends Record<string, any> {
+export interface IAcceleratorConfig extends
+  Record<string, any>,
+  ITaggable
+{
   readonly coreVersion: string;
   readonly debug: boolean;
   readonly historyStackLimit: number;
-  readonly historySaveTypes:
-    ActionTypes |
-    ReadonlyArray<ActionTypes> |
-    string |
-    ReadonlyArray<string>;
-
+  readonly historySaveTypes: ActionTypes | MaybeReadonlyArray<ActionTypes>;
   readonly historySynchronizeUnrewindableStateWithPresent: boolean;
   readonly publicUrl: string;
   readonly rendererName: BuiltInRenderers | string;
@@ -28,6 +32,6 @@ export interface IAcceleratorConfig extends Record<string, any> {
   readonly storyDescription: string;
   readonly storyTitle: string;
   readonly toolVersion: string;
-  readonly fontsToLoad?: ReadonlyArray<IFontLoadingDetails | string>;
+  readonly fontsToLoad?: MaybeReadonlyArray<IFontLoadingDetails> | string;
   readonly subsetFont?: IFontSubsettingDetails | string;
 }

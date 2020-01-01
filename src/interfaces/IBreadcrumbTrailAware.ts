@@ -1,8 +1,9 @@
 import {
   IGetBreadcrumbPropsReturn,
+  IVisibilityTreeAware,
 } from '../components/BreadcrumbTrail';
 
 export interface IBreadcrumbTrailAware {
-  readonly treeSelector?: ReadonlyArray<number>;
-  getBreadcrumbProps?(): IGetBreadcrumbPropsReturn;
+  readonly treeSelector?: IVisibilityTreeAware['treeSelector'];
+  readonly getBreadcrumbProps?: () => IGetBreadcrumbPropsReturn;
 }

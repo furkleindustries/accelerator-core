@@ -42,6 +42,7 @@ export const paths = {
   htmlTemplate: resolveApp('templates/index.hbs'),
   indexHtml: resolveApp('build-web/index.html'),
   inkLib: resolveApp('lib/ink/'),
+  mutators: resolveApp('mutators/'),
   passages: resolveApp('passages/'),
   plugins: resolveApp('plugins/'),
   proxySetup: resolveApp('src/setupProxy.ts'),

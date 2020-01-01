@@ -4,7 +4,7 @@ import {
 
 export function childIsShownInVisibilityTree(
   visibilityTree: IVisibilityTree,
-  indices: number | ReadonlyArray<number>,
+  indices: number | readonly number[],
 ): boolean {
   const safeIndices = Array.isArray(indices) ? indices : [ indices ];
   let last: IVisibilityTree = visibilityTree as any;

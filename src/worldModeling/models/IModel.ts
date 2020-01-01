@@ -8,6 +8,9 @@ import {
   IFindBaseArgs,
 } from '../querying/FindModelArgs';
 import {
+  INamed,
+} from '../../interfaces/INamed';
+import {
   IOntology,
 } from '../ontology/IOntology';
 import {
@@ -47,7 +50,8 @@ export interface IModel<
    * assuming its type permits any given relation.
    */
   Knowledge extends ModelType = any,
-> {
+> extends INamed
+{
   readonly being: Type extends OnticTypes ?
     IOntology<Type, Being> :
     null;
@@ -62,11 +66,9 @@ export interface IModel<
     IEpistemology<Type, Knowledge> :
     null;
 
-  readonly name: string;
-  readonly tags: ReadonlyArray<ITag>;
+  readonly tags: readonly ITag[];
   readonly type: Type;
   readonly world: IWorld;
-
   readonly addTag: (tag: Tag) => void;
   readonly clone: (
     self: IModel<Type, Being, Knowledge>,
@@ -80,7 +82,7 @@ export interface IModel<
 
   readonly findAll: (
     args: '*' | IFindBaseArgs<ModelType>,
-  ) => ReadonlyArray<IModel<ModelType, Being, Knowledge>>;
+  ) => readonly IModel<ModelType, Being, Knowledge>[];
 
   readonly findAllGenerator: (
     args: '*' | IFindBaseArgs<ModelType>,

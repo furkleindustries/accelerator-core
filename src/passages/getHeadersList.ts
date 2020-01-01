@@ -6,7 +6,7 @@ import {
 } from './IHeader';
 import {
   precedenceSort,
-} from './precedenceSort';
+} from '../functions/precedenceSort';
 import {
   assert,
 } from 'ts-assertions';
@@ -15,19 +15,19 @@ import manifest from '../../headers/headers-manifest';
 
 export const strings = {
   HEADERS_MANIFEST_INVALID:
-  'The Headers-manifest.json file was not parseable into an array.',
+    'The headers-manifest.json file was not parseable into an array.',
   
   HEADER_OBJECT_INVALID:
   'One of the Header objects, found at %FILEPATH%, was invalid. ' +
-  '%REASON%.',
+    '%REASON%',
 };
 
 assert(Array.isArray(manifest), strings.HEADERS_MANIFEST_INVALID);
 
 /* Memoize results and return them without computation on repeat calls. */
-let headersList: ReadonlyArray<IHeader> | null = null;
+let headersList: readonly IHeader[] | null = null;
 
-export function getHeadersList(): ReadonlyArray<IHeader> {
+export const getHeadersList = (): readonly IHeader[] => {
   if (headersList) {
     return headersList;
   }
@@ -65,4 +65,4 @@ export function getHeadersList(): ReadonlyArray<IHeader> {
   headersList = precedenceSort(headersPrecedenceMap);
 
   return headersList;
-}
+};
