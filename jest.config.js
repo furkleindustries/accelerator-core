@@ -1,9 +1,12 @@
+const path = require('path');
+
 const {
   getAllCompiledCodeDirectories,
 } = require('./config/webpack/getAllCompiledCodeDirectories');
 const includedDirectories = `(${
   getAllCompiledCodeDirectories()
     .filter((dir) => !new RegExp(/\/ink/).test(dir))
+    .map((aa) => path.parse(aa).base)
     .join('|')
 })`;
 
@@ -14,18 +17,18 @@ const {
 /** @see https://jestjs.io/docs/en/configuration.html */
 module.exports = {
   rootDir: '.',
-  verbose: process.env.DEBUG ? true : false,
+  verbose: Boolean(process.env.DEBUG),
 
   testMatch: [
     /* Using <rootDir> breaks due to
      * https://github.com/facebook/jest/issues/7108. */
-    `**/${includedDirectories}/**/?(*.)(spec|test).(j|t)s?(x)`,
+    `**/(${includedDirectories})/**/?(*.)(spec|test).(j|t)s?(x)`,
   ],
 
   collectCoverageFrom: [
-    `${includedDirectories}/**/*.{js,jsx,ts,tsx}`,
+    `(${includedDirectories})/**/*.{js,jsx,ts,tsx}`,
     '!**/*.d.ts',
-    '!lib/',
+    '!src/worldModeling/**/*',
   ],
 
   setupFiles: [
