@@ -60,4 +60,12 @@ module.exports = {
   testEnvironment: 'jsdom',
   testURL: 'http://localhost',
   resolver: 'jest-pnp-resolver',
+
+  globals: {
+    'ts-jest': {
+      diagnostics: {
+        pathRegex: new RegExp(includedDirectories),
+      },
+    },
+  },
 };
