@@ -5,17 +5,35 @@ import {
   IClassNameable,
 } from '../../interfaces/IClassNameable';
 import {
+  INamed,
+} from '../../interfaces/INamed';
+import {
+  IOpenable,
+} from '../../interfaces/IOpenable';
+import {
+  MaybeReadonlyArray,
+} from '../../typeAliases/MaybeReadonlyArray';
+import {
+  OneOrMaybeReadonlyArray,
+} from '../../typeAliases/OneOrMaybeReadonlyArray';
+import {
   ComponentType,
   ReactElement,
 } from 'react';
 
-export interface IBreadcrumbTrailOwnProps extends IClassNameable {
-  readonly children: ReadonlyArray<ReactElement>;
-  readonly listComponent: ComponentType<IBreadcrumbTrailAware & {
-    readonly children: ReadonlyArray<any>;
-    readonly open?: boolean;
-    readonly root?: boolean;
-  }>;
-
-  readonly name?: string;
+export interface IBreadcrumbTrailOwnProps extends
+  IClassNameable,
+  IOpenable,
+  Partial<INamed>
+{
+  readonly children: (args: IBreadcrumbTrailAware) => OneOrMaybeReadonlyArray<MaybeReadonlyArray<ReactElement>>;
+  readonly listComponent: (
+    ComponentType<Partial<IBreadcrumbTrailAware> &
+      IOpenable &
+      {
+        readonly children: OneOrMaybeReadonlyArray<any>;
+        readonly root?: boolean;
+      }
+    >
+  );
 }

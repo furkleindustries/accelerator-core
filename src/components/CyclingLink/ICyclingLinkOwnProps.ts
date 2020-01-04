@@ -1,11 +1,14 @@
 import {
   IClassNameable,
 } from '../../interfaces/IClassNameable';
+import {
+  MaybeReadonlyArray,
+} from '../../typeAliases/MaybeReadonlyArray';
 
 export interface ICyclingLinkOwnProps extends IClassNameable {
-  readonly children: ReadonlyArray<string>;
+  readonly children: MaybeReadonlyArray<string>;
   readonly dontCallbackOnMount?: boolean;
   readonly dontSetVariableOnMount?: boolean;
   readonly variableToSet?: string;
-  callback?(current?: string): void;
+  readonly callback?: (current?: string) => void;
 }

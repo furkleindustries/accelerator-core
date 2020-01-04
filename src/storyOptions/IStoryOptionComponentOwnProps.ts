@@ -10,5 +10,5 @@ export interface IStoryOptionComponentOwnProps
     IBreadcrumbTrailAware,
     IOpenable
 {
-  updateOptionValue?(propName: string, value: any): void;
+  readonly updateOptionValue?: (propName: string, value: any) => void;
 }

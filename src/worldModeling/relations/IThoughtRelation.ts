@@ -26,9 +26,9 @@ export interface IThoughtRelation<
   Knowledge extends ModelType,
 > extends IRelation<Type>
 {
-  readonly knowledge: ReadonlyArray<IModel<ModelType, OnticTypes, Knowledge>>;
+  readonly knowledge: readonly IModel<ModelType, OnticTypes, Knowledge>[];
   readonly modelType: Type;
-  readonly wants: ReadonlyArray<IModel<ModelType, OnticTypes, Knowledge>>;
+  readonly wants: readonly IModel<ModelType, OnticTypes, Knowledge>[];
 
   readonly addKnowledge: (
     model: IModel<ModelType, OnticTypes, Knowledge>,
@@ -40,17 +40,17 @@ export interface IThoughtRelation<
   
   readonly find: <K extends Knowledge>(
     args: string |
-      IFindBaseArgs<ModelType> & FindThoughtArgs<ModelType, K>,
+      IFindBaseArgs<ModelType> & FindThoughtArgs<ModelType.Actor, K>,
   ) => IModel<ModelType, OnticTypes, K> | null;
 
   readonly findAll: <K extends Knowledge>(
     args: '*' |
-      IFindBaseArgs<ModelType> & FindThoughtArgs<ModelType, K>,
-  ) => ReadonlyArray<IModel<ModelType, OnticTypes, K>>;
+      IFindBaseArgs<ModelType> & FindThoughtArgs<ModelType.Actor, K>,
+  ) => readonly IModel<ModelType, OnticTypes, K>[];
 
   readonly findAllGenerator: <K extends Knowledge>(
     args: '*' |
-      IFindBaseArgs<ModelType> & FindThoughtArgs<ModelType, K>,
+      IFindBaseArgs<ModelType> & FindThoughtArgs<ModelType.Actor, K>,
   ) => IterableIterator<IModel<ModelType, OnticTypes, K>>;
 
   readonly removeKnowledge: (

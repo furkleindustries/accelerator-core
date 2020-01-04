@@ -1,6 +1,6 @@
 import {
-  getBaseMarkdownComponents,
-} from './getBaseMarkdownComponents';
+  getTagNameToComponentMap,
+} from '../../functions/getTagNameToComponentMap';
 import {
   IAuthoringPassageContainerOwnProps,
 } from './IAuthoringPassageContainerOwnProps';
@@ -11,7 +11,7 @@ import {
 
 import * as React from 'react';
 
-const baseMarkdownComponents = getBaseMarkdownComponents();
+const tagNameToComponentMap = getTagNameToComponentMap();
 
 export const AuthoringPassageContainer: React.FunctionComponent<IAuthoringPassageContainerOwnProps> = ({
   children,
@@ -19,7 +19,7 @@ export const AuthoringPassageContainer: React.FunctionComponent<IAuthoringPassag
   noBuiltInComponents,
   passageProps,
 }) => {
-  type Val = { children: (...args: any[]) => React.ReactElement };
+  interface Val { children: (...args: any[]) => React.ReactElement }
   const ContextWrapper = ({ children }: Val) => children({ ...passageProps });
   const comps = noBuiltInComponents ?
     {
@@ -29,7 +29,7 @@ export const AuthoringPassageContainer: React.FunctionComponent<IAuthoringPassag
       ...components,
     } :
     {
-      ...baseMarkdownComponents,
+      ...tagNameToComponentMap,
       ...components,
       ContextWrapper,
     };

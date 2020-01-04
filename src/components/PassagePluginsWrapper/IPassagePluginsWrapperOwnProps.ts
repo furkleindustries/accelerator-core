@@ -11,6 +11,9 @@ import {
   IState,
 } from '../../state/IState';
 import {
+  MaybeReadonlyArray,
+} from '../../typeAliases/MaybeReadonlyArray';
+import {
   ReactNodeWithoutNullOrUndefined,
 } from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 import {
@@ -20,6 +23,6 @@ import {
 export interface IPassagePluginsWrapperOwnProps {
   readonly children: ReactNodeWithoutNullOrUndefined;
   readonly passagesMap: IPassagesMap;
-  readonly plugins: ReadonlyArray<IPlugin>;
+  readonly plugins: MaybeReadonlyArray<IPlugin>;
   readonly reduxStore: Store<IState, IAction>;
 }

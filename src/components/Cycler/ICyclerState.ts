@@ -1,3 +1,3 @@
 export interface ICyclerState {
-  index: number;
+  readonly index: number;
 }

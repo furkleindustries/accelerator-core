@@ -5,4 +5,12 @@ import {
   IPassageProps,
 } from './IPassageProps';
 
-export interface IPassage extends IContentfulAsset<IPassageProps> {}
+import {
+  registry,
+} from '../../passages/passages-manifest';
+
+type RegistryType = typeof registry;
+
+export interface IPassage extends IContentfulAsset<IPassageProps> {
+  readonly name: keyof RegistryType;
+}

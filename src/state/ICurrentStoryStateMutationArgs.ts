@@ -17,6 +17,6 @@ import {
 export interface ICurrentStoryStateMutationArgs {
   readonly currentPassageObject: IPassage;
   readonly store: Store<IState>;
-  readonly lastLinkTags: ReadonlyArray<ITag>;
+  readonly lastLinkTags: readonly ITag[];
   readonly updatedStateProps: Partial<IStoryStateFrame>;
 }

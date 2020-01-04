@@ -1,13 +1,16 @@
 import {
   IVisibilityTree,
 } from '../BreadcrumbTrail/IVisibilityTree';
+import {
+  OneOrReadonlyArray,
+} from '../../typeAliases/OneOrReadonlyArray';
 
-export function childIsShownInVisibilityTree(
+export const childIsShownInVisibilityTree = (
   visibilityTree: IVisibilityTree,
-  indices: number | ReadonlyArray<number>,
-): boolean {
+  indices: OneOrReadonlyArray<number>,
+): boolean => {
   const safeIndices = Array.isArray(indices) ? indices : [ indices ];
-  let last: IVisibilityTree = visibilityTree as any;
+  let last = visibilityTree;
   for (let ii = 0; ii < safeIndices.length; ii += 1) {
     if (ii === 0) {
       last = last[safeIndices[ii]];
@@ -23,4 +26,4 @@ export function childIsShownInVisibilityTree(
   }
 
   return true;
-}
+};

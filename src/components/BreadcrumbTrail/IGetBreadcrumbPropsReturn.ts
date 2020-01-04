@@ -6,8 +6,8 @@ import {
 } from './IVisibilityTree';
 
 export interface IGetBreadcrumbPropsReturn {
-  readonly breadcrumbTrail: ReadonlyArray<IBreadcrumbItem>;
+  readonly breadcrumbTrail: readonly IBreadcrumbItem[];
   readonly visibilityTree: IVisibilityTree;
-  addBreadcrumb(crumb: IBreadcrumbItem): void;
-  removeBreadcrumb(): void;
+  readonly addBreadcrumb: (crumb: IBreadcrumbItem) => void;
+  readonly removeBreadcrumb: () => void;
 }

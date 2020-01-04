@@ -1,3 +1,7 @@
+/**
+ * Unused at present.
+ */
+
 import * as crypto from 'crypto';
 import {
   writeFile,
@@ -29,7 +33,7 @@ export default async function InkMdxAliasWebpackLoader(content, map, meta) {
     if (type === 'mdx') {
       const id = uuid();
       ids[id] = text;
-      return `# @mdx ___BESbswy___${id}___ywsbSEB___\n`;
+      return `>< ink-mdx >< ${id}\n`;
     }
 
     return text;

@@ -12,7 +12,8 @@ import {
 } from './FontStyles';
 
 export interface IFontLoadingDetailsNormalized extends IFontLoadingDetails {
-  readonly formats: ReadonlyArray<FontFormats>;
-  readonly ranges: ReadonlyArray<FontRanges>;
-  readonly styles: [ FontStyles ] | [ FontStyles, FontStyles ];
+  readonly formats: readonly FontFormats[];
+  readonly ranges: readonly FontRanges[];
+  readonly styles: readonly [ FontStyles ] |
+    readonly [ FontStyles, FontStyles ];
 }

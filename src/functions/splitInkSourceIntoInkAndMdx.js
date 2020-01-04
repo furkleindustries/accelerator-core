@@ -1,5 +1,5 @@
 export const splitInkSourceIntoInkAndMdx = (source) => {
-  const inkMdxRe = new RegExp(/\/\*\s*@mdx\s*((?:.|\s)+)\*\//, 'g');
+  const inkMdxRe = new RegExp(/\/\*\s*@ink-mdx\s*((?:.|\s)+)\*\//, 'g');
   const returns = [];
   let beginIndex = 0;
   let match;

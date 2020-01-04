@@ -6,7 +6,7 @@ import {
 } from './IFooter';
 import {
   precedenceSort,
-} from './precedenceSort';
+} from '../functions/precedenceSort';
 import {
   assert,
 } from 'ts-assertions';
@@ -15,19 +15,19 @@ import manifest from '../../footers/footers-manifest';
 
 export const strings = {
   FOOTERS_MANIFEST_INVALID:
-  'The footers-manifest.json file was not parseable into an array.',
+    'The footers-manifest.json file was not parseable into an array.',
   
   FOOTER_OBJECT_INVALID:
   'One of the footer objects, found at %FILEPATH%, was invalid. ' +
-  '%REASON%.',
+    '%REASON%',
 };
 
 assert(Array.isArray(manifest), strings.FOOTERS_MANIFEST_INVALID);
 
 /* Memoize results and return them without computation on repeat calls. */
-let footersList: ReadonlyArray<IFooter> | null = null;
+let footersList: readonly IFooter[] | null = null;
 
-export function getFootersList(): ReadonlyArray<IFooter> {
+export const getFootersList = (): readonly IFooter[] => {
   if (footersList) {
     return footersList;
   }
@@ -65,4 +65,4 @@ export function getFootersList(): ReadonlyArray<IFooter> {
   footersList = precedenceSort(footersPrecedenceMap);
 
   return footersList;
-}
+};

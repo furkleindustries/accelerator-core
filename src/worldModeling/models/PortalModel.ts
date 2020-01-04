@@ -14,8 +14,9 @@ import {
   OnticTypes,
 } from '../ontology/OnticTypes';
 
+// @ts-ignore
 export class PortalModel<
-  Being extends OnticTypes,
+  Being extends OnticTypes
 > extends ModelBase<ModelType.Portal, Being>
   implements IModel<ModelType.Portal, Being>
 {

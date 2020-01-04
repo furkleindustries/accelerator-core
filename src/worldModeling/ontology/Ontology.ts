@@ -91,7 +91,7 @@ export class Ontology<
     return this.__modelType;
   }
 
-  private __tags: ReadonlyArray<ITag> = Object.freeze([]);
+  private __tags: readonly ITag[] = Object.freeze([]);
   public get tags() {
     return this.__tags;
   }
@@ -204,7 +204,7 @@ export class Ontology<
   public readonly findAll = (
     args: '*' |
       (IFindBaseArgs<OnticTypes> & FindOnticArgs<OnticTypes, Being, ModelType>),
-  ): ReadonlyArray<IModel<OnticTypes, Being, ModelType>> => {
+  ): readonly IModel<OnticTypes, Being, ModelType>[] => {
     const ret = [];
     for (const model of this.findAllGenerator(args)) {
       ret.push(model);

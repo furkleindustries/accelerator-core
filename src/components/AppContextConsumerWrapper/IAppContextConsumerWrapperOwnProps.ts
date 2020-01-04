@@ -2,9 +2,9 @@ import {
   IContext,
 } from '../../context/IContext';
 import {
-  FunctionComponent,
+  ReactNode,
 } from 'react';
 
 export interface IAppContextConsumerWrapperOwnProps {
-  readonly children: FunctionComponent<IContext>;
+  readonly children: (context: IContext) => ReactNode;
 }

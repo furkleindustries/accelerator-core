@@ -19,7 +19,7 @@ import {
 
 export const reset = (args: IPluginMethodBaseArgs & {
   readonly dispatch: Dispatch<IStoryResetAction>;
-  readonly plugins: ReadonlyArray<IPlugin>;
+  readonly plugins: readonly IPlugin[];
 }) => {
   const {
     dispatch,

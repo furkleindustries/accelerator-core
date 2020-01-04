@@ -1,12 +1,16 @@
 import {
-  IStoryStateFrame,
-} from '../../state/IStoryStateFrame';
+  ILastLinkTagsAware,
+} from '../../interfaces/ILastLinkTagsAware';
 import {
-  ITag,
-} from '../../tags/ITag';
+  IPassageNamed,
+} from '../../interfaces/IPassageNamed';
+import {
+  IStoryStateAware,
+} from '../../interfaces/IStoryStateAware';
 
-export interface IRestartButtonStateProps {
-  readonly passageName: string;
-  readonly storyState: IStoryStateFrame;
-  readonly lastLinkTags: ReadonlyArray<ITag>;
+export interface IRestartButtonStateProps extends
+  ILastLinkTagsAware,
+  IPassageNamed,
+  IStoryStateAware
+{
 }

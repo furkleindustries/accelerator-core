@@ -15,31 +15,36 @@ import {
   assertValid,
 } from 'ts-assertions';
 
-import manifest from '../../passages/passages-manifest';
+import {
+  default as manifest,
+  registry,
+} from '../../passages/passages-manifest';
+
+type RegistryType = typeof registry;
 
 export const strings = {
   MULTIPLE_DEFAULT_PASSAGES:
     'At least two passages had the tag "start". Only one tag is allowed. ' +
-    'The passages found with this error were named %1% and %2%.',
+      'The passages found with this error were named %1% and %2%.',
 
   MULTIPLE_PASSAGES_WITH_SAME_NAME:
     'At least two passages had the name %NAME%. The name property of every ' +
-    'passage must be unique.',
+      'passage must be unique.',
 
   NO_START_PASSAGE:
     'There was no passage in the passages/ folder with the "start" tag. One ' +
-    'and only one passage must have the start tag.',
+      'and only one passage must have the start tag.',
 
   PASSAGES_MANIFEST_EMPTY:
     'The passages-manifest.json file contained an empty array, indicating ' +
-    'that no passages have been authored in passages/.',
+      'that no passages have been authored in passages/.',
 
   PASSAGES_MANIFEST_INVALID:
     'The passages-manifest.json file was not parseable into an array.',
 
   PASSAGE_OBJECT_INVALID:
     'One of the passage objects, found at %FILEPATH%, was invalid. ' +
-    '%REASON%',
+      '%REASON%',
 };
 
 assert(Array.isArray(manifest), strings.PASSAGES_MANIFEST_INVALID);
@@ -47,13 +52,12 @@ assert(manifest.length, strings.PASSAGES_MANIFEST_EMPTY);
 
 /* Memoize results and return them without computation on repeat calls. */
 let passagesMap: IPassagesMap | null = null;
-let startPassageName: string | null = null;
+let startPassageName: keyof RegistryType | null = null;
 
-export function getPassagesMapAndStartPassageName(): {
+export const getPassagesMapAndStartPassageName = (): {
   passagesMap: IPassagesMap;
-  startPassageName: string;
-} {
-  
+  startPassageName: keyof RegistryType;
+} => {
   /* Return the memoized results if they exist. */
   if (passagesMap && startPassageName) {
     return {
@@ -61,9 +65,8 @@ export function getPassagesMapAndStartPassageName(): {
       startPassageName,
     };
   }
-  
 
-  passagesMap = {};
+  passagesMap = {} as IPassagesMap;
 
   manifest.forEach(({
     asset,
@@ -108,7 +111,7 @@ export function getPassagesMapAndStartPassageName(): {
     }
   });
 
-  const safeStartPassageName = assertValid<string>(
+  const safeStartPassageName = assertValid<keyof RegistryType>(
     startPassageName,
     strings.NO_START_PASSAGE,
   );
@@ -117,4 +120,4 @@ export function getPassagesMapAndStartPassageName(): {
     passagesMap,
     startPassageName: safeStartPassageName,
   };
-}
+};

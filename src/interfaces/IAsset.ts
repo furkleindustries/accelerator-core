@@ -1,7 +1,12 @@
 import {
+  INamed,
+} from './INamed';
+import {
   ITaggable,
 } from './ITaggable';
 
-export interface IAsset extends ITaggable {
-  readonly name: string;
+export interface IAsset extends
+  INamed,
+  ITaggable
+{
 }

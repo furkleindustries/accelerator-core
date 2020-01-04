@@ -14,29 +14,33 @@ import {
   BuiltInTags,
 } from '../../bundles/tagsBundle';
 
+// @ts-ignore
 import AuthoringPassage from './sample-passage.mdx';
 
 class Passage extends React.PureComponent<IPassageProps> {
-  public render = () => (
-    <AuthoringPassageContainer passageProps={this.props}>
-      <AuthoringPassage />
-    </AuthoringPassageContainer>
-  );
- 
-  private soundName = 'sample';
- 
-  public readonly componentDidMount = () => {
+  constructor(props: IPassageProps) {
+    super(props);
+  
     const {
       setStoryState,
       soundManager: {
         collection: {
           addSound,
+          hasIntentToAddSound,
           hasSound,
         },
       },
     } = this.props;
 
-    if (hasSound(this.soundName)) {
+    setStoryState({
+      soundLoaded: false,
+      soundPlaying: false,
+      counter: 0,
+    });
+
+    if (hasIntentToAddSound(this.soundName)) {
+      return;
+    } else if (hasSound(this.soundName)) {
       setStoryState({ soundLoaded: true });
     } else {
       /* TODO: add some sort guard against adding multiple identical sounds at the same time. */
@@ -48,7 +52,15 @@ class Passage extends React.PureComponent<IPassageProps> {
         (err) => { throw err; },
       );
     }
-  };
+  }
+
+  public render = () => (
+    <AuthoringPassageContainer passageProps={this.props}>
+      <AuthoringPassage />
+    </AuthoringPassageContainer>
+  );
+ 
+  private soundName = 'sample';
 }
 
 const passage: IPassage = {

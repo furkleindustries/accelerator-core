@@ -1,4 +1,7 @@
 import {
+  ILastLinkTagsAware,
+} from '../interfaces/ILastLinkTagsAware';
+import {
   IPassage,
 } from '../passages/IPassage';
 import {
@@ -16,14 +19,10 @@ import {
 import {
   Store,
 } from 'redux';
-import {
-  Tag,
-} from '../tags/Tag';
 
-export interface IPluginMethodBaseArgs {
+export interface IPluginMethodBaseArgs extends ILastLinkTagsAware {
   readonly passageObject: IPassage;
   readonly storyState: IStoryStateFrame;
-  readonly lastLinkTags: Tag[] | ReadonlyArray<Tag>;
 }
 
 export interface IPluginMethodChildArgs {

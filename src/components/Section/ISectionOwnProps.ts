@@ -6,5 +6,5 @@ import {
 } from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export type ISectionOwnProps =
-  ReactNodeWithoutNullOrUndefined &
+  { children: ReactNodeWithoutNullOrUndefined } &
   IClassNameable;

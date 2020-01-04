@@ -1,10 +1,11 @@
 import {
+  IDispatchAware,
+} from '../../interfaces/IDispatchAware';
+import {
   IStoryRewindAction,
 } from '../../actions/IStoryRewindAction';
-import {
-  Dispatch,
-} from 'redux';
 
-export interface IRewindButtonDispatchProps {
-  dispatch: Dispatch<IStoryRewindAction>;
+export interface IRewindButtonDispatchProps
+  extends IDispatchAware<IStoryRewindAction>
+{
 }

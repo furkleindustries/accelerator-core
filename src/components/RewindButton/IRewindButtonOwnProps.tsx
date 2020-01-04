@@ -6,5 +6,5 @@ import {
 } from '../Button/IButtonProps';
 
 export interface IRewindButtonOwnProps extends IButtonProps {
-  filter?: HistoryFilter;
+  readonly filter?: HistoryFilter;
 }

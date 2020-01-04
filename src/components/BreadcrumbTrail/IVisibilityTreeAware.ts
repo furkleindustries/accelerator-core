@@ -6,6 +6,6 @@ import {
 } from './TreeSelector';
 
 export interface IVisibilityTreeAware {
-  readonly treeSelector?: TreeSelector;
-  readonly visibilityTree?: IVisibilityTree;
+  readonly treeSelector: TreeSelector;
+  readonly visibilityTree: IVisibilityTree;
 }

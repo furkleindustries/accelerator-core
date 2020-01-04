@@ -7,12 +7,9 @@ import {
 import {
   IPassageFunctions,
 } from '../passages/IPassageFunctions';
-import {
-  Omit,
-} from '../typeAliases/Omit';
 
 export interface IPassageRendererOwnProps {
-  readonly config: Omit<IAcceleratorConfigNormalized, 'rendererName'>;
+  readonly config: IAcceleratorConfigNormalized;
   readonly context: Omit<IContext, 'PassageRendererComponent'>;
   readonly passageFunctions: IPassageFunctions;
 }

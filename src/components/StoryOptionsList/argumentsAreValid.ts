@@ -1,3 +1,4 @@
+import { IBreadcrumbTrailAware } from '../../interfaces/IBreadcrumbTrailAware';
 import {
   IBreadcrumbItem,
 } from '../BreadcrumbTrail/IBreadcrumbItem';
@@ -5,18 +6,17 @@ import {
   TreeSelector,
 } from '../BreadcrumbTrail/TreeSelector';
 
-export function argumentsAreValid<
-  T extends Record<any, any> & {
-    readonly breadcrumbTrail: ReadonlyArray<IBreadcrumbItem>,
-    readonly treeSelector: TreeSelector,
-    addBreadcrumb(crumb: IBreadcrumbItem): any,
-    removeBreadcrumb(): any,
-  },
->(args: any): args is T {
-  return (
-    args &&
+export const argumentsAreValid = <
+  T extends Record<any, any> &
+    IBreadcrumbTrailAware &
+    {
+      readonly treeSelector: TreeSelector,
+      readonly addBreadcrumb: (crumb: IBreadcrumbItem) => any,
+      readonly removeBreadcrumb: () => any,
+    },
+>(args: any): args is T => (
+  args &&
     Array.isArray(args.breadcrumbTrail) &&
     typeof args.addBreadcrumb === 'function' &&
     typeof args.removeBreadcrumb === 'function'
-  );
-}
+);

@@ -1,10 +1,7 @@
 import {
-  IAction,
-} from '../../actions/IAction';
-import {
-  Dispatch,
-} from 'redux';
+  IDispatchAware,
+} from '../../interfaces/IDispatchAware';
 
-export interface ILinkDispatchProps {
-  dispatch: Dispatch<IAction>;
+export interface ILinkDispatchProps extends IDispatchAware
+{
 }

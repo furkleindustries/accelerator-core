@@ -9,7 +9,7 @@ import {
 } from './IFontSubsettingDetailsNormalized';
 
 export function getFontSubsetDefaults(): {
-  readonly formats: ReadonlyArray<FontFormats>;
+  readonly formats: readonly FontFormats[];
   readonly loadingStrategy: FontLoadingStrategies;
   readonly subsetRange: 'US_ASCII';
 };

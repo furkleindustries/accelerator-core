@@ -70,7 +70,7 @@ export abstract class ModelBase<
     return this.__name;
   }
 
-  private __tags: ReadonlyArray<ITag> = Object.freeze<ITag>([]);
+  private __tags: readonly ITag[] = Object.freeze<ITag>([]);
   public get tags() {
     return this.__tags;
   }
@@ -128,7 +128,7 @@ export abstract class ModelBase<
   }
 
   public readonly addTag = (tag: Tag) => (
-    void (this.__tags = Object.freeze(addTag(this.tags, tag)))
+    void (this.__tags = Object.freeze(addTag(tag, this.tags)))
   );
 
   public readonly clone = (
@@ -201,7 +201,7 @@ export abstract class ModelBase<
 
   public readonly findAll = (
     args: '*' | IFindBaseArgs<ModelType>,
-  ): ReadonlyArray<IModel<ModelType, Being, Knowledge>> => {
+  ): readonly IModel<ModelType, Being, Knowledge>[] => {
     const ret = [];
     for (const model of this.findAllGenerator(args)) {
       ret.push(model);

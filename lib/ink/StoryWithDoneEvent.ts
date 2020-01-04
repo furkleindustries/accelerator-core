@@ -593,7 +593,7 @@ export class StoryWithDoneEvent extends Story {
   > = [];
 
   public readonly __registerDoneCallback = (
-    callback: (story: this) => void,
+    callback: (story: this, ...args: any[]) => void,
   ) => {
     this.__registeredDoneCallbacks.push(
       assertValid(

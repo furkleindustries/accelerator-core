@@ -1,33 +1,32 @@
-import { 
-  IAcceleratorConfigNormalized,
-} from '../configuration/IAcceleratorConfigNormalized';
 import {
-  IAction,
-} from '../actions/IAction';
+  IAcceleratorConfigAware,
+} from '../interfaces/IAcceleratorConfigAware';
+import {
+  IDispatchAware,
+} from '../interfaces/IDispatchAware';
+import {
+  ILastLinkTagsAware,
+} from '../interfaces/ILastLinkTagsAware';
+import {
+  IPassageAware,
+} from '../interfaces/IPassageAware';
 import {
   IPassageFunctions,
 } from './IPassageFunctions';
 import {
-  IManager,
-} from 'sound-manager';
+  ISoundManagerAware,
+} from '../interfaces/ISoundManagerAware';
 import {
-  IPassage,
-} from './IPassage';
-import {
-  IStoryStateFrame,
-} from '../state/IStoryStateFrame';
-import {
-  Dispatch,
-} from 'redux';
-import {
-  Tag,
-} from '../tags/Tag';
+  IStoryStateAware,
+} from '../interfaces/IStoryStateAware';
 
-export interface IPassageProps extends IPassageFunctions {
-  readonly config: Omit<IAcceleratorConfigNormalized, 'rendererName'>;
-  readonly dispatch: Dispatch<IAction>;
-  readonly lastLinkTags: Tag[] | ReadonlyArray<Tag>;
-  readonly passageObject: IPassage;
-  readonly soundManager: IManager;
-  readonly storyState: IStoryStateFrame;
+export interface IPassageProps extends
+  IAcceleratorConfigAware,
+  IDispatchAware,
+  ILastLinkTagsAware,
+  IPassageAware,
+  IPassageFunctions,
+  IStoryStateAware,
+  ISoundManagerAware
+{
 }

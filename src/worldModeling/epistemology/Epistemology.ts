@@ -89,7 +89,7 @@ export class Epistemology<
     return this.__modelType;
   }
 
-  private __tags: ReadonlyArray<ITag> = Object.freeze([]);
+  private __tags: readonly ITag[] = Object.freeze([]);
   public get tags() {
     return this.__tags;
   } 
@@ -138,7 +138,7 @@ export class Epistemology<
     }
 
     if (tags) {
-      this.__tags = getStructuredTags(assertValid<Tag[]>(
+      this.__tags = getStructuredTags(assertValid<readonly Tag[]>(
         tags,
         'The tags argument to the Epistemology constructor was not valid.',
         Array.isArray,
@@ -156,7 +156,7 @@ export class Epistemology<
   }
 
   public readonly addTag = (tag: Tag) => (
-    void (this.__tags = Object.freeze(addTag(this.tags, tag)))
+    void (this.__tags = Object.freeze(addTag(tag)))
   );
 
   public readonly clone = (
@@ -177,9 +177,9 @@ export class Epistemology<
       self.initialize :
       null;
 
-    copy.__thoughts = self.thoughts ?
+    /*copy.__thoughts = self.thoughts ?
       self.thoughts.clone(self.thoughts) :
-      null;
+      null;*/
 
     copy.world = self.world;
 
@@ -197,7 +197,7 @@ export class Epistemology<
       self.awareness.destroy(self.awareness!);
     }
 
-    self.thoughts.destroy(self.thoughts);
+    //self.thoughts.destroy(self.thoughts);
 
     self.tags.forEach(self.removeTag);
 
@@ -232,7 +232,7 @@ export class Epistemology<
     args: '*' |
       (IFindBaseArgs<ModelType> &
           FindEpistemicArgs<EpistemicTypes, OnticTypes, Knowledge>),
-  ): ReadonlyArray<IModel<ModelType, OnticTypes, Knowledge>> => {
+  ): readonly IModel<ModelType, OnticTypes, Knowledge>[] => {
     const ret = [];
     for (const model of this.findAllGenerator(args)) {
       ret.push(model);

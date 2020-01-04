@@ -44,4 +44,6 @@ async function isInMercurialRepository() {
   }
 })();
 
+argv.push('--verbose');
+
 jest.run(argv);

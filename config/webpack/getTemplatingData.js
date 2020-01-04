@@ -9,7 +9,7 @@ import {
 } from '../paths';
 
 // Makes the config variables available in index.html.
-export function getTemplatingData(config) {
+export const getTemplatingData = (config) => {
   const {
     fontsToLoad,
     subsetFont,
@@ -63,4 +63,4 @@ export function getTemplatingData(config) {
     subsetFontConditionalStatement,
     fontsToLoad: JSON.stringify(fontsToLoad),
   };
-}
+};

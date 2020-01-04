@@ -2,6 +2,9 @@ import {
   BaseAdjacencies,
 } from '../ontology/BaseAdjacencies';
 import {
+  ContainmentTypes,
+} from './ContainmentTypes';
+import {
   FindAdjacencyArgs,
   IFindBaseArgs,
   FindAdjacencyArg,
@@ -21,17 +24,17 @@ import {
 import {
   OnticTypes,
 } from '../ontology/OnticTypes';
-import { ContainmentTypes } from './ContainmentTypes';
 
 export interface IAdjacencyRelation<
   Type extends OnticTypes,
   Being extends OnticTypes,
-> extends IRelation<Type>
+  T extends IAdjacencyRelation<Type, Being, any>,
+> extends IRelation<Type, T>
 {
   readonly modelType: Type;
 
   readonly neighbors: Readonly<
-    Map<BaseAdjacencies, ReadonlyArray<IModel<Type, Being, ModelType>>>
+    Map<BaseAdjacencies, readonly IModel<Type, Being, ModelType>[]>
   >;
 
   readonly addNeighbor: <T extends BaseAdjacencies = BaseAdjacencies>(
@@ -39,12 +42,8 @@ export interface IAdjacencyRelation<
     model: IModel<Type, Being, ModelType>,
   ) => void;
 
-  readonly clone: (
-    self: IAdjacencyRelation<Type, Being>,
-  ) => IAdjacencyRelation<Type, Being>;
-
-  readonly destroy: (self: IAdjacencyRelation<Type, Being>) => void;
-
+  readonly clone: (self: T) => T;
+  readonly destroy: (self: T) => void;
   readonly find: (
     args: string |
       FindAdjacencyArg<OnticTypes, OnticTypes, ModelType> |
@@ -57,7 +56,7 @@ export interface IAdjacencyRelation<
       FindAdjacencyArg<OnticTypes, OnticTypes, ModelType> |
       (IFindBaseArgs<ContainmentTypes> &
         FindAdjacencyArgs<ContainmentTypes, Being, ModelType>),
-  ) => ReadonlyArray<IModel<ContainmentTypes, Being, ModelType>>;
+  ) => readonly IModel<ContainmentTypes, Being, ModelType>[];
 
   readonly findAllGenerator: (
     args: '*' |
@@ -72,11 +71,9 @@ export interface IAdjacencyRelation<
   ) => void;
 
   readonly serialize: (
-    self: IAdjacencyRelation<Type, Being>,
+    self: T,
     spaces?: number,
   ) => string;
 
-  readonly serializeToObject: (
-    self: IAdjacencyRelation<Type, Being>,
-  ) => ISerializedAdjacencyRelation;
+  readonly serializeToObject: (self: T) => ISerializedAdjacencyRelation;
 }

@@ -8,12 +8,15 @@
   "linterOptions": {
     "exclude": [
       "build*/",
+      "bundles/",
       "config/",
       "coverage/",
       "footers/",
       "headers/",
+      "lib/**",
       "passages/",
       "plugins/",
+      "src/worldModeling/",
       "templates/"
     ]
   },
@@ -24,19 +27,21 @@
     "member-ordering": false,
     "no-console": false,
     "no-debugger": false,
+    "no-empty-interface": false,
     "no-shadowed-variable": false,
     "object-literal-sort-keys": false,
-    "ordered-imports": false
+    "ordered-imports": false,
+    "variable-name": false
   },
 
   "jsRules": {
-    "interface-name": false,
     "jsx-self-close": false,
     "member-ordering": false,
     "no-console": false,
     "no-debugger": false,
     "no-shadowed-variable": false,
     "object-literal-sort-keys": false,
-    "ordered-imports": false
+    "ordered-imports": false,
+    "variable-name": false
   }
 }

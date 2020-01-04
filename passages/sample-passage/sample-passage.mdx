@@ -1,10 +1,5 @@
 import classNames from 'classnames';
 import {
-  Card,
-  CyclingLink,
-  Link,
-} from '../../bundles/componentsBundle'; 
-import {
   BuiltInTags,
 } from '../../bundles/tagsBundle';
 
@@ -12,115 +7,96 @@ import styles from './sample-passage.less';
 import builtInStyles from '../_global-styles/built-ins.less';
 import logo from '../../public/logo.svg';
 
-### This is the sample Accelerator passage.
-
-<ContextWrapper>
-  {(props) => {
-    const {
-      setStoryState,
-      soundManager: {
-        collection: { getSound },
-      },
- 
-      storyState: {
-        counter = 0,
-        cycleVar,
-        soundLoaded,
-        soundPlaying,
-      },
-    } = props;
- 
-    const soundName = 'sample';
-    return <>
-      <Card className={classNames(styles.imageCard)}>
-        <img
-          className={classNames(styles.image)}
-          src={logo}
-        />
-      </Card>
- 
-      <div>
-        <Link
-          className={classNames(builtInStyles.link)}
-          passageName="my-first-passage"
-        >
-          This is a link. Try creating a new passage with
- 
-          <p>
-            <code>accelerator-tool new passage my-first-passage</code>
-          </p>
- 
-          and clicking on the link.
-        </Link>
-      </div>
- 
+#### This is the sample Accelerator passage.
+<card className={classNames(styles.imageCard)}>
+  <img
+    className={classNames(styles.image)}
+    src={logo}
+  />
+</card>
+<div>
+  <a
+    className={classNames(builtInStyles.link)}
+    passageName="my-first-passage"
+  >
+    This is a link. Try creating a new passage with
+    <p>
+      <code>accelerator-tool new passage my-first-passage</code>
+    </p>
+    and clicking on the link.
+  </a>
+</div>
+<get-state>
+  {({ counter }, { setStoryState }) => (
+    <button
+      className={classNames(styles.counterButton)}
+      onClick={() => setStoryState({ counter: counter + 1 })}
+    >
+      Clicking this button will update the counter below.
+    </button>
+  )}
+</get-state>
+<em><variable name="counter" /></em>
+<div>
+  <card
+    className={styles.cyclingLinkCard}
+    header="This is a cycling link."
+    headerTypographyProps={{ variant: 'title' }}
+  >
+    <cycling-link variableToSet="cycleVar">
+      {[
+        'You can click it to change a value between several blocks of text.',
+        'Each time the link changes, it updates the `cycleVar` variable to reflect the current value of the link.',
+        'You can set any variable through the variableToSet property.',
+      ]}
+    </cycling-link>
+    <div>
+      <p>This value updates automatically to match the cycling link choice.</p>
+      <em><variable name="cycleVar" /></em>
+    </div>
+  </card>
+</div>
+<p>
+  <button className={classNames(builtInStyles.link)}>
+    If you click this, it sets a bookmark.
+  </button>
+</p>
+<p>
+  <get-sound
+    name="sample"
+    placeholder={
       <button
-        className={classNames(styles.counterButton)}
-        onClick={() => setStoryState({ counter: counter + 1 })}
-      >
-        Clicking this button will update the counter below.
-      </button>
- 
-      <em>{counter}</em>
- 
-      <div>
-        <Card
-          className={styles.cyclingLinkCard}
-          header="This is a cycling link."
-          headerTypographyProps={{ variant: 'title' }}
-        >
-          <CyclingLink variableToSet="cycleVar">
-            {[
-              'You can click it to change a value between several blocks of text.',
-              'Each time the link changes, it updates the `cycleVar` variable to reflect the current value of the link.',
-              'You can set any variable through the variableToSet property.',
-            ]}
-          </CyclingLink>
- 
-          <div>
-            <p>This value updates automatically to match the cycling link choice.</p>
-            <em>{cycleVar}</em>
-          </div>
-        </Card>
-      </div>
- 
-      <p>
-        <button className={classNames(builtInStyles.link)}>
-          If you click this, it sets a bookmark.
-        </button>
-      </p>
- 
-      <p>
-        <button
-          className={classNames(builtInStyles.link)}
-          onClick={async () => {
-            const {
-              isPlaying,
-              pause,
-              play,
-            } = getSound('sample');
-  
-            if (isPlaying()) {
-              pause();
-              setStoryState({ soundPlaying: false });
-            } else {
-              setStoryState({ soundPlaying: true });
-              await play();
-              setStoryState({ soundPlaying: false });
-            }
-          }}
- 
-          {
-            /* Disable the button until the sound is loaded. */
-            ...(soundLoaded ? {} : { disabled: true })
-          }
-        >
-          {soundPlaying ?
-            'Pause sound' :
-            'Play sound'
-          }
-        </button>
-      </p>
-    </>;
-}}
-</ContextWrapper>
+        className={classNames(builtInStyles.link)}
+        disabled={true}
+      >Play sound</button>
+    }
+  >
+    {({
+      pause,
+      play,
+    }) => (
+      <get-state>
+        {({ soundPlaying }, { setStoryState }) => (
+          <button
+            className={classNames(builtInStyles.link)}
+            onClick={async () => {
+              if (soundPlaying) {
+                setStoryState({ soundPlaying: false });
+                pause();
+              } else {
+                setStoryState({ soundPlaying: true });
+                await play();
+                setStoryState({ soundPlaying: false })
+              }
+            }}
+          >
+            <if condition={soundPlaying}>
+              Pause sound
+              <else>Play sound</else>
+            </if>
+          </button>
+        )}
+      </get-state>
+    )}
+  </get-sound>
+</p>

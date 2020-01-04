@@ -3,5 +3,5 @@ import {
 } from '../../actions/IStoryRequiresFullRerenderAction';
 
 export interface IRenderingContainerDispatchProps {
-  resetStoryRequiresFullRerender(): IStoryRequiresFullRerenderAction;
+  readonly resetStoryRequiresFullRerender: () => IStoryRequiresFullRerenderAction;
 }

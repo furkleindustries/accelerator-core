@@ -1,4 +1,7 @@
 import {
+  INamed,
+} from '../../interfaces/INamed';
+import {
   ISerializedEpistemology,
 } from '../epistemology/ISerializedEpistemology';
 import {
@@ -8,9 +11,8 @@ import {
   ITag,
 } from '../../tags/ITag';
 
-export interface ISerializedWorld {
+export interface ISerializedWorld extends INamed {
   readonly knowledge: ISerializedEpistemology;
-  readonly name: string;
   readonly models: ISerializedModel[];
   readonly tags: ITag[];
 }

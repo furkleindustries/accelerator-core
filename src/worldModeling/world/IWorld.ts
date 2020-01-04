@@ -11,6 +11,9 @@ import {
   IModelConstructorArgs,
 } from '../models/IModelConstructorArgs';
 import {
+  INamed,
+} from '../../interfaces/INamed';
+import {
   ISerializedWorld,
 } from './ISerializedWorld';
 import {
@@ -29,7 +32,7 @@ import {
   TypedModelInterfaces,
 } from '../models/TypedModelInterfaces';
 
-export interface IWorld {
+export interface IWorld extends INamed {
   readonly being: null;
 
   /* Worlds may "possess" generic and/or global thoughts but may not be
@@ -40,8 +43,7 @@ export interface IWorld {
     Record<string, IModel<ModelType, OnticTypes, ModelType>>
   >;
 
-  readonly name: string;
-  readonly tags: ReadonlyArray<ITag>;
+  readonly tags: readonly ITag[];
   readonly type: symbol;
 
   readonly addModel: <
@@ -61,18 +63,10 @@ export interface IWorld {
   );
 
   readonly addTag: (tag: Tag) => void;
-
-  readonly children: () => ReadonlyArray<
-    IModel<ModelType, OnticTypes, ModelType>
-  >;
-
+  readonly children: () => readonly IModel<ModelType, OnticTypes, ModelType>[];
   readonly clone: (name: string) => IWorld;
-  readonly descendants: () => ReadonlyArray<
-    IModel<ModelType, OnticTypes, ModelType>
-  >;
-
+  readonly descendants: () => readonly IModel<ModelType, OnticTypes, ModelType>[];
   readonly destroy: () => void;
-
   readonly finalize: (self: IWorld) => void;
 
   readonly find: (
@@ -81,7 +75,7 @@ export interface IWorld {
 
   readonly findAll: (
     args: FindModelArgs<ModelType, OnticTypes, ModelType>,
-  ) => ReadonlyArray<IModel<ModelType, OnticTypes, ModelType>>;
+  ) => readonly IModel<ModelType, OnticTypes, ModelType>[];
 
   readonly findAllGenerator: (
     args: FindModelArgs<ModelType, OnticTypes, ModelType>,

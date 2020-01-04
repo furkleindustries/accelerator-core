@@ -19,15 +19,15 @@ export const strings = {
 
   PLUGIN_OBJECT_INVALID:
     'One of the plugin objects, found at %FILEPATH%, was invalid. ' +
-    '%REASON%.',
+      '%REASON%',
 };
 
 assert(Array.isArray(manifest), strings.PLUGINS_MANIFEST_INVALID);
 
 /* Memoize results and return them without computation on repeat calls. */
-let pluginsList: ReadonlyArray<IPlugin> | null = null;
+let pluginsList: readonly IPlugin[] | null = null;
 
-export function getPluginsList(): ReadonlyArray<IPlugin> {
+export const getPluginsList = (): readonly IPlugin[] => {
   /* Return the memoized list if it exists. */
   if (pluginsList) {
     return pluginsList;
@@ -77,7 +77,7 @@ export function getPluginsList(): ReadonlyArray<IPlugin> {
     return 1;
   });
 
-  pluginsList = keys.map<ReadonlyArray<IPluginExport>>((key) => (
+  pluginsList = keys.map<readonly IPluginExport[]>((key) => (
     /* Sort the plugins in each precedence in ascending lexicographic
      * order. */
     pluginsPrecedenceMap[key]
@@ -91,9 +91,9 @@ export function getPluginsList(): ReadonlyArray<IPlugin> {
 
         return -1;
       })
-  )).reduce<ReadonlyArray<IPlugin>>((prev, curr) => (
+  )).reduce<readonly IPlugin[]>((prev, curr) => (
     prev.concat(curr.map((aa) => aa.content!))
   ), []);
 
   return pluginsList;
-}
+};

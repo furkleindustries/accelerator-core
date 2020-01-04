@@ -16,10 +16,10 @@ export const If: React.FunctionComponent<IfProps> = ({
 }) => {
   if (typeof condition === 'function') {
     if (condition(children)) {
-      return <>{...strip(children)}</>;
+      return <>{strip(children)}</>;
     }
   } else if (condition) {
-    return <>{...strip(children)}</>;
+    return <>{strip(children)}</>;
   }
 
   return findValidFallbackCondition(children);
@@ -29,7 +29,11 @@ export const strip = (children: React.ReactChildren) => {
   return React.Children.toArray(
     React.Children.toArray<React.ReactNode>(children).filter((child) => {
       if (React.isValidElement(child) &&
-        (child.type === Else || child.type === ElseIf))
+        (child.type === Else ||
+          child.props.originalType === 'else' ||
+          child.type === ElseIf ||
+          child.props.originalType === 'else-if' ||
+          child.props.originalType === 'elif'))
       {
         return false;
       }
@@ -42,7 +46,10 @@ export const strip = (children: React.ReactChildren) => {
 export const findValidFallbackCondition = (children: React.ReactChildren) => {
   for (const child of React.Children.toArray<React.ReactNode>(children)) {
     if (React.isValidElement(child)) {
-      if (child.type === ElseIf) {
+      if (child.type === ElseIf ||
+        child.props.originalType === 'else-if' ||
+        child.props.originalType === 'elif')
+      {
         if (typeof child.props.condition === 'function') {
           if (child.props.condition(child.props.children)) {
             return child;
@@ -50,7 +57,7 @@ export const findValidFallbackCondition = (children: React.ReactChildren) => {
         } else if (child.props.condition) {
           return child;
         }
-      } else if (child.type === Else) {
+      } else if (child.type === Else || child.props.originalType === 'else') {
         return child;
       }
     }

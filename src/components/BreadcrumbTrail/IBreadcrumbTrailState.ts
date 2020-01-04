@@ -6,6 +6,6 @@ import {
 } from './IVisibilityTree';
 
 export interface IBreadcrumbTrailState {
-  readonly trail: ReadonlyArray<IBreadcrumbItem>;
+  readonly trail: readonly IBreadcrumbItem[];
   readonly visibilityTree: IVisibilityTree;
 }

@@ -32,9 +32,6 @@ import {
 import {
   removeTag,
 } from '../../tags/removeTag';
-import {
-  Tag,
-} from '../../tags/Tag';
 
 export abstract class RelationBase<
   Type extends ModelType,
@@ -45,7 +42,7 @@ export abstract class RelationBase<
     return this.__modelType;
   }
 
-  protected __tags: ReadonlyArray<ITag> = Object.freeze([]);
+  protected __tags: readonly ITag[] = Object.freeze([]);
   public get tags() {
     return this.__tags;
   }
@@ -68,8 +65,8 @@ export abstract class RelationBase<
     }
   }
 
-  public readonly addTag = (tag: Tag) => (
-    void (this.__tags = addTag(this.tags, tag))
+  public readonly addTag = (tag: ITag) => (
+    void (this.__tags = addTag(tag, this.tags))
   );
 
   public readonly initialize?: (self: IRelation<Type>) => void; 
@@ -84,7 +81,7 @@ export abstract class RelationBase<
   
   public readonly findAll = (
     args: '*' | IFindBaseArgs<ModelType>,
-  ): ReadonlyArray<IModel<ModelType, OnticTypes, ModelType>> =>
+  ): readonly IModel<ModelType, OnticTypes, ModelType>[] =>
   {
     const ret = [];
     for (const model of this.findAllGenerator(args)) {
@@ -96,9 +93,9 @@ export abstract class RelationBase<
 
   public readonly finalize?: (self: IRelation<Type>) => void; 
 
-  public readonly getTag = (tag: Tag) => getTag(this.tags, tag);
+  public readonly getTag = (tag: ITag) => getTag(this.tags, tag);
 
-  public readonly removeTag = (tag: Tag) => (
+  public readonly removeTag = (tag: ITag) => (
     void (this.__tags = removeTag(this.tags, tag))
   );
 

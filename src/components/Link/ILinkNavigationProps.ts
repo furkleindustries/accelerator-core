@@ -1,19 +1,19 @@
 import {
-  IPassage,
-} from '../../passages/IPassage';
+  IDispatchAware,
+} from '../../interfaces/IDispatchAware';
+import { IPassageAware } from '../../interfaces/IPassageAware';
 import {
-  IPassageNavigationAction,
-} from '../../actions/IPassageNavigationAction';
+  IPassageNamed,
+} from '../../interfaces/IPassageNamed';
 import {
-  Dispatch,
-} from 'redux';
-import {
-  Tag,
-} from '../../tags/Tag';
+  ITaggable,
+} from '../../interfaces/ITaggable';
 
-export interface ILinkNavigationProps {
-  readonly dispatch: Dispatch<IPassageNavigationAction>;
-  readonly passage: IPassage;
-  readonly passageName?: string;
-  readonly tags?: Tag[] | ReadonlyArray<Tag>;
+export interface ILinkNavigationProps
+  extends
+    IDispatchAware,
+    IPassageAware,
+    IPassageNamed,
+    ITaggable
+{
 }

@@ -180,14 +180,14 @@ export class ActorModel<
     target: IModel<OnticTypes, Being, Knowledge>,
   ) => boolean;
 
-  readonly getActionTargets?: (self: IActorModel<Being, Knowledge>) => ReadonlyArray<
-    IModel<OnticTypes, Being, Knowledge>
-  >;
+  readonly getActionTargets?: (
+    self: IActorModel<Being, Knowledge>,
+  ) => readonly IModel<OnticTypes, Being, Knowledge>[];
 
   readonly selectActionTarget?: (
     self: IActorModel<Being, Knowledge>,
     targets: IModel<OnticTypes, Being, Knowledge> |
-      ReadonlyArray<IModel<OnticTypes, Being, Knowledge>>,
+      readonly IModel<OnticTypes, Being, Knowledge>[],
   ) => IModel<OnticTypes, Being, Knowledge>;
 
   readonly willAct?: (self: IActorModel<Being, Knowledge>) => boolean;

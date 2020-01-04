@@ -1,6 +1,10 @@
+/**
+ * Unused at present.
+ */
+
 import {
   transformAsync,
-} from 'babel-core';
+} from '@babel/core';
 import * as crypto from 'crypto';
 import {
   getOptions,

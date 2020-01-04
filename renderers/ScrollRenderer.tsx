@@ -33,7 +33,10 @@ export class ScrollRenderer extends React.PureComponent<IPassageRendererOwnProps
 
     const {
       history: {
-        present: { passageTimeCounter },
+        present: {
+          passageName,
+          passageTimeCounter,
+        },
       },
     } = getState();
 
@@ -44,10 +47,8 @@ export class ScrollRenderer extends React.PureComponent<IPassageRendererOwnProps
     }
 
     const ref = React.createRef<HTMLSpanElement>();
-
     this.elementBuffer.push(this.getPassageContainer(ref));    
     this.elementBuffer = this.maintainBuffer(this.elementBuffer);
-
     this.lastPassageTime = passageTimeCounter;
 
     /* Don't scroll if it's the first passage. */
@@ -59,7 +60,7 @@ export class ScrollRenderer extends React.PureComponent<IPassageRendererOwnProps
     return (
       <>
         {this.elementBuffer.length === 1 ?
-          <SkipToContentLinkDestination /> :
+          <SkipToContentLinkDestination id={passageName} /> :
           <>
             {this.elementBuffer.slice(0, this.elementBuffer.length - 1).map((child, index) => {
               const doRewind = () => this.doRewind(index);
@@ -74,7 +75,7 @@ export class ScrollRenderer extends React.PureComponent<IPassageRendererOwnProps
               );
             })}
 
-            <SkipToContentLinkDestination />
+            <SkipToContentLinkDestination id={passageName} />
           </>}
 
         <div className={classNames(
@@ -123,7 +124,7 @@ export class ScrollRenderer extends React.PureComponent<IPassageRendererOwnProps
         headers={headers}
         key={this.elementBuffer.length}
         lastLinkTags={lastLinkTags}
-        passageObject={passagesMap[passageName]}
+        passage={passagesMap[passageName]}
         ref={ref}
         soundManager={soundManager}
         storyState={storyState}
@@ -139,7 +140,7 @@ export class ScrollRenderer extends React.PureComponent<IPassageRendererOwnProps
   public readonly componentWillUnmount = () => this.unsubscribe();
 
   private readonly maintainBuffer = (
-    buffer: ReactNodeWithoutNullOrUndefined[],
+    buffer: readonly ReactNodeWithoutNullOrUndefined[],
   ) => buffer.slice(Math.max(buffer.length - 10, 0), buffer.length);
 
   private readonly subscription = () => {
@@ -150,7 +151,6 @@ export class ScrollRenderer extends React.PureComponent<IPassageRendererOwnProps
     } = this.props;
 
     const { storyRequiresFullRerender } = getState();
-
     if (storyRequiresFullRerender) {
       const ref = React.createRef<HTMLSpanElement>();
       this.elementBuffer = [ this.getPassageContainer(ref) ];

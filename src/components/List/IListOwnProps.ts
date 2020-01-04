@@ -5,9 +5,6 @@ import {
   ListItemProps,
 } from '@material-ui/core/ListItem';
 import {
-  ListItemTextProps,
-} from '@material-ui/core/ListItemText';
-import {
   ListSubheaderProps,
 } from '@material-ui/core/ListSubheader';
 import {

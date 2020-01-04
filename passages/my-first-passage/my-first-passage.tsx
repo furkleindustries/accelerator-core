@@ -22,8 +22,8 @@ const Passage: React.FunctionComponent<passages.IPassageProps> = () => (
   >
     This is the second passage.
 
-    <components.Link passageName="ink-test">
-      ink-test
+    <components.Link passageName="ink-testing">
+      ink-testing
     </components.Link>
   </div>
 );

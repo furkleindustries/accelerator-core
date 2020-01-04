@@ -1,10 +1,7 @@
 import {
-  IHistory,
-} from '../../state/IHistory';
-import {
-  IStoryStateFrame,
-} from '../../state/IStoryStateFrame';
+  IHistoryAware,
+} from '../../interfaces/IHistoryAware';
 
-export interface ICyclingLinkInternalStateProps {
-  readonly history: IHistory;
+export interface ICyclingLinkInternalStateProps extends IHistoryAware
+{
 }

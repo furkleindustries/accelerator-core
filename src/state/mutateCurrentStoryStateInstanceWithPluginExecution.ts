@@ -44,7 +44,7 @@ export function mutateCurrentStoryStateInstanceWithPluginExecution({
   readonly dispatch: Dispatch<IAction>,
   readonly history: IHistory,
   readonly passageObject: IPassage,
-  readonly plugins: ReadonlyArray<IPlugin>,
+  readonly plugins: readonly IPlugin[],
   readonly updatedStateProps: Partial<IStoryStateFrame>,
 }): void
 {

@@ -1,22 +1,19 @@
 import {
-  ParseReactElementsAndTextProps,
-} from '../../typeAliases/ParseReactElementsAndTextProps';
+  Choice,
+} from '../../../lib/ink/inkjs/src/Choice';
 import {
-  ReactNodeWithoutNullOrUndefined,
-} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
+  IClassNameable,
+} from '../../interfaces/IClassNameable';
 import {
-  StoryWithDoneEvent,
-} from '../../../lib/ink/StoryWithDoneEvent';
+  MaybeReadonlyArray,
+} from '../../typeAliases/MaybeReadonlyArray';
+import {
+  ReactNode,
+} from 'react';
 
-export interface InkSectionOwnProps {
-  readonly onClick: (
-    index: number,
-    e: Event,
-    resolve: () => void,
-    reject: (err: Error) => void,
-  ) => void;
-
-  readonly story: StoryWithDoneEvent;
-  readonly children?: ReactNodeWithoutNullOrUndefined;
-  readonly className?: string;
+export interface InkSectionOwnProps extends IClassNameable {
+  readonly choices: MaybeReadonlyArray<Choice>;
+  readonly choicesVisible: boolean;
+  readonly onClick: (index: number) => void;
+  readonly children?: ReactNode;
 }
