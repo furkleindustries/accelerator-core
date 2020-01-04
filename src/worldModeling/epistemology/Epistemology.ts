@@ -177,9 +177,9 @@ export class Epistemology<
       self.initialize :
       null;
 
-    copy.__thoughts = self.thoughts ?
+    /*copy.__thoughts = self.thoughts ?
       self.thoughts.clone(self.thoughts) :
-      null;
+      null;*/
 
     copy.world = self.world;
 
@@ -197,7 +197,7 @@ export class Epistemology<
       self.awareness.destroy(self.awareness!);
     }
 
-    self.thoughts.destroy(self.thoughts);
+    //self.thoughts.destroy(self.thoughts);
 
     self.tags.forEach(self.removeTag);
 

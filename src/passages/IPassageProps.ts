@@ -1,35 +1,32 @@
-import { 
-  IAcceleratorConfigNormalized,
-} from '../configuration/IAcceleratorConfigNormalized';
 import {
-  IAction,
-} from '../actions/IAction';
+  IAcceleratorConfigAware,
+} from '../interfaces/IAcceleratorConfigAware';
+import {
+  IDispatchAware,
+} from '../interfaces/IDispatchAware';
 import {
   ILastLinkTagsAware,
 } from '../interfaces/ILastLinkTagsAware';
 import {
-  IManager,
-} from 'sound-manager';
+  IPassageAware,
+} from '../interfaces/IPassageAware';
 import {
   IPassageFunctions,
 } from './IPassageFunctions';
 import {
-  IPassage,
-} from './IPassage';
+  ISoundManagerAware,
+} from '../interfaces/ISoundManagerAware';
 import {
   IStoryStateAware,
 } from '../interfaces/IStoryStateAware';
-import {
-  Dispatch,
-} from 'redux';
 
 export interface IPassageProps extends
+  IAcceleratorConfigAware,
+  IDispatchAware,
   ILastLinkTagsAware,
+  IPassageAware,
   IPassageFunctions,
-  IStoryStateAware
+  IStoryStateAware,
+  ISoundManagerAware
 {
-  readonly config: IAcceleratorConfigNormalized;
-  readonly dispatch: Dispatch<IAction>;
-  readonly passageObject: IPassage;
-  readonly soundManager: IManager;
 }

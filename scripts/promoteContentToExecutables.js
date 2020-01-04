@@ -65,7 +65,7 @@ const packageStr = JSON.stringify({
   name: storyTitle || 'Untitled Accelerator Story',
   version: storyVersion || '1.0.0',
   main: 'main.js',
-});
+}, null, 2);
 
 const skipMacOS =
   process.argv.indexOf('--force-mac-build-on-windows') === -1 &&

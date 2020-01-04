@@ -1,6 +1,6 @@
 import {
   IListOwnProps,
-} from '../List';
+} from '../List/IListOwnProps';
 import {
   List,
 } from '@material-ui/core';
@@ -11,5 +11,7 @@ export const OrderedList: React.FunctionComponent = ({
   children,
   ...props
 }: IListOwnProps) => (
-  <List {...props}>{children}</List>
+  <List {...props}>
+    {children}
+  </List>
 );

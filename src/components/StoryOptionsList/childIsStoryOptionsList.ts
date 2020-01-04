@@ -1,7 +1,7 @@
 import {
   StoryOptionsList,
-} from './StoryOptionsList';
+} from '.';
 
-export function childIsStoryOptionsList<T extends { type: typeof StoryOptionsList }>(child: any): child is T {
-  return child.type === StoryOptionsList;
-}
+export const childIsStoryOptionsList = <
+  T extends { type: typeof StoryOptionsList }
+>(child: any): child is T => child.type === StoryOptionsList;

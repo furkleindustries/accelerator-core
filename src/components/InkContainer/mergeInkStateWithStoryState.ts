@@ -1,6 +1,6 @@
 import {
-  IStoryStateFrame,
-} from '../../state/IStoryStateFrame';
+  IStoryStateSetter,
+} from '../../interfaces/IStoryStateSetter';
 import {
   StoryWithDoneEvent,
 } from '../../../lib/ink/StoryWithDoneEvent';
@@ -9,5 +9,5 @@ export const mergeInkStateWithStoryState = (
   {
     state: { toJson },
   }: StoryWithDoneEvent,
-  setStoryState: (updatedStoryState: IStoryStateFrame) => void,
+  setStoryState: IStoryStateSetter,
 ) => setStoryState(JSON.parse(toJson()));

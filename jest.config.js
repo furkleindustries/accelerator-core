@@ -1,10 +1,20 @@
-const includedDirectories = '(footers|headers|passages|plugins|src)';
+const {
+  getAllCompiledCodeDirectories,
+} = require('./config/webpack/getAllCompiledCodeDirectories');
+const includedDirectories = `(${
+  getAllCompiledCodeDirectories()
+    .filter((dir) => !new RegExp(/\/ink/).test(dir))
+    .join('|')
+})`;
+
+const {
+  paths: { moduleFileExtensions },
+} = require('./config/paths');
 
 /** @see https://jestjs.io/docs/en/configuration.html */
 module.exports = {
   rootDir: '.',
-  verbose: true,
-  //verbose: process.env.DEBUG ? true : false,
+  verbose: process.env.DEBUG ? true : false,
 
   testMatch: [
     /* Using <rootDir> breaks due to
@@ -23,7 +33,7 @@ module.exports = {
   ],
   
   setupFilesAfterEnv: [
-    '<rootDir>/config/testing/setupTests.ts',
+    '<rootDir>/config/testing/setupTests.js',
   ],
 
   moduleNameMapper: {
@@ -31,21 +41,14 @@ module.exports = {
     '^.+\\.(less)$': 'identity-obj-proxy',
   },
 
-  moduleFileExtensions: [
-    'js',
-    'ts',
-    'tsx',
-    'jsx',
-    'md',
-    'mdx',
-  ],
+  moduleFileExtensions,
 
   transform: {
     '^.+\\.jsx?$': require.resolve('babel-jest'),
     '^.+\\.tsx?$': require.resolve('ts-jest'),
     '^.+\\.css$': '<rootDir>/config/testing/cssTransform.js',
     '^.+\\.mdx?$': '<rootDir>/config/testing/mdxTransform.js',
-    '^(?!.*\\.(js|jsx|ts|tsx|css|json|md|mdx)$)': '<rootDir>/config/testing/fileTransform.js',
+    [`^(?!.*\\.(${moduleFileExtensions.join('|')})$)`]: `<rootDir>/config/testing/fileTransform.js`,
   },
 
   transformIgnorePatterns: [
@@ -56,6 +59,5 @@ module.exports = {
 
   testEnvironment: 'jsdom',
   testURL: 'http://localhost',
-
   resolver: 'jest-pnp-resolver',
 };

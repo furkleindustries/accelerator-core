@@ -19,7 +19,6 @@ import {
 
 export interface IRelation<
   Type extends ModelType,
-  T extends IRelation<Type, any>
 > {
   readonly modelType: ModelType;
   readonly tags: readonly ITag[];

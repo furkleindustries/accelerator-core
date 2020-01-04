@@ -1,7 +1,7 @@
 import {
-  IStoryStateFrame,
-} from '../../state/IStoryStateFrame';
+  ISetStoryStateAware,
+} from '../../interfaces/ISetStoryStateAware';
 
-export interface IGetStateDispatchProps {
-  readonly setStoryState: (updatedStoryState: IStoryStateFrame) => void;
+export interface IGetStateDispatchProps extends ISetStoryStateAware
+{
 }

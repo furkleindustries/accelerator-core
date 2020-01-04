@@ -5,6 +5,6 @@ import {
   ReactNode,
 } from 'react';
 
-export interface InkMutator {
-  (args: InkMutatorProps): ReactNode;
-}
+export type InkMutator = (
+  args: InkMutatorProps,
+) => ReactNode;

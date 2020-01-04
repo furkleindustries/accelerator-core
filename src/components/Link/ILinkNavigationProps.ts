@@ -1,24 +1,19 @@
 import {
-  IAction,
-} from '../../actions/IAction';
-import {
-  IPassage,
-} from '../../passages/IPassage';
+  IDispatchAware,
+} from '../../interfaces/IDispatchAware';
+import { IPassageAware } from '../../interfaces/IPassageAware';
 import {
   IPassageNamed,
 } from '../../interfaces/IPassageNamed';
 import {
   ITaggable,
 } from '../../interfaces/ITaggable';
-import {
-  Dispatch,
-} from 'redux';
 
 export interface ILinkNavigationProps
   extends
+    IDispatchAware,
+    IPassageAware,
     IPassageNamed,
     ITaggable
 {
-  readonly dispatch: Dispatch<IAction>;
-  readonly passage: IPassage;
 }

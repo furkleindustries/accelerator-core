@@ -1,3 +1,3 @@
 export interface IDelayState {
-  shown: boolean;
+  readonly shown: boolean;
 }

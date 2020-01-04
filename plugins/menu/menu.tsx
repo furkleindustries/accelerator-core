@@ -14,7 +14,7 @@ const plugin: IPluginExport = {
       {}
   ),
 
-  name: 'Menu',
+  name: 'menu',
   precedence: 0,
 };
 

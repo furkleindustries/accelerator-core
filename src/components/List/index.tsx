@@ -2,9 +2,6 @@ import classNames from 'classnames';
 import {
   IListOwnProps,
 } from './IListOwnProps';
-import {
-  ListItem,
-} from '../ListItem';
 import MuiList from '@material-ui/core/List';
 import MuiListSubheader from '@material-ui/core/ListSubheader';
 
@@ -39,10 +36,13 @@ export const List: React.FunctionComponent<IListOwnProps> = ({
           child,
         );
       } else if (React.isValidElement(child)) {
-        return React.cloneElement(child, {
-          key,
-          ...listItemProps,
-        });
+        return React.cloneElement(
+          child,
+          {
+            key,
+            ...listItemProps,
+          },
+        );
       }
 
       return child;

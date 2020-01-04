@@ -17,6 +17,9 @@ import {
   IPassageNavigationAction,
 } from '../actions/IPassageNavigationAction';
 import {
+  MaybeReadonlyArray,
+} from '../typeAliases/MaybeReadonlyArray';
+import {
   Dispatch,
 } from 'redux';
 import {
@@ -25,6 +28,7 @@ import {
 import {
   assert,
 } from 'ts-assertions';
+import { getStructuredTags } from '../tags/getStructuredTags';
 
 export const strings = {
   NO_NAVIGATING_TO_NO_RENDER_PASSAGES:
@@ -42,20 +46,20 @@ export const strings = {
 export const navigate = ({
   dispatch,
   passage,
-  linkTags,
+  linkTags = [],
 }: {
   dispatch: Dispatch<IAction>,
   passage: IPassage,
-  linkTags?: Tag[] | readonly Tag[],
-}): IPassageNavigationAction =>
-{
+  linkTags?: MaybeReadonlyArray<Tag>,
+}): IPassageNavigationAction => {
   assert(passage, strings.PASSAGE_INVALID);
-
   assert(
     !getTag(passage.tags, BuiltInTags.NoRender),
     strings.NO_NAVIGATING_TO_NO_RENDER_PASSAGES,
   );
 
   /* Update the current passage. */
-  return dispatch(createPassageNavigationAction(passage, linkTags));
+  return dispatch(
+    createPassageNavigationAction(passage, getStructuredTags(linkTags)),
+  );
 };

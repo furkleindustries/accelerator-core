@@ -57,7 +57,7 @@ export function getPlugins({
         '..',
         '..',
         'build-web',
-        'pluginsProfile.json',
+        'webpack-plugins-profile.json',
       ),
     }),
 

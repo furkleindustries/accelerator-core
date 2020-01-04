@@ -4,5 +4,5 @@ import {
 
 export interface InkContainerState {
   readonly choiceCounter: number;
-  readonly sections: Array<InkSectionObject>;
+  readonly sections: readonly InkSectionObject[];
 }

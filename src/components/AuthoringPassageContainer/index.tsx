@@ -19,7 +19,7 @@ export const AuthoringPassageContainer: React.FunctionComponent<IAuthoringPassag
   noBuiltInComponents,
   passageProps,
 }) => {
-  type Val = { children: (...args: any[]) => React.ReactElement };
+  interface Val { children: (...args: any[]) => React.ReactElement }
   const ContextWrapper = ({ children }: Val) => children({ ...passageProps });
   const comps = noBuiltInComponents ?
     {

@@ -12,9 +12,9 @@ export const Anchor = ({
   ...props
 }: Record<string, any>) => {
   /* Return an UrlLink which opens links in a new tab by default if and only
-    * if the href value is a string which begins with `https?://`. If you
-    * don't like this for any reason, either import and use UrlLink directly,
-    * or edit this code in your own codebase. */
+   * if the href value is a string which begins with `https?://`. If you
+   * don't like this for any reason, either import and use UrlLink directly,
+   * or edit this code in your own codebase. */
   if (typeof href === 'string' && /^https?:\/\//.test(href)) {
     return (
       <UrlLink

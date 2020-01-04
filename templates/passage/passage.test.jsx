@@ -1,15 +1,34 @@
 import {
   shallow,
 } from 'enzyme';
+
+jest.mock('../../src/passages/checkPassageAsset', () => ({
+  __esModule: true,
+  checkPassageAsset: () => true,
+}));
+
+jest.mock('../../src/passages/getPassagesMapAndStartPassageName', () => ({
+  __esModule: true,
+  getPassagesMapAndStartPassageName: () => ({
+    passagesMap: {},
+    startPassageName: '___test___',
+  }),
+}));
+
+document.querySelector = jest.fn(() => ({}));
+
+import passage from './{{{name}}}';
+
+import {
+  IPassageProps,
+} from '../../bundles/passagesBundle';
 import {
   BuiltInTags,
+  ITag,
   getTag,
 } from '../../bundles/tagsBundle';
 
 import * as React from 'react';
-
-import passage from './{{{name}}}';
-
 
 const {
   name,
@@ -30,8 +49,7 @@ describe('Tests for the {{{name}}} passage.', () => {
         } else if (typeof aa === 'object') {
           if (aa.key &&
               typeof aa.key === 'string' &&
-              aa.value &&
-              typeof aa.value === 'string')
+              typeof aa.value !== 'undefined')
           {
             return true;
           }
@@ -54,7 +72,7 @@ const getPassageMockArgs = () => ({
   config: {},
   dispatch: jest.fn(),
   lastLinkTags: [],
-  passageObject: {},
+  passage: {},
   soundManager: {},
   storyState: {},
   bookmark: jest.fn(),

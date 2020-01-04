@@ -1,43 +1,28 @@
 import {
-  HistoryFilter,
-} from '../../reducers/IHistoryFilter';
-import {
-  IAcceleratorConfigNormalized,
-} from '../../configuration/IAcceleratorConfigNormalized';
+  IAcceleratorConfigAware,
+} from '../../interfaces/IAcceleratorConfigAware';
 import {
   ILastLinkTagsAware,
 } from '../../interfaces/ILastLinkTagsAware';
 import {
-  IManager,
-} from 'sound-manager';
+  IPassageAware,
+} from '../../interfaces/IPassageAware';
 import {
-  IPassage,
-} from '../../passages/IPassage';
+  IPassageFunctions,
+} from '../../passages/IPassageFunctions';
 import {
-  IStateFrame,
-} from '../../state/IStateFrame';
+  ISoundManagerAware,
+} from '../../interfaces/ISoundManagerAware';
 import {
-  IStoryStateFrame,
-} from '../../state/IStoryStateFrame';
-import {
-  MaybeReadonlyArray,
-} from '../../typeAliases/MaybeReadonlyArray';
-import {
-  Tag,
-} from '../../tags/Tag';
+  IStoryStateAware,
+} from '../../interfaces/IStoryStateAware';
 
-export interface IPassageContentContainerOwnProps extends ILastLinkTagsAware {
-  readonly config: IAcceleratorConfigNormalized;
-  readonly passageObject: IPassage;
-  readonly soundManager: IManager;
-  readonly storyState: IStoryStateFrame;
-  readonly bookmark: () => void;
-  readonly navigateTo: (
-    passageName: string,
-    tags?: MaybeReadonlyArray<Tag>,
-  ) => void;
-
-  readonly restart: () => void;
-  readonly rewind: (filter?: HistoryFilter) => void;
-  readonly setStoryState: (updatedStateProps: Partial<IStateFrame>) => void;
+export interface IPassageContentContainerOwnProps extends
+  IAcceleratorConfigAware,
+  ILastLinkTagsAware,
+  IPassageAware,
+  IPassageFunctions,
+  ISoundManagerAware,
+  IStoryStateAware
+{
 }

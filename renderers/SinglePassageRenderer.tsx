@@ -42,7 +42,7 @@ export const SinglePassageRenderer: React.FunctionComponent<IPassageRendererOwnP
 
   return (
     <>
-      <SkipToContentLinkDestination />
+      <SkipToContentLinkDestination id={passageName} />
 
       <PassageContainer
         config={config}
@@ -50,7 +50,7 @@ export const SinglePassageRenderer: React.FunctionComponent<IPassageRendererOwnP
         footers={footers}
         headers={headers}
         lastLinkTags={lastLinkTags}
-        passageObject={passagesMap[passageName]}
+        passage={passagesMap[passageName]}
         soundManager={soundManager}
         storyState={storyState}
         {...passageFunctions}

@@ -16,7 +16,7 @@ import styles from './index.less';
 export const strings = {
   TIMEOUT_NOT_GREATER_THAN_OR_EQUAL_TO_ZERO_NUMBER:
     'The timeout argument passed to a Delay component was not a number ' +
-    'greater zero.',
+      'greater than or equal to zero.',
 };
 
 export class Delay extends React.PureComponent<IDelayOwnProps, IDelayState> {
@@ -26,7 +26,7 @@ export class Delay extends React.PureComponent<IDelayOwnProps, IDelayState> {
     const { timeout } = this.props;
 
     assert(
-      timeout > 0,
+      timeout >= 0,
       strings.TIMEOUT_NOT_GREATER_THAN_OR_EQUAL_TO_ZERO_NUMBER,
     );
 

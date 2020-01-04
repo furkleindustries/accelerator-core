@@ -44,6 +44,8 @@
     "node_modules/",
     "public/",
     "scripts/",
+    "src/worldModeling",
+    "templates/",
     "**/*.test.*"
   ]
 }

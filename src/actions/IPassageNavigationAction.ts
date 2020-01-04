@@ -13,7 +13,8 @@ import {
 
 export interface IPassageNavigationAction extends IAction {
   readonly type: ActionTypes.PassageNavigation;
-  readonly value:
-    { passage: IPassage } &
-    { tags: ILastLinkTagsAware['lastLinkTags']; };
+  readonly value: (
+    { readonly passage: IPassage } &
+      { readonly linkTags: ILastLinkTagsAware['lastLinkTags'] }
+  );
 }

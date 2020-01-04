@@ -13,7 +13,7 @@ export const Iterator: React.FunctionComponent<IteratorProps> = ({
   filter = () => true,
   mapper = (child) => child,
 }) => {
-  let output = [];
+  const output = [];
   for (const item of collection) {
     let finalItem = item;
     if (typeof filter === 'function' && !filter(finalItem)) {

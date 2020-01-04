@@ -1,7 +1,4 @@
 import {
-  ActionTypes
-} from '../actions/ActionTypes';
-import {
   BuiltInRenderers,
 } from '../renderers/BuiltInRenderers';
 import {
@@ -16,6 +13,9 @@ import {
 import {
   MaybeReadonlyArray,
 } from '../typeAliases/MaybeReadonlyArray';
+import {
+  ActionTypes
+} from 'redux-undo';
 
 export interface IAcceleratorConfig extends
   Record<string, any>,

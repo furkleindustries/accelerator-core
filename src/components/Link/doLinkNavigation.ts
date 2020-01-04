@@ -11,7 +11,7 @@ import {
 export const strings = {
   PASSAGE_DOES_NOT_EXIST:
     'The passageName argument, %name%, does not match any passages within ' +
-    'the passages map.',
+      'the passages map.',
 };
 
 export function doLinkNavigation({

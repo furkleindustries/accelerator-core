@@ -1,6 +1,6 @@
 import {
   ILoadingScreenOwnProps,
-} from '../components/LoadingScreen';
+} from '../components/LoadingScreen/ILoadingScreenOwnProps';
 import {
   MaybeReadonlyArray,
 } from '../typeAliases/MaybeReadonlyArray';

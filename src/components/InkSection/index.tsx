@@ -44,7 +44,7 @@ export const InkSection: React.FunctionComponent<InkSectionOwnProps> = ({
           >
             <Button
               className={classNames(styles.choiceButton, 'choiceButton')}
-              onClick={() => onClick(key)}
+              onClick={onClick.bind(null, key)}
             >
               <div
                 className={classNames(

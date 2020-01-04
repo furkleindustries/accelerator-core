@@ -15,7 +15,12 @@ import {
   assertValid,
 } from 'ts-assertions';
 
-import manifest from '../../passages/passages-manifest';
+import {
+  default as manifest,
+  registry,
+} from '../../passages/passages-manifest';
+
+type RegistryType = typeof registry;
 
 export const strings = {
   MULTIPLE_DEFAULT_PASSAGES:
@@ -47,11 +52,11 @@ assert(manifest.length, strings.PASSAGES_MANIFEST_EMPTY);
 
 /* Memoize results and return them without computation on repeat calls. */
 let passagesMap: IPassagesMap | null = null;
-let startPassageName: string | null = null;
+let startPassageName: keyof RegistryType | null = null;
 
 export const getPassagesMapAndStartPassageName = (): {
   passagesMap: IPassagesMap;
-  startPassageName: string;
+  startPassageName: keyof RegistryType;
 } => {
   /* Return the memoized results if they exist. */
   if (passagesMap && startPassageName) {
@@ -61,7 +66,7 @@ export const getPassagesMapAndStartPassageName = (): {
     };
   }
 
-  passagesMap = {};
+  passagesMap = {} as IPassagesMap;
 
   manifest.forEach(({
     asset,
@@ -106,7 +111,7 @@ export const getPassagesMapAndStartPassageName = (): {
     }
   });
 
-  const safeStartPassageName = assertValid<string>(
+  const safeStartPassageName = assertValid<keyof RegistryType>(
     startPassageName,
     strings.NO_START_PASSAGE,
   );

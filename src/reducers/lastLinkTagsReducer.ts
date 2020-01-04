@@ -21,7 +21,7 @@ export const lastLinkTagsReducer = (
 ): ILastLinkTagsAware['lastLinkTags'] => {
   let ret;
   if (action.type === ActionTypes.PassageNavigation) {
-    ret = (action.value.tags || []).map((tag) => (
+    ret = (action.value.linkTags || []).map((tag) => (
       typeof tag === 'string' ?
         {
           key: tag,

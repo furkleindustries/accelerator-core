@@ -11,9 +11,7 @@ import {
   IFontSubsettingDetailsNormalized,
 } from '../fonts/IFontSubsettingDetailsNormalized';
 
-export interface IAcceleratorConfigNormalized
-  extends Omit<IAcceleratorConfig, 'historySaveTypes'>
-{
+export interface IAcceleratorConfigNormalized extends IAcceleratorConfig {
   readonly fontsToLoad?: readonly IFontLoadingDetailsNormalized[];
   readonly subsetFont?: IFontSubsettingDetailsNormalized;
   readonly historySaveTypes: readonly ActionTypes[];

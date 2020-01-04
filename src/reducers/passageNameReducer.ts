@@ -14,6 +14,12 @@ import {
   assert,
 } from 'ts-assertions';
 
+import {
+  registry,
+} from '../../passages/passages-manifest';
+
+type RegistryType = typeof registry;
+
 export const strings = {
   NO_START_PASSAGE_NAME:
     'There was no start passage name when currentPassageNameReducer was'
@@ -22,11 +28,10 @@ export const strings = {
 const { startPassageName } = getPassagesMapAndStartPassageName();
 assert(startPassageName, strings.NO_START_PASSAGE_NAME);
 
-export function passageNameReducer(
-  previousState: string = startPassageName,
+export const passageNameReducer = (
+  previousState: keyof RegistryType = startPassageName,
   action: IPassageNavigationAction | IStoryResetAction,
-): string
-{
+): keyof RegistryType => {
   if (action.type === ActionTypes.PassageNavigation) {
     return action.value.passage.name;
   } else if (action.type === ActionTypes.StoryReset) {
@@ -34,4 +39,4 @@ export function passageNameReducer(
   }
 
   return previousState;
-}
+};

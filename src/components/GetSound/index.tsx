@@ -22,6 +22,7 @@ export const GetSound: React.FunctionComponent<
           getGroup,
           getSound,
           hasIntentToAddSound,
+          hasGroup,
           hasSound,
         },
       },
@@ -35,6 +36,8 @@ export const GetSound: React.FunctionComponent<
         {
           getGroup,
           getSound,
+          hasGroup,
+          hasSound,
           soundManager,
         },
       )

@@ -44,7 +44,7 @@ const authoredPluginsDir = path.join(__dirname, '..', 'plugins');
       getAuthoredAssetObjectDefinitions(files).join('\n') +
       '\n];\n\n' +
       'export default manifest;\n\n' + 
-      `export const registry = ${JSON.stringify(registry)}\n\n` +
+      `export const registry = ${JSON.stringify(registry, null, 2)}\n\n` +
       getHotReloadAcceptor(importPaths) +
       '\n';
 

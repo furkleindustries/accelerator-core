@@ -16,24 +16,28 @@ import * as React from 'react';
 
 import styles from './sound-manager.less';
 
-const SoundManagerOption: React.FunctionComponent<
+const Option: React.FunctionComponent<
   IStoryOptionComponentOwnProps
 > = ({
   getBreadcrumbProps,
+  open,
   treeSelector,
+  visibilityTree,
 }) => (
   <StoryOptionsList
     getBreadcrumbProps={getBreadcrumbProps}
     className={classNames(styles.soundPanelContainer, 'soundPanelContainer')}
     title="Sound options"
+    open={open}
     treeSelector={treeSelector}
-  >{
-    [ <SoundManagerAudioPanel key={0} /> ]
-  }</StoryOptionsList>
+    visibilityTree={visibilityTree}
+  >
+    {[ <SoundManagerAudioPanel key={0} /> ]}
+  </StoryOptionsList>
 );
 
 const option: IStoryOption = {
-  content: SoundManagerOption,
+  content: Option,
   name: 'sound-manager-option',
 };
 

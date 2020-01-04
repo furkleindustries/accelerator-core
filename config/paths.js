@@ -14,12 +14,13 @@ const { publicUrl } = getNormalizedAcceleratorConfig();
 export const paths = {
   publicUrl,
   moduleFileExtensions: [
+    'css',
     'js',
+    'json',
     'jsx',
     'mjs',
     'ts',
     'tsx',
-    'json',
   ],
 
   appBuild: resolveApp('build-web/'),

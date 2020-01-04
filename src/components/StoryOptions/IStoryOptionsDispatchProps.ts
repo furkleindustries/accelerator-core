@@ -1,10 +1,11 @@
 import {
+  IDispatchAware,
+} from '../../interfaces/IDispatchAware';
+import {
   IStoryOptionUpdateAction,
 } from '../../actions/IStoryOptionUpdateAction';
-import {
-  Dispatch,
-} from 'redux';
 
-export interface IStoryOptionsDispatchProps {
-  readonly dispatch: Dispatch<IStoryOptionUpdateAction>;
+export interface IStoryOptionsDispatchProps
+  extends IDispatchAware<IStoryOptionUpdateAction>
+{
 }

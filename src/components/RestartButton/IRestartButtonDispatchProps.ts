@@ -1,10 +1,11 @@
 import {
+  IDispatchAware,
+} from '../../interfaces/IDispatchAware';
+import {
   IStoryResetAction,
 } from '../../actions/IStoryResetAction';
-import {
-  Dispatch,
-} from 'redux';
 
-export interface IRestartButtonDispatchProps {
-  readonly dispatch: Dispatch<IStoryResetAction>;
+export interface IRestartButtonDispatchProps
+  extends IDispatchAware<IStoryResetAction>
+{
 }

@@ -1,3 +1,3 @@
 export interface IClickerState {
-  clicked: boolean;
+  readonly clicked: boolean;
 }

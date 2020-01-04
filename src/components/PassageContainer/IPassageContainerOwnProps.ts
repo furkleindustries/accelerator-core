@@ -1,6 +1,6 @@
 import {
-  IAction,
-} from '../../actions/IAction';
+  IDispatchAware,
+} from '../../interfaces/IDispatchAware';
 import {
   IFooter,
 } from '../../passages/IFooter';
@@ -13,12 +13,12 @@ import {
 import {
   IPassageContentContainerOwnProps,
 } from '../PassageContentContainer/IPassageContentContainerOwnProps';
-import {
-  Dispatch,
-} from 'redux';
 
-export interface IPassageContainerOwnProps extends IPassageContentContainerOwnProps {
-  readonly dispatch: Dispatch<IAction>;
+export interface IPassageContainerOwnProps
+  extends
+    IDispatchAware,
+    IPassageContentContainerOwnProps
+{
   readonly footers: MaybeReadonlyArray<IFooter>;
   readonly headers: MaybeReadonlyArray<IHeader>;
 }

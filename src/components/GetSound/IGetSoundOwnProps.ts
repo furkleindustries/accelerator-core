@@ -1,12 +1,16 @@
-import { IRendersPlaceholder } from '../../interfaces/IRendersPlaceholder';
+import {
+  IGetSoundUtilities,
+} from './IGetSoundUtilities';
 import {
   INamed,
 } from '../../interfaces/INamed';
 import {
+  IRendersPlaceholder,
+} from '../../interfaces/IRendersPlaceholder';
+import {
   ReactNode,
 } from 'react';
 import {
-  IManager,
   ISound,
 } from 'sound-manager';
 
@@ -16,12 +20,6 @@ export interface IGetSoundOwnProps extends
 {
   readonly children: (
     sound: ISound,
-    utilities: {
-      soundManager: IManager;
-      getGroup: IManager['collection']['getGroup'];
-      getSound: IManager['collection']['getSound'];
-      hasGroup: IManager['collection']['hasGroup'];
-      hasSound: IManager['collection']['hasSound'];
-    },
+    utilities: IGetSoundUtilities,
   ) => ReactNode;
 }

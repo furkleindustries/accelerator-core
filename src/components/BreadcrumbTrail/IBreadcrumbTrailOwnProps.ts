@@ -8,6 +8,12 @@ import {
   INamed,
 } from '../../interfaces/INamed';
 import {
+  IOpenable,
+} from '../../interfaces/IOpenable';
+import {
+  MaybeReadonlyArray,
+} from '../../typeAliases/MaybeReadonlyArray';
+import {
   OneOrMaybeReadonlyArray,
 } from '../../typeAliases/OneOrMaybeReadonlyArray';
 import {
@@ -17,12 +23,17 @@ import {
 
 export interface IBreadcrumbTrailOwnProps extends
   IClassNameable,
+  IOpenable,
   Partial<INamed>
 {
-  readonly children: OneOrMaybeReadonlyArray<ReactElement[]>;
-  readonly listComponent: ComponentType<IBreadcrumbTrailAware & {
-    readonly children: OneOrMaybeReadonlyArray<any>;
-    readonly open?: boolean;
-    readonly root?: boolean;
-  }>;
+  readonly children: (args: IBreadcrumbTrailAware) => OneOrMaybeReadonlyArray<MaybeReadonlyArray<ReactElement>>;
+  readonly listComponent: (
+    ComponentType<Partial<IBreadcrumbTrailAware> &
+      IOpenable &
+      {
+        readonly children: OneOrMaybeReadonlyArray<any>;
+        readonly root?: boolean;
+      }
+    >
+  );
 }

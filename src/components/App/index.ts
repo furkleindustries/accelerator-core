@@ -1,3 +1,0 @@
-export {
-  App,
-} from './App';

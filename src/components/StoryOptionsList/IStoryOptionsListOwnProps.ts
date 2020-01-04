@@ -5,14 +5,14 @@ import {
   IClassNameable,
 } from '../../interfaces/IClassNameable';
 import {
+  IOpenable,
+} from '../../interfaces/IOpenable';
+import {
   IStoryOptionComponentOwnProps,
 } from '../../storyOptions/IStoryOptionComponentOwnProps';
 import {
   ITitleable,
 } from '../../interfaces/ITitleable';
-import {
-  IVisibilityTreeAware,
-} from '../BreadcrumbTrail/IVisibilityTreeAware';
 import {
   OneOrMaybeReadonlyArray,
 } from '../../typeAliases/OneOrMaybeReadonlyArray';
@@ -24,8 +24,8 @@ export interface IStoryOptionsListOwnProps
   extends
     IBreadcrumbTrailAware,
     IClassNameable,
-    ITitleable,
-    IVisibilityTreeAware
+    IOpenable,
+    ITitleable
 {
   /**
    * Allow both <StoryOption /> and <StoryOptionList /> children.
@@ -35,6 +35,5 @@ export interface IStoryOptionsListOwnProps
     IStoryOptionComponentOwnProps | IStoryOptionsListOwnProps
   >>;
 
-  readonly open?: boolean;
   readonly root?: boolean;
 }

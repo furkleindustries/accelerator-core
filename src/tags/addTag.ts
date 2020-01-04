@@ -8,6 +8,9 @@ import {
   ITag,
 } from './ITag';
 import {
+  MaybeReadonlyArray,
+} from '../typeAliases/MaybeReadonlyArray';
+import {
   Tag,
 } from './Tag';
 import {
@@ -16,8 +19,8 @@ import {
 
 export const addTag = (
   tag: Tag,
-  tags: Tag[] | readonly Tag[] = [],
-): ITag[] => {
+  tags: MaybeReadonlyArray<Tag> = [],
+): readonly ITag[] => {
   assert(
     Array.isArray(tags),
     'The tags argument provided to addTag was not an array.',

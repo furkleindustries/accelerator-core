@@ -2,6 +2,21 @@ import {
   shallow,
 } from 'enzyme';
 
+jest.mock('../../src/passages/checkPassageAsset', () => ({
+  __esModule: true,
+  checkPassageAsset: () => true,
+}));
+
+jest.mock('../../src/passages/getPassagesMapAndStartPassageName', () => ({
+  __esModule: true,
+  getPassagesMapAndStartPassageName: () => ({
+    passagesMap: {},
+    startPassageName: '___test___',
+  }),
+}));
+
+document.querySelector = jest.fn(() => ({}));
+
 import passage from './ink-testing';
 
 import {
@@ -34,8 +49,7 @@ describe('Tests for the ink-testing passage.', () => {
         } else if (typeof aa === 'object') {
           if (aa.key &&
               typeof aa.key === 'string' &&
-              aa.value &&
-              typeof aa.value === 'string')
+              typeof aa.value !== 'undefined')
           {
             return true;
           }
@@ -58,7 +72,7 @@ const getPassageMockArgs = (): IPassageProps => ({
   config: {} as any,
   dispatch: jest.fn(),
   lastLinkTags: [],
-  passageObject: {} as any,
+  passage: {} as any,
   soundManager: {} as any,
   storyState: {},
   bookmark: jest.fn(),

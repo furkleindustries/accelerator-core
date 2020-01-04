@@ -2,4 +2,7 @@ import {
   INoChildren,
 } from '../../interfaces/INoChildren';
 
-export type IStoryOptionsOwnProps = INoChildren;
+export interface IStoryOptionsOwnProps
+  extends INoChildren
+{
+}

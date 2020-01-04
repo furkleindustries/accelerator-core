@@ -12,7 +12,7 @@ import {
 } from './IBeginLoadOptions';
 import {
   ILoadingScreenOwnProps,
-} from '../components/LoadingScreen';
+} from '../components/LoadingScreen/ILoadingScreenOwnProps';
 import {
   InitializationHandlerOptions,
 } from './InitializationHandlerOptions';

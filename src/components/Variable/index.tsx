@@ -13,12 +13,14 @@ export const Variable: React.FunctionComponent<IVariableProps> = ({
   doError,
 }) => (
   <AppContextConsumerWrapper>
-    {({ store }) => {
+    {({
+      store: { getState }
+    }) => {
       const {
         history: {
           present: { storyState },
         },
-      } = store.getState();
+      } = getState();
 
       if (!(name in storyState)) {
         if (!doError) {
@@ -30,7 +32,9 @@ export const Variable: React.FunctionComponent<IVariableProps> = ({
         );
       }
 
-      return <Print>{storyState[name]}</Print>;
+      return (
+        <Print>{storyState[name]}</Print>
+      );
     }}
   </AppContextConsumerWrapper>
 );

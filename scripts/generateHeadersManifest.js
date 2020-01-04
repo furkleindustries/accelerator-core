@@ -42,8 +42,9 @@ const authoredHeadersDir = path.join(__dirname, '..', 'headers');
       imports.join('\n') +
       '\nconst manifest: readonly IHeaderManifestItem[] = [\n' +
       getAuthoredAssetObjectDefinitions(files).join('\n') +
-      '\n];\n\nexport default manifest;\n\n' +
-      `export const registry = ${JSON.stringify(registry)}\n\n` +
+      '\n];\n\n' +
+      'export default manifest;\n\n' +
+      `export const registry = ${JSON.stringify(registry, null, 2)}\n\n` +
       getHotReloadAcceptor(importPaths) +
       '\n';
 

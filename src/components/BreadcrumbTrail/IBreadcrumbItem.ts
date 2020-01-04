@@ -2,12 +2,12 @@ import {
   INamed,
 } from '../../interfaces/INamed';
 import {
-  IVisibilityTreeAware,
-} from './IVisibilityTreeAware';
+  TreeSelector,
+} from './TreeSelector';
 
 export interface IBreadcrumbItem extends INamed {
   readonly logo?: string;
   readonly logoAlt?: string;
   readonly title?: string;
-  readonly treeSelector?: IVisibilityTreeAware['treeSelector'];
+  readonly treeSelector?: TreeSelector;
 }

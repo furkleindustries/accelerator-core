@@ -1,4 +1,7 @@
 import {
+  IState,
+} from './IState';
+import {
   createStore as reduxCreateStore,
 } from 'redux';
 import {
@@ -7,11 +10,12 @@ import {
 
 declare const window: any;
 
-export function createStore(prerenderedState?: object) {
+export function createStore(prerenderedState?: IState) {
   const store = reduxCreateStore(
     rootReducer,
     prerenderedState,
     (
+      typeof window !== 'undefined' &&
       window &&
       window.__REDUX_DEVTOOLS_EXTENSION__ &&
       window.__REDUX_DEVTOOLS_EXTENSION__()

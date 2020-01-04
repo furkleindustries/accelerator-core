@@ -11,5 +11,7 @@ export const UnorderedList: React.FunctionComponent = ({
   children,
   ...props
 }: IListOwnProps) => ( 
-  <List {...props}>{children}</List>
+  <List {...props}>
+    {children}
+  </List>
 );

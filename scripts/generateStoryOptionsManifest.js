@@ -44,7 +44,7 @@ const authoredStoryOptionsDir = path.join(__dirname, '..', 'options');
       getAuthoredAssetObjectDefinitions(files).join('\n') +
       '\n];\n\n' +
       'export default manifest;\n\n' + 
-      `export const registry = ${JSON.stringify(registry)}\n\n` +
+      `export const registry = ${JSON.stringify(registry, null, 2)}\n\n` +
       getHotReloadAcceptor(importPaths) +
       '\n';
 

@@ -29,18 +29,18 @@
     "build:get-electron-redists": "node -r esm scripts/getElectronRedists.js",
     "build:install": "npm install",
     "build:promote-content-to-executables": "node -r esm scripts/promoteContentToExecutables.js",
-    "build:publish": "npm-run-all build:shrinkwrap test:nowatch",
+    "build:publish": "npm-run-all build build:shrinkwrap test:nowatch",
     "build:refresh-node-modules": "npm-run-all build:clean-modules build:install",
     "build:script": "node -r esm scripts/build.js",
     "build:shrinkwrap": "npm shrinkwrap",
     "build:webpack-debug": "cross-env NODE_ENV=development node -r esm node_modules/webpack/bin/webpack.js --config config/webpack/webpack.config.js --verbose",
-    "prepublishOnly": "npm-run-all build:publish",
     "test": "npm-run-all build:generate-manifests test:script",
     "test:coverage": "npm-run-all build:generate-manifests test:script-coverage",
     "test:nowatch": "npm-run-all build:generate-manifests test:script-nowatch",
     "test:script": "node -r esm scripts/test.js --config=jest.config.js",
     "test:script-coverage": "node -r esm scripts/test.js --config=jest.config.js --coverage",
-    "test:script-nowatch": "node -r esm scripts/test.js --config=jest.config.js --dontWatch"
+    "test:script-nowatch": "node -r esm scripts/test.js --config=jest.config.js --dontWatch",
+    "prepublishOnly": "npm-run-all build:publish"
   },
   "browserslist": [
     ">0.2%",
@@ -186,6 +186,8 @@
   "eslintIgnore": [
     "bundles/",
     "config/",
+    "lib",
+    "src/worldModeling/*",
     "templates/"
   ]
 }

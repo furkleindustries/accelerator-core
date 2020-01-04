@@ -1,7 +1,7 @@
 import {
-  IStoryStateFrame,
-} from '../../state/IStoryStateFrame';
+  ISetStoryStateAware,
+} from '../../interfaces/ISetStoryStateAware';
 
-export interface InkContainerDispatchProps {
-  readonly setStoryState: (updatedStoryState: IStoryStateFrame) => void;
+export interface InkContainerDispatchProps extends ISetStoryStateAware
+{
 }

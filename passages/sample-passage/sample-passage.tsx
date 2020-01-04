@@ -14,6 +14,7 @@ import {
   BuiltInTags,
 } from '../../bundles/tagsBundle';
 
+// @ts-ignore
 import AuthoringPassage from './sample-passage.mdx';
 
 class Passage extends React.PureComponent<IPassageProps> {

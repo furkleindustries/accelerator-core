@@ -2,21 +2,24 @@ import {
   IClassNameable,
 } from '../../interfaces/IClassNameable';
 import {
-  IPassagesMap,
-} from '../../passages/IPassagesMap';
+  IPassagesMapAware,
+} from '../../interfaces/IPassagesMapAware';
 import {
-  IPlugin,
-} from '../../plugins/IPlugin';
+  IPluginsAware,
+} from '../../interfaces/IPluginsAware';
 import {
   MaybeReadonlyArray,
 } from '../../typeAliases/MaybeReadonlyArray';
 
-export interface ICyclingLinkInternalOwnProps extends IClassNameable {
+export interface ICyclingLinkInternalOwnProps
+  extends
+    IClassNameable,
+    IPassagesMapAware,
+    IPluginsAware
+{
   readonly children: MaybeReadonlyArray<string>;
   readonly dontCallbackOnMount?: boolean;
   readonly dontSetVariableOnMount?: boolean;
-  readonly passagesMap: IPassagesMap;
-  readonly plugins: MaybeReadonlyArray<IPlugin>;
   readonly variableToSet?: string;
   readonly callback?: (current?: string) => void;
 }

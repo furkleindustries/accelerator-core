@@ -23,6 +23,7 @@ import {
   Ontology,
 } from '../ontology/Ontology';
 
+// @ts-ignore
 export class ObjectModel<
   Being extends OnticTypes,
 > extends ModelBase<ModelType.Object, Being>
