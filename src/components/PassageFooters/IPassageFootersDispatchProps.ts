@@ -1,7 +1,7 @@
 import {
   IAction,
 } from '../../actions/IAction';
-import {
+import type {
   Dispatch,
 } from 'redux';
 

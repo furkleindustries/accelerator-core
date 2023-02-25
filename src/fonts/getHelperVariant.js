@@ -2,18 +2,25 @@ import {
   assertValid,
 } from 'ts-assertions';
 
-export function getHelperVariant({
+export const getHelperVariant = ({
   family,
   style,
   variants,
   weight,
-}) {
-  return assertValid(
+}) => (
+  assertValid(
     variants.find(({
       fontStyle,
       fontWeight,
-    }) => style === fontStyle && String(weight) === fontWeight),
+    }) => {
+      if (style !== fontStyle) {
+        return false;
+      }
+
+      return fontWeight === String(weight);
+    }),
+
     `A matching web font could not be found for the font family "${family}" ` +
       `with the style "${style}" and weight "${weight}".`,
-  );
-}
+  )
+);

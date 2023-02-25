@@ -8,16 +8,15 @@ import {
   IStoryResetAction,
 } from '../actions/IStoryResetAction';
 
-export function storyRequiresFullRerenderReducer(
-  previousValue: boolean = false,
+export const storyRequiresFullRerenderReducer = (
+  previousValue = false,
   action: IStoryResetAction | IStoryRequiresFullRerenderAction,
-)
-{
+) => {
   if (action.type === ActionTypes.StoryReset) {
     return true;
   } else if (action.type === ActionTypes.StoryRequiresFullRerender) {
-    return action.value;
+    return action.value as boolean;
   }
 
   return previousValue;
-}
+};

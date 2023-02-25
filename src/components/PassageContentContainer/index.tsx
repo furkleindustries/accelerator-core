@@ -14,10 +14,6 @@ import {
   IPassageProps,
 } from '../../passages/IPassageProps';
 import {
-  connect,
-  MapDispatchToProps,
-} from 'react-redux';
-import {
   assert,
   assertValid,
 } from 'ts-assertions';
@@ -30,7 +26,7 @@ export const strings = {
     'was not found.',
 
   CANT_RENDER_NORENDER_PASSAGE:
-    'A passage with the tag "noRender" was passed to PassageContainer. ' +
+    'A passage with the tag "NoRender" was passed to PassageContainer. ' +
     'These passages cannot be rendered and should be used solely for ' +
     'exporting reusable content.',
 
@@ -38,15 +34,17 @@ export const strings = {
     'No passage could be found in the passages map with the name %NAME%.',
 };
 
-export const PassageContentContainer: React.FunctionComponent<
-  IPassageContentContainerOwnProps & IPassageContentContainerDispatchProps
+export const PassageContentContainer: React.FC<
+  IPassageContentContainerOwnProps &
+    IPassageContentContainerDispatchProps
 > = ({
-  passage,
-  passage: {
+  passageObject: passage,
+  passageObject: {
     content,
     tags,
   },
 
+  store,
   ...passageProps
 }) => {
   const SafeContent = assertValid<React.ComponentType<IPassageProps>>(
@@ -54,25 +52,25 @@ export const PassageContentContainer: React.FunctionComponent<
     strings.COMPONENT_NOT_FOUND,
   );
 
-  assert(
-    Array.isArray(tags) && !getTag(tags, BuiltInTags.NoRender),
-    strings.CANT_RENDER_NORENDER_PASSAGE,
-  );
+  if (Array.isArray(tags)) {
+    assert(
+      !getTag(tags, BuiltInTags.NoRender),
+      strings.CANT_RENDER_NORENDER_PASSAGE,
+    );
+  }
 
   return (
     <SafeContent
-      passage={passage}
       {...passageProps}
+
+      passageObject={{
+        ...passage,
+        tags: Array.isArray(tags) ?
+          [ ...tags ] :
+          [],
+      }}
+
+      store={store}
     />
   );
 };
-
-export const mapDispatchToProps: MapDispatchToProps<
-  IPassageContentContainerDispatchProps,
-  {}
-> = (dispatch) => ({ dispatch });
-
-export const PassageContentContainerConnected = connect(
-  null,
-  mapDispatchToProps,
-)(PassageContentContainer);

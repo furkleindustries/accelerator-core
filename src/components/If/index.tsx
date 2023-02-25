@@ -10,7 +10,7 @@ import {
 
 import * as React from 'react';
 
-export const If: React.FunctionComponent<IfProps> = ({
+export const If: React.FC<IfProps> = ({
   children,
   condition,
 }) => {
@@ -27,7 +27,7 @@ export const If: React.FunctionComponent<IfProps> = ({
 
 export const strip = (children: React.ReactChildren) => {
   return React.Children.toArray(
-    React.Children.toArray<React.ReactNode>(children).filter((child) => {
+    React.Children.toArray(children).filter((child) => {
       if (React.isValidElement(child) &&
         (child.type === Else ||
           child.props.originalType === 'else' ||
@@ -44,7 +44,7 @@ export const strip = (children: React.ReactChildren) => {
 };
 
 export const findValidFallbackCondition = (children: React.ReactChildren) => {
-  for (const child of React.Children.toArray<React.ReactNode>(children)) {
+  for (const child of React.Children.toArray(children)) {
     if (React.isValidElement(child)) {
       if (child.type === ElseIf ||
         child.props.originalType === 'else-if' ||

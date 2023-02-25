@@ -7,7 +7,8 @@ import {
 
 import * as React from 'react';
 
-export const Breadcrumb: React.FunctionComponent<IBreadcrumbOwnProps> = ({
+export const Breadcrumb: React.FC<IBreadcrumbOwnProps> = ({
+  children,
   crumb: {
     logo,
     logoAlt,

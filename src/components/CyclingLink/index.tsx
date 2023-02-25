@@ -16,19 +16,22 @@ export const strings = {
     'was an empty string.',
 };
 
-export const CyclingLink: React.FunctionComponent<ICyclingLinkOwnProps> = ({
+export const CyclingLink: React.FC<ICyclingLinkOwnProps> = ({
   children,
   ...props
 }) => (
   <AppContextConsumerWrapper>
     {({
+      getSoundManager,
       passagesMap,
       plugins,
     }) => (
       <CyclingLinkInternalConnected
+        {...props}
+
+        getSoundManager={getSoundManager}
         passagesMap={passagesMap}
         plugins={plugins}
-        {...props}
       >
         {children}
       </CyclingLinkInternalConnected>

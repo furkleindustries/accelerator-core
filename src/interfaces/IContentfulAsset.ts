@@ -1,7 +1,7 @@
 import {
   IAsset,
 } from './IAsset';
-import {
+import type {
   ComponentType,
 } from 'react';
 

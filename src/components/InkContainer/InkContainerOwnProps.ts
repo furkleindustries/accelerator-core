@@ -1,26 +1,47 @@
 import {
-  InkModule,
-} from './InkModule';
+  IClassNameable,
+} from '../../interfaces/IClassNameable';
+import {
+  InkDoneCallback,
+} from './InkDoneCallback';
 import {
   InkMutatorObject,
-} from '../../mutators/InkMutatorObject';
+} from '../../ink-mutators/InkMutatorObject';
 import {
-  RefObject,
+  IReduxStoreAware,
+} from '../../interfaces/IReduxStoreAware';
+import {
+  ISoundManagerAware,
+} from '../../interfaces/ISoundManagerAware';
+import {
+  IStoryStateFrame,
+} from '../../state/IStoryStateFrame';
+import {
+  OneOrMaybeReadonlyArray,
+} from '../../typeAliases/OneOrMaybeReadonlyArray';
+import type {
+  ComponentType,
 } from 'react';
-import {
+import type {
   Story,
-} from '../../../lib/ink/inkjs/src/Story';
-import {
-  StoryWithDoneEvent,
-} from '../../../lib/ink/StoryWithDoneEvent';
+} from 'inkjs/engine/Story';
 
-export interface InkContainerOwnProps {
-  readonly inkModule: InkModule;
-  readonly className?: string;
-  readonly doneCallback?: (story: StoryWithDoneEvent) => void;
-  readonly listDefinitions?: Record<string, string | number>;
+export interface InkContainerOwnProps
+  extends
+    IClassNameable,
+    IReduxStoreAware,
+    ISoundManagerAware
+{
+  readonly name: string;
+  readonly components?: Record<string, ComponentType<any>>;
+  readonly delayAfterChoice?: number;
+  readonly delayClassName?: string;
+  readonly doneCallbacks?: OneOrMaybeReadonlyArray<InkDoneCallback>;
   readonly dontMergeComponents?: boolean;
+  readonly externalFunctions?: Record<string, (...args: Array<string | number>) => any>;
+  readonly maxSwipeRight?: number;
+  readonly mergeExtraVariablesIntoStoryState?: boolean;
   readonly mutatorObjects?: InkMutatorObject[];
   readonly observerCallback?: Story.VariableObserver;
-  readonly ref?: RefObject<HTMLDivElement>;
+  readonly variablesToMerge?: Partial<IStoryStateFrame>;
 }

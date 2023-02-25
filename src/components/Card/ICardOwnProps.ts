@@ -1,10 +1,10 @@
-import {
+import type {
   CardActionsProps,
 } from '@material-ui/core/CardActions';
-import {
+import type {
   CardHeaderProps,
 } from '@material-ui/core/CardHeader';
-import {
+import type {
   CardProps,
 } from '@material-ui/core/Card';
 

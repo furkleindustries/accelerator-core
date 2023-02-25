@@ -1,10 +1,10 @@
-import {
+import type {
   DialogActionsProps,
 } from '@material-ui/core/DialogActions';
-import {
+import type {
   DialogProps,
 } from '@material-ui/core/Dialog';
-import {
+import type {
   DialogTitleProps,
 } from '@material-ui/core/DialogTitle';
 

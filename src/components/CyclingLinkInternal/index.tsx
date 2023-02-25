@@ -48,18 +48,17 @@ export const strings = {
 
 export class CyclingLinkInternal extends React.PureComponent<
   ICyclingLinkInternalOwnProps &
-  ICyclingLinkInternalStateProps &
-  ICyclingLinkInternalDispatchProps,
+    ICyclingLinkInternalStateProps &
+    ICyclingLinkInternalDispatchProps,
   ICyclingLinkInternalState
 > {
   public readonly state = { startIndex: 0 };
 
-  constructor(
-    props:
-      ICyclingLinkInternalOwnProps &
+  constructor(props:
+    ICyclingLinkInternalOwnProps &
       ICyclingLinkInternalStateProps &
-      ICyclingLinkInternalDispatchProps
-  ) {
+      ICyclingLinkInternalDispatchProps)
+  {
     super(props);
 
     const {
@@ -104,7 +103,7 @@ export class CyclingLinkInternal extends React.PureComponent<
   public render = () => (
     <Cycler
       callback={this.doCallback}
-      className={classNames(this.props.className)}
+      className={classNames('cycling-link', this.props.className)}
       startIndex={this.state.startIndex}
     >
       {this.props.children}
@@ -128,7 +127,9 @@ export class CyclingLinkInternal extends React.PureComponent<
 
   private setStoryState: IStoryStateSetter = (updatedStateProps) => {
     const {
+      autoplayerState,
       dispatch,
+      getSoundManager,
       history,
       history: {
         present: { passageName },
@@ -144,20 +145,28 @@ export class CyclingLinkInternal extends React.PureComponent<
     );
 
     mutateCurrentStoryStateInstanceWithPluginExecution({
+      autoplayerState,
       dispatch,
+      getSoundManager,
       history,
       passageObject,
       plugins,
       updatedStateProps,
     });
-  }
+  };
 }
 
 export const mapStateToProps: MapStateToProps<
   ICyclingLinkInternalStateProps,
   ICyclingLinkInternalOwnProps,
   IState
-> = ({ history }) => ({ history });
+> = ({
+  autoplayerState,
+  history,
+}) => ({
+  autoplayerState,
+  history,
+});
 
 export const mapDispatchToProps: MapDispatchToProps<
   ICyclingLinkInternalDispatchProps,

@@ -7,7 +7,7 @@ import {
 
 import * as React from 'react';
 
-export const Iterator: React.FunctionComponent<IteratorProps> = ({
+export const Iterator: React.FC<IteratorProps> = ({
   children,
   collection,
   filter = () => true,

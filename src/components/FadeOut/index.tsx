@@ -8,7 +8,7 @@ import {
 
 import * as React from 'react';
 
-import styles from './index.less';
+import builtIns from '../../../passages/_global-styles/components/index.less';
 
 export const strings = {
   DURATION_NOT_GREATER_THAN_OR_EQUAL_TO_ZERO_NUMBER:
@@ -16,7 +16,7 @@ export const strings = {
       'greater than or equal to zero.',
 };
 
-export const FadeOut: React.FunctionComponent<IFadeOutOwnProps> = ({
+export const FadeOut: React.FC<IFadeOutOwnProps> = ({
   children,
   className,
   duration,
@@ -28,7 +28,13 @@ export const FadeOut: React.FunctionComponent<IFadeOutOwnProps> = ({
 
   return (
     <div
-      className={classNames(styles.fadeOut, 'fadeOut', className)}
+      className={classNames(
+        builtIns['fade-out'],
+        'fade-out',
+        className,
+      )}
+
+      role="group"
       style={{ animationDuration: `${duration}ms` }}
     >
       {children}

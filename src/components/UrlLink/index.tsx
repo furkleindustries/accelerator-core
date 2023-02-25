@@ -6,21 +6,22 @@ import MuiLink from '@material-ui/core/Link';
 
 import * as React from 'react';
 
-import styles from './index.less';
+import builtIns from '../../../passages/_global-styles/components/index.less';
 
-export const UrlLink: React.FunctionComponent<IUrlLinkOwnProps> = ({
+export const UrlLink: React.FC<IUrlLinkOwnProps> = ({
   children,
   className,
   ...props
 }) => (
   <MuiLink
     {...props}
+
     className={classNames(
-      styles.urlLink,
-      'urlLink',
+      builtIns['url-link'],
+      'url-link',
       className,
     )}
-  >{
-    children
-  }</MuiLink>
+  >
+    {children}
+  </MuiLink>
 );

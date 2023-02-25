@@ -1,6 +1,6 @@
 import {
-  IAction,
-} from '../../actions/IAction';
+  IAcceleratorConfigAware,
+} from '../../interfaces/IAcceleratorConfigAware';
 import {
   IPassagesMap,
 } from '../../passages/IPassagesMap';
@@ -8,21 +8,22 @@ import {
   IPlugin,
 } from '../../plugins/IPlugin';
 import {
-  IState,
-} from '../../state/IState';
+  IReduxStoreAware,
+} from '../../interfaces/IReduxStoreAware';
 import {
-  MaybeReadonlyArray,
-} from '../../typeAliases/MaybeReadonlyArray';
-import {
-  ReactNodeWithoutNullOrUndefined,
-} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
-import {
-  Store,
-} from 'redux';
+  ISoundManagerAware,
+} from '../../interfaces/ISoundManagerAware';
+import type {
+  ReactElement,
+} from 'react';
 
-export interface IPassagePluginsWrapperOwnProps {
-  readonly children: ReactNodeWithoutNullOrUndefined;
+export interface IPassagePluginsWrapperOwnProps
+  extends
+    IAcceleratorConfigAware,
+    IReduxStoreAware,
+    ISoundManagerAware
+{
+  readonly children: ReactElement;
   readonly passagesMap: IPassagesMap;
-  readonly plugins: MaybeReadonlyArray<IPlugin>;
-  readonly reduxStore: Store<IState, IAction>;
+  readonly plugins: readonly IPlugin[];
 }

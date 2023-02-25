@@ -1,0 +1,45 @@
+@import '../../passages/_global-styles/sizes.less';
+@import '../../passages/_global-styles/opacities.less';
+@import '../../passages/_global-styles/times.less';
+@import '../../passages/_global-styles/transitions.less';
+
+.autoplayer-option {
+  display: block;
+  opacity: @opacity-none;
+  transform: scaleY(0.15);
+  transform-origin: top;
+  animation-name: fade-in-autoplayer;
+  animation-delay: 0ms;
+  animation-duration: @text-transition-time / 3;
+  animation-fill-mode: forwards;
+  animation-timing-function: @transition-timing-function;
+
+  .autoplayer-control-container {
+    margin-bottom: @space-med + @space-sm;
+
+    &:first-of-type {
+      margin-top: @space-med + @space-xxs;
+    }
+  }
+
+  .autoplayer-label {
+    margin-right: @space-med + @space-sm + @space-xs + @space-xxs;
+  }
+
+  .autoplayer-input {
+    position: relative;
+    top: 3px;
+  }
+}
+
+@keyframes fade-in-autoplayer {
+  from {
+    opacity: @opacity-none;
+    transform: scaleY(0.15);
+  }
+
+  to {
+    opacity: @opacity-full;
+    transform: scaleY(1);
+  }
+}

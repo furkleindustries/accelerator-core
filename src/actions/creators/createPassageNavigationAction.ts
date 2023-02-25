@@ -2,6 +2,9 @@ import {
   ActionTypes,
 } from '../ActionTypes';
 import {
+  getStructuredTags,
+} from '../../tags/getStructuredTags';
+import {
   IPassage,
 } from '../../passages/IPassage';
 import {
@@ -13,7 +16,6 @@ import {
 import {
   Tag,
 } from '../../tags/Tag';
-import { getStructuredTags } from '../../tags/getStructuredTags';
 
 export const createPassageNavigationAction = (
   passage: IPassage,

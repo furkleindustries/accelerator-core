@@ -1,0 +1,208 @@
+@import '../../passages/_global-styles/animations.less';
+@import '../../passages/_global-styles/borders.less';
+@import '../../passages/_global-styles/colors.less';
+@import '../../passages/_global-styles/fonts.less';
+@import '../../passages/_global-styles/opacities.less';
+@import '../../passages/_global-styles/scroll.less';
+@import '../../passages/_global-styles/sizes.less';
+@import '../../passages/_global-styles/times.less';
+@import '../../passages/_global-styles/transitions.less';
+
+.debug-container {
+  position: absolute;
+  left: 0;
+  top: 7.8vh;
+  bottom: 0;
+  padding: @space-med @space-med 0 0;
+  z-index: 55555;
+}
+
+.debug-container-close {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 2%;
+  top: 10.35%;
+  width: @space-lg + @space-med;
+  min-width: @space-lg + @space-med;
+  height: @space-lg + @space-med;
+  padding: 0;
+  border: solid rgba(@color-black, @opacity-half) @space-xxs;
+  background-color: rgba(@color-white, @opacity-twentieth);
+  color: @color-button;
+  font-size: @font-body;
+  text-align: center;
+  text-shadow: @border-dark-pen-outline;
+  z-index: 5;
+
+  span, p {
+    color: inherit;
+  }
+}
+
+.debug-content-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 45vw;
+  max-width: 32rem;
+  max-width: @space-xxxxl;
+  padding: @space-xl + @space-sm
+    @space-lg
+    @space-lg + @space-sm + @space-xs
+    @space-xl + @space-lg;
+
+  background-color: rgba(@color-white, @opacity-full - @opacity-twentieth);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  opacity: @opacity-none;
+
+  .custom-scroller;
+
+  &:not(.collapsed) {
+    animation-name: fade-in;
+    animation-delay: 0;
+    animation-duration: @text-transition-time / 8;
+    animation-fill-mode: forwards;
+    animation-timing-function: @transition-timing-function;
+  }
+
+  &.collapsed {
+    display: none;
+    opacity: @opacity-none;
+  }
+
+  &::-webkit-scrollbar-track {
+    /* color of the tracking area */
+    background: rgba(@color-white, @opacity-quarter);
+    margin: @space-lg;
+    border-radius: @space-med;
+  }
+
+  ul, ol {
+    margin: 0;
+    padding-right: @space-med + @space-sm;
+  }
+
+  li {
+    display: list-item;
+    padding: 0;
+    margin-left: @space-med;
+    margin-right: 0;
+    color: @color-black;
+    word-break: break-word;
+    list-style: none;
+    list-style-type: none;
+  }
+
+  .typography,
+    :global(.typography),
+    code.typography,
+    :global(code.typography),
+    label.typography,
+    :global(label.typography),
+    span.typography,
+    :global(span.typography),
+    strong.typography,
+    :global(strong.typography)
+  {
+    position: relative;
+    display: inline;
+    color: @color-black;
+    font-size: @font-small;
+    text-shadow: none;
+
+    &.debug-node-arrow {
+      top: -1px;
+      padding-right: @space-xs + @space-xxs;
+      font-size: @font-small * 0.75;
+      cursor: pointer;
+    }
+  }
+
+  strong,
+    strong.typography,
+    strong:global(.typography)
+  {
+    font-family: @font-italic;
+    font-style: italic;
+  }
+}
+
+.collapsed {
+  width: 0;
+  height: 0;
+}
+
+.debug-passage-navigation-container {
+  padding-bottom: @space-sm;
+  border-bottom: double @space-xs rgba(@color-white, @opacity-quarter);
+  border-radius: @space-xs + @space-xxxs;
+  margin-top: @space-med;
+  margin-bottom: @space-med;
+}
+
+.debug-passage-navigation-label {
+  color: @color-white;
+}
+
+.debug-passage-selector {
+  width: 100%;
+}
+
+.debug-passage-selector-item {
+  width: 100%;
+  background-color: @color-black;
+
+  &:hover, &:active {
+    background-color: darken(@color-darkest, 55%);
+  }
+}
+
+.debug-passage-navigation-title {
+  display: block;
+  flex: 1 0 auto;
+  font-size: inherit;
+  text-shadow: unset;
+  box-shadow: unset;
+
+  &:global(.typography) {
+    color: @color-black;
+    margin: 0 0 @space-med @space-sm;
+    text-indent: @space-sm;
+    text-shadow: unset;
+  }
+}
+
+.debug-state-title {
+  display: block;
+  flex: 1 0 auto;
+  font-size: inherit;
+  text-shadow: unset;
+  box-shadow: unset;
+
+  &:global(.typography) {
+    color: @color-black;
+    margin: 0 0 @space-med @space-sm;
+    text-indent: @space-sm;
+    text-shadow: unset;
+  }
+}
+
+.debug-state-readout {
+  display: block;
+  height: 100%;
+  padding: 3%;
+
+  &:global(.MuiTypography-body1) {
+    margin: 0 0 0 15%;
+    font-size: @font-small;
+    color: @color-black;
+    text-align: left;
+    white-space: pre-wrap;
+  }
+}

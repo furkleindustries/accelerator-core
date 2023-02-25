@@ -1,14 +1,20 @@
 import {
-  IBreadcrumbTrailAware,
-} from '../interfaces/IBreadcrumbTrailAware';
+  IBreadcrumbItem,
+} from '../components/BreadcrumbTrail/IBreadcrumbItem';
 import {
-  IOpenable,
-} from '../interfaces/IOpenable';
+  IClassNameable,
+} from '../interfaces/IClassNameable';
+import {
+  AriaAttributes,
+  HTMLAttributes,
+} from 'react';
 
 export interface IStoryOptionComponentOwnProps
   extends
-    IBreadcrumbTrailAware,
-    IOpenable
+    IClassNameable,
+    AriaAttributes,
+    Omit<HTMLAttributes<HTMLElement>, 'className'>
 {
-  readonly updateOptionValue?: (propName: string, value: any) => void;
+  readonly clickOption: (breadcrumb: IBreadcrumbItem) => void;
+  readonly crumb: IBreadcrumbItem;
 }

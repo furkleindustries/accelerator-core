@@ -6,7 +6,7 @@ import MuiPaper from '@material-ui/core/Paper'
 
 import * as React from 'react';
 
-export const Paper: React.FunctionComponent<IPaperProps> = ({
+export const Paper: React.FC<IPaperProps> = ({
   children,
   className,
   ...props

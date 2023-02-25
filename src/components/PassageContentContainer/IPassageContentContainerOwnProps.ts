@@ -11,6 +11,9 @@ import {
   IPassageFunctions,
 } from '../../passages/IPassageFunctions';
 import {
+  IReduxStoreAware,
+} from '../../interfaces/IReduxStoreAware';
+import {
   ISoundManagerAware,
 } from '../../interfaces/ISoundManagerAware';
 import {
@@ -22,7 +25,9 @@ export interface IPassageContentContainerOwnProps extends
   ILastLinkTagsAware,
   IPassageAware,
   IPassageFunctions,
+  IReduxStoreAware,
   ISoundManagerAware,
   IStoryStateAware
 {
+  readonly storyEnded: boolean;
 }

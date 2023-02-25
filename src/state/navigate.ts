@@ -5,6 +5,9 @@ import {
   createPassageNavigationAction,
 } from '../actions/creators/createPassageNavigationAction';
 import {
+  getStructuredTags,
+} from '../tags/getStructuredTags';
+import {
   getTag,
 } from '../tags/getTag';
 import {
@@ -19,7 +22,7 @@ import {
 import {
   MaybeReadonlyArray,
 } from '../typeAliases/MaybeReadonlyArray';
-import {
+import type {
   Dispatch,
 } from 'redux';
 import {
@@ -28,11 +31,10 @@ import {
 import {
   assert,
 } from 'ts-assertions';
-import { getStructuredTags } from '../tags/getStructuredTags';
 
 export const strings = {
   NO_NAVIGATING_TO_NO_RENDER_PASSAGES:
-    'You cannot link to a passage tagged noRender.',
+    'You cannot link to a passage tagged NoRender.',
 
   PASSAGE_INVALID:
     'No passage could be produced from the passageName argument passed to ' +

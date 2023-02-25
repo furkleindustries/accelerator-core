@@ -7,7 +7,7 @@ import {
 
 import * as React from 'react';
 
-export const OneOf: React.FunctionComponent<IOneOfOwnProps> = ({ children }) => (
+export const OneOf: React.FC<IOneOfOwnProps> = ({ children }) => (
   <NOf n={1}>
     {children}
   </NOf>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export const Print: React.FunctionComponent = ({ children }) => {
+export const Print: React.FC = ({ children }) => {
   let retVal: any;
   if (children === null || children === undefined) {
     retVal = null;

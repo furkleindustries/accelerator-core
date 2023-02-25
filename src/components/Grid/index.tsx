@@ -6,7 +6,7 @@ import MuiGrid from '@material-ui/core/Grid';
 
 import * as React from 'react';
 
-export const Grid: React.FunctionComponent<IGridOwnProps> = ({
+export const Grid: React.FC<IGridOwnProps> = ({
   children,
   className,
   ...props

@@ -6,16 +6,17 @@ import MuiChip from '@material-ui/core/Chip';
 
 import * as React from 'react';
 
-import styles from './index.less';
+import builtIns from '../../../passages/_global-styles/components/index.less';
 
-export const Chip: React.FunctionComponent<IChipOwnProps> = ({
+export const Chip: React.FC<IChipOwnProps> = ({
   className,
   ...props
 }) => (
   <MuiChip
     {...props}
+
     className={classNames(
-      styles.chip,
+      builtIns['chip'],
       'chip',
       className,
     )}

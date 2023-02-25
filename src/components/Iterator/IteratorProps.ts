@@ -1,7 +1,7 @@
 import {
   MaybeReadonlyArray,
 } from '../../typeAliases/MaybeReadonlyArray'
-import {
+import type {
   ReactElement,
   ReactNode,
 } from 'react';

@@ -4,4 +4,5 @@ import {
 
 export interface InkLineObject extends ITaggableNormalized {
   readonly text: string;
+  readonly turnIndex: number;
 }

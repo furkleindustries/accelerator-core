@@ -1,4 +1,7 @@
 import {
+  IAcceleratorAutoplayerConfigurationNormalized,
+} from '../../configuration/IAcceleratorAutoplayerConfigurationNormalized';
+import {
   IHistory,
 } from '../../state/IHistory';
 import {
@@ -15,6 +18,7 @@ import {
 } from '../../tags/Tag';
 
 export interface IPassageRendererWrapperStateProps {
+  readonly autoplayerState: IAcceleratorAutoplayerConfigurationNormalized;
   readonly history: IHistory;
   readonly lastLinkTags: MaybeReadonlyArray<Tag>;
   readonly passageObject: IPassage;

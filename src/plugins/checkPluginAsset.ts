@@ -2,15 +2,21 @@ import {
   IPluginExport,
 } from './IPluginExport';
 import {
+  IPlugin,
+} from './IPlugin';
+import {
   assert,
   assertValid,
 } from 'ts-assertions';
 
-const methods = [
+const methods: Array<keyof IPlugin> = [
+  'beforeStoryLoad',
   'afterStoryInit',
   'beforePassageChange',
   'beforeRender',
+  'beforeStoryEnd',
   'afterPassageChange',
+  'onAvailableChoices',
   'afterStoryStateChange',
   'beforeRestart',
 ];
@@ -27,12 +33,12 @@ export const strings = {
 
   PLUGIN_NO_LIFECYCLE_METHODS:
     'The plugin object had none of the following lifecycle methods:\n' +
-    methods.join(', '),
+      methods.join(', '),
 };
 
 /* This function returns an error string if the plugin fails, and true if it is
  * a normal plugin object. */
-export function checkPluginAsset(plugin: any): plugin is IPluginExport {
+export const checkPluginAsset = (plugin: any): plugin is IPluginExport => {
   const {
     content,
     name,
@@ -55,4 +61,4 @@ export function checkPluginAsset(plugin: any): plugin is IPluginExport {
 
 
   return true;
-}
+};

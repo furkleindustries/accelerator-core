@@ -2,9 +2,6 @@ import {
   ActionTypes,
 } from '../actions/ActionTypes';
 import {
-  BuiltInTags,
-} from '../tags/BuiltInTags';
-import {
   ILastLinkTagsAware,
 } from '../interfaces/ILastLinkTagsAware';
 import {
@@ -13,13 +10,17 @@ import {
 import {
   IStoryResetAction,
 } from '../actions/IStoryResetAction';
+import {
+  IStoryStateLoadAction,
+} from '../actions/IStoryStateLoadAction';
 
-const deflt: ILastLinkTagsAware['lastLinkTags'] = Object.freeze([ BuiltInTags.Start ]);
 export const lastLinkTagsReducer = (
-  previousState: ILastLinkTagsAware['lastLinkTags'] = deflt,
-  action: IPassageNavigationAction | IStoryResetAction,
+  previousState = [],
+  action: IPassageNavigationAction |
+    IStoryResetAction |
+    IStoryStateLoadAction,
 ): ILastLinkTagsAware['lastLinkTags'] => {
-  let ret;
+  let ret: ILastLinkTagsAware['lastLinkTags'];
   if (action.type === ActionTypes.PassageNavigation) {
     ret = (action.value.linkTags || []).map((tag) => (
       typeof tag === 'string' ?
@@ -30,9 +31,11 @@ export const lastLinkTagsReducer = (
         tag
     ));
   } else if (action.type === ActionTypes.StoryReset) {
-    ret = [ ...deflt ];
+    ret = [];
+  } else if (action.type === ActionTypes.StoryStateLoad) {
+    ret = action.value.engineHistory.present.lastLinkTags;
   } else {
-    ret = previousState;
+    ret = [ ...previousState ];
   }
 
   return Object.freeze(ret);

@@ -6,18 +6,25 @@ import MuiAppBar from '@material-ui/core/AppBar';
 
 import * as React from 'react';
 
-import styles from './index.less';
+import builtIns from '../../../passages/_global-styles/components/index.less';
 
-export const AppBar: React.FunctionComponent<IAppBarOwnProps> = ({
+export const AppBar: React.FC<IAppBarOwnProps> = ({
   className,
+  children,
+  innerRef,
   ...props
 }) => (
   <MuiAppBar
     {...props}
+
     className={classNames(
-      styles.appBar,
-      'appBar',
-      className,
+      builtIns['app-bar'],
+      'app-bar',
     )}
-  />
+
+    role="menubar"
+    aria-roledescription="menubar"
+  >
+    {children}
+  </MuiAppBar>
 );

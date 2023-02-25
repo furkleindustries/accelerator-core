@@ -50,7 +50,6 @@ module.exports = {
     '^.+\\.jsx?$': require.resolve('babel-jest'),
     '^.+\\.tsx?$': require.resolve('ts-jest'),
     '^.+\\.css$': '<rootDir>/config/testing/cssTransform.js',
-    '^.+\\.mdx?$': '<rootDir>/config/testing/mdxTransform.js',
     [`^(?!.*\\.(${moduleFileExtensions.join('|')})$)`]: `<rootDir>/config/testing/fileTransform.js`,
   },
 

@@ -4,4 +4,5 @@ import {
 
 export type IStoryStateSetter = (
   updatedStoryState: Partial<IStoryStateFrame>,
+  ...args: any[]
 ) => void;

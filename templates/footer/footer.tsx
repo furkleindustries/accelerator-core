@@ -7,7 +7,7 @@ import * as components from '../../bundles/componentsBundle';
 import * as passages from '../../bundles/passagesBundle';
 import * as tagsBundle from '../../bundles/tagsBundle';
 
-import builtInStyles from '../_global-styles/built-ins.less';
+import builtIns from '../_global-styles/components/index.less';
 import styles from './{{{name}}}.less';
 
 /* The footer gets all the same props as a normal passage. */
@@ -15,7 +15,7 @@ class Footer extends React.PureComponent<passages.IPassageProps> {
   public render() {
     const {
       lastLinkTags,
-      passageObject,
+      passage,
       navigateTo,
       restart,
       setStoryState,
@@ -27,7 +27,7 @@ class Footer extends React.PureComponent<passages.IPassageProps> {
         className={classnames(
           'footer',
           styles['{{{name}}}'],
-          builtInStyles.footer,
+          builtIns.footer,
         )}
       >
       </components.Footer>

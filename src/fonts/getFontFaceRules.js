@@ -1,3 +1,7 @@
+import chalk from 'chalk';
+import {
+  getFontFaceString,
+} from './getFontFaceString';
 import {
   getFontFilepath,
 } from './getFontFilepath';
@@ -5,70 +9,82 @@ import {
   getHelperVariant,
 } from './getHelperVariant';
 import {
-  getNormalizedAcceleratorConfig,
-} from '../configuration/getNormalizedAcceleratorConfig';
-import {
   getUnicodeRange,
 } from './getUnicodeRange';
-import * as path from 'path';
+import {
+  parse as pathParse,
+} from 'path';
 import {
   paths,
 } from '../../config/paths';
 
-const fontsDir = path.join(__dirname, '..', '..', 'public', 'fonts');
+const fontsDir = paths.fontsDir;
 
-export function getFontFaceRules(
+export const getFontFaceRules = (
   directory,
+
   {
     formats,
     styles,
     ranges,
     weights,
   },
+
   {
     family,
     variants,
   },
-) {
-  const flatRanges = Array.isArray(ranges) ? ranges : [ ranges ];
-  return flatRanges.reduce((rangesArr, range) => {
-    const flatStyles = Array.isArray(styles) ? styles : [ styles ];
-    return rangesArr.concat(flatStyles.reduce((stylesArr, style) => {
-      return stylesArr.concat(weights.reduce((weightsArr, weight) => {
-        const { local } = getHelperVariant({
+) =>(
+  (Array.isArray(ranges) ? ranges : [ ranges ]).reduce((rangesArr, range) => (
+    rangesArr.concat((Array.isArray(styles) ? styles : [ styles ]).reduce((stylesArr, style) => (
+      stylesArr.concat(weights.reduce((weightsArr, weight) => {
+        const helper = getHelperVariant({
           family,
           style,
           variants,
           weight,
         });
 
-        const srcUrls = formats.map((format) => {
-          const filepath = getFontFilepath({
+        const { local = [] } = helper;
+
+        let localName;
+        if (local.length) {
+          localName = local[1] || local[0];
+        } else {
+          localName = family.replace(new RegExp(/\s/), '-');
+        }
+
+        const srcUrls = formats.map((format) => (
+          `url('` +
+            `${directory}/` +
+            pathParse(
+              getFontFilepath({
+                family,
+                format,
+                style,
+                weight,
+                fontsDir,
+              })
+            ).name +
+            `.${format}` +
+          `') format('${format}')`
+        )).join(', ');
+
+        const unicodeRange = getUnicodeRange(range);
+
+        return [
+          ...weightsArr,
+          getFontFaceString({
             family,
-            format,
+            localName,
+            range,
+            srcUrls,
             style,
+            unicodeRange,
             weight,
-            directory: fontsDir,
-          });
-
-          return `url('` +
-            `${directory}/${path.parse(filepath).name}.${format}` +
-          `') format('${format}')`;
-        }).join(', ');
-
-        weightsArr.push(
-          `/* ${range} */\n` +
-          `@font-face {\n` +
-          `  font-family: ${family};\n` +
-          `  font-style: ${style};\n` +
-          `  font-weight: ${weight};\n` +
-          `  src: local('${local[0]}'), local('${local[1]}'), ${srcUrls};\n` +
-          `  unicode-range: ${getUnicodeRange(range)};\n` +
-          `}`
-        );
-
-        return weightsArr;
+          }),
+        ];
       }, []))
-    }, []));
-  }, []);
-}
+    ), []))
+  ), [])
+);

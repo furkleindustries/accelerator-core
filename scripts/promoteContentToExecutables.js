@@ -1,17 +1,20 @@
 import {
-  log,
-  warn,
-} from 'colorful-logging';
+  configurationDefaults,
+} from '../src/configuration/configurationDefaults';
+import * as fs from 'fs-extra';
 import {
   setUnhandledRejectionEvent,
 } from './functions/setUnhandledRejectionEvent';
-import * as fs from 'fs-extra';
-import {
-  getNormalizedAcceleratorConfig,
-} from '../configuration/getNormalizedAcceleratorConfig';
 import * as path from 'path';
 
+import config from '../accelerator.config';
+import packageJson from '../package.json';
+
 setUnhandledRejectionEvent();
+
+const {
+  storyMetadata: { title },
+} = config;
 
 const projectDir = path.join(__dirname, '..');
 const appDir = path.join(projectDir, 'build-web');
@@ -34,7 +37,7 @@ const mainStr =
   `app.on('ready', () => {\n` +
   `  win = new BrowserWindow();\n` +
   `  // Load a local HTML file.\n` +
-  '  win.loadURL(`file://${__dirname}/index.html`);\n' +
+  `  win.loadURL('file://${__dirname}/index.html');\n` +
   `  // ready-to-show; should prevent slow load i.e. issue in Safari.\n` +
   `  win.once('ready-to-show', () => {\n` +
   `    win.show();\n` +
@@ -56,14 +59,9 @@ const mainStr =
   `  }\n` +
   `});`;
 
-const {
-  storyTitle,
-  storyVersion,
-} = getNormalizedAcceleratorConfig();
-
 const packageStr = JSON.stringify({
-  name: storyTitle || 'Untitled Accelerator Story',
-  version: storyVersion || '1.0.0',
+  name: title || configurationDefaults.storyMetadata.title,
+  version: packageJson.version || '1.0.0',
   main: 'main.js',
 }, null, 2);
 
@@ -72,7 +70,7 @@ const skipMacOS =
   process.platform === 'win32';
 
 if (skipMacOS) {
-  warn('Due to issues in the way Windows handles symlinks in zip ' +
+  console.warn('Due to issues in the way Windows handles symlinks in zip ' +
        'archives, it is not possible to make macOS electron ' +
        'packages. You may override this by passing the ' +
        '--force-mac-build-on-windows to the ' +
@@ -107,5 +105,5 @@ if (skipMacOS) {
     fs.outputFile(path.join(windowsDir, 'main.js'), mainStr),
   ]);
 
-  log('Electron bundles are ready.');
+  console.log('Electron bundles are ready.');
 })();

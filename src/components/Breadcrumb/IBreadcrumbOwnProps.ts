@@ -18,4 +18,5 @@ export interface IBreadcrumbOwnProps
     INoChildren
 {
   readonly crumb: IBreadcrumbItem;
+  readonly index: number;
 }

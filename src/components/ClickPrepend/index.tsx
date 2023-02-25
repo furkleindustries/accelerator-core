@@ -8,13 +8,13 @@ import {
 
 import * as React from 'react';
 
-export const ClickPrepend: React.FunctionComponent<IClickPrependOwnProps> = ({
+export const ClickPrepend: React.FC<IClickPrependOwnProps> = ({
   children,
   className,
   toPrepend,
 }) => (
   <Clicker
-    className={classNames(className, 'clickPrepend')}
+    className={classNames('click-prepend', className)}
     contentAfterClick={[
       toPrepend,
       children,

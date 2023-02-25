@@ -9,6 +9,6 @@ import * as React from 'react';
  * involved in "else-if" is performed by the parent `If` component in its
  * render step.
  */
-export const ElseIf: React.FunctionComponent<IfProps> = ({ children }) => (
+export const ElseIf: React.FC<IfProps> = ({ children }) => (
   <>{children}</>
 );

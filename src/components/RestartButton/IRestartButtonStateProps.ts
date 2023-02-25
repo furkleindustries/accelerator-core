@@ -1,4 +1,7 @@
 import {
+  IAcceleratorAutoplayerConfigurationNormalized,
+} from '../../configuration/IAcceleratorAutoplayerConfigurationNormalized';
+import {
   ILastLinkTagsAware,
 } from '../../interfaces/ILastLinkTagsAware';
 import {
@@ -13,4 +16,5 @@ export interface IRestartButtonStateProps extends
   IPassageNamed,
   IStoryStateAware
 {
+  readonly autoplayerState: IAcceleratorAutoplayerConfigurationNormalized;
 }

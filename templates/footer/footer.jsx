@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import * as components from '../../src/bundles/componentsBundle';
 import * as tagsBundle from '../../src/bundles/tagsBundle';
 
-import builtInStyles from '../../../passages/_global-styles/built-ins.less';
+import builtIns from '../../../passages/_global-styles/components/index.less';
 import styles from './{{{name}}}.less';
 
 /* The footer gets all the same props as a normal passage. */
@@ -26,7 +26,7 @@ class Footer extends React.PureComponent {
         className={classnames(
           'footer',
           styles['{{{name}}}'],
-          builtInStyles.footer,
+          builtIns.footer,
         )}
       >
       </components.Footer>

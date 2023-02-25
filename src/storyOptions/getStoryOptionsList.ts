@@ -25,9 +25,9 @@ export const strings = {
 assert(Array.isArray(manifest), strings.STORY_OPTIONS_MANIFEST_INVALID);
 
 /* Memoize results and return them without computation on repeat calls. */
-let storyOptionsList: readonly IStoryOption[] | null = null;
+let storyOptionsList: IStoryOption[] | null = null;
 
-export const getStoryOptionsList = (): readonly IStoryOption[] => {
+export const getStoryOptionsList = (): IStoryOption[] => {
   if (storyOptionsList) {
     return storyOptionsList;
   }

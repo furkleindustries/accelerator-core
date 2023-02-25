@@ -1,20 +1,20 @@
 import {
+  IAcceleratorConfigAware,
+} from '../interfaces/IAcceleratorConfigAware';
+import {
   ILoadingScreenOwnProps,
 } from '../components/LoadingScreen/ILoadingScreenOwnProps';
-import {
-  MaybeReadonlyArray,
-} from '../typeAliases/MaybeReadonlyArray';
-import {
+import type {
   ComponentType,
 } from 'react';
 
-export interface IBeginLoadOptions {
+export interface IBeginLoadOptions extends IAcceleratorConfigAware {
   readonly bodyText?: string;
   readonly component?: ComponentType<ILoadingScreenOwnProps>;
-  readonly descriptions?: MaybeReadonlyArray<string>;
+  readonly doneCallback?: () => void;
+  readonly initialDescription?: string;
+  readonly fadeOutDuration?: number;
   readonly logoPath?: string;
   readonly progressMax?: number;
-  readonly progressStart?: number;
   readonly title?: string;
-  readonly doneCallback?: () => void;
 }

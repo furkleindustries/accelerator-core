@@ -1,15 +1,28 @@
 import {
+  IAcceleratorConfigAware,
+} from '../../interfaces/IAcceleratorConfigAware';
+import {
   IClassNameable,
 } from '../../interfaces/IClassNameable';
 import {
-  MaybeReadonlyArray,
-} from '../../typeAliases/MaybeReadonlyArray';
+  InitializationProgressUpdater,
+} from '../../passages/InitializationProgressUpdater';
+import {
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
-export interface ILoadingScreenOwnProps extends IClassNameable {
-  readonly bodyText: string;
+export interface ILoadingScreenOwnProps
+  extends IClassNameable,
+    IAcceleratorConfigAware
+{
+  readonly addProgressListener: (callback: InitializationProgressUpdater) => void;
+  readonly completeLoad: () => void;
+  readonly fadeOutDuration: number;
+  readonly initialDescription?: string;
+  readonly onDescriptionChange: (callback: (description: string) => void) => void;
   readonly progressMax: number;
-  readonly progressStart: number;
-  readonly logoPath: string;
-  readonly title: string;
-  readonly descriptions?: MaybeReadonlyArray<string>;
+  readonly bodyText?: string;
+  readonly logoPath?: string;
+  readonly startButtonContent?: ReactNodeWithoutNullOrUndefined;
+  readonly title?: string;
 }

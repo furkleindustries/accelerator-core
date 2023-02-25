@@ -3,17 +3,41 @@
  *  
  * `import * as componentsBundle from '../../../bundles/componentsBundle';`
  * 
- * Importing the components bundle in this file will almost certainly produce,
- * especially in testing, cyclic dependencies which will result in undefined
- * modules at runtime. Rather, import each as needed. 
+ * Importing the components bundle in this file will produce cyclic and
+ * unresolvable dependencies, which will result in broken builds or undefined
+ * modules at runtime. Instead, import each as needed from src/components/. 
  */
 
+// This is where your authored component mutations are imported -- don't delete
+// this definition.
+import {
+  authorComponentMutations,
+} from '../../passages/_components/authorComponentsMutations';
+
+import {
+  Address,
+} from '../components/Address';
+import {
+  AppBar,
+} from '../components/AppBar';
+import {
+  AppContextConsumerWrapper,
+} from '../components/AppContextConsumerWrapper';
 import {
   Anchor,
 } from '../components/Anchor';
 import {
   Article,
 } from '../components/Article';
+import {
+  Blockquote,
+} from '../components/Blockquote';
+import {
+  Breadcrumb,
+} from '../components/Breadcrumb';
+import {
+  BreadcrumbTrail,
+} from '../components/BreadcrumbTrail';
 import {
   Button,
 } from '../components/Button';
@@ -23,6 +47,9 @@ import {
 import {
   Chip,
 } from '../components/Chip';
+import {
+  CircularProgress,
+} from '../components/CircularProgress';
 import {
   ClickAppend,
 } from '../components/ClickAppend';
@@ -48,6 +75,36 @@ import {
   CyclingLink,
 } from '../components/CyclingLink';
 import {
+  DebugConnectedTreeNode,
+} from '../components/DebugConnectedTreeNode';
+import {
+  DebugNodeArrow,
+} from '../components/DebugNodeArrow';
+import {
+  DebugObjectInspector,
+} from '../components/DebugObjectInspector';
+import {
+  DebugObjectLabel,
+} from '../components/DebugObjectLabel';
+import {
+  DebugObjectName,
+} from '../components/DebugObjectName';
+import {
+  DebugObjectPreview,
+} from '../components/DebugObjectPreview';
+import {
+  DebugObjectRootLabel,
+} from '../components/DebugObjectRootLabel';
+import {
+  DebugObjectValue,
+} from '../components/DebugObjectValue';
+import {
+  DebugTreeNode,
+} from '../components/DebugTreeNode';
+import {
+  DebugTreeView,
+} from '../components/DebugTreeView';
+import {
   Delay,
 } from '../components/Delay';
 import {
@@ -57,11 +114,17 @@ import {
   Divider,
 } from '../components/Divider';
 import {
+  Drawer,
+} from '../components/Drawer';
+import {
   Else,
 } from '../components/Else';
 import {
   ElseIf,
 } from '../components/ElseIf';
+import {
+  End,
+} from '../components/End';
 import {
   FadeIn,
 } from '../components/FadeIn';
@@ -71,9 +134,6 @@ import {
 import {
   Footer,
 } from '../components/Footer';
-import {
-  GetSound,
-} from '../components/GetSound';
 import {
   GetState,
 } from '../components/GetState'
@@ -87,20 +147,35 @@ import {
   If,
 } from '../components/If';
 import {
+  InkChoice,
+} from '../components/InkChoice';
+import {
+  InkChoicesContainer,
+} from '../components/InkChoicesContainer';
+import {
   InkContainer
 } from '../components/InkContainer';
 import {
   InkSection,
 } from '../components/InkSection';
 import {
-  Input,
-} from '../components/Input';
+  InkSections,
+} from '../components/InkSections';
 import {
   Iterated,
 } from '../components/Iterated';
 import {
   Iterator,
 } from '../components/Iterator';
+import {
+  LinearProgress,
+} from '../components/LinearProgress';
+import {
+  Link,
+} from '../components/Link';
+import {
+  List,
+} from '../components/List';
 import {
   ListItem,
 } from '../components/ListItem';
@@ -120,6 +195,9 @@ import {
   Permutation,
 } from '../components/Permutation';
 import {
+  PlaySound,
+} from '../components/PlaySound';
+import {
   Print,
 } from '../components/Print';
 import {
@@ -138,26 +216,70 @@ import {
   SetVariable,
 } from '../components/SetVariable';
 import {
+  SoundController,
+} from '../components/SoundController';
+import {
+  SoundGroupController,
+} from '../components/SoundGroupController';
+import {
+  SoundGroupView,
+} from '../components/SoundGroupView';
+import {
+  SoundGroupViewTitle,
+} from '../components/SoundGroupViewTitle';
+import {
+  SoundManagerView,
+} from '../components/SoundManagerView';
+import {
+  SoundView,
+} from '../components/SoundView';
+import {
+  SoundViewLabel,
+} from '../components/SoundViewLabel';
+import {
+  SoundViewTitle,
+} from '../components/SoundViewTitle';
+import {
+  StopSound,
+} from '../components/StopSound';
+import {
+  StoryOptionsList,
+} from '../../src/components/StoryOptionsList';
+import {
+  Swipeable,
+} from '../components/Swipeable';
+import {
+  SwipeableDrawer,
+} from '../components/SwipeableDrawer';
+import {
+  Tab,
+} from '../components/Tab';
+import {
+  Tabs,
+} from '../components/Tabs';
+import {
   Toolbar,
 } from '../components/Toolbar';
 import {
   TypographyClassKey,
+  TypographyProps,
 } from '@material-ui/core/Typography';
 import {
   Typography,
 } from '../components/Typography';
 import {
-  ITypographyOwnProps,
-} from '../components/Typography/ITypographyOwnProps';
-import {
   UnorderedList,
 } from '../components/UnorderedList';
+import {
+  UpdateSound,
+} from '../components/UpdateSound';
 import {
   UrlLink,
 } from '../components/UrlLink';
 import {
   Variable,
 } from '../components/Variable';
+
 
 /**
  * See note at top before adding any new imports.
@@ -171,7 +293,6 @@ import * as React from 'react';
 export const typographies: React.ElementType[] = [
   'address',
   'b',
-  'blockquote',
   'caption',
   'code',
   'del',
@@ -199,7 +320,6 @@ export const typographies: React.ElementType[] = [
 export const body1Tags: React.ElementType[] = [
   'address',
   'b',
-  'blockquote',
   'code',
   'del',
   'em',
@@ -223,11 +343,12 @@ export const getTypography = (key: React.ElementType | 'body2') => {
   }
 
   /* Weird typing bugs in passing these args. */
-  const Component: React.FunctionComponent = ({
+  const Component: React.FC<TypographyProps> = ({
     children,
     ...props
-  }: ITypographyOwnProps) => (
+  }) => (
     <Typography
+      // @ts-ignore
       component={key as any}
       variant={type as any}
       {...props}
@@ -246,60 +367,188 @@ const baseComponents = Object.freeze({
     Object.assign(obj, { [typographies[index] as string]: val })
   ), {}),
 
-  a: Anchor,
+  address: Address,
+  Address,
+  'app-bar': AppBar,
+  AppBar,
+  'app-context-consumer-wrapper': AppContextConsumerWrapper,
+  AppContextConsumerWrapper,
+  Anchor,
+  Article,
   article: Article,
+  blockquote: Blockquote,
+  Blockquote,
+  breadcrumb: Breadcrumb,
+  Breadcrumb,
+  'breadcrumb-trail': BreadcrumbTrail,
+  BreadcrumbTrail,
   button: Button,
+  Button,
   card: Card,
+  Card,
+  'circular-progress': CircularProgress,
+  CircularProgress,
   chip: Chip,
+  Chip,
   'click-append': ClickAppend,
+  ClickAppend,
   'click-disappear': ClickDisappear,
+  ClickDisappear,
   'click-prepend': ClickPrepend,
+  ClickPrepend,
   'click-replace': ClickReplace,
+  ClickReplace,
   clicker: Clicker,
+  Clicker,
   combination: Combination,
+  Combination,
   cycler: Cycler,
+  Cycler,
   'cycling-link': CyclingLink,
+  CyclingLink,
+  'debug-connected-tree-node': DebugConnectedTreeNode,
+  DebugConnectedTreeNode,
+  'debug-node-arrow': DebugNodeArrow,
+  DebugNodeArrow,
+  'debug-object-inspectpr': DebugObjectInspector,
+  DebugObjectInspector,
+  'debug-object-label': DebugObjectLabel,
+  DebugObjectLabel,
+  'debug-object-name': DebugObjectName,
+  DebugObjectName,
+  'debug-object-preview': DebugObjectPreview,
+  DebugObjectPreview,
+  'debug-object-root-label': DebugObjectRootLabel,
+  DebugObjectRootLabel,
+  'debug-object-value': DebugObjectValue,
+  DebugObjectValue,
+  'debug-tree-node': DebugTreeNode,
+  DebugTreeNode,
+  'debug-tree-view': DebugTreeView,
+  DebugTreeView,
   delay: Delay,
+  Delay,
   dialog: Dialog,
+  Dialog,
   divider: Divider,
+  Divider,
+  drawer: Drawer,
+  Drawer,
   else: Else,
+  Else,
   'else-if': ElseIf,
+  ElseIf,
   elif: ElseIf,
+  Elif: ElseIf,
+  end: End,
+  End,
   'fade-in': FadeIn,
+  FadeIn,
   'fade-out': FadeOut,
+  FadeOut,
   footer: Footer,
-  'get-sound': GetSound,
+  Footer,
   'get-state': GetState,
+  GetState,
   grid: Grid,
+  Grid,
   header: Header,
+  Header,
   if: If,
+  If,
+  'ink-choice': InkChoice,
+  InkChoice,
+  'ink-choices-container': InkChoicesContainer,
+  InkChoicesContainer,
   'ink-container': InkContainer,
+  InkContainer,
   'ink-section': InkSection,
-  input: Input,
+  InkSection,
+  'ink-sections': InkSections,
+  InkSections,
   iterated: Iterated,
+  Iterated,
   iterator: Iterator,
+  Iterator,
   li: ListItem,
+  ListItem,
+  'linear-progress': LinearProgress,
+  LinearProgress,
+  link: Link,
+  Link,
+  list: List,
+  List,
   'n-of': NOf,
+  NOf,
   ol: OrderedList,
+  OrderedList,
   'one-of': OneOf,
+  OneOf,
   paper: Paper,
+  Paper,
   permutation: Permutation,
+  Permutation,
+  'play-sound': PlaySound,
+  PlaySound,
   print: Print,
+  Print,
   progress: Progress,
+  Progress,
   'restart-button': RestartButton,
+  RestartButton,
   'rewind-button': RewindButton,
+  RewindButton,
   section: Section,
+  Section,
   'set-var': SetVariable,
+  SetVar: SetVariable,
   'set-variable': SetVariable,
+  SetVariable,
+  'sound-controller': SoundController,
+  SoundController,
+  'sound-group-controller': SoundGroupController,
+  SoundGroupController,
+  'sound-group-view': SoundGroupView,
+  SoundGroupView,
+  'sound-group-view-title': SoundGroupViewTitle,
+  SoundGroupViewTitle,
+  'sound-manager-view': SoundManagerView,
+  SoundManagerView,
+  'sound-view': SoundView,
+  SoundView,
+  'sound-view-label': SoundViewLabel,
+  SoundViewLabel,
+  'sound-view-title': SoundViewTitle,
+  SoundViewTitle,
+  'stop-sound': StopSound,
+  StopSound,
+  'story-options-list': StoryOptionsList,
+  StoryOptionsList,
+  swipeable: Swipeable,
+  Swipeable,
+  'swipeable-drawer': SwipeableDrawer,
+  SwipeableDrawer,
+  tab: Tab,
+  Tab,
+  tabs: Tabs,
+  Tabs,
   toolbar: Toolbar,
+  Toolbar,
+  typography: Typography,
+  Typography,
   ul: UnorderedList,
+  UnorderedList,
+  'update-sound': UpdateSound,
+  UpdateSound,
   'url-link': UrlLink,
+  UrlLink,
   var: Variable,
+  Var: Variable,
   variable: Variable,
+  Variable,
 });
 
-export type TComponentMapShape = typeof baseComponents;
-
-export const getTagNameToComponentMap = () => {
-  return { ...baseComponents };
-};
+export const getTagNameToComponentMap = () => ({
+  ...baseComponents,
+  ...authorComponentMutations,
+});

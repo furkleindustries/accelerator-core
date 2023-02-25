@@ -1,3 +1,213 @@
-.soundPanelContainer {
-  /* Empty. */
+@import '../../passages/_global-styles/borders.less';
+@import '../../passages/_global-styles/colors.less';
+@import '../../passages/_global-styles/fonts.less';
+@import '../../passages/_global-styles/opacities.less';
+@import '../../passages/_global-styles/scroll.less';
+@import '../../passages/_global-styles/sizes.less';
+@import '../../passages/_global-styles/transitions.less';
+
+.sound-manager-view {
+  position: relative;
+  overflow-y: visible;
+
+  label {
+    display: inline-block;
+    margin-right: @space-xl;
+    margin-bottom: @space-sm;
+    color: @color-white;
+    font-size: @font-body;
+    text-shadow: @border-dark-pen-outline;
+  }
+}
+
+.sound-manager-controller {
+  margin-bottom: @space-med;
+}
+
+.sound-group-view {
+  padding: @space-med @space-sm;
+  margin-bottom: @space-med + @space-sm;
+  border-radius: @space-med;
+  background-color: rgba(@color-black, @opacity-fifth);
+  opacity: @opacity-none;
+  transform: scale(0.15);
+  transform-origin: top;
+  animation-name: fade-in;
+  animation-delay: 0ms;
+  animation-direction: normal;
+  animation-duration: 500ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: @transition-timing-function;
+
+  &:hover {
+    background-color: rgba(@color-black, @opacity-fifth + (@opacity-twentieth / 3.5));
+  }
+
+  .sound-group-view-title {
+    margin:
+      @space-xs
+      @space-med + @space-sm
+      @space-xs
+      @space-lg;
+  }
+
+  .sound-group-view-sound-list {
+    padding-left: @space-xs;
+    padding-right: @space-med + @space-sm;
+    padding-bottom: @space-med + @space-sm;
+    list-style: none;
+    list-style-type: none;
+
+    .sound-group-view-sound-list-item {
+      padding: @space-med @space-med + @space-sm;
+      border-top: solid @space-xxxxs rgba(@color-black, @opacity-twentieth);
+      border-right: solid @space-xxxs rgba(@color-black, @opacity-tenth);
+      border-bottom: solid @space-xxs rgba(@color-black, @opacity-tenth + @opacity-twentieth);
+      border-left: solid @space-xxxxs rgba(@color-black, @opacity-twentieth);
+      border-radius: @space-med;
+      margin-top: @space-med;
+      margin-bottom: @space-sm;
+      background-color: rgba(@color-black, @opacity-fifth);
+      list-style: none;
+      list-style-type: none;
+
+      &:hover {
+        background-color: rgba(@color-black, @opacity-fifth + (@opacity-twentieth / 3.5));
+      }
+    }
+  }
+
+  .sound-group-controller {
+    margin-top: @space-sm + @space-xs + @space-xxs;
+    margin-left: @space-lg + @space-med + @space-xs;
+  }
+
+  .sound-group-content-container {
+    h3.typography {
+      margin-top: @space-sm + @space-xs;
+      margin-left: @space-sm + @space-xs;
+      font-size: @font-h4;
+      color: @color-white;
+      text-shadow: @border-dark-pen-outline;
+    }
+  }
+
+  .sound-view {
+    padding:
+      @space-xs + @space-xxs + @space-xxxs
+      @space-sm
+      @space-med
+      @space-sm;
+
+    box-sizing: border-box;
+    opacity: @opacity-none;
+    transform: scale(0.15);
+    transform-origin: top;
+    animation-name: fade-in;
+    animation-delay: 0ms;
+    animation-direction: normal;
+    animation-duration: 500ms;
+    animation-fill-mode: forwards;
+    animation-timing-function: @transition-timing-function;
+
+    .sound-view-title {
+      font-size: @font-h5;
+      margin-top: 0;
+      margin-bottom: @space-sm + @space-xs;
+      letter-spacing: 0.5px;
+    }
+
+    .sound-controller {
+      label {
+        display: inline-block;
+        margin-right: @space-lg;
+        margin-bottom: @space-sm;
+        color: @color-white;
+        font-size: @font-body;
+        text-shadow: @border-dark-pen-outline;
+      }
+    }
+
+    .sound-controller-volume {
+      margin-top: @space-sm;
+      margin-bottom: @space-med;
+    }
+
+    .sound-controller-loop {
+      margin-top: @space-sm;
+      margin-bottom: @space-med;
+    }
+
+    .sound-controller-play {
+      padding-bottom: @space-xs;
+      margin-top: @space-sm;
+      margin-bottom: @space-sm;
+      border: @space-xxxs solid @color-black;
+      border-radius: @space-xs;
+      background-color: rgba(@color-white, @opacity-fifth);
+      cursor: pointer;
+
+      .transition-content;
+
+      &:active, &:hover {
+        background-color: overlay(
+          rgba(@color-white, @opacity-fifth),
+          rgba(@color-dark, @opacity-fifth),
+        );
+      }
+    }
+
+    .sound-view-label h5 {
+      font-size: @font-h6;
+      margin-top: @space-med;
+      margin-bottom: @space-sm + @space-xs;
+    }
+    
+    .sound-view-label-contributors-list {
+      margin-left: @space-sm;
+      padding-top: 0;
+      padding-left: 0;
+      margin-bottom: @space-sm + @space-xs;
+      text-indent: @space-sm + @space-xs;
+      line-height: @space-med + @space-sm + @space-xxs;
+
+      .list-item {
+        padding-left: 0;
+      }
+    }
+
+    .sound-view-label-link {
+      display: inline-block;
+      padding: @space-sm @space-med + @space-sm @space-sm @space-xs;
+      margin: @space-xs;
+      border-radius: 25%;
+      background-color: rgba(@color-darkest, @opacity-hundredth / 1.6);
+      box-shadow:
+        0 0 @space-xs rgba(#3f51b5, @opacity-tenth),
+        0 0 @space-xxs rgba(#3f51b5, @opacity-tenth),
+        0 0 @space-xxxs rgba(#3f51b5, @opacity-tenth),
+        0 0 @space-xxxxs rgba(#3f51b5, @opacity-tenth);
+
+      :global(.url-link) {
+        color: @color-white;
+      }
+    }
+  }
+}
+
+.sound-manager-view-list-item {
+  list-style: none;
+  list-style-type: none;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: @opacity-none;
+    transform: scaleY(0.15);
+  }
+
+  to {
+    opacity: @opacity-full;
+    transform: scaleY(1);
+  }
 }

@@ -1,7 +1,23 @@
 import {
-  error,
-  log,
-} from 'colorful-logging';
+  IAcceleratorConfigNormalized,
+} from './configuration/IAcceleratorConfigNormalized';
+import {
+  IAcceleratorLoggersConfiguration,
+} from './configuration/IAcceleratorLoggersConfiguration';
+import {
+  NewContentAlert,
+} from './components/NewContentAlert';
+import {
+  newContentAlertId,
+} from './components/NewContentAlert/newContentAlertId';
+import {
+  render,
+} from 'react-dom';
+import {
+  runningOnLocalhost,
+} from './runningOnLocalhost';
+
+import * as React from 'react';
 
 // In production, we register a service worker to serve assets from local cache.
 
@@ -13,122 +29,145 @@ import {
 // To learn more about the benefits of this model, read https://goo.gl/KwvDNy.
 // This link also includes instructions on opting out of this behavior.
 
-const isLocalhost = Boolean(
-  window &&
-  window.location &&
-  window.location.hostname === 'localhost' ||
-    // [::1] is the IPv6 localhost address.
-    window.location.hostname === '[::1]' ||
-    // 127.0.0.1/8 is considered localhost for IPv4.
-    window.location.hostname.match(
-      /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
-    )
-);
+export const registerServiceWorker = ({
+  loggers,
+  publicUrl,
+}: IAcceleratorConfigNormalized) => {
+  const { log } = loggers;
 
-export function registerServiceWorker() {
-  if (process.env.NODE_ENV === 'production' &&
+  const nodeEnv = process.env.NODE_ENV;
+  if (nodeEnv === 'production' &&
       'serviceWorker' in navigator &&
-      window)
+      // Can't be run from null origins.
+      !location.origin.startsWith('file://') &&
+      !location.origin.startsWith('http://'))
   {
     // The URL constructor is available in all browsers that support SW.
-    const publicUrl = new URL(
-      process.env.PUBLIC_URL!,
-      window.location.toString()
+    const publicUrlObj = new URL(
+      publicUrl || '.',
+      location.toString(),
     );
-    if (publicUrl.origin !== window.location.origin) {
-      // Our service worker won't work if PUBLIC_URL is on a different origin
-      // from what our page is served on. This might happen if a CDN is used to
-      // serve assets; see https://github.com/facebookincubator/create-react-app/issues/2374
 
+    if (publicUrlObj.origin !== location.origin) {
       // accelerator-core uses no routing. We may need to see if the constant
       // publicUrl value affects this but I suspect it will never fail.
       return;
     }
 
-    window.addEventListener('load', () => {
-      const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
+    addEventListener('load', () => {
+      const swUrl = `${publicUrl.endsWith('/') ?
+        publicUrl :
+        `${publicUrl}/`}service-worker.js`;
 
-      if (isLocalhost) {
-        // This is running on localhost. Lets check if a service worker still exists or not.
-        checkValidServiceWorker(swUrl);
+      if (runningOnLocalhost()) {
+        // This is running on localhost.
+        // Let's check if a service worker still exists or not.
+        checkValidServiceWorker(swUrl, loggers);
 
         // Add some additional logging to localhost, pointing developers to the
         // service worker/PWA documentation.
         navigator.serviceWorker.ready.then(() => {
           log(
-            'This web app is being served cache-first by a service ' +
-              'worker. To learn more, visit https://goo.gl/SC7cgQ'
+            'This web app is being served cache-first by a service worker.',
           );
         });
       } else {
         // Is not local host. Just register service worker
-        registerValidSW(swUrl);
+        registerValidSW(swUrl, loggers);
       }
     });
   }
-}
+};
 
-function registerValidSW(swUrl: string) {
-  navigator.serviceWorker
-    .register(swUrl)
-    .then(registration => {
-      registration.onupdatefound = () => {
-        const installingWorker = registration.installing;
-        if (installingWorker) {
-          installingWorker.onstatechange = () => {
-            if (installingWorker.state === 'installed') {
-              if (navigator.serviceWorker.controller) {
-                // At this point, the old content will have been purged and
-                // the fresh content will have been added to the cache.
-                // It's the perfect time to display a 'New content is
-                // available; please refresh.' message in your web app.
-                log('New content is available; please refresh.');
-              } else {
-                // At this point, everything has been precached.
-                // It's the perfect time to display a
-                // 'Content is cached for offline use.' message.
-                log('Content is cached for offline use.');
-              }
+export const registerValidSW = (
+  swUrl: string,
+  {
+    log,
+    warn,
+  }: IAcceleratorLoggersConfiguration,
+) => {
+  try {
+    navigator.serviceWorker
+      .register(swUrl)
+      .then(
+        (registration) => {
+          registration.onupdatefound = () => {
+            const installingWorker = registration.installing;
+            if (installingWorker) {
+              installingWorker.onstatechange = () => {
+                if (installingWorker.state === 'installed') {
+                  if (navigator.serviceWorker.controller) {
+                    // At this point, the old content will have been purged and
+                    // the fresh content will have been added to the cache.
+                    const containerElem = document.body.querySelector(
+                      newContentAlertId
+                    );
+
+                    if (containerElem) {
+                      render(
+                        React.createElement(NewContentAlert),
+                        containerElem,
+                      );
+                    } else {
+                      log('New content is available; please refresh.');
+                    }
+                  } else {
+                    log('Content is cached for offline use.');
+                  }
+                }
+              };
             }
           };
-        }
-      };
-    })
-    .catch((err) => {
-      error('Error during service worker registration:');
-      error(err);
-    });
-}
+        },
 
-function checkValidServiceWorker(swUrl: string) {
-  // Check if the service worker can be found. If it can't reload the page.
-  fetch(swUrl).then((response) => {
-    // Ensure service worker exists, and that we really are getting a JS file.
-    if (
-      response.status === 404 ||
-      response.headers.get('content-type')!.indexOf('javascript') === -1
-    ) {
-      // No service worker found. Probably a different app. Reload the page.
-      navigator.serviceWorker.ready.then(registration => {
-        registration.unregister().then(() => {
-          window.location.reload();
-        });
-      });
-    } else {
-      // Service worker found. Proceed as normal.
-      registerValidSW(swUrl);
-    }
-  }).catch(() => {
-    log(
-      'No internet connection found. App is running in offline mode.'
-    );
-  });
-}
-
-export function unregister() {
-  if (navigator && 'serviceWorker' in navigator) {
-    navigator.serviceWorker.ready.then(registration => {
-      registration.unregister();
-    });
+        (err) => {
+          warn('Error during service worker registration:');
+          warn(err);
+        },
+      );
+  } catch (err) {
+    warn('Error during service worker registration:');
+    warn(err);
   }
+};
+
+export const checkValidServiceWorker = (
+  swUrl: string,
+  loggers: IAcceleratorLoggersConfiguration,
+) => {
+  // Check if the service worker can be found. If it can't reload the page.
+  fetch(swUrl).then(
+    (response) => {
+      // Ensure service worker exists, and that we really are getting a JS file.
+      if (response.status === 404 ||
+        response.headers.get('content-type')!.indexOf('javascript') === -1)
+      {
+        // No service worker found. Probably a different app. Reload the page.
+        navigator.serviceWorker.ready.then(({ unregister }) => {
+          unregister().then(location.reload);
+        });
+      } else {
+        // Service worker found. Proceed as normal.
+        registerValidSW(swUrl, loggers);
+      }
+    },
+
+    () => {
+      loggers.log(
+        'No internet connection found. App is running in offline mode.'
+      );
+    },
+  );
 }
+
+export const unregister = async () => {
+  if (navigator && 'serviceWorker' in navigator) {
+    const {
+      serviceWorker: { ready },
+    } = navigator;
+
+    return await (await ready).unregister();
+  }
+
+  throw new Error('Service workers are not supposed on this browser.');
+};

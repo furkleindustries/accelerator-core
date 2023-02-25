@@ -1,6 +1,6 @@
 import {
-  IButtonProps,
-} from '../Button/IButtonProps';
+  IButtonOwnProps,
+} from '../Button/IButtonOwnProps';
 import {
   IPassageNamed,
 } from '../../interfaces/IPassageNamed';
@@ -9,7 +9,7 @@ import {
 } from '../../interfaces/ITaggable';
 
 export interface ILinkOwnProps extends
-  IButtonProps,
+  IButtonOwnProps,
   IPassageNamed,
   ITaggable
 {

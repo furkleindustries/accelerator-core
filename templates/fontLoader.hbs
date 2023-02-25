@@ -1,71 +1,63 @@
-<script id="fontLoader">
 (function () {
   var docElem = document.documentElement;
-  var classes = 'fonts-stage-1 fonts-stage-2';
-  var classesWithSpace = ' ' + classes;
-
-  // Optimization for Repeat Views
-  if (typeof sessionStorage !== 'undefined' && sessionStorage.criticalFoftDataUriFontsLoaded) {
-    console.log('Fonts already loaded.');
-    docElem.className += docElem.className ? classesWithSpace : classes;
-    return;
-  }
-
-  function loadSingleFont(fontLoader) {
-    return fontLoader.load().then(
-      null,
-      function (err) { console.error('Font loading encountered an error:', err); },
-    );
-  }
-
-  function loadFullFonts(subsetSuccess) {
-    console.log('Font subset loading succeeded? ' + subsetSuccess);
-
-    if (subsetSuccess) {
-      docElem.className += docElem.className ? classesWithSpace : classes;
+  try {
+    if (sessionStorage && sessionStorage.XLR8R_FONTS_LOADED) {
+      docElem.className += docElem.className ?
+        ' fonts-loaded' :
+        'fonts-loaded';
+    } else {
+      loadFullFonts();
     }
-
+  } catch (err) {
+    console.warn(err);
+    loadFullFonts();
+  }
+  function loadSingleFont(fontLoader) {
+    return fontLoader.load()
+      .then(
+        function (font) {
+          console.log('The font \"' + font.family + ' ' + font.style + ' ' + font.weight + '\" loaded correctly.');
+        },
+        function (err) {
+          console.error('An error occurred while loading the font \"' + font.family + ' ' + font.style + ' ' + font.weight + '\":\n' + err);
+        }
+      );
+  }
+  function loadFullFonts() {
     var promises = {{{fontsToLoad}}}.reduce(function (arr, font) {
       if (!font.family) {
-        throw new Error(
-          'No font or font family provided in accelerator.config.js ' +
-            'fonts entry.',
-        );
+        throw new Error('No font or font family provided in accelerator.config.js fonts entry.');
       }
-
       var family = font.family;
       var styles = font.styles || [];
       var weights = font.weights || [];
-
       return arr.concat(styles.reduce(function (arr, style) {
         return arr.concat(weights.reduce(function (arr, weight) {
-          let realStyle = String(style || 'normal').toLowerCase();
-          realStyle = `${realStyle[0].toUpperCase()}${realStyle.slice(1)}`;
+          var realStyle = String(style || 'normal').toLowerCase();
           return arr.concat([
             loadSingleFont(new FontFaceObserver(family, {
               style: realStyle,
-              weight: String(weight || 'normal').toLowerCase(),
-            })),
+              weight: String(weight || 'normal').toLowerCase()
+            }))
           ]);
         }, []));
       }, []));
     }, []);
-
-    Promise.all(promises).then(
+    return Promise.all(promises).then(
       function () {
         docElem.className += docElem.className ?
-          ' fonts-stage-2' :
-          'fonts-stage-2';
-
+          ' fonts-loaded' :
+          'fonts-loaded';
         // Optimization for Repeat Views
-        if (typeof sessionStorage !== 'undefined') {
-          sessionStorage.criticalFoftDataUriFontsLoaded = true;
+        try {
+          if (typeof sessionStorage !== 'undefined') {
+            sessionStorage.XLR8R_FONTS_LOADED = true;
+          }
+        } catch (err) {
+          console.warn(err);
         }
       },
-      function (err) { console.error(err) },
+      function (err) { console.error(err) }
     );
-  };
-
-  {{{subsetFontConditionalStatement}}}
+  }
 })();
-</script>

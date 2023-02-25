@@ -12,7 +12,8 @@ export const Article = React.forwardRef<HTMLElement, IArticleOwnProps>(({
 }, ref) => (
   <article
     {...props}
-    className={classNames(className, 'article')}
+
+    className={classNames('article', className)}
     ref={ref}
   >
     {children}

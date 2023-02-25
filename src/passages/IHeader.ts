@@ -14,10 +14,12 @@ import {
 
 type RegistryType = typeof registry;
 
+export type HeaderNames = keyof RegistryType;
+
 export interface IHeader
   extends
     IContentfulAsset<IPassageProps>,
     IPrecedenceWeighted
 {
-  readonly name: keyof RegistryType;
+  readonly name: HeaderNames;
 }

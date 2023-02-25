@@ -1,7 +1,7 @@
 /* Needed for adding JSX elements to child in beforeRender. */
 import * as React from 'react';
 
-import * as plugins from '../../src/passages/pluginsBundle';
+import * as plugins from '../../bundles/pluginsBundle';
 
 class Plugin implements plugins.IPlugin {
   public afterStoryInit(args: plugins.IPluginMethodBaseArgs & plugins.IPluginMethodStateMutationArgs) {

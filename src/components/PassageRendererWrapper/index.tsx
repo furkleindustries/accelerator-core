@@ -6,17 +6,11 @@ import {
 } from '../../state/bookmark';
 import classNames from 'classnames';
 import {
-  getNormalizedAcceleratorConfig,
-} from '../../configuration/getNormalizedAcceleratorConfig';
+  createStoryEndAction,
+} from '../../actions/creators/createStoryEndAction';
 import {
   getStructuredTags,
 } from '../../tags/getStructuredTags';
-import {
-  HistoryFilter,
-} from '../../reducers/IHistoryFilter';
-import {
-  IDispatchAware,
-} from '../../interfaces/IDispatchAware';
 import {
   IPassageNamed,
 } from '../../interfaces/IPassageNamed';
@@ -29,9 +23,6 @@ import {
 import {
   IPassageRendererWrapperStateProps,
 } from './IPassageRendererWrapperStateProps';
-import {
-  IPassagesMap,
-} from '../../passages/IPassagesMap';
 import {
   IState,
 } from '../../state/IState';
@@ -52,12 +43,18 @@ import {
   MapDispatchToProps,
   MapStateToProps,
 } from 'react-redux';
+import type {
+  Store,
+} from 'redux';
 import {
   reset,
 } from '../../state/reset';
 import {
   rewind as doRewind,
 } from '../../state/rewind';
+import {
+  SinglePassageRenderer,
+} from '../../../renderers/SinglePassageRenderer';
 import {
   Tag,
 } from '../../tags/Tag';
@@ -67,17 +64,12 @@ import {
 
 import * as React from 'react';
 
-import builtIns from '../../../passages/_global-styles/built-ins.less';
+import builtIns from '../../../passages/_global-styles/components/index.less';
 
 export const strings = {
   PASSAGE_NOT_FOUND:
     'No passage named %NAME% could be found within the passages map.',
 };
-
-const {
-  rendererName,
-  ...configWithoutRendererName
-} = getNormalizedAcceleratorConfig();
 
 export class PassageRendererWrapper extends React.PureComponent<
   IPassageRendererWrapperOwnProps &
@@ -86,41 +78,50 @@ export class PassageRendererWrapper extends React.PureComponent<
 > {
   public readonly render = () => (
     <AppContextConsumerWrapper>
-      {({
-        PassageRendererComponent,
-        ...contextWithoutRenderer
-      }) => (
-        <div className={classNames(
-          builtIns.passageRendererWrapper,
-          'passageRendererWrapper',
-          rendererName,
-        )}>
-          <PassageRendererComponent
-            config={{
-              rendererName,
-              ...configWithoutRendererName,
-            }}
+      {({ store }) => {
+        const bookmark = this.bookmark;
+        const endStory = this.endStory;
+        const navigateTo = this.navigateTo;
+        const rewind = this.rewind;
+        const restart = () => this.restart(store);
+        const setStoryState = this.setStoryState;
 
-            context={contextWithoutRenderer}
-            passageFunctions={{
-              bookmark: this.bookmark,
-              navigateTo: this.navigateTo,
-              rewind: this.rewind,
-              restart: this.restart,
-              setStoryState: this.setStoryState,
-            }}
-          />
-        </div>
-      )}
+        const passageFunctions = {
+          bookmark,
+          endStory,
+          navigateTo,
+          rewind,
+          restart,
+          setStoryState,
+        };
+
+        return (
+          <div
+            className={classNames(
+              builtIns['passage-renderer-wrapper'],
+              'passage-renderer-wrapper',
+              'single-passage-renderer',
+            )}
+
+            role="document"
+          >
+            <SinglePassageRenderer passageFunctions={passageFunctions} />
+          </div>
+        );
+      }}
     </AppContextConsumerWrapper>
   );
 
   private readonly bookmark = () => doBookmark(this.props.dispatch);
 
-  private navigateTo(
+  private readonly endStory = () => this.props.dispatch(
+    createStoryEndAction(),
+  );
+
+  private navigateTo = (
     passageName: IPassageNamed['passageName'],
     tags?: MaybeReadonlyArray<Tag>,
-  ) {
+  ) => {
     const {
       dispatch,
       passagesMap: { [passageName]: passage },
@@ -131,16 +132,18 @@ export class PassageRendererWrapper extends React.PureComponent<
       strings.PASSAGE_NOT_FOUND.replace(/%name%/gi, passageName),
     );
 
-    navigate({
+    return navigate({
       dispatch,
       passage,
       linkTags: tags || [],
     });
   };
 
-  private readonly restart = () => {
+  private readonly restart = (store: Store<IState>) => {
     const {
-      dispatch,
+      autoplayerState,
+      config,
+      getSoundManager,
       lastLinkTags: unstructured,
       passageObject,
       plugins,
@@ -148,36 +151,30 @@ export class PassageRendererWrapper extends React.PureComponent<
     } = this.props;
 
     const lastLinkTags = getStructuredTags(unstructured);
-    reset({
-      dispatch,
+
+    return reset({
+      autoplayerState,
+      config,
+      getSoundManager,
       lastLinkTags,
       passageObject,
       plugins,
+      store,
       storyState,
     });
   };
 
-  private readonly rewind = (filter?: HistoryFilter) => {
-    const {
-      dispatch,
-      history: {
-        present,
-        past,
-      },
-    } = this.props;
-
-    if (typeof filter === 'function') {
-      doRewind(dispatch, present, past, filter);
-    } else {
-      doRewind(dispatch, present, past);
-    }
-  };
+  private readonly rewind = () => (
+    doRewind(this.props.dispatch, this.props.getSoundManager)
+  );
 
   private readonly setStoryState: IStoryStateSetter = (
     updatedStateProps,
   ) => mutateCurrentStoryStateInstanceWithPluginExecution({
     updatedStateProps,
+    autoplayerState: this.props.autoplayerState,
     dispatch: this.props.dispatch,
+    getSoundManager: this.props.getSoundManager,
     history: this.props.history,
     passageObject: this.props.passageObject,
     plugins: this.props.plugins,
@@ -186,27 +183,35 @@ export class PassageRendererWrapper extends React.PureComponent<
 
 export const mapStateToProps: MapStateToProps<
   IPassageRendererWrapperStateProps,
-  { passagesMap: IPassagesMap },
+  IPassageRendererWrapperOwnProps,
   IState
-> = ({
-  history,
-  history: {
-    present: {
-      lastLinkTags,
-      passageName,
-      storyState,
-    },
-  }
-}, { passagesMap }) => ({
+> = (
+  {
+    autoplayerState,
+    history,
+    history: {
+      present: {
+        lastLinkTags,
+        passageName,
+        storyState,
+      },
+    }
+  },
+
+  {
+    passagesMap: { [passageName]: passageObject },
+  },
+) => ({
+  autoplayerState,
   history,
   lastLinkTags,
   storyState,
-  passageObject: passagesMap[passageName],
+  passageObject,
 });
 
 export const mapDispatchToProps: MapDispatchToProps<
-  IDispatchAware,
-  {}
+  IPassageRendererDispatchProps,
+  IPassageRendererWrapperOwnProps
 > = (dispatch) => ({ dispatch });
 
 export const PassageRendererWrapperConnected = connect(

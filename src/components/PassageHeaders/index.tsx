@@ -29,13 +29,16 @@ export const strings = {
     'There was no contents property found in the header with name %NAME%.',
 };
 
-export const PassageHeaders: React.FunctionComponent<
+export const PassageHeaders: React.FC<
   IPassageHeadersOwnProps & IPassageHeadersDispatchProps
 > = ({
   headers,
   ...passageProps
 }) => (
-  <div className={classNames('passageHeaders')}>
+  <div
+    className={classNames('passage-headers')}
+    role="group"
+  >
     {(headers as IHeader[]).map(({ content }, index) => {
       const SafeContent = assertValid<React.ComponentType<IPassageProps>>(
         content,

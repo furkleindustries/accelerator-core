@@ -1,4 +1,7 @@
 import {
+  AppContextConsumerWrapper,
+} from '../AppContextConsumerWrapper';
+import {
   Button,
 } from '../Button';
 import classNames from 'classnames';
@@ -25,49 +28,67 @@ import {
 
 import * as React from 'react';
 
-export class RewindButtonUnconnected extends React.PureComponent<
+import builtIns from '../../../passages/_global-styles/components/index.less';
+
+export const RewindButtonUnconnected: React.FC<
   IRewindButtonOwnProps &
     IRewindButtonStateProps &
     IRewindButtonDispatchProps
->
-{
-  public render = () => {
-    const {
-      canRewind,
-      children,
-      className,
-    } = this.props;
+> = ({
+  canRewind,
+  children,
+  className,
+  disabled,
+  dispatch,
+  history,
+  soundGroupsToStop,
+  ...props
+}) => (
+  <AppContextConsumerWrapper>
+    {({ getSoundManager }) => {
+      const rewindFunc = () => rewind(dispatch, getSoundManager);
 
-    const statefulProps = canRewind ?
-      { onClick: this.rewind } :
-      { disabled: true };
+      const statefulProps = canRewind ?
+        { onClick: rewindFunc } :
+        { disabled: true };
 
-    return (
-      <Button
-        {...statefulProps}
-        className={classNames(
-          'navigationButton',
-          'rewindButton',
-          className,
-        )}
-      >
-        {children}
-      </Button>
-    );
-  }
+      return (
+        <Button
+          {...props}
 
-  private rewind = () => {
-    const {
-      dispatch,
-      history: {
-        past,
-        present,
-      },
-    } = this.props;
+          disabled={disabled || !canRewind}
 
-    rewind(dispatch, present, past);
-  };
-}
+          {...statefulProps}
+
+          centerRipple={true}
+          className={classNames(
+            builtIns['navigation-button'],
+            'navigation-button',
+            builtIns['rewind-button'],
+            'rewind-button',
+            className,
+            { disabled: disabled || !canRewind },
+          )}
+
+          color="secondary"
+        >
+          <span
+            className={classNames(
+              builtIns['app-bar-label'],
+              'app-bar-label',
+              builtIns['navigation-button-label'],
+              'navigation-button-label',
+              builtIns['rewind-button-label'],
+              'rewind-button-label',
+            )}
+          >
+            {children || 'Rewind'}
+          </span>
+        </Button>
+      );
+    }}
+  </AppContextConsumerWrapper>
+);
 
 export const mapStateToProps: MapStateToProps<
   IRewindButtonStateProps,
@@ -75,12 +96,12 @@ export const mapStateToProps: MapStateToProps<
   IState
 > = ({
   history,
-  history: { past },
-}, { filter }) => ({
+  history: {
+    present: { passageTimeCounter },
+  },
+}) => ({
   history,
-  canRewind: Boolean(
-    typeof filter === 'function' ? past.filter(filter).length : past.length
-  ),
+  canRewind: passageTimeCounter > 0,
 });
 
 export const mapDispatchToProps: MapDispatchToProps<
@@ -91,4 +112,8 @@ export const mapDispatchToProps: MapDispatchToProps<
 export const RewindButton = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(RewindButtonUnconnected);
+)(
+  // weird redux typing bug
+  // @ts-ignore
+  RewindButtonUnconnected
+);

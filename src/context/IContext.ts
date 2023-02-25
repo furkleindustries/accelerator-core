@@ -1,6 +1,6 @@
 import {
-  IAction,
-} from '../actions/IAction';
+  IAcceleratorConfigAware,
+} from '../interfaces/IAcceleratorConfigAware';
 import {
   IFootersContext,
 } from './IFootersContext';
@@ -8,31 +8,25 @@ import {
   IHeadersContext,
 } from './IHeadersContext';
 import {
-  IPassagesMapAndStartPassageNameContext,
-} from './IPassagesMapAndStartPassageNameContext';
+  IPassagesMapContext,
+} from './IPassagesMapContext';
 import {
   IPluginsContext,
 } from './IPluginsContext';
 import {
-  IPassageRendererConstructorContext,
-} from './IPassageRendererConstructorContext';
+  IReduxStoreAware,
+} from '../interfaces/IReduxStoreAware';
 import {
-  ISoundManagerContext,
-} from './ISoundManagerContext';
-import {
-  IState,
-} from '../state/IState';
-import {
-  Store,
-} from 'redux';
+  ISoundManagerAware,
+} from '../interfaces/ISoundManagerAware';
 
 export interface IContext extends
+  IAcceleratorConfigAware,
   IFootersContext,
   IHeadersContext,
-  IPassageRendererConstructorContext,
-  IPassagesMapAndStartPassageNameContext,
+  IPassagesMapContext,
   IPluginsContext,
-  ISoundManagerContext
+  ISoundManagerAware,
+  IReduxStoreAware
 {
-  readonly store: Store<IState, IAction>;
 }

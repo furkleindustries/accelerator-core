@@ -6,14 +6,17 @@ import {
 
 import * as React from 'react';
 
-export const Divider: React.FunctionComponent<IDividerOwnProps> = ({
+export const Divider: React.FC<IDividerOwnProps> = ({
   children,
   className,
+  role,
   ...props
 }) => (
   <MuiDivider
     {...props}
+
     className={classNames('divider', className)}
+    role={role || 'separator'}
   >
     {children}
   </MuiDivider>

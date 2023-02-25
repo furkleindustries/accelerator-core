@@ -1,4 +1,5 @@
-@import '../passages/_global-styles/index.less';
+@import '../passages/_global-styles/colors.less';
+@import '../passages/_global-styles/sizes.less';
 
 html, body, :global(#root), :global(#load) {
   display: block;
@@ -19,6 +20,8 @@ html {
   /* Change from `box-sizing: content-box` so that `width` is not affected by
    * `padding` or `border`. */
   box-sizing: border-box;
+  overflow: hidden;
+  scroll-behavior: smooth;
 }
 
 *, *::before, *::after {
@@ -26,22 +29,24 @@ html {
 }
 
 body {
-  background-color: #fafafa;
-
-  @media print {
-    background-color: #fff;
-  }
+  background-color: @color-background;
+  color: @color-font-default;
+  overflow: hidden;
 }
 
 html, body, :global(#root) {
   position: relative;
 }
 
+:global(#root)[aria-busy="true"] {
+  display: none;
+}
+
 :global(#load) {
   position: fixed;
 }
 
-:global(#root[aria-busy="false"]) {
+:global(#root):not([aria-busy="true"]) {
   z-index: 1;
 
   & + :global(#load) {

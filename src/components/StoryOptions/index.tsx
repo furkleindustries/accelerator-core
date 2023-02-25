@@ -1,13 +1,13 @@
 import {
+  BreadcrumbTrail,
+} from '../BreadcrumbTrail';
+import {
   Button,
 } from '../Button';
-import {
-  BreadcrumbTrail,
-} from '../BreadcrumbTrail'
 import classNames from 'classnames';
 import {
-  createStoryOptionUpdateAction,
-} from '../../actions/creators/createStoryOptionUpdateAction';
+  createStoryOptionsDialogVisibleAction,
+} from '../../actions/creators/createStoryOptionsDialogVisibleAction';
 import {
   Dialog,
 } from '../Dialog';
@@ -15,93 +15,138 @@ import {
   getStoryOptionsList,
 } from '../../storyOptions/getStoryOptionsList';
 import {
+  IState,
+} from '../../state/IState';
+import {
   IStoryOptionsDispatchProps,
 } from './IStoryOptionsDispatchProps';
 import {
   IStoryOptionsOwnProps,
 } from './IStoryOptionsOwnProps';
 import {
-  IStoryOptionsState,
-} from './IStoryOptionsState';
-import {
-  StoryOptionsList,
-} from '../StoryOptionsList';
+  IStoryOptionsStateProps,
+} from './IStoryOptionsStateProps';
 import {
   connect,
   MapDispatchToProps,
+  MapStateToProps,
 } from 'react-redux';
+import {
+  StoryOptionsList,
+} from '../StoryOptionsList';
 
 import * as React from 'react';
 
-export class StoryOptions extends React.PureComponent<
-  IStoryOptionsOwnProps & IStoryOptionsDispatchProps,
-  IStoryOptionsState
+import builtIns from '../../../passages/_global-styles/components/index.less';
+import styles from '../../../plugins/menu/index.less';
+
+export class StoryOptionsUnconnected extends React.PureComponent<
+  IStoryOptionsOwnProps &
+    IStoryOptionsStateProps &
+    IStoryOptionsDispatchProps
 > {
-  public readonly state: IStoryOptionsState = { open: false };
+  private storyOptions = [ ...getStoryOptionsList() ];
 
   public readonly render = () => (
     <>
       <Button
-        className={classNames('storyOptionsToggle')}
-        onClick={this.toggleModalVisibility}
-        {...(open ? { hidden: true } : {})}
-      >{
-        'Story Options'
-      }</Button>
+        className={classNames(
+          styles['story-options-toggle'],
+          'story-options-toggle',
+          builtIns['navigation-button'],
+          'navigation-button',
+          this.props.className,
+        )}
+
+        role="toggle"
+        aria-pressed={this.props.dialogOpen}
+        onClick={this.toggleDialogVisibility}
+      >
+        <span
+          className={classNames(
+            builtIns['app-bar-label'],
+            'app-bar-label',
+            builtIns['navigation-button-label'],
+            'navigation-button-label',
+            builtIns['story-options-label'],
+            'story-options-label',
+          )}
+        >
+          Story Options
+        </span>
+      </Button>
 
       <Dialog
-        className={classNames('soundPanelContentsContainer')}
-        dialogActions={
-          <>
-            <Button
-              className={classNames('soundPanelCloseButton')}
-              onClick={this.toggleModalVisibility}
-            >
-              Close
-            </Button>
-          </>
-        }
+        className={classNames(
+          styles['story-options-contents-container'],
+          'story-options-contents-container',
+        )}
 
-        includeTitle="Story Options"
-        open={this.state.open!}
-      >
-        <BreadcrumbTrail listComponent={StoryOptionsList}>
-          {({
-              getBreadcrumbProps,
-              treeSelector,
-              visibilityTree,
-            }) => (
-              getStoryOptionsList().map(({ content: OptionComponent }, key) => (
-                <OptionComponent
-                  key={key}
-                  getBreadcrumbProps={getBreadcrumbProps}
-                  treeSelector={treeSelector}
-                  updateOptionValue={this.updateOptionValue}
-                  visibilityTree={visibilityTree}
-                />
-              ))
+        dialogActions={<>
+          <Button
+            className={classNames(
+              styles['story-options-close-button'],
+              'story-options-close-button',
             )}
-        </BreadcrumbTrail>
+
+            onClick={this.toggleDialogVisibility}
+            role="toggle"
+            aria-pressed={this.props.dialogOpen}
+          >
+            Close
+          </Button>
+        </>}
+
+        fullWidth={true}
+        includeTitle="Story Options"
+        onBackdropClick={this.toggleDialogVisibility}
+        open={this.props.dialogOpen}
+      >
+        <BreadcrumbTrail
+          ListComponent={StoryOptionsList}
+          options={this.storyOptions}
+        />
       </Dialog>
     </>
   );
 
-  private readonly toggleModalVisibility = () => this.setState({
-    open: !this.state.open,
-  });
+  public readonly componentDidMount = () => {
+    document.addEventListener('keyup', this.keyListener);
+  };
 
-  private readonly updateOptionValue = (
-    propName: string,
-    value: any,
-  ) => this.props.dispatch(createStoryOptionUpdateAction(propName, value));
+  public readonly componentWillUnmount = () => {
+    document.removeEventListener('keyup', this.keyListener);
+  };
+
+  public readonly setDialogOpen = (value: boolean) => (
+    this.props.dispatch(createStoryOptionsDialogVisibleAction(value))
+  );
+
+  public readonly toggleDialogVisibility = () => (
+    this.setDialogOpen(!this.props.dialogOpen)
+  );
+
+  public readonly keyListener = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      this.setDialogOpen(false);
+    }
+  };
 }
+
+export const mapStateToProps: MapStateToProps<
+  IStoryOptionsStateProps,
+  IStoryOptionsOwnProps,
+  IState
+> = ({ storyOptionsDialogVisible }) => ({
+  dialogOpen: storyOptionsDialogVisible,
+});
 
 export const mapDispatchToProps: MapDispatchToProps<
   IStoryOptionsDispatchProps,
-  {}
+  IStoryOptionsOwnProps
 > = (dispatch) => ({ dispatch });
 
-export const StoryOptionsConnected = connect(
-  null,
+export const StoryOptions = connect(
+  mapStateToProps,
   mapDispatchToProps,
-)(StoryOptions);
+)(StoryOptionsUnconnected);

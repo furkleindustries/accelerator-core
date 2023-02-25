@@ -10,31 +10,28 @@ import MuiCardMedia from '@material-ui/core/CardMedia';
 
 import * as React from 'react';
 
-import styles from './index.less';
-
 const mediaRe = /^audio|iframe|img|picture|video$/;
 
-export const Card: React.FunctionComponent<ICardOwnProps> = ({
+export const Card: React.FC<ICardOwnProps> = ({
   actions,
   children,
   className,
   header,
-  headerTypographyProps = { variant: 'headline' },
+  headerTypographyProps = { variant: 'h3' },
   subheader,
-  subheaderTypographyProps = { variant: 'subheading' },
+  subheaderTypographyProps = { variant: 'h4' },
   ...props
 }) => (
   <MuiCard 
     {...props}
     className={classNames(
-      styles.card,
       'card',
       className,
     )}
   >
     {header ?
       <MuiCardHeader
-        className={classNames(styles.header, 'cardHeader')}
+        className={classNames('card-header')}
         subheader={subheader}
         subheaderTypographyProps={subheaderTypographyProps}
         title={header}
@@ -42,14 +39,14 @@ export const Card: React.FunctionComponent<ICardOwnProps> = ({
       /> :
       null}
 
-    <MuiCardContent className={classNames(styles.content, 'cardContent')}>
+    <MuiCardContent className={classNames('card-content')}>
       {React.Children.map(children, (child) => (
         React.isValidElement(child) && mediaRe.test(child.type as any) ?
           <MuiCardMedia
             component={child.type as any}
             {...child.props}
             className={classNames(
-              'cardMedia',
+              'card-media',
               child.props && (child.props as any).className,
             )}
           /> :
@@ -58,7 +55,7 @@ export const Card: React.FunctionComponent<ICardOwnProps> = ({
     </MuiCardContent>
 
     {actions ?
-      <MuiCardActions className={classNames('cardActions')}>
+      <MuiCardActions className={classNames('card-actions')}>
         {actions}
       </MuiCardActions> :
       null}

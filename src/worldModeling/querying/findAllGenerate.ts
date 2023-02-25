@@ -1,4 +1,13 @@
 import {
+  AwareTypes,
+} from '../relations/AwareTypes';
+import {
+  ContainmentTypes,
+} from '../relations/ContainmentTypes';
+import {
+  EpistemicTypes,
+} from '../epistemology/EpistemicTypes';
+import {
   filterEpistemology,
 } from './filterEpistemology';
 import {
@@ -28,13 +37,10 @@ import {
 import {
   shouldEndQueryEarly,
 } from './shouldEndQueryEarly';
-import { 
+import {
   assert,
   assertValid,
 } from 'ts-assertions';
-import { AwareTypes } from '../relations/AwareTypes';
-import { EpistemicTypes } from '../epistemology/EpistemicTypes';
-import { ContainmentTypes } from '../relations/ContainmentTypes';
 
 function* generate<
   Type extends ModelType,

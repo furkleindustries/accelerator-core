@@ -22,10 +22,12 @@ export const downloadFontFiles = (
     styles,
     weights,
   },
+
   {
     family,
     variants,
   },
+
   downloadDirectory,
 ) => {
   const flatFormats = Array.isArray(formats) ? formats : [ formats ];
@@ -46,10 +48,10 @@ export const downloadFontFiles = (
 
         const filepath = getFontFilepath({
           family,
+          fontsDir: downloadDirectory,
           format,
           style,
           weight,
-          directory: downloadDirectory,
         });
 
         const req = request(url, {

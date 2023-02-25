@@ -1,7 +1,7 @@
 import {
   IPassageRendererOwnProps,
 } from './IPassageRendererOwnProps';
-import {
+import type {
   ComponentType,
 } from 'react';
 

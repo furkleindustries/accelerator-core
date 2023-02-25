@@ -1,9 +1,7 @@
 import {
-  registry,
-} from '../../passages/passages-manifest';
-
-type RegistryType = typeof registry;
+  PassageNames,
+} from '../passages/IPassagesMap';
 
 export interface IPassageNamed {
-  readonly passageName: keyof RegistryType;
+  readonly passageName: PassageNames;
 }

@@ -11,7 +11,7 @@ import {
 
 import * as React from 'react';
 
-import styles from './index.less';
+import styles from '../../../passages/_global-styles/components/index.less';
 
 export class Clicker extends React.PureComponent<IClickerOwnProps, IClickerState> {
   public state = { clicked: false };
@@ -28,11 +28,19 @@ export class Clicker extends React.PureComponent<IClickerOwnProps, IClickerState
     return (
       <Button
         className={classNames(styles.clicker, 'clicker', className)}
-        {...(clicked ? {} : { onClick: this.click })}
+        {...(clicked ? {} : { onClick: this.clickHandler })}
       >
         {clicked ? contentAfterClick : children}
       </Button>
     );
+  };
+
+  private clickHandler = () => {
+    if (typeof this.props.onClick === 'function') {
+      this.props.onClick();
+    }
+
+    this.click();
   };
 
   private click = () => this.setState({ clicked: true });

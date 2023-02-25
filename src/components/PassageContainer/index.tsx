@@ -1,9 +1,9 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   IPassageContainerOwnProps,
 } from './IPassageContainerOwnProps';
 import {
-  PassageContentContainerConnected,
+  PassageContentContainer,
 } from '../PassageContentContainer';
 import {
   PassageHeadersConnected,
@@ -14,42 +14,55 @@ import {
 
 import * as React from 'react';
 
+import builtIns from '../../../passages/_global-styles/components/index.less';
+
 export const PassageContainer = React.forwardRef<HTMLSpanElement, IPassageContainerOwnProps>(({
   config,
   footers,
   headers,
-  passage,
-  passage: { name },
+  passageObject: passage,  
+  passageObject: { name: passageName },
   ...passageProps
 }, ref) => (
-  <div className={classnames(
-    'passageContainer',
-    name,
-  )}>
+  <div
+    className={classNames(
+      builtIns['passage-container'],
+      'passage-container',
+      passageName,
+    )}
+
+    role="main"
+    aria-roledescription="Passage contents"
+  >
     <PassageHeadersConnected
+      {...passageProps}
+
       config={config}
       headers={headers}
-      passage={passage}
-      {...passageProps}
+      passageObject={passage}
     />
 
     {/* Provide a ref which can be scrolled to externally. */}
     <span
-      className={classnames('scroll')}
+      className={classNames('scroll')}
+      role="presentation"
+      aria-roledescription="scroll target"
       ref={ref}
     ></span>
 
-    <PassageContentContainerConnected
-      config={config}
-      passage={passage}
+    <PassageContentContainer
       {...passageProps}
+
+      config={config}
+      passageObject={passage}
     />
 
     <PassageFootersConnected
+      {...passageProps}
+
       config={config}
       footers={footers}
-      passage={passage}
-      {...passageProps}
+      passageObject={passage}
     />
   </div>
 ));

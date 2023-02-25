@@ -1,4 +1,4 @@
-import {
+import type {
   CircularProgressProps,
 } from '@material-ui/core/CircularProgress';
 

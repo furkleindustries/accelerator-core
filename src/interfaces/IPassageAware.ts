@@ -3,5 +3,5 @@ import {
 } from '../passages/IPassage';
 
 export interface IPassageAware {
-  readonly passage: IPassage;
+  readonly passageObject: IPassage;
 }

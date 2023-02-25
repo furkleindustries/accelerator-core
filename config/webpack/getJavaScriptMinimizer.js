@@ -1,7 +1,7 @@
 import TerserPlugin from 'terser-webpack-plugin';
 
-export function getJavaScriptMinimizer(shouldUseSourceMap) {
-  return new TerserPlugin({
+export const getJavaScriptMinimizer = (shouldUseSourceMap) => (
+  new TerserPlugin({
     terserOptions: {
       parse: {
         // we want terser to parse ecma 8 code. However, we don't want it
@@ -17,24 +17,22 @@ export function getJavaScriptMinimizer(shouldUseSourceMap) {
         warnings: false,
       },
   
-      mangle: {
-        safari10: true,
-      },
-  
+      mangle: false,
+
       output: {
         ecma: 5,
         comments: false,
-        // Turned on because emoji and regex is not minified properly using default
+        // Turned on because emoji and regex is not minified properly using default.
         // https://github.com/facebook/create-react-app/issues/2488
         ascii_only: true,
       },
     },
   
-    // Use multi-process parallel running to improve the build speed
-    // Default number of concurrent runs: os.cpus().length - 1
+    // Use multi-process parallel running to improve the build speed.
+    // Default number of concurrent runs: os.cpus().length - 1.
     parallel: true,
-    // Enable file caching
+    // Enable file caching.
     cache: true,
     sourceMap: shouldUseSourceMap,
-  });
-}
+  })
+);

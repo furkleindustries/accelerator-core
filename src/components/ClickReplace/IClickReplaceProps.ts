@@ -1,7 +1,7 @@
 import {
   IClassNameable,
 } from '../../interfaces/IClassNameable';
-import {
+import type {
   ReactNode,
 } from 'react';
 

@@ -25,7 +25,9 @@ export function checkHeaderObject(header: any): null {
 
   if (!header.content) {
     throw new Error(strings.CONTENT_MISSING);
-  } else if (typeof header.content !== 'function') {
+  } else if (typeof header.content !== 'function' &&
+    typeof header.content !== 'object')
+  {
     throw new Error(strings.CONTENT_INVALID);
   }
 

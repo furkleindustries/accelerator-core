@@ -3,21 +3,25 @@ import {
 } from './FontRanges';
 import * as path from 'path';
 import {
-  assert,
+  assertValid,
 } from 'ts-assertions';
 
-export function getFontFilepath ({
-  directory,
+export const getFontFilepath = ({
   family,
+  fontsDir,
   format,
   style,
   weight,
-}) {
-  assert(directory);
-  assert(family);
-  assert(format);
-  assert(style);
-  assert(weight);
+}) => (
+  path.join(
+    assertValid(fontsDir),
 
-  return path.join(directory, `${family}-${style}-${weight}.${format}`);
-}
+    assertValid(family).replace(/\s+/g, '-') +
+      '-' +
+      assertValid(style) + 
+      '-' +
+      assertValid(weight) + 
+      '.' +
+      assertValid(format),
+  )
+);

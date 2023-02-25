@@ -9,7 +9,7 @@ import {
 const plugin: IPluginExport = {
   /* Only inject the menu if the showMenu config property is truthy. */
   ...(
-    getNormalizedAcceleratorConfig().showMenu ?
+    getNormalizedAcceleratorConfig().showMenu === true ?
       { content: new MenuPlugin() } :
       {}
   ),

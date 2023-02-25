@@ -1,11 +1,13 @@
 import {
-  Dispatch,
-} from 'redux';
+  createBookmarkAction,
+} from '../actions/creators/createBookmarkAction';
 import {
   IBookmarkAction,
 } from '../actions/IBookmarkAction';
-import { createBookmarkAction } from '../actions/creators/createBookmarkAction';
+import type {
+  Dispatch,
+} from 'redux';
 
-export function bookmark(dispatch: Dispatch<IBookmarkAction>) {
-  return dispatch(createBookmarkAction());
-}
+export const bookmark = (dispatch: Dispatch<IBookmarkAction>) => (
+  dispatch(createBookmarkAction())
+);

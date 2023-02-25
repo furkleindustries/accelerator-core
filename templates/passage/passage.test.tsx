@@ -61,7 +61,7 @@ describe('Tests for the {{{name}}} passage.', () => {
   });
 
   it('Renders shallowly without crashing.', () => {
-    /* Don't test if it's a noRender passage. */
+    /* Don't test if it's a NoRender passage. */
     if (getTag(tags, BuiltInTags.NoRender)) {
       shallow(<Component {...getPassageMockArgs()} />);
     }

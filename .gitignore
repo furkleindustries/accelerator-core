@@ -1,42 +1,7 @@
-# See https://help.github.com/ignore-files/ for more about ignoring files.
-
-# dependencies
-/node_modules/
-
-# testing
-/coverage/
-
-# production
-/dist/
-/build*/
-/.zips/
-
-# building
-.cache/
-
-# fonts
-public/fonts/
-
-# footers
-footers/*-manifest.ts
-
-# headers
-headers/*-manifest.ts
-
-# passages
-passages/*-manifest.ts
-
-# plugins
-plugins/*-manifest.ts
-
-# options
-options/*-manifest.ts
-
-# misc
+node_modules
+build*/
+public/*
 
 .DS_Store
-.env.development.local
-.env.test.local
-.env.production.local
-
+*.swp*
 *.log*

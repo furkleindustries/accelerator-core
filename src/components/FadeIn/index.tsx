@@ -8,7 +8,7 @@ import {
 
 import * as React from 'react';
 
-import styles from './index.less';
+import builtIns from '../../../passages/_global-styles/components/index.less';
 
 export const strings = {
   DURATION_NOT_GREATER_THAN_OR_EQUAL_ZERO_NUMBER:
@@ -16,7 +16,7 @@ export const strings = {
       'greater or equal to zero.',
 };
 
-export const FadeIn: React.FunctionComponent<IFadeInOwnProps> = ({
+export const FadeIn: React.FC<IFadeInOwnProps> = ({
   children,
   className,
   duration,
@@ -28,8 +28,17 @@ export const FadeIn: React.FunctionComponent<IFadeInOwnProps> = ({
 
   return (
     <div
-      className={classNames(styles.fadeIn, 'fadeIn', className)}
-      style={{ animationDuration: `${duration}ms` }}
+      className={classNames(
+        builtIns['fade-in'],
+        'fade-in',
+        className,
+      )}
+
+      role="group"
+      style={{
+        animationDuration: `${duration}ms`,
+        transitionDuration: `${duration}ms`,
+      }}
     >
       {children}
     </div>

@@ -1,7 +1,7 @@
 /* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
 import * as React from 'react';
 
-import classnames from 'classnames';
+import classNames from 'classnames';
 
 /* Accelerator components, interfaces, styles, functions, etc. Feel free to
  * destructure this as you see fit. */
@@ -15,26 +15,20 @@ import * as passages from '../../bundles/passagesBundle';
 // @ts-ignore
 import * as tags from '../../bundles/tagsBundle';
 
-/**
- * The authoring passage is imported and rendered into the React passage.
- */
-import AuthoringPassage from './{{{name}}}.mdx';
-
-import builtInStyles from '../_global-styles/built-ins.less';
+import builtIns from '../_global-styles/components/index.less';
 import styles from './{{{name}}}.less';
 
-const Passage: React.FunctionComponent<passages.IPassageProps> = (props) => (
-  <components.Article
-    className={classnames(
-      builtInStyles.passage,
+const Passage: React.FC<passages.IPassageProps> = (props) => (
+  <div
+    className={classNames(
+      builtIns.passage,
       styles['{{{name}}}'],
       'passage',
     )}
+
+    role="group"
   >
-    <components.AuthoringPassageContainer passageProps={{ ...props }}>
-      <AuthoringPassage />
-    </components.AuthoringPassageContainer>
-  </components.Article>
+  </div>
 );
 
 const passage: passages.IPassage = {
@@ -46,7 +40,7 @@ const passage: passages.IPassage = {
   tags: [],
 
   /* React.ComponentType<IPassageProps>: the content that should be displayed,
-   * or, in the case of noRender passages, a component that can be imported.
+   * or, in the case of NoRender passages, a component that can be imported.
    * Should be formatted in JSX style. */
   content: Passage,
 };

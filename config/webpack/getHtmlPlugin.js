@@ -7,24 +7,27 @@ import {
 export const getHtmlPlugin = (mode) => {
   const base = {
     inject: true,
+    scriptLoading: 'defer',
     template: paths.htmlTemplate,
   };
 
-  const opts = mode === 'development' ? base : {
-    ...base,
-    minify: {
-      removeComments: true,
-      collapseWhitespace: true,
-      removeRedundantAttributes: true,
-      useShortDoctype: true,
-      removeEmptyAttributes: true,
-      removeStyleLinkTypeAttributes: true,
-      keepClosingSlash: true,
-      minifyJS: true,
-      minifyCSS: true,
-      minifyURLs: true,
-    },
-  };
+  const opts = mode === 'development' ?
+    base :
+    {
+      ...base,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: false,
+        useShortDoctype: true,
+        removeEmptyAttributes: false,
+        removeStyleLinkTypeAttributes: false,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: false,
+        minifyURLs: false,
+      },
+    };
 
   return new HtmlWebpackPlugin(opts);
 };

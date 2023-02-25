@@ -1,8 +1,8 @@
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import safePostCssParser from 'postcss-safe-parser';
 
-export function getCssMinimizer(shouldUseSourceMap) {
-  return new OptimizeCSSAssetsPlugin({
+export const getCssMinimizer = (shouldUseSourceMap) => (
+  new OptimizeCSSAssetsPlugin({
     cssProcessorOptions: {
       parser: safePostCssParser,
       map: (
@@ -18,5 +18,5 @@ export function getCssMinimizer(shouldUseSourceMap) {
           false
       ),
     },
-  });
-}
+  })
+);

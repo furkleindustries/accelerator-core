@@ -1,10 +1,16 @@
 import {
   IClassNameable,
 } from '../../interfaces/IClassNameable';
-import {
-  ReactNodeWithoutNullOrUndefined,
-} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
+import type {
+  AriaAttributes,
+  HTMLAttributes,
+  ReactNode,
+} from 'react';
 
-export type ISectionOwnProps =
-  { children: ReactNodeWithoutNullOrUndefined } &
-  IClassNameable;
+export interface ISectionOwnProps extends
+  AriaAttributes,
+  Omit<HTMLAttributes<HTMLElement>, 'className'>,
+  IClassNameable
+{
+  readonly children: ReactNode;
+}

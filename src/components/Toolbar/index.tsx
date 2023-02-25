@@ -6,20 +6,24 @@ import MuiToolbar from '@material-ui/core/Toolbar';
 
 import * as React from 'react';
 
-import styles from './index.less';
+import builtIns from '../../../passages/_global-styles/components/index.less';
 
-export const Toolbar: React.FunctionComponent<IToolbarOwnProps> = ({
+export const Toolbar: React.FC<IToolbarOwnProps> = ({
   children,
   className,
   ...props
 }) => (
   <MuiToolbar
     {...props}
+
     className={classNames(
+      builtIns.toolbar,
       'toolbar',
-      styles.toolbar,
       className,
     )}
+
+    role="toolbar"
+    aria-roledescription="toolbar"
   >
     {children}
   </MuiToolbar>

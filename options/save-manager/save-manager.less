@@ -1,0 +1,318 @@
+@import '../../passages/_global-styles/borders.less';
+@import '../../passages/_global-styles/colors.less';
+@import '../../passages/_global-styles/fonts.less';
+@import '../../passages/_global-styles/sizes.less';
+@import '../../passages/_global-styles/opacities.less';
+@import '../../passages/_global-styles/times.less';
+@import '../../passages/_global-styles/transitions.less';
+
+.save-manager-option {
+  display: block;
+  opacity: @opacity-none;
+  transform: scaleY(0.15);
+  transform-origin: top;
+  animation-name: fade-in-save;
+  animation-delay: 0ms;
+  animation-duration: @text-transition-time / 3;
+  animation-fill-mode: forwards;
+  animation-timing-function: @transition-timing-function;
+}
+
+.story-state-save-load-view {
+  position: relative;
+  padding: 0 @space-lg;
+}
+
+.story-state-save-load-view-list {
+  position: relative;
+  list-style: none;
+  list-style-type: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.story-state-save-load-view-list-item {
+  position: relative;
+  display: list-item;
+  list-style: none;
+  list-style-type: none;
+  padding:
+    @space-sm + @space-xs
+      @space-sm + @space-xs
+      @space-sm
+      @space-sm + @space-sm;
+
+  border-radius: @space-med;
+  background-color: rgba(26, 26, 26, @opacity-fifth);
+
+  &:global(.current) {
+    box-shadow: 0 0 @space-med + @space-sm rgba(@color-white, @opacity-quarter);
+  }
+
+  &:not(:last-of-type) {
+    border-left: double @space-xxs rgba(@color-black, @opacity-tenth);
+    border-right: double @space-xxs rgba(@color-black, @opacity-tenth);
+    border-bottom: double @space-xxs rgba(@color-black, @opacity-quarter);
+    border-radius: @space-med;
+    margin-bottom: @space-lg + @space-sm;
+  }
+}
+
+.story-state-save-load-view-save-content {
+  position: relative;
+  display: block;
+  padding: @space-sm;
+}
+
+.story-state-save-load-view-new-save-label {
+  position: relative;
+  display: block;
+  margin-left: @space-med;
+}
+
+.story-state-save-load-view-new-save-input {
+  position: relative;
+  display: block;
+  max-width: 45vw;
+}
+
+.story-state-save-load-view-new-save-button {
+  position: relative;
+  margin-left: @space-med;
+  margin-bottom: @space-med;
+  transition: @button-transitions;
+}
+
+.story-state-save-load-view-save-view {
+  position: relative;
+  margin-bottom: @space-med;
+}
+
+.save-view {
+  position: relative;
+  display: block;
+}
+
+.save-view-header {
+  position: relative;
+  display: block;
+  margin: @space-med 0;
+}
+
+.save-view-title {
+  &, &:global(.typography) {
+    display: block;
+  
+    @media screen and (max-width: @space-viewport-width-phone) {
+      font-size: @font-h6;
+    }
+  }
+}
+
+.save-view-details {
+  position: relative;
+  display: block;
+}
+
+.save-view-details-current-passage-container {
+  position: relative;
+  display: block;
+}
+
+.save-view-details-current-passage-label {
+  &, &:global(.typography) {
+    position: relative;
+    display: block;
+  
+    @media screen and (max-width: @space-viewport-width-phone) {
+      font-size: @font-body;
+    }
+  }
+}
+
+.save-view-details-current-passage-content {
+  &, &:global(.typography) {
+    margin-bottom: 0;
+  
+    @media screen and (max-width: @space-viewport-width-phone) {
+      font-size: @font-small;
+    }
+  }
+}
+
+.save-view-details-last-modified-container {
+  display: block;
+  margin-top: @space-med;
+  margin-bottom: @space-sm;
+}
+
+.save-view-details-last-modified-label {
+  &, &:global(.typography) {
+    display: block;
+    margin-bottom: 0;
+
+    @media screen and (max-width: @space-viewport-width-phone) {
+      font-size: @font-body;
+    }
+  }
+}
+
+.save-view-details-last-modified-content {
+  &, &:global(.typography) {
+    display: block;
+    margin-top: @space-med;
+    margin-bottom: 0;
+
+    @media screen and (max-width: @space-viewport-width-phone) {
+      font-size: @font-small;
+    }
+  }
+}
+
+.save-view-details-extra-state-details-list {
+  &, &:global(.list) {
+    position: relative;
+    margin: @space-sm 0 @space-sm + @space-xs 0;
+  }
+}
+
+.save-view-details-extra-state-details-list-item {
+  &, &:not(:empty) {
+    position: relative;
+    padding-left: 0;
+    padding-right: 0;
+    list-style: none;
+  }
+}
+
+.save-view-details-extra-state-detail-key {
+  &, &:global(.typography) {
+    position: relative;
+    display: inline-block;
+    width: @space-xxl + @space-lg;
+    padding-right: @space-sm;
+    margin: 0;
+    font-family: @font-italic;
+    font-style: italic;
+
+    @media screen and (max-width: @space-viewport-width-phone) {
+      width: @space-xl + @space-lg + @space-med + @space-sm;
+      padding-right: @space-xxxs;
+      font-size: @font-small;
+    }
+  }
+}
+
+.save-view-details-extra-state-detail-value {
+  &, &:global(.typography) {
+    position: relative;
+    display: inline-block;
+    margin: @space-xs;
+  
+    @media screen and (max-width: @space-viewport-width-phone) {
+      margin: @space-xxs;
+      font-size: @font-small;
+    }
+  }
+}
+
+.save-view-new-game-plus-details {
+  position: absolute;
+  right: @space-xl + @space-med + @space-sm;
+  top: -@space-xl - @space-sm - @space-xs - @space-xxs;
+  width: 1rem;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.save-view-new-game-plus-details-list {
+  position: relative;
+  display: flex;
+  justify-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.save-view-new-game-plus-details-list-item {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.save-view-new-game-plus-details-content {
+  &, &:global(.typography), &:global(.MuiTypography-root.typography) {
+    font-family: @font-normal;
+    font-size: @font-h3;
+    font-weight: 500;
+    text-shadow: @border-dark-pen-outline;
+  }
+}
+
+.save-view-controls {
+  display: block;
+}
+
+.save-view-controls-non-autosave-content {
+  :global(.button) {
+    width: @space-xxl + @space-xl + @space-med;
+    padding: @space-sm;
+    margin-left: @space-lg;
+    margin-bottom: @space-med;
+    text-align: center;
+  }
+}
+
+.save-view-controls-overwrite-button {
+  &, &:global(.button) {
+    display: block;
+    
+    @media screen and (max-width: @space-viewport-width-phone) {
+      width: @space-xxl;
+      padding-left: @space-sm;
+      margin-left: 0;
+      font-size: @font-small;
+    }
+  }
+}
+
+.save-view-controls-load-button {
+  &, &:global(.button) {
+    display: block;
+
+    @media screen and (max-width: @space-viewport-width-phone) {
+      width: @space-xxl;
+      padding-left: @space-sm;
+      margin-left: 0;
+      font-size: @font-small;
+    }
+  }
+}
+
+.save-view-controls-delete-button {
+  &, &:global(.button) {
+    display: block;
+  
+    @media screen and (max-width: @space-viewport-width-phone) {
+      width: @space-xxl;
+      padding-left: @space-sm;
+      margin-left: 0;
+      font-size: @font-small;
+    }
+  }
+}
+
+@keyframes fade-in-save {
+  from {
+    opacity: @opacity-none;
+    transform: scaleY(0.15);
+  }
+
+  to {
+    opacity: @opacity-full;
+    transform: scaleY(1);
+  }
+}

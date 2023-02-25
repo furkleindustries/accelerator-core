@@ -4,16 +4,24 @@ import {
 import {
   IBookmarkAction,
 } from '../actions/IBookmarkAction';
+import {
+  IStoryResetAction,
+} from '../actions/IStoryResetAction';
+import {
+  IStoryStateLoadAction,
+} from '../actions/IStoryStateLoadAction';
 
-
-export function bookmarkCounterReducer(
-  previousState: number = 0,
-  action: IBookmarkAction,
-)
-{
+export const bookmarkCounterReducer = (
+  previousState = 0,
+  action: IBookmarkAction | IStoryResetAction | IStoryStateLoadAction,
+) => {
   if (action.type === ActionTypes.Bookmark) {
     return previousState + 1;
+  } else if (action.type === ActionTypes.StoryReset) {
+    return 0;
+  } else if (action.type === ActionTypes.StoryStateLoad) {
+    return action.value.engineHistory.present.bookmarkCounter;
   }
 
   return previousState;
-}
+};

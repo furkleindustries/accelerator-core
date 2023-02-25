@@ -1,7 +1,3 @@
-import {
-  log,
-  warn,
-} from 'colorful-logging';
 import decompress from 'decompress';
 import download from 'electron-download';
 import * as fs from 'fs-extra';
@@ -24,7 +20,7 @@ const skipMacOS =
   process.platform === 'win32';
 
 if (skipMacOS) {
-  warn('Due to issues in the way Windows handles symlinks in zip ' +
+  console.warn('Due to issues in the way Windows handles symlinks in zip ' +
        'archives, it is not possible to make macOS electron ' +
        'packages. You may override this by passing the ' +
        '--force-mac-build-on-windows to the getElectronRedists script ' +
@@ -50,10 +46,10 @@ if (skipMacOS) {
 
   if (descriptors.length) {
     const zipPaths = await downloadPromise;
-    log('Finished downloading redists.');
+    console.log('Finished downloading redists.');
     await unzip(zipPaths, descriptors)
   } else {
-    warn('Folders exist for all Electron redists. If they are ' +
+    console.warn('Folders exist for all Electron redists. If they are ' +
          'empty or broken, delete the folders.');
   }
 })();
@@ -63,7 +59,7 @@ function doDownload(foundLinux, foundMac, foundWin) {
   const descriptors = [];
 
   if (!foundLinux) {
-    log('Downloading electron redist for Linux.');
+    console.log('Downloading electron redist for Linux.');
 
     descriptors.push('linux');
 
@@ -90,7 +86,7 @@ function doDownload(foundLinux, foundMac, foundWin) {
   }
 
   if (!foundMac) {
-    log('Downloading electron redist for MacOS.');
+    console.log('Downloading electron redist for MacOS.');
 
     descriptors.push('macOS');
 
@@ -117,7 +113,7 @@ function doDownload(foundLinux, foundMac, foundWin) {
   }
 
   if (!foundWin) {
-    log('Downloading electron redist for Windows.');
+    console.log('Downloading electron redist for Windows.');
 
     descriptors.push('windows');
 
@@ -161,7 +157,7 @@ function unzip(zipPaths, descriptors) {
       outPath = windowsDir;
     }
 
-    log(`Unzipping from ${zipPaths[index]} to ${outPath}`);
+    console.log(`Unzipping from ${zipPaths[index]} to ${outPath}`);
     zipPromises.push(decompress(zipPaths[index], outPath));
   });
 

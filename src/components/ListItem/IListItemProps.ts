@@ -1,4 +1,4 @@
-import {
+import type {
   ListItemProps,
 } from '@material-ui/core/ListItem';
 

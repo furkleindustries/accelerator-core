@@ -1,3 +1,4 @@
+import config from '../../accelerator.config';
 import ForkTsCheckerWebpackPlugin from 'react-dev-utils/ForkTsCheckerWebpackPlugin';
 import {
   getAllCompiledCodeDirectories,
@@ -6,11 +7,13 @@ import {
   paths,
 } from '../paths';
 import resolve from 'resolve';
-import typescriptFormatter from 'react-dev-utils/typescriptFormatter';
+import {
+  typescriptFormatter,
+} from './typescriptFormatter';
 
 export const getForkTsChecker = () => new ForkTsCheckerWebpackPlugin({
   typescript: resolve.sync('typescript', { basedir: paths.appNodeModules }),
-  tslint: true,
+  eslint: config.lintCodeFiles,
   async: process.env.NODE_ENV === 'development',
   useTypescriptIncrementalApi: process.env.NODE_ENV === 'development',
   checkSyntacticErrors: true,

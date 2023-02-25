@@ -1,31 +1,63 @@
+import {
+  ButtonBase,
+} from '../ButtonBase';
 import classNames from 'classnames';
 import {
-  IButtonProps,
-} from './IButtonProps';
-import {
-  Button as MuiButton,
-} from '@material-ui/core';
+  IButtonOwnProps,
+} from './IButtonOwnProps';
 
 import * as React from 'react';
 
-import styles from './index.less';
+import builtIns from '../../../passages/_global-styles/components/index.less';
 
-export const Button: React.FunctionComponent<IButtonProps> = ({
-  children,
-  className,
-  color = 'primary',
-  ...props
-}) => (
-  <MuiButton
-    {...props}
-    className={classNames(
-      styles.button,
-      'button',
-      className,
-    )}
+export const Button: React.FC<IButtonOwnProps> = React.memo(React.forwardRef((props, ref) => {
+  const {
+    children,
+    className,
+    color,
+    disabled,
+    disableFocusRipple,
+    disableRipple,
+    disableTouchRipple,
+    focusVisibleClassName,
+    ...otherProps
+  } = props;
 
-    color={color}
-  >
-    {children}
-  </MuiButton>
-);
+  const cancelRightClick = (
+    ev: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    ev.preventDefault();
+    return false;
+  };
+
+  return (
+    <ButtonBase
+      {...otherProps}
+
+      className={classNames(
+        builtIns['button'],
+        'button',
+        className,
+        { disabled },
+      )}
+
+      focusRipple={!disableFocusRipple}
+      focusVisibleClassName={classNames(
+        'focusVisible',
+        focusVisibleClassName,
+      )}
+
+      ref={ref as any}
+      onContextMenu={cancelRightClick}
+    >
+      <span
+        className={classNames('label')}
+        role="group"
+      >
+        {children}
+      </span>
+    </ButtonBase>
+  );
+}));
+
+Button.displayName = 'Button';

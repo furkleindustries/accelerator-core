@@ -1,4 +1,4 @@
-import {
+import type {
   DividerProps,
 } from '@material-ui/core/Divider';
 

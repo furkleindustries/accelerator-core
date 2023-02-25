@@ -1,38 +1,26 @@
-import {
-  argumentsAreValid,
-} from './argumentsAreValid';
+import classNames from 'classnames';
 import {
   Button,
 } from '../Button';
 import {
-  childIsShownInVisibilityTree,
-} from './childIsShownInVisibilityTree';
-import classNames from 'classnames';
-import {
-  IGetBreadcrumbPropsReturn,
-} from '../BreadcrumbTrail/IGetBreadcrumbPropsReturn';
-import {
-  IStoryOptionComponentOwnProps,
-} from '../../storyOptions/IStoryOptionComponentOwnProps';
-import {
   IStoryOptionsListOwnProps,
 } from './IStoryOptionsListOwnProps';
 import {
-  IVisibilityTree,
-} from '../BreadcrumbTrail/IVisibilityTree';
+  IStoryOptionsListState,
+} from './IStoryOptionsListState';
 import {
   List,
 } from '../List';
 import {
-  assertValid,
-} from 'ts-assertions';
+  ListItem,
+} from '../ListItem';
 import {
   Typography,
 } from '../Typography';
 
 import * as React from 'react';
 
-import styles from './index.less';
+import styles from '../../../plugins/menu/index.less';
 
 /**
  * Allow both <StoryOption /> and <StoryOptionsList /> children.
@@ -40,136 +28,124 @@ import styles from './index.less';
  * branch.
  */
 export class StoryOptionsList extends React.PureComponent<
-  IStoryOptionsListOwnProps
+  IStoryOptionsListOwnProps,
+  IStoryOptionsListState
 > {
+  public readonly state: IStoryOptionsListState = { open: false };
+
   public readonly render = () => {
     const {
+      childOptions,
       children,
+      clickOption,
       className,
-      getBreadcrumbProps,
-      root = false,
+      crumb,
+      root,
       title,
-      treeSelector,
     } = this.props;
 
-    const safeChildren: ReadonlyArray<
-      React.ReactElement<
-        IStoryOptionComponentOwnProps | IStoryOptionsListOwnProps
-      >
-    > = (
-      Array.isArray(children) ?
-        children :
-        [ children ]
-    ) as ReadonlyArray<
-      React.ReactElement<
-        IStoryOptionComponentOwnProps | IStoryOptionsListOwnProps
-      >
-    >;
+    const { open: listOpen } = this.state;
 
-    let content: React.ReactNode;
+    const optionsOutput = [ ...(childOptions || []) ].map((
+      {
+        content: OptionComponent,
+        name: optionName,
+      },
 
-    const {
-      addBreadcrumb,
-      breadcrumbTrail,
-      removeBreadcrumb,
-      visibilityTree,
-    } = (typeof getBreadcrumbProps === 'function' ? getBreadcrumbProps() : {}) as IGetBreadcrumbPropsReturn;
+      key,
+    ) => (
+      <OptionComponent
+        clickOption={clickOption}
+        crumb={{
+          name: optionName,
+          path: `${crumb.path}.${key}`,
+        }}
 
-    /* Do not show the list if the root node is visible: false.*/
-    if (visibilityTree && visibilityTree.visible === false) {
-      return null;
-    }
-
-    /** If it is the root list, never collapse it. */
-    if (root || visibilityTree.open) {
-      const areValid = argumentsAreValid({
-        addBreadcrumb,
-        breadcrumbTrail,
-        removeBreadcrumb,
-        treeSelector,
-        visibilityTree,
-      });
-
-      content = (
-        <List className={classNames(
-          styles.storyOptionsList,
-          'storyOptionsList',
-          className,
-        )}>
-          {title ?
-            <Typography
-              className={classNames('storyOptionsListButton')}
-              component="h4"
-            >{
-              title
-            }</Typography> :
-            null}
-
-          {safeChildren.map((child, key) => {
-            /**
-             * Do not do any visibility mutation for elements which do not pass
-             * breadcrumb props.
-             */
-            if (!areValid) {
-              return child;
-            }
-
-            const vizTree = assertValid<IVisibilityTree>(
-              visibilityTree,
-            );
-
-            let childContent: React.ReactNode = child;
-            if (!childIsShownInVisibilityTree(vizTree, key)) {
-              childContent = null;
-            } else {
-              childContent = React.cloneElement(child, {
-                treeSelector: treeSelector!.concat([ key ]),
-                getBreadcrumbProps: () => ({
-                  addBreadcrumb,
-                  breadcrumbTrail,
-                  removeBreadcrumb,
-                  visibilityTree: vizTree.children[key],
-                }),
-              });
-            }
-
-            return (
-              <li
-                className={classNames('storyOptionListItem')}
-                key={key}
-              >{
-                childContent
-              }</li>
-            );
-          })}
-        </List>
-      );
-    } else {
-      content = (
-        <Button onClick={this.openMenu}>{
-          title || 'Story options list'
-        }</Button>
-      );
-    }
+        key={optionName}
+        role="treeitem"
+      />
+    ));
 
     return (
-      <div className={classNames('storyOptionsListContainer')}>
-        {content}
-      </div>
+      <List
+        className={classNames(
+          styles['story-options-list'],
+          'story-options-list',
+          { [styles['root']]: root },
+          { root },
+        )}
+
+        role={root ? 'tree' : 'treeitem'}
+      >
+        {root || listOpen ?
+          <>
+            <ListItem
+              className={classNames(
+                styles['story-options-list-item'],
+                'story-options-list-item',
+                className,
+              )}
+
+              role="treeitem"
+            >
+              {root ?
+                null :
+                <Typography
+                  className={classNames(
+                    styles['story-options-list-title'],
+                    'story-options-list-title',
+                  )}
+
+                  variant="h3"
+                >
+                  {title || 'Untitled option'}
+                </Typography>}
+
+              {children}
+
+              <List
+                className={classNames(
+                  styles['story-options-list'],
+                  'story-options-list',
+                )}
+
+                role="treeitem"
+              >
+                {optionsOutput}
+              </List>
+            </ListItem>
+          </> :
+          <ListItem
+            className={classNames(
+              styles['story-options-list-item'],
+              'story-options-list-item',
+            )}
+
+            role="treeitem"
+          >
+            <Button
+              className={classNames(
+                styles['story-options-list-open-button'],
+                'story-options-list-open-button',
+              )}
+
+              onClick={this.openList}
+              role="toggle"
+              aria-pressed={listOpen}
+            >
+              {title || 'Untitled option'}
+            </Button>
+          </ListItem>}
+      </List>
     );
   };
 
-  private readonly openMenu = () => {
-    const {
-      getBreadcrumbProps,
-      title,
-    } = this.props;
+  public readonly openList = () => {
+    this.props.clickOption(this.props.crumb);
+    this.setState({ open: true });
+  };
 
-    if (typeof getBreadcrumbProps === 'function') {
-      getBreadcrumbProps().addBreadcrumb({
-        name: title || 'Story options list',
-        treeSelector: this.props.treeSelector,
-      });
-    }
+  public readonly closeList = () => {
+    this.setState({ open: false });
   };
 }

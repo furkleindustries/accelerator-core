@@ -1,4 +1,4 @@
-import {
+import type {
   AppBarProps,
 } from '@material-ui/core/AppBar';
 import {

@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {
   IStoryOptionComponentOwnProps,
 } from '../../src/storyOptions/IStoryOptionComponentOwnProps';
@@ -15,12 +15,13 @@ class Option extends React.PureComponent<IStoryOptionComponentOwnProps> {
     const {
       getBreadcrumbProps,
       open,
-      treeSelector,
-      updateOptionValue,
     } = this.props;
 
     return (
-      <div className={classnames('storyOption', styles['{{{name}}}'])}>
+      <div className={classNames(
+        styles['{{{name}}}'],
+        'story-option',
+      )}>
         This is a story option.
       </div>
     );

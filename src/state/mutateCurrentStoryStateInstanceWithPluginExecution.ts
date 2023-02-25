@@ -2,23 +2,11 @@ import {
   createStoryStateAction,
 } from '../actions/creators/createStoryStateAction';
 import {
-  IAction,
-} from '../actions/IAction';
+  getNormalizedAcceleratorConfig,
+} from '../configuration/getNormalizedAcceleratorConfig';
 import {
-  IHistory,
-} from './IHistory';
-import {
-  IPassage,
-} from '../passages/IPassage';
-import {
-  IPlugin,
-} from '../plugins/IPlugin';
-import {
-  IStoryStateFrame,
-} from './IStoryStateFrame';
-import {
-  Dispatch,
-} from 'redux';
+  IMutateStoryStateWithPluginArgs,
+} from './IMutateStoryStateWithPluginsArgs';
 
 export const strings = {
   PASSAGE_NOT_FOUND:
@@ -28,29 +16,32 @@ export const strings = {
 
 /* Do NOT call this from within a plugin -- there is a high chance you'll
  * cause an infinite loop, then a stack overflow. */
-export function mutateCurrentStoryStateInstanceWithPluginExecution({
+export const mutateCurrentStoryStateInstanceWithPluginExecution = ({
+  autoplayerState,
   dispatch,
+  getSoundManager,
   history: {
+    past,
     present: {
       lastLinkTags,
       storyState: preupdateStoryState,
     },
   },
 
-  passageObject,
+  passageObject: passage,
   plugins,
   updatedStateProps,
-}: {
-  readonly dispatch: Dispatch<IAction>,
-  readonly history: IHistory,
-  readonly passageObject: IPassage,
-  readonly plugins: readonly IPlugin[],
-  readonly updatedStateProps: Partial<IStoryStateFrame>,
-}): void
-{
-  const action = createStoryStateAction(updatedStateProps);
+}: IMutateStoryStateWithPluginArgs): void => {
+  const config = getNormalizedAcceleratorConfig();
+       
+  const action = createStoryStateAction(
+    updatedStateProps,
+    past[past.length - 1]?.passageName || '',
+  );
+
   dispatch(action);
 
+  const passageObject = passage;
   const storyState = {
     ...preupdateStoryState,
     ...updatedStateProps,
@@ -59,8 +50,11 @@ export function mutateCurrentStoryStateInstanceWithPluginExecution({
   plugins.forEach(({ afterStoryStateChange }) => {
     if (typeof afterStoryStateChange === 'function') {
       afterStoryStateChange({
-        passageObject,
+        autoplayerState,
+        config,
+        getSoundManager,
         lastLinkTags,
+        passageObject,
         storyState,
         updatedStateProps,
       });

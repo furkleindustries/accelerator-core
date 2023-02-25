@@ -2,36 +2,34 @@ import {
   createStoryResetAction,
 } from '../actions/creators/createStoryResetAction';
 import {
-  IPlugin,
-} from '../plugins/IPlugin';
+  IResetStoryArgs,
+} from './IResetStoryArgs';
 import {
-  IPluginMethodBaseArgs,
-} from '../plugins/IPluginMethodArgs';
-import {
-  IStoryResetAction,
-} from '../actions/IStoryResetAction';
-import {
-  Dispatch,
-} from 'redux';
+  pushToSaveRegistry,
+} from '../../plugins/save-manager/pushToSaveRegistry';
 import {
   ActionCreators,
 } from 'redux-undo';
+import {
+  stopAllSoundsAutomatically,
+} from '../functions/stopAllSoundsAutomatically';
 
-export const reset = (args: IPluginMethodBaseArgs & {
-  readonly dispatch: Dispatch<IStoryResetAction>;
-  readonly plugins: readonly IPlugin[];
-}) => {
-  const {
-    dispatch,
-    lastLinkTags,
-    passageObject,
-    plugins,
-    storyState,
-  } = args;
-
+export const reset = ({
+  autoplayerState,
+  config,
+  getSoundManager,
+  lastLinkTags,
+  passageObject,
+  plugins,
+  store,
+  storyState,
+}: IResetStoryArgs) => {
   plugins.forEach(({ beforeRestart }) => {
     if (typeof beforeRestart === 'function') {
       beforeRestart({
+        autoplayerState,
+        config,
+        getSoundManager,
         lastLinkTags,
         passageObject,
         storyState,
@@ -39,6 +37,30 @@ export const reset = (args: IPluginMethodBaseArgs & {
     }
   });
 
-  dispatch(ActionCreators.clearHistory());
-  dispatch(createStoryResetAction());
+  if (typeof getSoundManager === 'function') {
+    stopAllSoundsAutomatically(
+      { ...getSoundManager().collection.groups },
+      config.soundManager.excludeFromAutomaticStop,
+    );
+  }
+
+  store.dispatch(ActionCreators.clearHistory());
+
+  const lastModified = new Date().getTime();
+  const saveName = 'Autosave';
+  const uuid = saveName;
+
+  pushToSaveRegistry(
+    {
+      currentPassageName: config.startPassageName,
+      lastModified,
+      saveName,
+      uuid,
+    },
+
+    store,
+    config.historyFramesToSerialize,
+  );
+
+  return store.dispatch(createStoryResetAction());
 };

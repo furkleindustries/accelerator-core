@@ -29,13 +29,16 @@ export const strings = {
     'There was no contents property found in the footer with name %NAME%.',
 };
 
-export const PassageFooters: React.FunctionComponent<
+export const PassageFooters: React.FC<
   IPassageFootersOwnProps & IPassageFootersDispatchProps
 > = ({
   footers,
   ...passageProps
 }) => (
-  <div className={classNames('passageFooters')}>
+  <div
+    className={classNames('passage-footers')}
+    role="group"
+  >
     {(footers as IFooter[]).map(({ content }, index) => {
       const SafeContent = assertValid<React.ComponentType<IPassageProps>>(
         content,

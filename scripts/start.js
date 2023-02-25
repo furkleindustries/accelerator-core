@@ -6,10 +6,6 @@ import {
 } from 'react-dev-utils/browsersHelper';
 import chalk from 'chalk';
 import checkRequiredFiles from 'react-dev-utils/checkRequiredFiles';
-import {
-  error,
-  log,
-} from 'colorful-logging';
 import config from '../config/webpack/webpack.config';
 import createDevServerConfig from '../config/webpack/webpackDevServer.config';
 import {
@@ -17,7 +13,7 @@ import {
   createCompiler,
   prepareProxy,
   prepareUrls,
-} from '../lib/react-dev-utils/FixedWebpackDevServerUtils';
+} from '../config/webpack/FixedWebpackDevServerUtils';
 import openBrowser from 'react-dev-utils/openBrowser';
 import {
   paths,
@@ -54,7 +50,7 @@ const defaultPort = parseInt(PORT, 10) || 3000;
 const host = HOST || '0.0.0.0';
 
 if (HOST) {
-  log(
+  console.log(
     `Attempting to bind to HOST environment variable: ` +
       `${chalk.yellow(chalk.bold(host))}\nIf this was unintentional, check ` +
       `that you haven't mistakenly set it in your shell.\nLearn more here: ` +
@@ -104,11 +100,11 @@ checkBrowsers(paths.appPath, isInteractive)
     /* Launch WebpackDevServer. */
     devServer.listen(port, host, (err) => {
       if (err) {
-        error(err);
+        console.error(err);
         return;
       }
 
-      log(chalk.cyan('Starting the development server...\n'));
+      console.log(chalk.cyan('Starting the development server...\n'));
       openBrowser(localUrlForBrowser);
     });
 
@@ -120,6 +116,6 @@ checkBrowsers(paths.appPath, isInteractive)
       exit(0);
     }));
   }).catch((err) => {
-    error(err);
+    console.error(err);
     exit(1);
   });

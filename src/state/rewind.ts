@@ -2,50 +2,38 @@ import {
   createStoryRewindAction,
 } from '../actions/creators/createStoryRewindAction';
 import {
-  HistoryFilter,
-} from '../reducers/IHistoryFilter';
+  getNormalizedAcceleratorConfig,
+} from '../configuration/getNormalizedAcceleratorConfig';
 import {
-  IStateFrame,
-} from './IStateFrame';
+  ISoundManagerAware,
+} from '../interfaces/ISoundManagerAware';
 import {
   IStoryRewindAction,
 } from '../actions/IStoryRewindAction';
-import {
+import type {
   Dispatch,
 } from 'redux';
+import {
+  stopAllSoundsAutomatically,
+} from '../functions/stopAllSoundsAutomatically';
 import {
   assert,
 } from 'ts-assertions';
 
-export function rewind(
+export const rewind = (
   dispatch: Dispatch<IStoryRewindAction>,
-  present: IStateFrame,
-  past: readonly IStateFrame[],
-  filter?: HistoryFilter,
-): IStoryRewindAction
-{
+  getSoundManager?: ISoundManagerAware['getSoundManager'],
+): IStoryRewindAction => {
   assert(typeof dispatch === 'function');
-  assert(present);
-  assert(Array.isArray(past));
-  assert(past.length > 0);
 
-  let index = 0;
-  if (typeof filter === 'function') {
-    let found = true;
-    for (let ii = past.length - 1; ii >= 0; ii -= 1) {
-      const frame = past[ii];
-      if (filter(frame)) {
-        found = true;
-        index = ii;
-        break;
-      }
-    }
-  
-    assert(found);
-  } else {
-    index = past.length - 1;
-    assert(index > -1);
+  const config = getNormalizedAcceleratorConfig();
+
+  if (typeof getSoundManager === 'function') {
+    stopAllSoundsAutomatically(
+      { ...getSoundManager().collection.groups },
+      config.soundManager.excludeFromAutomaticStop,
+    );
   }
 
-  return dispatch(createStoryRewindAction(index));
+  return dispatch(createStoryRewindAction());
 }

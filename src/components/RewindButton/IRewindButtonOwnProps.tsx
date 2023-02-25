@@ -1,10 +1,7 @@
 import {
-  HistoryFilter,
-} from '../../reducers/IHistoryFilter';
-import {
-  IButtonProps,
-} from '../Button/IButtonProps';
+  IButtonOwnProps,
+} from '../Button/IButtonOwnProps';
 
-export interface IRewindButtonOwnProps extends IButtonProps {
-  readonly filter?: HistoryFilter;
+export interface IRewindButtonOwnProps extends IButtonOwnProps {
+  readonly soundGroupsToStop?: string[];
 }

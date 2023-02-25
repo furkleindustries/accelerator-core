@@ -14,10 +14,12 @@ import {
 
 type RegistryType = typeof registry;
 
+export type FooterNames = keyof RegistryType;
+
 export interface IFooter
   extends
     IContentfulAsset<IPassageProps>,
     IPrecedenceWeighted
 {
-  readonly name: keyof RegistryType;
+  readonly name: FooterNames;
 }

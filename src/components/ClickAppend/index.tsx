@@ -8,13 +8,13 @@ import {
 
 import * as React from 'react';
 
-export const ClickAppend: React.FunctionComponent<IClickAppendOwnProps> = ({
+export const ClickAppend: React.FC<IClickAppendOwnProps> = ({
   className,
   children,
   toAppend,
 }) => (
   <Clicker
-    className={classNames('clickAppend', className)}
+    className={classNames('click-append', className)}
     contentAfterClick={[
       children,
       toAppend,

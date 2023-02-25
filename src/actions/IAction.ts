@@ -1,4 +1,4 @@
-import {
+import type {
   Action,
 } from 'redux';
 import {
@@ -9,5 +9,5 @@ export interface IAction extends
   Action,
   Partial<IValued>
 {
-  readonly type: string;
+  readonly type: any;
 }

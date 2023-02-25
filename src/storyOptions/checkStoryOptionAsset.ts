@@ -8,7 +8,7 @@ import {
 
 export const strings = {
   CONTENT_INVALID:
-    'The passage object\'s content property was not a function.',
+    'The passage object\'s content property was not valid.',
 
   CONTENT_MISSING:
     'The passage object had no content element.',
@@ -42,7 +42,8 @@ export function checkStoryOptionAsset(passage: any): passage is IStoryOption {
   }
 
   assert(content, strings.CONTENT_MISSING);
-  assert(typeof content === 'function', strings.CONTENT_INVALID);
+
+  assert(content, strings.CONTENT_INVALID);
 
   return true;
 }

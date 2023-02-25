@@ -4,12 +4,18 @@ import {
 import {
   createContext,
 } from 'react';
+import {
+  assertValid,
+} from 'ts-assertions';
 
-let appContext: React.Context<IContext> | null = null;
-export function getAppContext() {
-  if (!appContext) {
-    appContext = createContext(undefined as any);
+let appContext: React.Context<IContext> = null as any;
+export const getAppContext = (initialContext?: IContext): React.Context<IContext> => {
+  if (!appContext && initialContext) {
+    appContext = createContext(initialContext);
   }
-
-  return appContext;
-}
+  
+  return assertValid<React.Context<IContext>>(
+    appContext,
+    'The result of React.createContext was invalid in getAppContext.',
+  );
+};

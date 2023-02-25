@@ -7,7 +7,7 @@ import {
 
 import * as React from 'react';
 
-export const UnorderedList: React.FunctionComponent = ({
+export const UnorderedList: React.FC = ({
   children,
   ...props
 }: IListOwnProps) => ( 

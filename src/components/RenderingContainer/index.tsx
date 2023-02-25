@@ -3,116 +3,73 @@ import {
 } from '../AppContextConsumerWrapper';
 import classNames from 'classnames';
 import {
-  createStoryRequiresFullRerenderAction,
-} from '../../actions/creators/createStoryRequiresFullRerenderAction';
-import {
-  IRenderingContainerDispatchProps,
-} from './IRenderingContainerDispatchProps';
-import {
-  IRenderingContainerStateProps,
-} from './IRenderingContainerStateProps';
-import {
-  IState,
-} from '../../state/IState';
-import {
   PassagePluginsWrapper,
 } from '../PassagePluginsWrapper';
 import {
   PassageRendererWrapperConnected,
 } from '../PassageRendererWrapper';
 import {
-  connect,
-  MapDispatchToProps,
-  MapStateToProps,
-} from 'react-redux';
-import {
   SkipToContentLink,
 } from '../SkipToContentLink';
 
 import * as React from 'react';
 
-import styles from './index.less';
+import builtIns from '../../../passages/_global-styles/components/index.less';
 
-export class RenderingContainer extends React.PureComponent<IRenderingContainerStateProps & IRenderingContainerDispatchProps> {
-  public render = () => {
-    const { storyRequiresFullRerender } = this.props;
+export const RenderingContainer: React.FC = () => (
+  <>
+    {/**
+      * The first item in the tab ordering (and natural document flow)
+      * should be the accessibility link used to skip to the newest passage
+      * content.
+      */}
+    <SkipToContentLink />
 
-    return (
-      <>
-        {/**
-          * The first item in the tab ordering (and natural document flow)
-          * should be the accessibility link used to skip to the newest passage
-          * content.
-          */}
-        <SkipToContentLink />
+    <AppContextConsumerWrapper>
+      {({
+        config,
+        config: {
+          debugOptions: { noTimings },
+        },
 
-        <AppContextConsumerWrapper>
-          {({
-            passagesMap,
-            plugins,
-            store,
-          }) => (
-            /**
-             * This is very evil! But right now it's the only way I've
-             * found that is guaranteed to work, so evil it is. This
-             * and the logic in componentDidUpdate force an unmount of
-             * everything in the story, immediately rerendering the
-             * whole passage tree and resetting the
-             * storyRequiresFullRerender prop.
-             */
-            storyRequiresFullRerender ?
-              null :
-              <div className={classNames(
-                styles.renderingContainer,
-                'renderingContainer',
-              )}>
-                <PassagePluginsWrapper
-                  passagesMap={passagesMap}
-                  plugins={plugins}
-                  reduxStore={store}
-                >
-                  <PassageRendererWrapperConnected
-                    passagesMap={passagesMap}
-                    plugins={plugins}
-                  />
-                </PassagePluginsWrapper>
-              </div>
-          )}
-        </AppContextConsumerWrapper>
-      </>
-    );
-  };
+        getSoundManager,
+        passagesMap,
+        plugins,
+        store,
+        store: { getState },
+      }) => {
+        const { debug } = getState();
 
-  public componentDidUpdate = () => {
-    /* This is also a very, very evil way of doing this and I should endeavor
-     * to find a safer way of accomplishing it rather than changing state in a
-     * rendering lifecycle method. */
-    const {
-     resetStoryRequiresFullRerender,
-     storyRequiresFullRerender,
-    } = this.props;
+        return (
+          <div
+            className={classNames(
+              builtIns['rendering-container'],
+              'rendering-container',
+              {
+                [builtIns['no-timings']]: debug && noTimings,
+                'no-timings': debug && noTimings,
+              },
+            )}
 
-    if (storyRequiresFullRerender) {
-      /* Reset the value of the property to false immediately. This logic
-       * causes two full walks of the component tree, but I don't think anyone
-       * expects or requires restarting the entire story to be
-       * super-high-efficiency. */
-      resetStoryRequiresFullRerender();
-    }
-  };
-}
-
-export const mapStateToProps: MapStateToProps<IRenderingContainerStateProps, {}, IState> = ({
-  storyRequiresFullRerender,
-}) => ({ storyRequiresFullRerender });
-
-export const mapDispatchToProps: MapDispatchToProps<IRenderingContainerDispatchProps, IRenderingContainerStateProps> = (dispatch) => ({
-  resetStoryRequiresFullRerender: () => (
-    dispatch(createStoryRequiresFullRerenderAction(false))
-  ),
-});
-
-export const RenderingContainerConnected = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(RenderingContainer);
+            role="group"
+          >
+            <PassagePluginsWrapper
+              config={config}
+              getSoundManager={getSoundManager}
+              passagesMap={passagesMap}
+              plugins={plugins}
+              store={store}
+            >
+              <PassageRendererWrapperConnected
+                config={config}
+                getSoundManager={getSoundManager}
+                passagesMap={passagesMap}
+                plugins={plugins}
+              />
+            </PassagePluginsWrapper>
+          </div>
+        );
+      }}
+    </AppContextConsumerWrapper>
+  </>
+);

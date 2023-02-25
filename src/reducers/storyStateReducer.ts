@@ -1,6 +1,7 @@
 import {
   ActionTypes,
 } from '../actions/ActionTypes';
+import initialStoryState from '../../passages/_constants/initialStoryState';
 import {
   IStoryResetAction,
 } from '../actions/IStoryResetAction';
@@ -10,20 +11,24 @@ import {
 import {
   IStoryStateFrame,
 } from '../state/IStoryStateFrame';
+import {
+  IStoryStateLoadAction,
+} from '../actions/IStoryStateLoadAction';
 
-export function storyStateReducer(
-  previousState: IStoryStateFrame = {},
-  action: IStoryStateAction | IStoryResetAction,
-)
-{
+export const storyStateReducer = (
+  previousState: IStoryStateFrame = initialStoryState,
+  action: IStoryStateAction | IStoryResetAction | IStoryStateLoadAction,
+): IStoryStateFrame => {
   if (action.type === ActionTypes.StoryState) {
     return {
       ...previousState,
       ...action.value,
     };
   } else if (action.type === ActionTypes.StoryReset) {
-    return {};
+    return { ...initialStoryState };
+  } else if (action.type === ActionTypes.StoryStateLoad) {
+    return { ...action.value.engineHistory.present.storyState };
   }
 
   return previousState;
-}
+};

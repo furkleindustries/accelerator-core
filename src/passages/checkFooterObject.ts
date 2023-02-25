@@ -25,7 +25,9 @@ export const checkFooterObject = (footer: any): null => {
 
   if (!footer.content) {
     throw new Error(strings.CONTENT_MISSING);
-  } else if (typeof footer.content !== 'function') {
+  } else if (typeof footer.content !== 'function' &&
+    typeof footer.content !== 'object')
+  {
     throw new Error(strings.CONTENT_INVALID);
   }
 

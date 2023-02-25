@@ -46,7 +46,7 @@ export function checkPassageAsset(passage: any): passage is IPassage {
     assert(Array.isArray(tags), strings.TAGS_INVALID);
   }
 
-  /* Don't test for content if it's a noRender passage. */
+  /* Don't test for content if it's a NoRender passage. */
   if (!tags || !getTag(tags, BuiltInTags.NoRender)) {
     assert(content, strings.CONTENT_MISSING);
     assert(typeof content === 'function', strings.CONTENT_INVALID);

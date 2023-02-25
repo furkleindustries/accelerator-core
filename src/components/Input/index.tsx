@@ -1,36 +1,26 @@
+import classNames from 'classnames';
 import {
-  Checkbox,
-} from '@material-ui/core';
+  default as MuiInput,
+  InputProps,
+} from '@material-ui/core/Input';
 import {
   InputOwnProps,
 } from './InputOwnProps';
 
 import * as React from 'react';
 
-export const Input: React.FunctionComponent<InputOwnProps> = ({
-  children,
-  color,
-  defaultValue,
-  type,
-  value,
-  ...props
-}) => {
-  if (type === 'checkbox') {
-    return (
-      <Checkbox
-        {...props}
-        color={color as any}
-        defaultValue={String(defaultValue)}
-      >
-        {children}
-      </Checkbox>
-    );
-  }
+import builtIns from '../../../passages/_global-styles/components/index.less';
 
-  return (
-    <input
-      {...props}
-      value={String(value)}
-    />
-  );
-};
+export const Input: React.FC<InputOwnProps> = ({
+  className,
+  ...props
+}) => (
+  <MuiInput
+    {...props as InputProps}
+    className={classNames(
+      builtIns['input'],
+      'input',
+      className,
+    )}
+  />
+);

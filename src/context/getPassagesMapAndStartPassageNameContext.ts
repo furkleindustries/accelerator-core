@@ -1,15 +1,15 @@
 import {
-  IPassagesMapAndStartPassageNameContext,
-} from './IPassagesMapAndStartPassageNameContext';
+  IPassagesMapContext,
+} from './IPassagesMapContext';
 import {
   createContext,
 } from 'react';
 
-let passagesMapAndStartPassageName: React.Context<IPassagesMapAndStartPassageNameContext> | null = null;
-export function getPassagesMapAndStartPassageNameContext() {
-  if (!passagesMapAndStartPassageName) {
-    passagesMapAndStartPassageName = createContext(undefined as any);
+let passagesMap: React.Context<IPassagesMapContext> | null = null;
+export const getPassagesMapAndStartPassageNameContext = () => {
+  if (!passagesMap) {
+    passagesMap = createContext(undefined as any);
   }
 
-  return passagesMapAndStartPassageName;
-}
+  return passagesMap;
+};

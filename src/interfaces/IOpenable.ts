@@ -1,3 +1,3 @@
 export interface IOpenable {
-  readonly open?: boolean;
+  open?: boolean;
 }

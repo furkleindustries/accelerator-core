@@ -27,27 +27,42 @@ import {
   IHistory,
 } from '../state/IHistory';
 import {
+  inkContainersReducer,
+} from './inkContainersReducer';
+import {
   default as undoable,
   includeAction,
 } from 'redux-undo';
+import {
+  storyEndedReducer,
+} from './storyEndedReducer';
 
 const {
+  debug: debugRaw,
+  debugOptions: { reduxUndoDebug },
   historySaveTypes,
   historyStackLimit: limit,
-  historySynchronizeUnrewindableStateWithPresent: syncFilter,
 } = getNormalizedAcceleratorConfig();
+
+const debug = debugRaw && reduxUndoDebug; 
+const filter = includeAction([ ...historySaveTypes ]);
+const syncFilter = true;
 
 export const historyReducer: Reducer<IHistory, IAction> = undoable(
   combineReducers({
     bookmarkCounter: bookmarkCounterReducer,
-    passageName: passageNameReducer,
+    inkContainers: inkContainersReducer,
     lastLinkTags: lastLinkTagsReducer,
+    passageName: passageNameReducer,
     passageTimeCounter: passageTimeReducer,
+    storyEnded: storyEndedReducer,
     storyState: storyStateReducer,
   }),
+
   {
+    debug,
+    filter,
     limit,
     syncFilter,
-    filter: includeAction(Array.prototype.slice.call(historySaveTypes)),
   },
 );

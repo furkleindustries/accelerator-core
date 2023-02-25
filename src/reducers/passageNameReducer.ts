@@ -2,40 +2,38 @@ import {
   ActionTypes,
 } from '../actions/ActionTypes';
 import {
-  getPassagesMapAndStartPassageName,
-} from '../passages/getPassagesMapAndStartPassageName';
+  getNormalizedAcceleratorConfig,
+} from '../configuration/getNormalizedAcceleratorConfig';
 import {
   IPassageNavigationAction,
 } from '../actions/IPassageNavigationAction';
 import {
+  PassageNames,
+} from '../passages/IPassagesMap';
+import {
   IStoryResetAction,
 } from '../actions/IStoryResetAction';
 import {
-  assert,
-} from 'ts-assertions';
-
-import {
-  registry,
-} from '../../passages/passages-manifest';
-
-type RegistryType = typeof registry;
+  IStoryStateLoadAction,
+} from '../actions/IStoryStateLoadAction';
 
 export const strings = {
   NO_START_PASSAGE_NAME:
     'There was no start passage name when currentPassageNameReducer was'
 };
 
-const { startPassageName } = getPassagesMapAndStartPassageName();
-assert(startPassageName, strings.NO_START_PASSAGE_NAME);
+const { startPassageName } = getNormalizedAcceleratorConfig();
 
 export const passageNameReducer = (
-  previousState: keyof RegistryType = startPassageName,
-  action: IPassageNavigationAction | IStoryResetAction,
-): keyof RegistryType => {
+  previousState: PassageNames = startPassageName,
+  action: IPassageNavigationAction | IStoryResetAction | IStoryStateLoadAction,
+): PassageNames => {
   if (action.type === ActionTypes.PassageNavigation) {
     return action.value.passage.name;
   } else if (action.type === ActionTypes.StoryReset) {
     return startPassageName;
+  } else if (action.type === ActionTypes.StoryStateLoad) {
+    return action.value.engineHistory.present.passageName;
   }
 
   return previousState;

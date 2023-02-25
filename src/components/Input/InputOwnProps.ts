@@ -1,6 +1,10 @@
 import {
-  InputProps,
-} from '@material-ui/core/Input';
+  AriaAttributes,
+  InputHTMLAttributes,
+} from 'react';
 
-export interface InputOwnProps extends InputProps {
-}
+export interface InputOwnProps
+  extends
+    AriaAttributes,
+    InputHTMLAttributes<HTMLInputElement>
+{}

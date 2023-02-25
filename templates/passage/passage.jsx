@@ -1,7 +1,7 @@
 /* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
 import * as React from 'react';
 
-import classnames from 'classnames';
+import classNames from 'classnames';
 
 /* Accelerator components, interfaces, styles, functions, etc. Feel free to
  * destructure this as you see fit but watch out that you don't get mixed up
@@ -21,29 +21,24 @@ import * as passages from '../../bundles/passagesBundle';
 // @ts-ignore
 import * as tags from '../../bundles/tagsBundle';
 
-/**
- * The authoring passage is imported and rendered into the React passage.
- */
-import AuthoringPassage from './{{{name}}}.mdx';
-
-import builtInStyles from '../../passages/_global-styles/built-ins.less';
+import builtIns from '../../passages/_global-styles/components/index.less';
 import styles from './{{{name}}}.less';
 
 const Passage = ({
   children,
   ...props
 }) => (
-  <components.Article
+  <div
     className={classnames(
-      'passage',
+      builtIns.passage,
       styles['{{{name}}}'],
-      builtInStyles.passage,
+      'passage',
     )}
+
+    role="group"
   >
-    <components.AuthoringPassageContainer passageProps={{ ...props }}>
-      <AuthoringPassage />
-    </components.AuthoringPassageContainer>
-  </components.Article>
+    
+  </div>
 );
 
 export default {
@@ -55,7 +50,7 @@ export default {
   tags: [],
 
   /* React component with a props signature of IPassageProps: the content that
-   * should be displayed, or, in the case of noRender passages, a component
+   * should be displayed, or, in the case of NoRender passages, a component
    * that can be imported. Should be formatted in JSX style. */
   content: Passage,
 };

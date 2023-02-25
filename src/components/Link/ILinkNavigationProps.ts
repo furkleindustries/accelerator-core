@@ -1,7 +1,9 @@
 import {
   IDispatchAware,
 } from '../../interfaces/IDispatchAware';
-import { IPassageAware } from '../../interfaces/IPassageAware';
+import {
+  IPassageAware,
+} from '../../interfaces/IPassageAware';
 import {
   IPassageNamed,
 } from '../../interfaces/IPassageNamed';
@@ -15,5 +17,4 @@ export interface ILinkNavigationProps
     IPassageAware,
     IPassageNamed,
     ITaggable
-{
-}
+{}

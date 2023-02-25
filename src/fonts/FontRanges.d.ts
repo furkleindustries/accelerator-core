@@ -5,5 +5,6 @@ export enum FontRanges {
   GreekExtended = 'greek-ext',
   Latin = 'latin',
   LatinExtended = 'latin-ext',
-  Vietnamese = 'Vietnamese',
+  UsAscii = 'us-ascii',
+  Vietnamese = 'vietnamese',
 }

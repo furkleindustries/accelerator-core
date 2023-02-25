@@ -6,10 +6,10 @@ import {
 } from 'react';
 
 let pluginsContext: React.Context<IPluginsContext> | null = null;
-export function getPluginsContext() {
+export const getPluginsContext = () => {
   if (!pluginsContext) {
     pluginsContext = createContext(undefined as any);
   }
 
   return pluginsContext;
-}
+};

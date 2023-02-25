@@ -1,6 +1,3 @@
-import {
-  error,
-} from 'colorful-logging';
 import * as fs from 'fs';
 import * as path from 'path';
 import slash from 'slash';

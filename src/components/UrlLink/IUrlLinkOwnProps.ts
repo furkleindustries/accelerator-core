@@ -1,7 +1,7 @@
 import {
   LinkProps,
 } from '@material-ui/core/Link';
-import {
+import type {
   ReactNode,
 } from 'react';
 

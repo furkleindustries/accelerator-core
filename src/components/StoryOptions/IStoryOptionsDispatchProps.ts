@@ -2,10 +2,10 @@ import {
   IDispatchAware,
 } from '../../interfaces/IDispatchAware';
 import {
-  IStoryOptionUpdateAction,
-} from '../../actions/IStoryOptionUpdateAction';
+  IStoryOptionsDialogVisibleAction,
+} from '../../actions/IStoryOptionsDialogVisibleAction';
 
 export interface IStoryOptionsDispatchProps
-  extends IDispatchAware<IStoryOptionUpdateAction>
+  extends IDispatchAware<IStoryOptionsDialogVisibleAction>
 {
 }

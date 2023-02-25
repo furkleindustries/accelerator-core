@@ -39,8 +39,6 @@
     "config/",
     "coverage/",
     "documentation/",
-    "lib/",
-    "!lib/ink/",
     "node_modules/",
     "public/",
     "scripts/",

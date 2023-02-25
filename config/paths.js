@@ -1,7 +1,7 @@
+// Do not link to this module from the config, the browser context, or any
+// non-Node context.
+
 import * as fs from 'fs-extra';
-import {
-  getNormalizedAcceleratorConfig,
-} from '../src/configuration/getNormalizedAcceleratorConfig';
 import * as path from 'path';
 
 // Make sure any symlinks in the project folder are resolved:
@@ -9,10 +9,9 @@ import * as path from 'path';
 const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
-const { publicUrl } = getNormalizedAcceleratorConfig();
-
+// Do not import this property in the config, the browser context, or any
+// non-Node context.
 export const paths = {
-  publicUrl,
   moduleFileExtensions: [
     'css',
     'js',
@@ -23,12 +22,12 @@ export const paths = {
     'tsx',
   ],
 
-  appBuild: resolveApp('build-web/'),
+  appBuild: resolveApp('build-web'),
   appIndex: resolveApp('src/index.tsx'),
   appNodeModules: resolveApp('node_modules/'),
   appPackageJson: resolveApp('package.json'),
   appPath: resolveApp('.'),
-  appPublic: resolveApp('public'),
+  appPublic: resolveApp('public/'),
   appSrc: resolveApp('src/'),
   appTsConfig: resolveApp('tsconfig.json'),
   acceleratorConfig: resolveApp('accelerator.config.js'),
@@ -41,15 +40,14 @@ export const paths = {
   footers: resolveApp('footers/'),
   headers: resolveApp('headers/'),
   htmlTemplate: resolveApp('templates/index.hbs'),
+  imagePreloaderTemplate: resolveApp('templates/imagePreloader.hbs'),
   indexHtml: resolveApp('build-web/index.html'),
-  inkLib: resolveApp('lib/ink/'),
-  mutators: resolveApp('mutators/'),
+  inkMutators: resolveApp('ink-mutators/'),
   passages: resolveApp('passages/'),
   plugins: resolveApp('plugins/'),
   proxySetup: resolveApp('src/setupProxy.ts'),
-  publicDir: resolveApp('public/'),
   renderers: resolveApp('renderers/'),
   storyOptions: resolveApp('options/'),
   testsSetup: resolveApp('src/setupTests.ts'),
-  tslintConfig: resolveApp('tslint.json'),
+  eslintConfig: resolveApp('.eslintrc.js'),
 };

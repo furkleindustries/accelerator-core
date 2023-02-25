@@ -5,9 +5,7 @@ import {
   getJavaScriptMinimizer,
 } from './getJavaScriptMinimizer';
 
-export function getMinimizers(shouldUseSourceMap) {
-  return [
-    getCssMinimizer(shouldUseSourceMap),
-    getJavaScriptMinimizer(shouldUseSourceMap),
-  ];
-}
+export const getMinimizers = (shouldUseSourceMap) => [
+  getCssMinimizer(shouldUseSourceMap),
+  getJavaScriptMinimizer(shouldUseSourceMap),
+];

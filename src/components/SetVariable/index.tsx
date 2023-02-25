@@ -7,7 +7,7 @@ import {
 
 import * as React from 'react';
 
-export const SetVariable: React.FunctionComponent<ISetVariableProps> = ({
+export const SetVariable: React.FC<ISetVariableProps> = ({
   name,
   value,
 }) => (

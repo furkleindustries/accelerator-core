@@ -7,7 +7,7 @@ import {
 import {
   IStoryStateFrame,
 } from './IStoryStateFrame';
-import {
+import type {
   Store,
 } from 'redux';
 import {

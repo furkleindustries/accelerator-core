@@ -1,21 +1,21 @@
 /* This can't be removed as it must be in scope for rewriting JSX to JS. */ 
 import * as React from 'react';
 
-import classnames from 'classnames';
+import classNames from 'classnames';
 
 import * as components from '../../bundles/componentsBundle';
 import * as passages from '../../bundles/passagesBundle';
 import * as tagsBundle from '../../bundles/tagsBundle';
 
-import builtInStyles from '../_global-styles/built-ins.less';
+import builtIns from '../../passages/_global-styles/components/index.less';
 import styles from './{{{name}}}.less';
 
 /* The header gets all the same props as a normal passage. */
-class Header extends React.PureComponent<passages.IPassageProps> {
+class HeaderComponent extends React.PureComponent<passages.IPassageProps> {
   public render() {
     const {
       lastLinkTags,
-      passageObject,
+      passage,
       navigateTo,
       restart,
       setStoryState,
@@ -24,10 +24,8 @@ class Header extends React.PureComponent<passages.IPassageProps> {
 
     return (
       <components.Header
-        className={classnames(
-          'header',
+        className={classNames(
           styles['{{{name}}}'],
-          builtInStyles.header,
         )}
       >
       </components.Header>
@@ -41,7 +39,7 @@ const passage: passages.IHeader = {
 
   /* React.ComponentType<IPassageProps>: the content that should be displayed.
    * Should be formatted in JSX style. */
-  content: Header,
+  content: HeaderComponent,
 };
 
 /* Always make the passage object a default export. */

@@ -10,9 +10,8 @@ export const getBabelLoaders = (mode) => [
   // Process application JS with Babel.
   // The preset includes JSX, Flow, and some ESnext features.
   {
-    test: /\.m?jsx?$/,
+    test: new RegExp(/\.(js|jsx|mjs)$/),
     include: moduleShouldBeTranspiled,
-
     loader: require.resolve('babel-loader'),
     options: {
       customize: require.resolve('babel-preset-react-app/webpack-overrides'),
@@ -48,10 +47,10 @@ export const getBabelLoaders = (mode) => [
   // Process any JS outside of the app with Babel.
   // Unlike the application JS, we only compile the standard ES features.
   {
-    test: /\.m?js$/,
-    include(fp) {
+    test: /\.(js|mjs)$/,
+    include: (fp) => {
       const filepath = slash(fp);
-      if (/@babel(?:\/|\\{1,2})runtime/.test(filepath)) {
+      if (new RegExp(/@babel(?:\/|\\{1,2})runtime/).test(filepath)) {
         return false;
       }
 

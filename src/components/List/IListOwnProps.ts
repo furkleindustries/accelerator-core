@@ -1,14 +1,13 @@
-import {
+import type {
   ListProps,
 } from '@material-ui/core/List';
-import {
+import type {
   ListItemProps,
 } from '@material-ui/core/ListItem';
-import {
+import type {
   ListSubheaderProps,
 } from '@material-ui/core/ListSubheader';
-import {
-  ComponentType,
+import type {
   ReactElement,
 } from 'react';
 import {
@@ -17,9 +16,9 @@ import {
 
 export interface IListOwnProps extends ListProps {
   readonly children: ReactNodeWithoutNullOrUndefined;
-  readonly component?: ListProps['component'] | ComponentType;
   readonly dontWrapInListItem?: boolean;
   readonly listItemProps?: ListItemProps;
+  readonly ordered?: boolean;
   readonly subheader?: ReactElement;
   readonly subheaderProps?: ListSubheaderProps;
 }

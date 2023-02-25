@@ -4,17 +4,19 @@ import {
 import {
   IVariableProps,
 } from './IVariableProps';
+import {
+  Print,
+} from '../Print';
 
 import * as React from 'react';
-import { Print } from '../Print';
 
-export const Variable: React.FunctionComponent<IVariableProps> = ({
+export const Variable: React.FC<IVariableProps> = ({
   name,
   doError,
 }) => (
   <AppContextConsumerWrapper>
     {({
-      store: { getState }
+      store: { getState },
     }) => {
       const {
         history: {

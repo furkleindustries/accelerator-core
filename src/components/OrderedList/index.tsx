@@ -3,15 +3,18 @@ import {
 } from '../List/IListOwnProps';
 import {
   List,
-} from '@material-ui/core';
+} from '../List';
 
 import * as React from 'react';
 
-export const OrderedList: React.FunctionComponent = ({
+export const OrderedList: React.FC = ({
   children,
   ...props
-}: IListOwnProps) => (
-  <List {...props}>
+}: Omit<IListOwnProps, 'ordered'>) => (
+  <List
+    {...props}
+    ordered={true}
+  >
     {children}
   </List>
 );

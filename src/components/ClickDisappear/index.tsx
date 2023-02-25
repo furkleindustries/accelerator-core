@@ -11,7 +11,7 @@ import {
 
 import * as React from 'react';
 
-export const ClickDisappear: React.FunctionComponent<IClickDisappearOwnProps> = ({
+export const ClickDisappear: React.FC<IClickDisappearOwnProps> = ({
   children,
   className,
   fadeOutDuration,
@@ -24,7 +24,7 @@ export const ClickDisappear: React.FunctionComponent<IClickDisappearOwnProps> = 
 
   return (
     <Clicker
-      className={classNames('clickDisappear', className)}
+      className={classNames('click-disappear', className)}
       contentAfterClick={after}
     >
       {children}

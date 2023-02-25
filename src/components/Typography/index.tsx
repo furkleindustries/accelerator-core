@@ -1,26 +1,33 @@
 import classNames from 'classnames';
 import {
-  ITypographyOwnProps,
-} from './ITypographyOwnProps';
-import MuiTypography from '@material-ui/core/Typography';
+  ITypographyProps,
+} from './ITypographyProps';
+import {
+  default as MuiTypography,
+} from '@material-ui/core/Typography';
 
 import * as React from 'react';
 
-import styles from './index.less';
+import builtIns from '../../../passages/_global-styles/components/index.less';
 
-export const Typography: React.FunctionComponent<ITypographyOwnProps> = ({
+export const Typography: React.FC<ITypographyProps> = ({
   children,
   className,
+  paragraph,
+  variant,
   ...props
 }) => (
   <MuiTypography
-    component="span"
     {...props}
+
     className={classNames(
-      styles.typography,
+      builtIns['typography'],
       'typography',
       className,
     )}
+
+    paragraph={paragraph || props.component === 'p'}
+    variant={variant || 'body1'}
   >
     {children}
   </MuiTypography>

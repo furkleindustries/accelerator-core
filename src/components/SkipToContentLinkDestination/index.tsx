@@ -5,27 +5,28 @@ import {
 import {
   ISkipToContentLinkDestinationOwnProps,
 } from './ISkipToContentLinkDestinationOwnProps';
-import {
-  UrlLink,
-} from '../UrlLink';
 
 import * as React from 'react';
 
-export const SkipToContentLinkDestination: React.FunctionComponent<ISkipToContentLinkDestinationOwnProps> = ({
-  children,
+import builtIns from '../../../passages/_global-styles/components/index.less';
+
+export const SkipToContentLinkDestination: React.FC<ISkipToContentLinkDestinationOwnProps> = ({
   className,
   id,
   ...props
 }) => (
-  <UrlLink
+  <span
     {...props}
-    className={classNames('skipToContentLinkDestination', className)}
-    id={
-      /* Remove the hash from the href. */
-      id || getDefaultSkipToContentHref().slice(1)
-    }
-  >{
-    /* The @material-ui Link component requires a child but we don't want any content by default. */
-    children ? children : ''
-  }</UrlLink>
+
+    className={classNames(
+      builtIns['skip-to-content-link-destination'],
+      'skip-to-content-link-destination',
+      className,
+    )}
+
+    /* Remove the hash from the href. */
+    id={id || getDefaultSkipToContentHref().slice(1)}
+    tabIndex={-1}
+  >
+  </span>
 );

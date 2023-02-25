@@ -12,5 +12,4 @@ export interface IStoryOption
   extends
     IContentfulAsset<IStoryOptionComponentOwnProps>,
     IPrecedenceWeighted
-{
-}
+{}

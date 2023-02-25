@@ -8,6 +8,9 @@ import {
   IPluginsAware,
 } from '../../interfaces/IPluginsAware';
 import {
+  ISoundManagerAware,
+} from '../../interfaces/ISoundManagerAware';
+import {
   MaybeReadonlyArray,
 } from '../../typeAliases/MaybeReadonlyArray';
 
@@ -15,7 +18,8 @@ export interface ICyclingLinkInternalOwnProps
   extends
     IClassNameable,
     IPassagesMapAware,
-    IPluginsAware
+    IPluginsAware,
+    ISoundManagerAware
 {
   readonly children: MaybeReadonlyArray<string>;
   readonly dontCallbackOnMount?: boolean;

@@ -1,24 +1,23 @@
 import {
-  IBreadcrumbTrailAware,
-} from '../../interfaces/IBreadcrumbTrailAware';
-import {
   IClassNameable,
 } from '../../interfaces/IClassNameable';
 import {
   INamed,
 } from '../../interfaces/INamed';
 import {
+  INoChildren,
+} from '../../interfaces/INoChildren';
+import {
   IOpenable,
 } from '../../interfaces/IOpenable';
 import {
-  MaybeReadonlyArray,
-} from '../../typeAliases/MaybeReadonlyArray';
+  IStoryOption,
+} from '../../storyOptions/IStoryOption';
 import {
-  OneOrMaybeReadonlyArray,
-} from '../../typeAliases/OneOrMaybeReadonlyArray';
-import {
+  IStoryOptionsListOwnProps,
+} from '../StoryOptionsList/IStoryOptionsListOwnProps';
+import type {
   ComponentType,
-  ReactElement,
 } from 'react';
 
 export interface IBreadcrumbTrailOwnProps extends
@@ -26,14 +25,8 @@ export interface IBreadcrumbTrailOwnProps extends
   IOpenable,
   Partial<INamed>
 {
-  readonly children: (args: IBreadcrumbTrailAware) => OneOrMaybeReadonlyArray<MaybeReadonlyArray<ReactElement>>;
-  readonly listComponent: (
-    ComponentType<Partial<IBreadcrumbTrailAware> &
-      IOpenable &
-      {
-        readonly children: OneOrMaybeReadonlyArray<any>;
-        readonly root?: boolean;
-      }
-    >
-  );
+  readonly ListComponent: ComponentType<IStoryOptionsListOwnProps>;
+  readonly options: readonly IStoryOption[];
+  readonly children?: INoChildren;
+  readonly title?: string;
 }

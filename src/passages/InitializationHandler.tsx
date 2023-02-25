@@ -1,9 +1,9 @@
 import {
-  clearLoadingScreen,
-} from './clearLoadingScreen';
+  createStoryLoadedAction,
+} from '../actions/creators/createStoryLoadedAction';
 import {
-  getFrozenObject,
-} from '../functions/getFrozenObject';
+  getImageCdnUrl,
+} from '../../passages/_images/getImageCdnUrl';
 import {
   IAcceleratorConfigNormalized,
 } from '../configuration/IAcceleratorConfigNormalized';
@@ -17,91 +17,119 @@ import {
   InitializationHandlerOptions,
 } from './InitializationHandlerOptions';
 import {
+  IState,
+} from '../state/IState';
+import {
+  loadingFadeOutDuration,
+} from '../components/App';
+import {
   LoadingScreen,
 } from '../components/LoadingScreen';
 import {
+  loadSoundGroups,
+} from '../../passages/_sounds/loadSoundGroups';
+import {
   render,
 } from 'react-dom';
-import {
-  connect,
-  MapStateToProps,
-  Provider,
-} from 'react-redux';
-import {
-  createStore,
+import type {
   Store,
 } from 'redux';
+import {
+  IManager,
+} from 'sound-manager';
+import {
+  IGroupsDefinitionMap,
+} from '../../passages/_sounds/ISoundsDefinitionMap';
+import {
+  MediaPreloadStrategies,
+} from '../configuration/MediaPreloadStrategies';
+import {
+  InitializationProgressUpdater,
+} from './InitializationProgressUpdater';
+import {
+  ImagePreloadMap,
+} from '../configuration/ImagePreloadMap';
+import {
+  preloadImages,
+} from '../../passages/_images/preloadImages';
 import {
   assertValid,
 } from 'ts-assertions';
 
 import * as React from 'react';
 
-import logo from '../../public/logo.svg';
-
-export class InitializationHandler {
-  public readonly appSelector: string;
-  public readonly loadSelector: string;
-  public readonly config: IAcceleratorConfigNormalized;
-
-  private progressMax: number;
-  private progressStart: number = 0;
-  private store: Store<number>;
+export class InitializationHandler implements InitializationHandlerOptions {
+  private readonly progressListeners: InitializationProgressUpdater[] = [];
+  private progressMax = 0;
+  private readonly requestFrameIds = new Set<any>();
   private ticks = 0;
-  private doneCallback: () => void;
+  private title = '';
+
+  public readonly appDocumentSelector: string;
+  public readonly config: IAcceleratorConfigNormalized;
+  public descriptionCallback: (description: string) => void;
+  public readonly fadeOutDuration: number;
+  public readonly imagesToPreload: ImagePreloadMap = {};
+  public readonly loadDocumentSelector: string;
+  public readonly soundGroups: IGroupsDefinitionMap = {};
+  public readonly soundManager: IManager;
+  public readonly store: Store<IState>;
 
   constructor({
-    appSelector,
+    appDocumentSelector,
     config,
-    loadSelector,
+    imagesToPreload,
+    loadDocumentSelector,
+    soundGroups,
+    soundManager,
+    store,
   }: InitializationHandlerOptions) {
-    this.appSelector = assertValid(appSelector);
+    this.appDocumentSelector = assertValid(
+      appDocumentSelector,
+      'The appDocumentSelector property did not exist in the InitializationHandler options.',
+    );
+
     this.config = assertValid(config);
-    this.loadSelector = assertValid(loadSelector);
+    this.imagesToPreload = imagesToPreload;
+    this.loadDocumentSelector = assertValid(
+      loadDocumentSelector,
+      'The loadDocumentSelector property did not exist in the InitializationHandler options.',
+    );
+
+    this.soundGroups = soundGroups;
+    this.soundManager = soundManager;
+    this.store = store;
   }
 
   public beginLoad = (options?: IBeginLoadOptions) => {
-    const opts = getFrozenObject(options! || {});
+    const opts = options! || {};
     const {
-      descriptions,
       doneCallback,
       progressMax,
-      progressStart,
+      title,
     } = opts;
+
+    this.title = title ||
+      this.config.storyMetadata.title ||
+      `Loading ${this.config.storyMetadata.title}...`;
 
     if (typeof doneCallback === 'function') {
       this.doneCallback = doneCallback;
     }
 
     this.setProgressMax(progressMax || 0);
-    this.setProgressStart(progressStart || 0);
-
-    if (Array.isArray(descriptions) && descriptions.length) {
-      if (!this.progressMax) {
-        this.setProgressMax(descriptions.length);
-      }
-    }
-
-    if (!this.progressMax) {
-      this.completeLoad();
-      return;
-    }
-
     this.renderComponent(opts);
-  }
+  };
 
-  public updateProgressTicks = (total: number) => {
-    this.ticks = assertValid<number>(
-      total,
-      null,
+  public addProgressTicks = (toAdd = 1) => {
+    const add = assertValid<number>(
+      toAdd,
+      `The value passed during initialization to InitializationHandler.addProgressTicks, ${toAdd}, was not valid.`,
       (total) => total !== -1 && this.validator(total),
     );
 
-    if (this.ticks >= this.progressMax) {
-      this.completeLoad();
-    } else {
-      this.store.dispatch({ type: 'loadingTicksUpdate', value: this.ticks });
-    }
+    this.ticks += add;
+    this.callProgressListeners(this.ticks);
   };
 
   public completeLoad = () => {
@@ -109,76 +137,149 @@ export class InitializationHandler {
       this.doneCallback();
     }
 
-    clearLoadingScreen(this.appSelector, this.loadSelector);
+    for (const id of this.requestFrameIds) {
+      cancelAnimationFrame(id);
+    }
+
+    this.requestFrameIds.clear();
+
+    this.store.dispatch(createStoryLoadedAction(true));
   };
 
-  private setProgressMax = (max: number) => {
+  private doneCallback = () => {
+    const {
+      loggers: { log },
+      storyMetadata: { title },
+    } = this.config;
+
+    const storyTitle = this.title || title;
+
+    log(`The story "${storyTitle}" has been fully initialized.`);
+  };
+
+  public readonly loadSoundGroups = (
+    soundNamesToPreload: Array<[ string, string ]>,
+    nonCriticalSoundNames: Array<[ string, string ]>,
+  ) => loadSoundGroups({
+    config: this.config,
+    groupsMap: this.soundGroups,
+    manager: this.soundManager,
+    nonCriticalSoundNames,
+    soundNamesToPreload,
+  });
+
+  public readonly preloadImages = (
+    callback?: (err?: Error, imageName?: string) => void,
+  ) => (
+    preloadImages(
+      Object.values(this.imagesToPreload)
+        .filter(({ preloadStrategy }) => (
+          preloadStrategy === MediaPreloadStrategies.PreloadDeferred
+        ))
+        .map(({
+          name: imageName,
+          url,
+        }) => [
+          imageName,
+          url,
+        ]),
+
+      callback,
+    )
+  );
+
+  public setProgressMax = (max: number) => {
     this.progressMax = assertValid<number>(
       max,
       null,
       this.validator,
     );
-
-    if (this.progressMax === -1 || this.progressStart > this.progressMax) {
-      this.progressStart = this.progressMax;
-    }
   };
 
-  private setProgressStart = (start: number) => {
-    this.progressStart = assertValid<number>(
-      start,
-      null,
-      this.validator,
-    );
-
-    if (this.progressStart === -1 || this.progressMax < this.progressStart) {
-      this.progressMax = this.progressStart;
-    }
-  };
-
-  private validator = (value: number) => (
+  public validator = (value: number) => (
     value === -1 || (value >= 0 && value % 1 === 0)
   );
 
-  private renderComponent = (options?: IBeginLoadOptions) => {
-    const opts = getFrozenObject(options! || {});
+  public renderComponent = (options?: IBeginLoadOptions) => {
+    const opts = options! || {};
     const {
       bodyText,
       component,
-      descriptions,
-      logoPath,
+      config,
+      fadeOutDuration: fadeOutDurationOpt,
+      initialDescription,
+      logoPath: logoPathRaw,
       title,
     } = opts;
 
-    const props = {
-      bodyText: bodyText || '',
-      descriptions: descriptions || [],
-      progressMax: this.progressMax,
-      progressStart: this.progressStart,
-      logoPath: logoPath || logo,
-      title: title || `Loading ${this.config.storyTitle}...`,
-    };
+    const addProgressListener = this.addProgressListener;
+    const completeLoad = this.completeLoad;
+    const onDescriptionChange = this.setDescriptionCallback;
+    const progressMax = this.progressMax;
 
-    this.store = createStore(
-      (previousState = 0, { value }: { type: string, value: number }) => (
-        value || previousState
-      ),
-    );
+    const fadeOutDuration = fadeOutDurationOpt || loadingFadeOutDuration;
+    const logoPath = logoPathRaw || `${getImageCdnUrl(config)}logo-one.webp`;
+    const startButtonContent = 'Come to Source.';
+
+    const props: ILoadingScreenOwnProps = {
+      addProgressListener,
+      bodyText,
+      completeLoad,
+      config,
+      fadeOutDuration,
+      initialDescription,
+      logoPath,
+      progressMax,
+      startButtonContent,
+      onDescriptionChange,
+      title,
+    };
 
     const LoadComponent = component || LoadingScreen;
 
-    const mapStateToProps: MapStateToProps<{ ticks: number }, ILoadingScreenOwnProps, number> = (ticks: number, ownProps: ILoadingScreenOwnProps) => ({
-      ...ownProps,
-      ticks,
-    });
-
-    const Connected = connect(mapStateToProps)(LoadComponent);
-
     render(
-      <Provider store={this.store}>
-        <Connected {...props} />
-      </Provider>,
-      document.querySelector(this.loadSelector),
+      <LoadComponent {...props} />,
+      document.body.querySelector(this.loadDocumentSelector),
     );
-  }
+  };
+
+  public readonly addProgressListener = (
+    callback: InitializationProgressUpdater,
+  ) => {
+    if (!this.progressListeners.includes(callback)) {
+      this.progressListeners.push(callback);
+    }
+  };
+
+  public readonly removeProgressListener = (
+    callback: InitializationProgressUpdater,
+  ) => {
+    if (this.progressListeners.includes(callback)) {
+      this.progressListeners.splice(
+        this.progressListeners.indexOf(callback),
+        1,
+      );
+    }
+  };
+
+  public readonly callProgressListeners = (progress: number) => {
+    this.progressListeners.forEach((cb) => {
+      const frameId = requestAnimationFrame(() => {
+        this.requestFrameIds.delete(frameId);
+        cb(progress);
+      });
+
+      this.requestFrameIds.add(frameId);
+    });
+  };
+
+  public readonly setDescriptionCallback = (callback: (description: string) => void) => {
+    this.descriptionCallback = callback;
+  };
+
+  public readonly updateDescription = (description: string) => {
+    if (typeof this.descriptionCallback === 'function') {
+      this.descriptionCallback(description);
+    }
+  };
 }

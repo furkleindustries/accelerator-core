@@ -8,13 +8,13 @@ import {
 
 import * as React from 'react';
 
-export const ClickReplace: React.FunctionComponent<IClickReplaceOwnProps> = ({
+export const ClickReplace: React.FC<IClickReplaceOwnProps> = ({
   children,
   className,
   replaceWith,
 }) => (
   <Clicker
-    className={classNames('clickReplace', className)}
+    className={classNames('click-replace', className)}
     contentAfterClick={replaceWith}
   >
     {children}

@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import {
   IDelayOwnProps,
 } from './IDelayOwnProps';
@@ -11,8 +10,6 @@ import {
 
 import * as React from 'react';
 
-import styles from './index.less';
-
 export const strings = {
   TIMEOUT_NOT_GREATER_THAN_OR_EQUAL_TO_ZERO_NUMBER:
     'The timeout argument passed to a Delay component was not a number ' +
@@ -20,47 +17,50 @@ export const strings = {
 };
 
 export class Delay extends React.PureComponent<IDelayOwnProps, IDelayState> {
-  public state = { shown: false };
+  private timerId: any;
+
+  public state: IDelayState = { shown: false };
 
   public componentDidMount = () => {
-    const { timeout } = this.props;
+    const { timeout: raw } = this.props;
+
+    const timeout = Number(raw);
 
     assert(
       timeout >= 0,
       strings.TIMEOUT_NOT_GREATER_THAN_OR_EQUAL_TO_ZERO_NUMBER,
     );
 
-    setTimeout(() => this.setState({ shown: true }), timeout);
+    this.timerId = setTimeout(() => this.setState({ shown: true }), timeout);
   };
 
   public render = () => {
     const {
       children,
-      className,
       renderWithZeroOpacity,
     } = this.props;
 
-    const { shown } = this.state;
-
-    const classNameStr = classNames(styles.delay, 'delay', className);
-
-    if (shown) {
+    if (this.state.shown) {
       return (
-        <div className={classNameStr}>
+        <>
           {children}
-        </div>
+        </>
       );
-    } else if (renderWithZeroOpacity) {
+    } else if (renderWithZeroOpacity === true) {
       return (
-        <div
-          className={classNameStr}
-          style={{ opacity: 0 }}
-        >
-          {children}
-        </div>
+        <>
+          <span style={{ opacity: 0 }}>{children}</span>
+        </>
       )
     }
     
     return null;
+  };
+
+  readonly componentWillUnmount = () => {
+    if (this.timerId) {
+      clearTimeout(this.timerId);
+      delete this.timerId;
+    }
   };
 }

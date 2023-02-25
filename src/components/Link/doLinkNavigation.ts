@@ -16,7 +16,7 @@ export const strings = {
 
 export function doLinkNavigation({
   dispatch,
-  passage,
+  passageObject: passage,
   passageName,
   tags: linkTags,
 }: ILinkNavigationProps) {

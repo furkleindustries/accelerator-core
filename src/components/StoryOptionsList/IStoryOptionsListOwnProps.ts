@@ -1,39 +1,30 @@
 import {
-  IBreadcrumbTrailAware,
-} from '../../interfaces/IBreadcrumbTrailAware';
+  IBreadcrumbItem,
+} from '../BreadcrumbTrail/IBreadcrumbItem';
 import {
   IClassNameable,
 } from '../../interfaces/IClassNameable';
 import {
-  IOpenable,
-} from '../../interfaces/IOpenable';
+  IStoryOption,
+} from '../../storyOptions/IStoryOption';
 import {
-  IStoryOptionComponentOwnProps,
-} from '../../storyOptions/IStoryOptionComponentOwnProps';
-import {
-  ITitleable,
-} from '../../interfaces/ITitleable';
-import {
-  OneOrMaybeReadonlyArray,
-} from '../../typeAliases/OneOrMaybeReadonlyArray';
-import {
-  ReactElement,
+  AriaAttributes,
+  HTMLAttributes,
 } from 'react';
+import {
+  ReactNodeWithoutNullOrUndefined,
+} from '../../typeAliases/ReactNodeWithoutNullOrUndefined';
 
 export interface IStoryOptionsListOwnProps
   extends
-    IBreadcrumbTrailAware,
     IClassNameable,
-    IOpenable,
-    ITitleable
+    AriaAttributes,
+    Omit<HTMLAttributes<HTMLUListElement | HTMLOListElement>, 'className'>
 {
-  /**
-   * Allow both <StoryOption /> and <StoryOptionList /> children.
-   * An OptionList inside an OptionList becomes a nested menu.
-   */
-  readonly children: OneOrMaybeReadonlyArray<ReactElement<
-    IStoryOptionComponentOwnProps | IStoryOptionsListOwnProps
-  >>;
-
+  readonly clickOption: (breadcrumb: IBreadcrumbItem) => void;
+  readonly crumb: IBreadcrumbItem;
+  readonly children?: ReactNodeWithoutNullOrUndefined;
+  readonly childOptions?: readonly IStoryOption[];
   readonly root?: boolean;
+  readonly title?: string;
 }

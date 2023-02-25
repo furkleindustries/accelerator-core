@@ -7,45 +7,49 @@ import MuiListSubheader from '@material-ui/core/ListSubheader';
 
 import * as React from 'react';
 
-export const List: React.FunctionComponent<IListOwnProps> = ({
+import builtIns from '../../../passages/_global-styles/components/index.less';
+
+export const List: React.FC<IListOwnProps> = ({
   children,
   className,
-  component,
   dontWrapInListItem,
-  listItemProps,
+  listItemProps = {},
+  ordered,
+  role,
   subheader,
-  subheaderProps,
+  subheaderProps = {},
   ...props
 }) => (
   <MuiList
+    className={classNames(
+      builtIns.list,
+      'list',
+      className,
+      {
+        [builtIns['ordered-list']]: ordered,
+        orderedList: ordered,
+      },
+    )}
+
+    role={role || 'list'}
+
     {...props}
-    className={classNames('list', className)}
   >
     {subheader ?
       <MuiListSubheader {...subheaderProps}>{subheader}</MuiListSubheader> :
       null}
 
-    {React.Children.toArray(children).map((child, key) => {
-      if (component) {
-        return React.createElement(
-          component,
-          {
-            key,
+    {React.Children.toArray(children)
+      .filter(React.isValidElement)
+      .map((child, key) => React.cloneElement(
+        child,
+        {
+          key,
+          ...{
             ...listItemProps,
+            role: listItemProps.role ? listItemProps.role : 'listitem', 
           },
-          child,
-        );
-      } else if (React.isValidElement(child)) {
-        return React.cloneElement(
-          child,
-          {
-            key,
-            ...listItemProps,
-          },
-        );
-      }
-
-      return child;
-    })}
+        },
+      ))}
   </MuiList>
 );

@@ -6,17 +6,18 @@ import MuiLinearProgress from '@material-ui/core/LinearProgress';
 
 import * as React from 'react';
 
-import styles from './index.less';
+import builtIns from '../../../passages/_global-styles/components/index.less';
 
-export const LinearProgress: React.FunctionComponent<ILinearProgressOwnProps> = ({
+export const LinearProgress: React.FC<ILinearProgressOwnProps> = ({
   className,
   ...props
 }) => (
   <MuiLinearProgress 
     {...props}
+
     className={classNames(
-      styles.linearProgress,
-      'linearProgress',
+      builtIns['linear-progress'],
+      'linear-progress',
       className,
     )}
   />

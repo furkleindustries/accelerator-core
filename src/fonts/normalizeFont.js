@@ -51,9 +51,14 @@ export function normalizeFont(fontArg) {
 
   const formatsIsArray = Array.isArray(font.formats);
   const formatsIsString = typeof font.formats === 'string';
-  const formatsIsAllValidFontFormats = font.formats.filter((ff) => (
-    getObjectValues(FontFormats).indexOf(ff.toLowerCase()) === -1
-  )).length === 0;
+  const formatsIsAllValidFontFormats = font.formats.filter((ff) => {
+    try {
+      return getObjectValues(FontFormats).indexOf(ff.toLowerCase()) === -1
+    } catch (err) {
+      console.warn(`Font format loading error: ${err}`);
+      return false;
+    }
+  }).length === 0;
 
   assert(
     formatsIsString || (formatsIsArray && formatsIsAllValidFontFormats),
@@ -64,21 +69,32 @@ export function normalizeFont(fontArg) {
 
   const rangesIsArray = Array.isArray(font.ranges);
   const rangesIsString = typeof font.ranges === 'string';
-  const rangesIsAllValidFontFormats = font.ranges.filter((rr) => (
-    getObjectValues(rr).indexOf(rr.toLowerCase()) === -1
-  )).length > 0;
+  const rangesIsAllValidFontFormats = font.ranges.filter((rr) => {
+    try {
+      return getObjectValues(rr).indexOf(rr.toLowerCase()) === -1;
+    } catch (err) {
+      console.warn(`Font range loading error: ${err}`);
+      return false;
+    }
+  }).length > 0;
 
   assert(
-    rangesIsString || (rangesIsArray && rangesIsAllValidFontFormats),
+    rangesIsString ||
+      (rangesIsArray && rangesIsAllValidFontFormats),
   );
 
   assert(font.styles);
   assert(font.styles.length);
 
   const stylesIsArray = Array.isArray(font.styles);
-  const stylesIsAllValidFontStyles = font.styles.filter((ss) => (
-    getObjectValues(ss).indexOf(ss.toLowerCase()) === -1
-  )).length > 0;
+  const stylesIsAllValidFontStyles = font.styles.filter((ss) => {
+    try {
+      return getObjectValues(ss).indexOf(ss.toLowerCase()) === -1;
+    } catch (err) {
+      console.warn(`Font style loading error: ${err}`);
+      return false;
+    }
+  }).length > 0;
 
   assert(
     stylesIsArray && stylesIsAllValidFontStyles,
@@ -88,9 +104,14 @@ export function normalizeFont(fontArg) {
   assert(font.weights.length);
 
   const weightsIsArray = Array.isArray(font.weights);
-  const weightsIsAllValidNumbers = font.weights.filter((ww) => (
-    ww > 0 && ww % 1 === 0
-  ));
+  const weightsIsAllValidNumbers = font.weights.filter((ww) => {
+    try {
+      return ww > 0 && ww % 1 === 0;
+    } catch (err) {
+      console.warn(`Font loading error: ${err}`);
+      return false;
+    }
+  }).length > 0;
 
   assert(
     weightsIsArray && weightsIsAllValidNumbers,

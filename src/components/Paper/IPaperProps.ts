@@ -1,4 +1,4 @@
-import {
+import type {
   PaperProps,
 } from '@material-ui/core/Paper';
 

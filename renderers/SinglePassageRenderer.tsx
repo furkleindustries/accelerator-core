@@ -1,4 +1,10 @@
 import {
+  AppContextConsumerWrapper,
+} from '../src/components/AppContextConsumerWrapper';
+import {
+  IPassage,
+} from '../src/passages/IPassage';
+import {
   IPassageRendererOwnProps,
 } from '../src/renderers/IPassageRendererOwnProps';
 import {
@@ -7,6 +13,9 @@ import {
 import {
   SkipToContentLinkDestination,
 } from '../src/components/SkipToContentLinkDestination';
+import {
+  assertValid,
+} from 'ts-assertions';
 
 import * as React from 'react';
 
@@ -15,46 +24,61 @@ export const strings = {
     'No passage named %NAME% could be found within the passages map.',
 };
 
-export const SinglePassageRenderer: React.FunctionComponent<IPassageRendererOwnProps> = ({
-  config,
-  context: {
-    footers,
-    headers,
-    passagesMap,
-    soundManager,
-    store: {
-      dispatch,
-      getState,
-    },
-  },
-
+// This can't be refactored to a normal `connect` binding because it cannot
+// rerender according to the store subscription. Rather, it is controlled
+// by the parent component.
+export const SinglePassageRenderer: React.FC<IPassageRendererOwnProps> = ({
   passageFunctions,
-}) => {
-  const {
-    history: {
-      present: {
-        lastLinkTags,
-        passageName,
-        storyState,
+}) => (
+  <AppContextConsumerWrapper>
+    {({
+      config,
+      footers,
+      getSoundManager,
+      headers,
+      passagesMap,
+      store,
+      store: {
+        dispatch,
+        getState,
       },
-    },
-  } = getState();
+    }) => {
+      const {
+        history: {
+          present: {
+            lastLinkTags,
+            passageName,
+            storyEnded,
+            storyState,
+          },
+        },
+      } = getState();
 
-  return (
-    <>
-      <SkipToContentLinkDestination id={passageName} />
+      const passageObject = assertValid<IPassage>(
+        passagesMap[passageName],
+        `No passage matching the name "${passageName}" could be found in the passages map.`,
+      );
 
-      <PassageContainer
-        config={config}
-        dispatch={dispatch}
-        footers={footers}
-        headers={headers}
-        lastLinkTags={lastLinkTags}
-        passage={passagesMap[passageName]}
-        soundManager={soundManager}
-        storyState={storyState}
-        {...passageFunctions}
-      />
-    </>
-  );
-};
+      return (
+        <>
+          <SkipToContentLinkDestination />
+
+          <PassageContainer
+            {...passageFunctions}
+
+            config={config}
+            dispatch={dispatch}
+            getSoundManager={getSoundManager}
+            footers={footers}
+            headers={headers}
+            lastLinkTags={lastLinkTags}
+            passageObject={passageObject}
+            store={store}
+            storyEnded={storyEnded}
+            storyState={storyState}
+          />
+        </>
+      );
+    }}
+  </AppContextConsumerWrapper>
+);

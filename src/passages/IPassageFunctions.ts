@@ -1,6 +1,18 @@
 import {
-  HistoryFilter,
-} from '../reducers/IHistoryFilter';
+  IBookmarkAction,
+} from '../actions/IBookmarkAction';
+import {
+  IPassageNavigationAction,
+} from '../actions/IPassageNavigationAction';
+import {
+  IStoryEndAction,
+} from '../actions/IStoryEndAction';
+import {
+  IStoryResetAction,
+} from '../actions/IStoryResetAction';
+import {
+  IStoryRewindAction,
+} from '../actions/IStoryRewindAction';
 import {
   ISetStoryStateAware,
 } from '../interfaces/ISetStoryStateAware';
@@ -12,8 +24,13 @@ import {
 } from '../tags/Tag';
 
 export interface IPassageFunctions extends ISetStoryStateAware {
-  readonly bookmark: () => void;
-  readonly navigateTo: (passageName: string, linkTags?: MaybeReadonlyArray<Tag>) => void;
-  readonly restart: () => void;
-  readonly rewind: (filter?: HistoryFilter) => void;
+  readonly bookmark: () => IBookmarkAction;
+  readonly endStory: () => IStoryEndAction;
+  readonly navigateTo: (
+    passageName: string,
+    linkTags?: MaybeReadonlyArray<Tag>,
+  ) => IPassageNavigationAction;
+
+  readonly restart: () => IStoryResetAction;
+  readonly rewind: () => IStoryRewindAction;
 }

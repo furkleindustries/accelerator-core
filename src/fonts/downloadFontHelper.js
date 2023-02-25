@@ -1,7 +1,4 @@
 import {
-  warn,
-} from 'colorful-logging';
-import {
   getFontApiUrl,
 } from './getFontApiUrl';
 import {
@@ -9,8 +6,9 @@ import {
 } from './normalizeFont';
 import request from 'request';
 
-export function downloadFontHelper(fontLoaderObj) {
+export const downloadFontHelper = (fontLoaderObj) => {
   let url = `${getFontApiUrl()}/`;
+
   const {
     family,
     ranges,
@@ -18,7 +16,7 @@ export function downloadFontHelper(fontLoaderObj) {
   } = normalizeFont(fontLoaderObj);
 
   /* Font looks are case-sensitive on the helper API. */
-  url += `${family.toLowerCase()}?subsets=`;
+  url += `${family.toLowerCase().replace(/ /g, '-')}?subsets=`;
   if (ranges === 'string') {
     url += ranges;
   } else {
@@ -27,9 +25,11 @@ export function downloadFontHelper(fontLoaderObj) {
 
   return new Promise((resolve, reject) => request(
     url,
+  
     {
-      headers: { 'Application-Type': 'application/json' },
+      headers: { 'Application-Type': 'application/json' }
     },
+
     (err, response) => {
       if (err) {
         return reject(err);
@@ -42,7 +42,7 @@ export function downloadFontHelper(fontLoaderObj) {
       } = toJSON;
 
       if (String(statusCode)[0] !== '2') {
-        warn(
+        console.warn(
           `The fonts helper API returned the following error message:\n` +
           (body.slice(0, 105).length > 105 ?
             `${body.slice(0, 105)}...` :

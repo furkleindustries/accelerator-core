@@ -1,0 +1,86 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+	],
+	"settings": {
+		"editor.insertSpaces": true,
+		"editor.tabSize": 2,
+		"emmet.excludeLanguages": [
+			"css",
+			"javascript",
+			"json",
+			"less",
+			"markdown",
+			"react",
+			"typescript",
+			"typescript-react"
+		],
+
+		"emmet.includeLanguages": {},
+		"emmet.showAbbreviationSuggestions": false,
+		"emmet.showExpandedAbbreviation": "never",
+		"emmet.showSuggestionsAsSnippets": false,
+		"emmet.triggerExpansionOnTab": false,
+		"typescript.preferences.importModuleSpecifier": "relative",
+		"typescript.preferences.importModuleSpecifierEnding": "minimal",
+		"typescript.preferences.quoteStyle": "single",
+		"typescript.tsdk": "node_modules/typescript/lib",
+
+		"javascript.preferences.importModuleSpecifier": "relative",
+		"javascript.preferences.importModuleSpecifierEnding": "minimal",
+		"javascript.preferences.quoteStyle": "single",
+
+		"[typescript]": {
+			"editor.insertSpaces": true,
+			"editor.tabSize": 2,
+			"editor.wordWrap": "off"
+		},
+
+		"[typescriptreact]": {
+			"editor.insertSpaces": true,
+			"editor.tabSize": 2,
+			"editor.wordWrap": "off"
+		},
+
+		"[javascript]": {
+			"editor.insertSpaces": true,
+			"editor.tabSize": 2,
+			"editor.wordWrap": "off"
+		},
+
+		"[javascriptreact]": {
+			"editor.insertSpaces": true,
+			"editor.tabSize": 2,
+			"editor.wordWrap": "off"
+		},
+
+		"[markdown]": {
+			"editor.quickSuggestions": false,
+			"editor.tabSize": 4,
+			"editor.wordWrap": "on"
+		},
+
+		"[ink]": {
+			"editor.insertSpaces": false,
+			"editor.quickSuggestions": false,
+			"editor.tabSize": 4,
+			"editor.wordWrap": "on"
+		},
+
+		"[css]": {
+			"editor.insertSpaces": true,
+			"editor.suggest.insertMode": "replace",
+			"editor.tabSize": 2,
+			"editor.wordWrap": "off"
+		},
+
+		"[less]": {
+			"editor.insertSpaces": true,
+			"editor.suggest.insertMode": "replace",
+			"editor.tabSize": 2,
+			"editor.wordWrap": "off"
+		}
+	}
+}

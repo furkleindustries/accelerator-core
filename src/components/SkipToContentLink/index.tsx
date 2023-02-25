@@ -9,27 +9,30 @@ import {
   UrlLink,
 } from '../UrlLink';
 
-import styles from './index.less';
+import builtIns from '../../../passages/_global-styles/components/index.less';
 
 import * as React from 'react';
 
-export const SkipToContentLink: React.FunctionComponent<ISkipToContentLinkOwnProps> = ({
+const defaultSkipToContentHref = getDefaultSkipToContentHref();
+
+export const SkipToContentLink: React.FC<ISkipToContentLinkOwnProps> = ({
   children,
   className,
   href,
-  tabIndex,
+  tabIndex = 1,
   ...otherProps
 }) => (
   <UrlLink
     {...otherProps}
+
     className={classNames(
-      styles.skipToContentLink,
-      'skipToContentLink',
+      builtIns['skip-to-content-link'],
+      'skip-to-content-link',
       className,
     )}
 
-    href={href || getDefaultSkipToContentHref()}
-    tabIndex={tabIndex || 1}
+    href={href || defaultSkipToContentHref}
+    tabIndex={tabIndex}
   >{
     children || (children && Array.isArray(children) && children.length) ?
       children :

@@ -5,7 +5,7 @@ export const getAuthoredImportsMetadata = (files) => {
   const importPaths = [];
   const imports = [];
   const registry = {};
-  
+
   files.forEach((filepath, index) => {
     const importPath = slash(
       path.relative(path.dirname(__dirname), filepath),

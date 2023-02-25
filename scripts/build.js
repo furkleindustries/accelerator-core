@@ -1,143 +1,104 @@
 import './functions/setUnhandledRejectionEvent';
 import '../config/setProductionEnv';
 
-import bfj from 'bfj';
-import chalk from 'chalk';
-import {
-  checkBrowsers,
-} from 'react-dev-utils/browsersHelper';
-import checkRequiredFiles from 'react-dev-utils/checkRequiredFiles';
-import {
-  error,
-  log,
-  warn,
-} from 'colorful-logging';
-import FileSizeReporter from 'react-dev-utils/FileSizeReporter';
-import formatWebpackMessages from 'react-dev-utils/formatWebpackMessages';
-import {
-  copy,
-  emptyDir,
-} from 'fs-extra';
-import config from '../config/webpack/webpack.config';
-import * as path from 'path';
-import {
-  paths,
-} from '../config/paths';
-import printHostingInstructions from 'react-dev-utils/printHostingInstructions';
-import printBuildError from 'react-dev-utils/printBuildError';
+import slash from 'slash';
 import webpack from 'webpack';
 
 /* Ensure the library is built in production. */
 process.env.NODE_ENV = 'production';
 
-const appPackage = require(paths.appPackageJson);
+(async () => {
+  const [
+    // ../accelerator.config
+    { default: acceleratorConfig },
 
-const measureFileSizesBeforeBuild =
-  FileSizeReporter.measureFileSizesBeforeBuild;
-const printFileSizesAfterBuild = FileSizeReporter.printFileSizesAfterBuild;
+    // bfj
+    bfj,
+  
+    // react-dev-utils/browsersHelper
+    { checkBrowsers },
 
-// These sizes are pretty large. We'll warn for bundles exceeding them.
-const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024;
-const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024;
+    // chalk
+    { default: chalk },
 
-const {
-  argv,
-  cwd,
-  env: { CI },
-  exit,
-  stdout: { isTTY },
-} = process;
+    // ./functions/generateWebAppManifest
+    { generateWebAppManifest },
+  
+    // react-dev-utils/formatWebpackMessages
+    { default: formatWebpackMessages },
 
-// Warn and crash if required files are missing
-if (!checkRequiredFiles([ paths.fontLoaderTemplate, paths.appIndex, ])) {
-  exit(1);
-}
-
-// Process CLI arguments
-const writeStatsJson = argv.slice(2).indexOf('--stats') !== -1;
-
-// We require that you explicitly set browsers and do not fall back to
-// browserslist defaults.
-checkBrowsers(paths.appPath, isTTY)
-  .then(() => (
-    // First, read the current file sizes in build directory.
-    // This lets us display how much they changed later.
-    measureFileSizesBeforeBuild(paths.appBuild)
-  )).then(async (previousFileSizes) => {
-    // Remove all content but keep the directory so that
-    // if you're in it, you don't end up in Trash
-    await emptyDir(paths.appBuild);
-    // Merge with the public folder
-    copyPublicFolder();
-    // Start the webpack build
-    return build(previousFileSizes);
-  }).then(
-    ({
-      stats,
-      previousFileSizes,
-      warnings,
-    }) => {
-      if (warnings.length) {
-        warn('Compiled with warnings.\n');
-        warn(warnings.join('\n\n'));
-        warn(
-          '\nSearch for the ' +
-            chalk.underline(chalk.yellow('keywords')) +
-            ' to learn more about each warning.'
-        );
-
-        warn(
-          'To ignore, add ' +
-            chalk.cyan('// eslint-disable-next-line') +
-            ' to the line before.\n'
-        );
-      } else {
-        log('Compiled successfully.\n');
-      }
-
-      log('File sizes after gzip:\n');
-      printFileSizesAfterBuild(
-        stats,
-        previousFileSizes,
-        paths.appBuild,
-        WARN_AFTER_BUNDLE_GZIP_SIZE,
-        WARN_AFTER_CHUNK_GZIP_SIZE,
-      );
-
-      const publicUrl = paths.publicUrl;
-      const publicPath = config.output.publicPath;
-      const buildFolder = path.relative(cwd(), paths.appBuild);
-      printHostingInstructions(
-        appPackage,
-        publicUrl,
-        publicPath,
-        buildFolder,
-      );
+    // fs-extra
+    {
+      pathExistsSync,
+      writeFile,
     },
-    (err) => {
-      error('Failed to compile.\n');
-      printBuildError(err ? err.stack || err.message || err : err);
+
+    // path
+    path,
+
+    // ../config/paths
+    { paths },
+
+    // ./functions/warnIfDeveloperOptionsEnabled
+    { warnIfDeveloperOptionsEnabled: warnIfDeveloperOptionsEnabledFunc },
+
+    // ../config/webpack/webpack.config
+    { default: webpackConfig },
+  ] = (await Promise.all([
+    import('../accelerator.config'),
+    import('bfj'),
+    import('react-dev-utils/browsersHelper'),
+    import('chalk'),
+    import('./functions/generateWebAppManifest'),
+    import('react-dev-utils/formatWebpackMessages'),
+    import('fs-extra'),
+    import('path'),
+    import('../config/paths'),
+    import('./functions/warnIfDeveloperOptionsEnabled'),
+    import('../config/webpack/webpack.config'),
+  ]));
+  
+  const {
+    argv,
+    env: { CI },
+    exit,
+    stdout: { isTTY },
+  } = process;
+
+  try {
+    // Warn and crash if required files are missing
+    if (!pathExistsSync(paths.appIndex)) {
       exit(1);
-    },
-  ).catch((err) => {
-    if (err && err.message) {
-      error(err ? err.stack || err.message : err);
     }
 
-    exit(1);
-  });
+    let foundWarnings = false;
+    if (acceleratorConfig.warnIfDeveloperOptionsEnabled) {
+      foundWarnings = warnIfDeveloperOptionsEnabledFunc(acceleratorConfig);
+    }
 
-// Create the production build and print the deployment instructions.
-function build(previousFileSizes) {
-  log('Creating an optimized production build...');
+    // Process CLI arguments
+    const writeStatsJson = argv.slice(2).indexOf('--stats') !== -1;
 
-  const compiler = webpack(config);
-  return new Promise((resolve, reject) => {
+    // We require that you explicitly set browsers and do not fall back to
+    // browserslist defaults.
+    await checkBrowsers(paths.appPath, isTTY);
+
+    console.log(chalk.green('Creating an optimized production build...\n'));
+
+    // Start the webpack build
+    const compiler = webpack(webpackConfig);
     compiler.run((err, stats) => {
-      let messages;
+      console.log('Bundling has completed.\n');
+
+      let messages = {
+        errors: [],
+        warnings: [],
+      };
+
       if (err) {
         if (!err.message) {
-          return reject(err);
+          console.error(chalk.red(err.toString()));
+          exit(1);
         }
 
         messages = formatWebpackMessages({
@@ -157,42 +118,99 @@ function build(previousFileSizes) {
       if (messages.errors.length) {
         // Only keep the first error. Others are often indicative
         // of the same problem, but confuse the reader with noise.
-        if (messages.errors.length > 1) {
-          messages.errors.length = 1;
-        }
-
-        return reject(new Error(messages.errors.join('\n\n')));
+        console.error(chalk.red(messages.errors[0].toString()));
+        exit(1);
       } else if (CI &&
-        (typeof CI !== 'string' || CI.toLowerCase() !== 'false') &&
+        (typeof CI !== 'string' ||
+          CI.toLowerCase() !== 'false') &&
         messages.warnings.length)
       {
-        warn(
+        console.warn(chalk.yellow(
           '\nTreating warnings as errors because process.env.CI = true.\n' +
             'Most CI servers set it automatically.\n'
-        );
+        ));
 
-        return reject(new Error(messages.warnings.join('\n\n')));
+        console.error(chalk.yellow(messages.warnings.join('\n\n')));
+        exit(1);
       }
-
-      const resolveArgs = {
-        previousFileSizes,
-        stats,
-        warnings: messages.warnings,
-      };
 
       if (writeStatsJson) {
-        return bfj
-          .write(`${paths.appBuild}/bundle-stats.json`, stats.toJson())
-          .then(() => resolve(resolveArgs))
-          .catch(reject);
+        console.log('Generating statistics for output bundle.');
+
+        bfj.write(
+          `${paths.appBuild}/bundle-stats.json`,
+          stats.toJson(),
+        );
       }
 
-      return resolve(resolveArgs);
-    });
-  });
-}
+      console.log('Generating web app manifest.\n');
 
-const copyPublicFolder = async () => await copy(paths.appPublic, paths.appBuild, {
-  dereference: true,
-  filter: (file) => file !== paths.fontLoaderTemplate,
-});
+      const webAppManifest = generateWebAppManifest();
+      const outPath = path.join(paths.appBuild, 'manifest.json');
+      const manifestStr = JSON.stringify(webAppManifest, null, 4);
+
+      Promise.all([
+        writeFile(outPath, manifestStr),
+        writeFile(path.join(paths.appPublic, 'manifest.json'), manifestStr),
+      ]).then(
+        () => {
+          if (messages.warnings.length) {
+            console.warn(chalk.yellow(messages.warnings.join('\n\n')));
+            console.warn(chalk.yellow(
+              `\nSearch for the ${chalk.underline('keywords')} to learn more about each warning.`,
+            ));
+    
+            console.warn(chalk.yellow(
+              `To ignore, add ${chalk.underline('// eslint-disable-next-line')} to the line before.\n`,
+            ));
+
+            foundWarnings = true;
+          }
+    
+          const publicUrl = acceleratorConfig.publicUrl;
+          const buildFolder = paths.appBuild.endsWith('/') ?
+            paths.appBuild :
+            `${paths.appBuild}/`;
+
+          if (foundWarnings) {
+            console.warn(chalk.yellow(
+              `The Accelerator build process completed, but encountered warnings. ` +
+                `Please be sure to scroll up and inspect each warning.\n`,
+            ));
+          } else {
+            console.log(chalk.green(
+              `The Accelerator build process is now complete.\n`,
+            ));
+          }
+
+          console.log(
+            `All generated files are in the following folder: ` +
+              `${chalk.underline(
+                slash(
+                  buildFolder.startsWith('C:') ?
+                    `/${buildFolder.slice(3)}` :
+                    buildFolder,
+                ),
+              )}\n` +
+              `\n` +
+
+              `The contents of the ${chalk.underline(path.basename(buildFolder))} folder should be hosted at ${chalk.underline(publicUrl)}.\n\n` +
+              `These files may be served with the ${chalk.underline('http')} or ${chalk.underline('https')} servers built into Node.js, ` +
+              `or by installing a separate server library like ${chalk.underline('express')} or ${chalk.underline('serve')}. ` +
+              `Alternately, all folder contents may be uploaded to any static site hosting, like GitHub Pages.\n`
+          );
+        },
+
+        (err) => {
+          console.error(chalk.red('The Accelerator build failed with the following error:\n'));
+          console.error(chalk.red((err ? err.stack || err.message || err : err).toString()));
+          exit(1);
+        },
+      );
+    });
+  } catch (err) {
+    console.error(chalk.red('The Accelerator build failed with the following error:\n'));
+    console.error(chalk.red((err ? err.stack || err.message || err : err).toString()));
+    exit(1);
+  }
+})();

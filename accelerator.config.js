@@ -1,66 +1,228 @@
-/** @see {@link https://github.com/furkleindustries/accelerator-core/tree/master/accelerator.config.d.ts} */
+import {
+  ActionTypes,
+} from './src/actions/ActionTypes';
+import {
+  configurationDefaults,
+  EasingCurvesMirror as EasingCurves,
+} from './src/configuration/configurationDefaults';
+import {
+  FontFormats,
+} from './src/fonts/FontFormats';
+import {
+  FontRanges,
+} from './src/fonts/FontRanges';
+import {
+  FontStyles,
+} from './src/fonts/FontStyles';
+import {
+  getImagePreloadMap,
+} from './passages/_images/getImagePreloadMap';
+import {
+  getSoundGroupsMap,
+} from './passages/_sounds/getSoundGroupsMap';
+import {
+  MediaPreloadStrategies,
+} from './src/configuration/MediaPreloadStrategies';
 
-import { ActionTypes } from './src/actions/ActionTypes';
-import { BuiltInRenderers } from './src/renderers/BuiltInRenderers';
-import { FontFormats } from './src/fonts/FontFormats';
-import { FontRanges } from './src/fonts/FontRanges';
-import { FontStyles } from './src/fonts/FontStyles';
+const debug = false;
+const publicUrl = '';
+
+const configSubset = {
+  debug,
+  publicUrl,
+};
 
 export default {
-  /**
-   * @property {string}
-   * The page title which will be displayed in the browser.
-   */
-  storyTitle: '{{{name}}}',
+  startPassageName: 'start',
+  debug,
+  debugOptions: {
+    storyState: {
+      // confused_score: Math.round(Math.random() * 5),
+      // convert_score: Math.round(Math.random() * 5),
+      /// resister_score: Math.round(Math.random() * 5),
+    },
 
-  /**
-   * @property {string} 
-   * The description of the story. This should be short and illustrative, and
-   * below 160 characters. Bear in mind this will appear in search results and
-   * good descriptions drive traffic and positive SEO.
-   */
-  storyDescription:
-    'A story created with the Accelerator hypertext fiction framework ' +
-    '(https://github.com/furkleindustries/accelerator-core).',
+    // startPassageAfterMenu: 'XLR8R_RANDOM',
+    // stubLastPassageName: '',
+    // startInkPathString: '',
+    // loopStartInkModule: true,
+    // noTimings: false,
+  },
 
-  /**
-   * @property {boolean}
-   * This determines whether the DebugPlugin is used when (and only when) the
-   * story is run in development (NODE_ENV=development) mode. It has no bearing on
-   * the story when it is built for production.
-   */
-  debug: false,
+  loadAutosaveAtStart: true,
 
-  /**
-   * @property {BuiltInRenderers | string}
-   * The filename of the renderer. The corresponding file must be within
-   * renderers/.
-   * 
-   * The renderer transforms context, state, and passage objects into React
-   * elements shown to the user. This property defaults to a simple,
-   * Twine-style single-passage-display rendering style. You may replace this
-   * if you want a story to appear with an Ink or Twine 1 Jonah-style rendering
-   * behavior, or something more exotic. 
-   */
-  /* TODO: fix lack of reactive rerendering in ScrollRenderer. Do not use
-   * ScrollRenderer yet. */
-  rendererName: BuiltInRenderers.SinglePassageRenderer,
+  autoplayer: {
+    active: false,
+    scroll: false,
+    baseDelayTime: 35000,
+    minDelayRatio: 0.75,
+    maxDelayRatio: 20,
+    getRandomFactor: () => Math.random() / 5 + 1,
+    randomStrictBounding: false,
+  },
 
-  /**
-   * @property {boolean}
-   * Determines whether the menu is shown.
-   */
+  storyMetadata: {
+    title: 'Accelerate',
+    description: 'This game could be your life, and it might.',
+    ifid: 'adefaced-beef-babe-fade-gaggedfacade',
+    appDisplayMode: 'fullscreen',
+    appOrientation: 'any',
+    language: 'en',
+    languageDirectionality: 'auto',
+    screenshots: [],
+    shortcuts: [],
+    categories: [
+      'entertainment',
+      'games',
+    ],
+
+    icons: [
+      {
+        src: 'images/android-icon-36x36.png',
+        sizes: '36x36',
+        type: 'image/png',
+      },
+
+      {
+        src: 'images/android-icon-48x48.png',
+        sizes: '48x48',
+        type: 'image/png',
+      },
+
+      {
+        src: 'images/apple-icon-57x57.png',
+        sizes: '57x57',
+        type: 'image/png',
+      },
+
+      {
+        src: 'images/apple-icon-60x60.png',
+        sizes: '60x60',
+        type: 'image/png',
+      },
+
+      {
+        src: 'images/android-icon-72x72.png',
+        sizes: '72x72',
+        type: 'image/png',
+      },
+
+      {
+        src: 'images/apple-icon-76x76.png',
+        sizes: '76x76',
+        type: 'image/png',
+      },
+
+      {
+        src: 'images/android-icon-96x96.png',
+        sizes: '96x96',
+        type: 'image/png',
+      },
+
+      {
+        src: 'images/apple-icon-114x114.png',
+        sizes: '114x114',
+        type: 'image/png',
+      },
+
+      {
+        src: 'images/apple-icon-120x120.png',
+        sizes: '120x120',
+        type: 'image/png',
+      },
+
+      {
+        src: 'images/android-icon-144x144.png',
+        sizes: '144x144',
+        type: 'image/png',
+      },
+
+      {
+        src: 'images/apple-icon-152x152.png',
+        sizes: '152x152',
+        type: 'image/png',
+      },
+
+      {
+        src: 'images/apple-icon-180x180.png',
+        sizes: '180x180',
+        type: 'image/png',
+      },
+
+      {
+        src: 'images/android-icon-192x192.png',
+        sizes: '192x192',
+        type: 'image/png',
+      },
+
+      {
+        src: 'images/apple-icon-precomposed.png',
+        sizes: '512x512',
+        purpose: 'any maskable',
+        type: 'image/png',
+      },
+    ],
+
+    robots: [
+      // implies [ 'robots', 'noindex' ]
+      'noindex',
+      // [ 'googlebot', 'noarchive' ]
+    ],
+  },
+
+  colors: {
+    background: '#181844',
+    theme: '#a0804a',
+  },
+
   showMenu: true,
 
-  /**
-   * @property {Array<string | IFontLoadingDetails>}
-   * @see {@link https://github.com/furkleindustries/accelerator-core/tree/master/src/fonts/IFontLoadingDetails.ts}
-   * Each of the items in this list is constructed into a @font-face rule and
-   * passed to the FontFaceObserver class and loaded, as-needed, at runtime.
-   */
+  soundManager: {
+    defaults: {
+      ...configurationDefaults.soundManager.defaults,
+    },
+
+    excludeFromAutomaticStop: {
+      groups: [],
+      sounds: [
+        'noise',
+      ],
+    },
+
+    exposeInMenu: true,
+
+    soundsToLoad: Object.freeze(
+      getSoundGroupsMap(
+        { ...configurationDefaults.soundManager.defaults },
+        configSubset,
+      ),
+    ),
+  },
+
+  imageManager: {
+    imagesToPreload: {
+      ...getImagePreloadMap(
+        (imageName) => {
+          if (imageName === 'logo-one' || imageName === 'noise_1280x1280_1') {
+            return MediaPreloadStrategies.PreloadFull;
+          } else if (imageName.startsWith('logo') ||
+            imageName.startsWith('chapter-00-'))
+          {
+            return MediaPreloadStrategies.PreloadDeferred;
+          }
+
+          return MediaPreloadStrategies.None;
+        },
+
+        configSubset,
+      ),
+    },
+  },
+
   fontsToLoad: [
     {
-      family: 'Roboto',
+      // Default font.
+      family: 'Libre Franklin',
       formats: [
         FontFormats.WOFF2,
         FontFormats.WOFF,
@@ -68,12 +230,17 @@ export default {
 
       styles: [
         FontStyles.Normal,
-        FontStyles.Italic,
       ],
 
       ranges: [
+        // All needed in content.
         FontRanges.Latin,
         FontRanges.LatinExtended,
+        FontRanges.Cyrillic,
+        FontRanges.CyrillicExtended,
+        FontRanges.Greek,
+        FontRanges.GreekExtended,
+        FontRanges.Vietnamese,
       ],
 
       weights: [
@@ -82,76 +249,83 @@ export default {
         500,
       ],
     },
+
+    {
+      family: 'Noto Sans',
+      formats: [
+        FontFormats.WOFF2,
+        FontFormats.WOFF,
+      ],
+
+      styles: [
+        FontStyles.Italic,
+      ],
+
+      ranges: [
+        // All needed for titles.
+        FontRanges.Latin,
+        FontRanges.LatinExtended,
+        FontRanges.Cyrillic,
+        FontRanges.CyrillicExtended,
+        FontRanges.Greek,
+        FontRanges.GreekExtended,
+        FontRanges.Vietnamese,
+      ],
+
+      weights: [
+        400,
+        // No Noto Sans 500 weight available.
+      ],
+    },
+
+    {
+      family: 'Inconsolata',
+      formats: [
+        FontFormats.WOFF2,
+        FontFormats.WOFF,
+      ],
+
+      styles: [
+        FontStyles.Normal,
+      ],
+
+      ranges: [
+        FontRanges.Latin,
+        FontRanges.LatinExtended,
+      ],
+
+      weights: [
+        400,
+      ],
+    },
   ],
 
-  /**
-   * @property {IFontSubsettingDetails}
-   * @see {@link https://github.com/furkleindustries/accelerator-core/tree/master/src/fonts/IFontSubsettingDetails.ts}
-   * Allows a temporary subset of the font to be loaded almost immediately.
-   */
-  subsetFont: {
-    formats: [
-      FontFormats.WOFF2,
-      FontFormats.WOFF,
-    ],
+  publicUrl,
 
-    fromFamily: 'Roboto',
-    loadingStrategy: 'preload',
-    subsetRange: 'US_ASCII',
-  },
+  compressScriptFiles: false,
+  lintCodeFiles: true,
+  warnIfDeveloperOptionsEnabled: true,
 
-  /**
-   * @property {string}
-   * The path that should be prepended to static resource paths like the favicon
-   * and js/css bundles. This will work fine for all cases except if you need to
-   * know the absolute path the story is hosted at ahead of time.
-   */
-  publicUrl: '',
-
-  /**
-   * @property {string}
-   * The Interactive Fiction ID of the story.
-   */
-  ifid: '{{{ifid}}}',
-
-  /**
-   * @property {number}
-   * Determines how many undo states will be saved. Any point in history further
-   * than this limit will be discarded and unreachable by the player. Important to
-   * consider historySaveTypes when changing this.
-   */
-  historyStackLimit: 500,
-
-  /**
-   * @property {ActionTypes | ActionTypes[]}
-   * @see {@link https://github.com/furkleindustries/accelerator-core/blob/master/src/actions/ActionTypes.d.ts}
-   * Determines which Redux actions will be saved in the history, and therefore
-   * which are usable as rewind points. Important to consider
-   * historyStackLimit when changing this. Do not change this unless
-   * you know what you're doing, as this setting has complex effects on
-   * rewind semantics.
-   */
+  historyStackLimit: 100,
+  historyFramesToSerialize: 25,
   historySaveTypes: [
     ActionTypes.Bookmark,
     ActionTypes.PassageNavigation,
-    ActionTypes.PassageTime,
   ],
 
-  /**
-   * @property {boolean}
-   * Passed directly to redux-undo's undoable() syncFilter option.
-   */
-  historySynchronizeUnrewindableStateWithPresent: true,
-
-  /**
-   * @property {string}
-   * The version of `accelerator-core` used to create the story.
-   */
-  acceleratorCoreVersion: '{{{coreVersion}}}',
-
-  /**
-   * @property {string}
-   * The version of `accelerator-tool` used to create the story.
-   */
-  acceleratorToolVersion: '{{{toolVersion}}}',
+  acceleratorCoreVersion: '0.14.1',
+  acceleratorToolVersion: '0.4.1',
 };
+
+////////////////////////////////////////
+//                                    //
+//  hello hacker fucker               //
+//  this is venus wormwood            //
+//  heres the deal.                   //
+//  if you hack this game             //
+//  thats really fine                 //
+//  its released as CC0               //
+//  you wont even need to mention me  //
+//  and thats a promise               //
+//                                    //
+////////////////////////////////////////
